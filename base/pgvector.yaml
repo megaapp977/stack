@@ -1,0 +1,46 @@
+
+  pgvector:
+## Versão do PgVector verificar no Docker Hub https://hub.docker.com/r/pgvector/pgvector version o que usar de acordo com a versão do PostgreSQL
+    image: pgvector/pgvector:pg16
+    command: >
+      postgres
+      -c max_connections=500
+      -c shared_buffers=512MB
+
+    volumes:
+      - pgvector:/var/lib/postgresql/data
+
+    networks:
+      - nome_rede_interna ## Nome da rede interna
+
+    ## Descomente as linhas abaixo para uso externo
+    #ports:
+    #  - 5433:5432
+
+    environment:
+      ## Senha do postgres 
+      - POSTGRES_PASSWORD=senha_pgvector
+
+      ## Timezone
+      - TZ=America/Sao_Paulo
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+  volumes:
+    pgvector:
+      external: true
+      name: pgvector
+
+  networks:
+    nome_rede_interna: ## Nome da rede interna
+      external: true
+      name: nome_rede_interna ## Nome da rede interna

@@ -1,0 +1,148 @@
+##############
+#
+# Execute o mando para migrar o banco:
+#
+# bundle exec rails db:chatwoot_prepare
+#
+#############
+
+x-variables:
+  &default_env
+  INSTALLATION_NAME: ExampleChat
+  NODE_ENV: production
+  RAILS_ENV: production
+  INSTALLATION_ENV: docker
+  SECRET_KEY_BASE: changemeexamplekey
+  FRONTEND_URL: https://app.example.com
+  DEFAULT_LOCALE: en
+  FORCE_SSL: "true"
+  ENABLE_ACCOUNT_SIGNUP: "false"
+  REDIS_URL: redis://example_redis:6379
+  POSTGRES_HOST: 123.123.123.123
+  POSTGRES_PORT: 5432
+  POSTGRES_USERNAME: postgres
+  POSTGRES_PASSWORD: examplepassword
+  POSTGRES_DATABASE: examplechat
+  ACTIVE_STORAGE_SERVICE: local
+  # Uncomment the following lines to use Amazon S3 for Active Storage
+  # ACTIVE_STORAGE_SERVICE: amazon
+  # S3_BUCKET_NAME: examplechat.bucket
+  # AWS_ACCESS_KEY_ID: EXAMPLEKEY123456
+  # AWS_SECRET_ACCESS_KEY: EXAMPLESECRET456789
+  # AWS_REGION: us-east-1
+  DIRECT_UPLOADS_ENABLED: "true"
+  RAILS_LOG_TO_STDOUT: "true"
+  USE_INBOX_AVATAR_FOR_BOT: "true"
+  MAILER_SENDER_EMAIL: ExampleChat <noreply@example.com>
+  SMTP_DOMAIN: smtp.example.com
+  SMTP_ADDRESS: smtp.example.com
+  SMTP_PORT: 587
+  SMTP_USERNAME: noreply@example.com
+  SMTP_PASSWORD: smtpexamplepassword
+  SMTP_AUTHENTICATION: login
+  SMTP_ENABLE_STARTTLS_AUTO: "true"
+  SMTP_OPENSSL_VERIFY_MODE: peer
+  MAILER_INBOUND_EMAIL_DOMAIN: example.com
+  SIDEKIQ_CONCURRENCY: 20
+  WEB_CONCURRENCY: 2
+  RAILS_MAX_THREADS: 20
+  RACK_TIMEOUT_SERVICE_TIMEOUT: 0
+  ENABLE_RACK_ATTACK: "false"
+  TZ: UTC
+  ENABLE_PUSH_RELAY_SERVER: "true"
+  WEBHOOKS_TRIGGER_TIMEOUT: 40
+
+services:
+  mega_app:
+    image: sendingtk/chatwoot:v4.3.3
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    entrypoint: docker/entrypoints/rails.sh
+    restart: always
+    volumes:
+      # - examplechat_dat:/app/storage
+      - /opt/branding/mega/manifest.json:/app/public/manifest.json
+      - /opt/branding/mega/favicon.ico:/app/public/favicon.ico
+      - /opt/branding/mega/android-icon-192x192.png:/app/public/android-icon-192x192.png
+      - /opt/branding/mega/apple-icon-57x57.png:/app/public/apple-icon-57x57.png
+      - /opt/branding/mega/apple-icon-60x60.png:/app/public/apple-icon-60x60.png
+      - /opt/branding/mega/apple-icon-72x72.png:/app/public/apple-icon-72x72.png
+      - /opt/branding/mega/apple-icon-76x76.png:/app/public/apple-icon-76x76.png
+      - /opt/branding/mega/apple-icon-114x114.png:/app/public/apple-icon-114x114.png
+      - /opt/branding/mega/apple-icon-120x120.png:/app/public/apple-icon-120x120.png
+      - /opt/branding/mega/apple-icon-144x144.png:/app/public/apple-icon-144x144.png
+      - /opt/branding/mega/apple-icon-152x152.png:/app/public/apple-icon-152x152.png
+      - /opt/branding/mega/apple-icon-180x180.png:/app/public/apple-icon-180x180.png
+      - /opt/branding/mega/favicon-16x16.png:/app/public/favicon-16x16.png
+      - /opt/branding/mega/favicon-32x32.png:/app/public/favicon-32x32.png
+      - /opt/branding/mega/favicon-96x96.png:/app/public/favicon-96x96.png
+      - /opt/branding/mega/favicon-badge-16x16.png:/app/public/favicon-badge-16x16.png
+      - /opt/branding/mega/favicon-badge-32x32.png:/app/public/favicon-badge-32x32.png
+      - /opt/branding/mega/favicon-badge-96x96.png:/app/public/favicon-badge-96x96.png
+      - /opt/branding/mega/brand-assets/logo.svg:/app/public/brand-assets/logo.svg
+      - /opt/branding/mega/brand-assets/logo_dark.svg:/app/public/brand-assets/logo_dark.svg
+      - /opt/branding/mega/brand-assets/logo_thumbnail.svg:/app/public/brand-assets/logo_thumbnail.svg
+      - /opt/branding/mega/brand-assets/logo_thumbnail_dark.svg:/app/public/brand-assets/logo_thumbnail_dark.svg
+
+    networks:
+      - examplenet
+    environment:
+      <<: *default_env
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
+      resources:
+        limits:
+          cpus: "3"
+          memory: 2048M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.example_app.rule=Host(`app.example.com`)
+        - traefik.http.routers.example_app.entrypoints=websecure
+        - traefik.http.routers.mega_app.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.mega_app.priority=1
+        - traefik.http.routers.mega_app.service=mega_app
+        - traefik.http.services.mega_app.loadbalancer.server.port=3000
+        - traefik.http.services.mega_app.loadbalancer.passHostHeader=true
+        - traefik.http.routers.mega_app.middlewares=sslheader
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+
+  mega_sidekiq:
+    image: sendingtk/chatwoot:v4.3.3
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    restart: always
+    networks:
+      - examplenet
+    environment:
+      <<: *default_env
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
+      resources:
+        limits:
+          cpus: "3"
+          memory: 2048M
+
+  example_redis:
+    image: redis:7.4.2
+    restart: always
+    networks:
+      - examplenet
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2048M
+
+networks:
+  examplenet:
+    external: true
+    name: examplenet
