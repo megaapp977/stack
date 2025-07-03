@@ -92,7 +92,7 @@ services:
       replicas: 3
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
       resources:
         limits:
           cpus: "3"
@@ -122,7 +122,7 @@ services:
       replicas: 2
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
       resources:
         limits:
           cpus: "3"
@@ -136,7 +136,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == worker
+          - node.role == manager
       resources:
         limits:
           cpus: "2"
