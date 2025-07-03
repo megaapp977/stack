@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+
+  minio:
+    image: quay.io/minio/minio:latest ## Versão do Minio
+    command: server /data --console-address ":9001"
+
+    volumes:
+      - minio_data:/data
+
+    networks:
+      - nome_rede_interna ## Nome da rede interna
+
+    environment:
+      ## Dados de acesso
+      - MINIO_ROOT_USER=user_minio
+      - MINIO_ROOT_PASSWORD=senha_minio ## Precisa conter no minimo 8 caracteres
+
+      ## Url do minio
+      - MINIO_BROWSER_REDIRECT_URL=https://url_minio ## Url do minio
+      - MINIO_SERVER_URL=https://url_s3 ## Url do s3 | Comente esta linha caso tiver erro ao fazer login
+
+      ## Região
+      - MINIO_REGION_NAME=eu-south
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.minio_public.rule=Host(`$url_s3`) ## Url do s3
+        - traefik.http.routers.minio_public.entrypoints=websecure
+        - traefik.http.routers.minio_public.tls.certresolver=letsencryptresolver
+        - traefik.http.services.minio_public.loadbalancer.server.port=9000
+        - traefik.http.services.minio_public.loadbalancer.passHostHeader=true
+        - traefik.http.routers.minio_public.service=minio_public
+        - traefik.http.routers.minio_console.rule=Host(`$url_minio`) ## Url do minio
+        - traefik.http.routers.minio_console.entrypoints=websecure
+        - traefik.http.routers.minio_console.tls.certresolver=letsencryptresolver
+        - traefik.http.services.minio_console.loadbalancer.server.port=9001
+        - traefik.http.services.minio_console.loadbalancer.passHostHeader=true
+        - traefik.http.routers.minio_console.service=minio_console
+
+## --------------------------- ORION --------------------------- ##
+
+volumes:
+  minio_data:
+    external: true
+    name: minio_data
+
+networks:
+  nome_rede_interna: ## Nome da rede interna
+    external: true
+    name: nome_rede_interna ## Nome da rede interna
