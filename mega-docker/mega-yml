@@ -51,7 +51,9 @@ x-variables:
   TZ: UTC
   ENABLE_PUSH_RELAY_SERVER: "true"
   WEBHOOKS_TRIGGER_TIMEOUT: 40
-
+  EVOLUTION_API_URL: https://api.evolution.example.com
+  EVOLUTION_ADMIN_TOKEN: exampletoken1234567890
+  EVOLUTION_PUBLIC_S3: "false"
 services:
   mega_app:
     image: sendingtk/chatwoot:v4.3.3
