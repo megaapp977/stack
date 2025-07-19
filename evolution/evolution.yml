@@ -1,0 +1,126 @@
+version: "3.7"
+
+services:
+  evolution_v2:
+    image: evoapicloud/evolution-api:homolog
+    networks:
+      - evolution
+    environment:
+      - SERVER_URL=https://example.com
+      - DEL_INSTANCE=false
+      - PROVIDER_ENABLED=false
+      - PROVIDER_HOST=127.0.0.1
+      - PROVIDER_PORT=5656
+      - PROVIDER_PREFIX=evolution_v2
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://user:password@db.example.com:5432/evolution_db
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
+      - DATABASE_SAVE_DATA_LABELS=true
+      - DATABASE_SAVE_DATA_HISTORIC=true
+      - DATABASE_SAVE_IS_ON_WHATSAPP=true
+      - DATABASE_SAVE_IS_ON_WHATSAPP_DAYS=7
+      - DATABASE_CONNECTION_CLIENT_NAME=myapp
+      - EVENT_EMITTER_MAX_LISTENERS=150
+      - TELEMETRY=false
+      - LOG_COLOR=true
+      - LOG_BAILEYS=error
+      - WEBHOOK_REQUEST_TIMEOUT_MS=60000 
+      - WEBHOOK_RETRY_MAX_ATTEMPTS=10
+      - WEBHOOK_RETRY_INITIAL_DELAY_SECONDS=5
+      - WEBHOOK_RETRY_USE_EXPONENTIAL_BACKOFF=true
+      - WEBHOOK_RETRY_MAX_DELAY_SECONDS=300
+      - WEBHOOK_RETRY_JITTER_FACTOR=0.2
+      - WEBHOOK_RETRY_NON_RETRYABLE_STATUS_CODES=400,401,403,404,422
+      - WEBSOCKET_ENABLED=false
+      - WEBSOCKET_GLOBAL_EVENTS=false
+      - WA_BUSINESS_TOKEN_WEBHOOK=exampletoken
+      - WA_BUSINESS_URL=https://graph.facebook.com
+      - WA_BUSINESS_VERSION=v21.0
+      - WA_BUSINESS_LANGUAGE=en_US
+      - CONFIG_SESSION_PHONE_CLIENT=myapp
+      - CONFIG_SESSION_PHONE_NAME=Chrome
+      - QRCODE_LIMIT=5
+      - QRCODE_COLOR=#123456
+      - OPENAI_ENABLED=true
+      - DIFY_ENABLED=true
+      - TYPEBOT_ENABLED=true
+      - TYPEBOT_API_VERSION=latest
+      - N8N_ENABLED=false
+      - EVOAI_ENABLED=true
+      - CHATWOOT_ENABLED=true
+      - CHATWOOT_MESSAGE_READ=true
+      - CHATWOOT_MESSAGE_DELETE=true
+      - CHATWOOT_BOT_CONTACT=true
+      - CHATWOOT_IMPORT_DATABASE_CONNECTION_URI=postgresql://user:password@db.example.com:5432/chatwoot_db?sslmode=disable
+      - CHATWOOT_IMPORT_PLACEHOLDER_MEDIA_MESSAGE=true
+      - CACHE_REDIS_ENABLED=false
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - CACHE_REDIS_PREFIX_KEY=evolution_v2
+      - CACHE_REDIS_SAVE_INSTANCES=false
+      - CACHE_LOCAL_ENABLED=false
+      #- S3_ENABLED=true
+      #- S3_ACCESS_KEY=your_access_key
+      #- S3_SECRET_KEY=your_secret_key
+      #- S3_BUCKET=your_bucket
+      #- S3_PORT=443
+      #- S3_ENDPOINT=s3.example.com
+      #- S3_USE_SSL=true
+      #- S3_REGION=us-east
+      - AUTHENTICATION_API_KEY=your_api_key
+      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+      - LANGUAGE=es
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "2"
+          memory: 5120M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.evolution_v2.rule=Host(`example.com`)
+        - traefik.http.routers.evolution_v2.entrypoints=websecure
+        - traefik.http.routers.evolution_v2.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.evolution_v2.priority=1
+        - traefik.http.routers.evolution_v2.service=evolution_v2
+        - traefik.http.services.evolution_v2.loadbalancer.server.port=8080
+        - traefik.http.services.evolution_v2.loadbalancer.passHostHeader=true
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.http.routers.evolution_v2.middlewares=sslheader@docker
+
+  redis:
+    image: redis:7.4.2
+    command: [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--port", "6379",
+        "--maxmemory", "1gb",
+        "--maxmemory-policy", "allkeys-lru",
+        "--save", "900", "1",
+        "--save", "300", "10",
+        "--save", "60", "10000"
+      ]
+    networks:
+      - evolution
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2048M
+
+networks:
+  evolution:
+    external: true
+    name: evolution
