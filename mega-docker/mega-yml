@@ -30,8 +30,17 @@ x-variables:
   # AWS_ACCESS_KEY_ID: EXAMPLEKEY123456
   # AWS_SECRET_ACCESS_KEY: EXAMPLESECRET456789
   # AWS_REGION: us-east-1
-  # si minio o similares debe llevar 
-  # STORAGE_FORCE_PATH_STYLE=true
+
+  #set force_path_style to true if using minio
+  # ACTIVE_STORAGE_SERVICE=s3_compatible
+  # STORAGE_BUCKET_NAME=
+  # STORAGE_ACCESS_KEY_ID=
+  # STORAGE_SECRET_ACCESS_KEY=
+  # STORAGE_REGION=nyc3
+  # STORAGE_ENDPOINT=https://nyc3.digitaloceanspaces.com
+  #set force_path_style to true if using minio
+  #STORAGE_FORCE_PATH_STYLE=true
+  
   DIRECT_UPLOADS_ENABLED: "true"
   RAILS_LOG_TO_STDOUT: "true"
   USE_INBOX_AVATAR_FOR_BOT: "true"
