@@ -30,6 +30,8 @@ x-variables:
   # AWS_ACCESS_KEY_ID: EXAMPLEKEY123456
   # AWS_SECRET_ACCESS_KEY: EXAMPLESECRET456789
   # AWS_REGION: us-east-1
+  # si minio o similares debe llevar 
+  # STORAGE_FORCE_PATH_STYLE=true
   DIRECT_UPLOADS_ENABLED: "true"
   RAILS_LOG_TO_STDOUT: "true"
   USE_INBOX_AVATAR_FOR_BOT: "true"
@@ -91,7 +93,7 @@ services:
       <<: *default_env
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       placement:
         constraints:
           - node.role == manager
@@ -121,7 +123,7 @@ services:
       <<: *default_env
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 3
       placement:
         constraints:
           - node.role == manager
