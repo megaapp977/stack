@@ -72,29 +72,30 @@ services:
     entrypoint: docker/entrypoints/rails.sh
     restart: always
     volumes:
-      # - examplechat_dat:/app/storage
-      - /opt/branding/mega/manifest.json:/app/public/manifest.json
-      - /opt/branding/mega/favicon.ico:/app/public/favicon.ico
-      - /opt/branding/mega/android-icon-192x192.png:/app/public/android-icon-192x192.png
-      - /opt/branding/mega/apple-icon-57x57.png:/app/public/apple-icon-57x57.png
-      - /opt/branding/mega/apple-icon-60x60.png:/app/public/apple-icon-60x60.png
-      - /opt/branding/mega/apple-icon-72x72.png:/app/public/apple-icon-72x72.png
-      - /opt/branding/mega/apple-icon-76x76.png:/app/public/apple-icon-76x76.png
-      - /opt/branding/mega/apple-icon-114x114.png:/app/public/apple-icon-114x114.png
-      - /opt/branding/mega/apple-icon-120x120.png:/app/public/apple-icon-120x120.png
-      - /opt/branding/mega/apple-icon-144x144.png:/app/public/apple-icon-144x144.png
-      - /opt/branding/mega/apple-icon-152x152.png:/app/public/apple-icon-152x152.png
-      - /opt/branding/mega/apple-icon-180x180.png:/app/public/apple-icon-180x180.png
-      - /opt/branding/mega/favicon-16x16.png:/app/public/favicon-16x16.png
-      - /opt/branding/mega/favicon-32x32.png:/app/public/favicon-32x32.png
-      - /opt/branding/mega/favicon-96x96.png:/app/public/favicon-96x96.png
-      - /opt/branding/mega/favicon-badge-16x16.png:/app/public/favicon-badge-16x16.png
-      - /opt/branding/mega/favicon-badge-32x32.png:/app/public/favicon-badge-32x32.png
-      - /opt/branding/mega/favicon-badge-96x96.png:/app/public/favicon-badge-96x96.png
-      - /opt/branding/mega/brand-assets/logo.svg:/app/public/brand-assets/logo.svg
-      - /opt/branding/mega/brand-assets/logo_dark.svg:/app/public/brand-assets/logo_dark.svg
-      - /opt/branding/mega/brand-assets/logo_thumbnail.svg:/app/public/brand-assets/logo_thumbnail.svg
-      - /opt/branding/mega/brand-assets/logo_thumbnail_dark.svg:/app/public/brand-assets/logo_thumbnail_dark.svg
+      - examplechat_dat:/app/storage
+      ## Branding assets
+      # - /opt/branding/mega/manifest.json:/app/public/manifest.json
+      # - /opt/branding/mega/favicon.ico:/app/public/favicon.ico
+      # - /opt/branding/mega/android-icon-192x192.png:/app/public/android-icon-192x192.png
+      # - /opt/branding/mega/apple-icon-57x57.png:/app/public/apple-icon-57x57.png
+      # - /opt/branding/mega/apple-icon-60x60.png:/app/public/apple-icon-60x60.png
+      # - /opt/branding/mega/apple-icon-72x72.png:/app/public/apple-icon-72x72.png
+      # - /opt/branding/mega/apple-icon-76x76.png:/app/public/apple-icon-76x76.png
+      # - /opt/branding/mega/apple-icon-114x114.png:/app/public/apple-icon-114x114.png
+      # - /opt/branding/mega/apple-icon-120x120.png:/app/public/apple-icon-120x120.png
+      # - /opt/branding/mega/apple-icon-144x144.png:/app/public/apple-icon-144x144.png
+      # - /opt/branding/mega/apple-icon-152x152.png:/app/public/apple-icon-152x152.png
+      # - /opt/branding/mega/apple-icon-180x180.png:/app/public/apple-icon-180x180.png
+      # - /opt/branding/mega/favicon-16x16.png:/app/public/favicon-16x16.png
+      # - /opt/branding/mega/favicon-32x32.png:/app/public/favicon-32x32.png
+      # - /opt/branding/mega/favicon-96x96.png:/app/public/favicon-96x96.png
+      # - /opt/branding/mega/favicon-badge-16x16.png:/app/public/favicon-badge-16x16.png
+      # - /opt/branding/mega/favicon-badge-32x32.png:/app/public/favicon-badge-32x32.png
+      # - /opt/branding/mega/favicon-badge-96x96.png:/app/public/favicon-badge-96x96.png
+      # - /opt/branding/mega/brand-assets/logo.svg:/app/public/brand-assets/logo.svg
+      # - /opt/branding/mega/brand-assets/logo_dark.svg:/app/public/brand-assets/logo_dark.svg
+      # - /opt/branding/mega/brand-assets/logo_thumbnail.svg:/app/public/brand-assets/logo_thumbnail.svg
+      # - /opt/branding/mega/brand-assets/logo_thumbnail_dark.svg:/app/public/brand-assets/logo_thumbnail_dark.svg
 
     networks:
       - examplenet
