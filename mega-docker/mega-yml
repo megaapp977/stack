@@ -129,6 +129,8 @@ services:
     restart: always
     networks:
       - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
     environment:
       <<: *default_env
     deploy:
@@ -155,7 +157,10 @@ services:
         limits:
           cpus: "2"
           memory: 2048M
-
+volumes:
+  examplechat_dat:
+    external: true
+    name: examplechat_dat
 networks:
   examplenet:
     external: true
