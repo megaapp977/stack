@@ -67,7 +67,7 @@ x-variables:
   EVOLUTION_PUBLIC_S3: "false"
 services:
   mega_app:
-    image: sendingtk/chatwoot:v4.5.3
+    image: sendingtk/chatwoot:v4.6.5
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     entrypoint: docker/entrypoints/rails.sh
     restart: always
@@ -124,7 +124,7 @@ services:
         - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
 
   mega_sidekiq:
-    image: sendingtk/chatwoot:v4.5.3
+    image: sendingtk/chatwoot:v4.6.5
     command: bundle exec sidekiq -C config/sidekiq.yml
     restart: always
     networks:
