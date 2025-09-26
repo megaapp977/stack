@@ -1,0 +1,256 @@
+version: "3.7"
+services:
+
+## --------------------------- ORION --------------------------- ##
+
+  chatwoot_app:
+    image: sendingtk/chatwoot:v4.6.5 ## Versão do Chatwoot
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+
+    volumes:
+      - chatwoot_storage:/app/storage ## Arquivos de conversa
+
+    networks:
+      - mired ## Nome da rede interna
+    
+    environment:
+    ## 🌐 Qualquer Url com # no final
+      #- CHATWOOT_HUB_URL=https://oriondesign.art.br/setup#
+
+    ## 🏢 Nome da Empresa
+      - INSTALLATION_NAME=mega
+
+    ## 🔐 Secret key
+      - SECRET_KEY_BASE=ca68dcd674b1e9e460671be221c30f30
+
+    ## 💬 Url Chatwoot
+      - FRONTEND_URL=https://mega.dominio.com
+      - FORCE_SSL=true
+
+    ## 🌍 Idioma/Localização padrão
+      - DEFAULT_LOCALE=pt_BR
+      - TZ=America/Sao_Paulo
+
+    ## ☁️ Google Cloud - Modifique de acordo com os seus dados
+      #- GOOGLE_OAUTH_CLIENT_ID=369777777777-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+      #- GOOGLE_OAUTH_CLIENT_SECRET=ABCDEF-GHijklmnoPqrstuvwX-yz1234567
+      #- GOOGLE_OAUTH_CALLBACK_URL=https://<your-server-domain>/omniauth/google_oauth2/callback
+
+    ## 🔐 Facebook e Instagram
+      #- IG_VERIFY_TOKEN=
+      #- FB_VERIFY_TOKEN=
+      #- FB_APP_SECRET=
+      #- FB_APP_ID=
+
+    ## 🧑‍💻 Dados do Redis
+      - REDIS_URL=redis://chatwoot_redis:6379
+
+    ## 🗄️ Dados do Postgres
+      - POSTGRES_HOST=pgvector
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=password ## Senha do postgres
+      - POSTGRES_DATABASE=chatwoot
+
+    ## 🏠 Armazenamento
+      - ACTIVE_STORAGE_SERVICE=local ## use s3_compatible para MinIO
+      #- STORAGE_BUCKET_NAME=chatwoot
+      #- STORAGE_ACCESS_KEY_ID=ACCESS_KEY_MINIO
+      #- STORAGE_SECRET_ACCESS_KEY=SECRET_KEY_MINIO
+      #- STORAGE_REGION=eu-south
+      #- STORAGE_ENDPOINT=https://s3.DOMINIO.COM
+      #- STORAGE_FORCE_PATH_STYLE=true
+
+ ## 📧 Dados do SMTP
+      - MAILER_SENDER_EMAIL=soporte@ejemplo.com <soporte@ejemplo.com> ## Email remitente
+      - SMTP_DOMAIN=ejemplo.com ## Dominio del email
+      - SMTP_ADDRESS=smtp.ejemplo.net ## Host SMTP
+      - SMTP_PORT=465 ## Puerto SMTP
+      - SMTP_SSL=true ## true si usas 465 (SSL) | false si usas 587 (STARTTLS)
+      - SMTP_USERNAME=soporte@ejemplo.com ## Usuario SMTP
+      - SMTP_PASSWORD=MyS3gur0P@ssw0rd! ## Contraseña ficticia SMTP
+      - SMTP_AUTHENTICATION=login ## Tipo de autenticación
+      - SMTP_ENABLE_STARTTLS_AUTO=true ## Se usa cuando el puerto es 587
+      - SMTP_OPENSSL_VERIFY_MODE=peer ## Verificación de certificado SSL
+      - MAILER_INBOUND_EMAIL_DOMAIN=soporte@ejemplo.com ## Dominio para inbound
+
+
+    ## ⚙️ Melhorias
+      #- SIDEKIQ_CONCURRENCY=10
+      - RACK_TIMEOUT_SERVICE_TIMEOUT=0
+      #- RAILS_MAX_THREADS=5
+      - WEB_CONCURRENCY=2
+      - ENABLE_RACK_ATTACK=false
+
+    ## ⚡ Outras configurações
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - INSTALLATION_ENV=docker
+      - RAILS_LOG_TO_STDOUT=true
+      - USE_INBOX_AVATAR_FOR_BOT=true
+      - ENABLE_ACCOUNT_SIGNUP=false
+      - WEBHOOKS_TRIGGER_TIMEOUT=40
+      - EVOLUTION_API_URL=https://api.evolution.example.com
+      - EVOLUTION_ADMIN_TOKEN=exampletoken1234567890
+      - EVOLUTION_PUBLIC_S3=false
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.chatwoot_app.rule=Host(`mega.dominio.com`)
+        - traefik.http.routers.chatwoot_app.entrypoints=websecure
+        - traefik.http.routers.chatwoot_app.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.chatwoot_app.priority=1
+        - traefik.http.routers.chatwoot_app.service=chatwoot_app
+        - traefik.http.services.chatwoot_app.loadbalancer.server.port=3000
+        - traefik.http.services.chatwoot_app.loadbalancer.passHostHeader=true
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.http.routers.chatwoot_app.middlewares=sslheader
+
+## --------------------------- ORION --------------------------- ##
+
+  chatwoot_sidekiq:
+    image: sendingtk/chatwoot:v4.6.5 ## Versão do Chatwoot
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
+    volumes:
+      - chatwoot_storage:/app/storage ## Arquivos de conversa
+      #- chatwoot_public:/app/public ## Arquivos de logos
+      #- chatwoot_mailer:/app/app/views/devise/mailer ## Arquivos de email
+      #- chatwoot_mailers:/app/app/views/mailers ## Arquivos de emails
+
+    networks:
+      - netjupter ## Nome da rede interna
+
+    environment:
+    ## 🌐 Qualquer Url com # no final
+      #- CHATWOOT_HUB_URL=https://oriondesign.art.br/setup#
+
+    ## 🏢 Nome da Empresa
+      - INSTALLATION_NAME=mega
+
+    ## 🔐 Secret key
+      - SECRET_KEY_BASE=ca68dcd674b1e9e460671be221c30f30
+
+    ## 💬 Url Chatwoot
+      - FRONTEND_URL=https://mega.dominio.com
+      - FORCE_SSL=true
+
+    ## 🌍 Idioma/Localização padrão
+      - DEFAULT_LOCALE=pt_BR
+      - TZ=America/Sao_Paulo
+
+    ## ☁️ Google Cloud - Modifique de acordo com os seus dados
+      #- GOOGLE_OAUTH_CLIENT_ID=369777777777-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+      #- GOOGLE_OAUTH_CLIENT_SECRET=ABCDEF-GHijklmnoPqrstuvwX-yz1234567
+      #- GOOGLE_OAUTH_CALLBACK_URL=https://<your-server-domain>/omniauth/google_oauth2/callback
+
+    ## 🔐 Facebook e Instagram
+      #- IG_VERIFY_TOKEN=
+      #- FB_VERIFY_TOKEN=
+      #- FB_APP_SECRET=
+      #- FB_APP_ID=
+
+    ## 🧑‍💻 Dados do Redis
+      - REDIS_URL=redis://chatwoot_redis:6379
+
+    ## 🗄️ Dados do Postgres
+      - POSTGRES_HOST=pgvector
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=password ## Senha do postgres
+      - POSTGRES_DATABASE=chatwoot
+
+    ## 🏠 Armazenamento
+      - ACTIVE_STORAGE_SERVICE=local ## use s3_compatible para MinIO
+      #- STORAGE_BUCKET_NAME=chatwoot
+      #- STORAGE_ACCESS_KEY_ID=ACCESS_KEY_MINIO
+      #- STORAGE_SECRET_ACCESS_KEY=SECRET_KEY_MINIO
+      #- STORAGE_REGION=eu-south
+      #- STORAGE_ENDPOINT=https://s3.DOMINIO.COM
+      #- STORAGE_FORCE_PATH_STYLE=true
+
+ ## 📧 Dados do SMTP
+      - MAILER_SENDER_EMAIL=soporte@ejemplo.com <soporte@ejemplo.com> ## Email remitente
+      - SMTP_DOMAIN=ejemplo.com ## Dominio del email
+      - SMTP_ADDRESS=smtp.ejemplo.net ## Host SMTP
+      - SMTP_PORT=465 ## Puerto SMTP
+      - SMTP_SSL=true ## true si usas 465 (SSL) | false si usas 587 (STARTTLS)
+      - SMTP_USERNAME=soporte@ejemplo.com ## Usuario SMTP
+      - SMTP_PASSWORD=MyS3gur0P@ssw0rd! ## Contraseña ficticia SMTP
+      - SMTP_AUTHENTICATION=login ## Tipo de autenticación
+      - SMTP_ENABLE_STARTTLS_AUTO=true ## Se usa cuando el puerto es 587
+      - SMTP_OPENSSL_VERIFY_MODE=peer ## Verificación de certificado SSL
+      - MAILER_INBOUND_EMAIL_DOMAIN=soporte@ejemplo.com ## Dominio para inbound
+
+    ## ⚙️ Melhorias
+      - SIDEKIQ_CONCURRENCY=20
+      - RACK_TIMEOUT_SERVICE_TIMEOUT=0
+      - RAILS_MAX_THREADS=15
+      #- WEB_CONCURRENCY=2
+      - ENABLE_RACK_ATTACK=false
+
+    ## ⚡ Outras configurações
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - INSTALLATION_ENV=docker
+      - RAILS_LOG_TO_STDOUT=true
+      - USE_INBOX_AVATAR_FOR_BOT=true
+      - ENABLE_ACCOUNT_SIGNUP=false
+      - WEBHOOKS_TRIGGER_TIMEOUT=40
+      - EVOLUTION_API_URL=https://api.evolution.example.com
+      - EVOLUTION_ADMIN_TOKEN=exampletoken1234567890
+      - EVOLUTION_PUBLIC_S3=false
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+## --------------------------- ORION --------------------------- ##
+
+  chatwoot_redis:
+    image: redis:7.4.2  ## Versão do Redis
+    command: [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--port",
+        "6379"
+      ]
+
+    networks:
+      - netjupter ## Nome da rede interna
+
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+## --------------------------- ORION --------------------------- ##
+
+volumes:
+  chatwoot_storage:
+    external: true
+    name: chatwoot_storage
+
+networks:
+  mired: ## Nome da rede interna
+    external: true
+    name: mired ## Nome da rede interna
