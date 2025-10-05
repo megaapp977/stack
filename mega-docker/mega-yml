@@ -65,6 +65,8 @@ x-variables:
   EVOLUTION_API_URL: https://api.evolution.example.com
   EVOLUTION_ADMIN_TOKEN: exampletoken1234567890
   EVOLUTION_PUBLIC_S3: "false"
+  WAHA_API_URL: https://waha.example.com
+  WAHA_ADMIN_TOKEN: exampletoken1234567890
 services:
   mega_app:
     image: sendingtk/chatwoot:v4.6.7
