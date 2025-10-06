@@ -1,0 +1,83 @@
+version: "3.7"
+
+services:
+  waha:
+    image: devlikeapro/waha-plus:latest
+    networks:
+      - waha
+    environment:
+      - PORT=3000
+      - WHATSAPP_API_HOSTNAME=waha.example.com
+      - WHATSAPP_API_SCHEMA=https
+      - WAHA_BASE_URL=https://waha.example.com
+      - TZ=America/Sao_Paulo
+      # API Key
+      - WAHA_API_KEY_PLAIN=admin123
+      # Postgres
+      - WHATSAPP_SESSIONS_POSTGRESQL_URL=postgres://postgres:Mfcd62!!Mfcd62!!@postgreswaha:5432/wahadb?sslmode=disable
+      # Dashboard (interface web)
+      - WAHA_DASHBOARD_USERNAME=admin
+      - WAHA_DASHBOARD_PASSWORD=123456      
+      # Swagger UI
+      - WHATSAPP_SWAGGER_ENABLED=false
+      - WHATSAPP_SWAGGER_USERNAME=admin
+      - WHATSAPP_SWAGGER_PASSWORD=123456      
+      # Sessões WhatsApp
+      - WAHA_RESTART_ALL_SESSIONS=true
+      - WAHA_AUTO_START_DELAY_SECONDS=5      
+      # Engine default
+      - WHATSAPP_DEFAULT_ENGINE=GOWS      
+      # Apps
+      - WHATSAPP_SWAGGER_ENABLED=true
+      - WAHA_APPS_ENABLED=true
+      - REDIS_URL=redis://redis:6379      
+      # Jobs (BullMQ)
+      - WAHA_APPS_JOBS_CONCURRENCY=5
+      - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_AGE=259200
+      - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_COUNT=1000
+      - WAHA_APPS_JOBS_REMOVE_ON_FAIL_AGE=2678400
+      - WAHA_APPS_JOBS_REMOVE_ON_FAIL_COUNT=1000
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.waha.rule=Host(`waha.example.com`)
+        - traefik.http.routers.waha.entrypoints=websecure
+        - traefik.http.routers.waha.tls.certresolver=letsencryptresolver
+        - traefik.http.services.waha.loadbalancer.server.port=3000
+        - traefik.http.services.waha.loadbalancer.passHostHeader=true
+  redis:
+      image: redis:7.4.2
+      command: [
+          "redis-server",
+          "--appendonly",
+          "yes",                  # 🚀 Deshabilita persistencia (mejor rendimiento)
+          "--port",
+          "6379",
+          "--maxmemory",
+          "1gb",                 # Usa máximo 1GB de RAM
+          "--maxmemory-policy",
+          "allkeys-lru",         # Borra las claves menos usadas cuando se llene
+          "--save", "900", "1",  # Snapshot cada 15 min si hubo al menos 1 cambio
+          "--save", "300", "10", # Snapshot cada 5 min si hubo 10 cambios
+          "--save", "60", "10000" # Snapshot cada 1 min si hubo 10,000 cambios
+        ]
+      networks:
+        - waha
+      deploy:
+        placement:
+          constraints:
+            - node.role == manager
+        resources:
+          limits:
+            cpus: "2"
+            memory: 2048M
+  
+networks:
+    waha:
+      external: true
+      name: waha
