@@ -1,37 +1,84 @@
 <script>
 (function () {
-  /** CONFIG: set the visible label exactly as it appears in your sidebar **/
+  /* === CONFIG: usa el label tal como aparece en TU sidebar === */
   const CFG = {
-    LINK_TEXT: 'My Application',
+    LINK_TEXT: 'Mi Aplicación',
     LINK_ICON: '🧭',
-    IFRAME_URL: 'https://www.google.com',
-    // Choose the label you actually see in the UI: e.g., 'Conversaciones' OR 'Conversations'
-    POSITION: { mode: 'afterLabel', label: 'Conversaciones', index: 0 },
+    IFRAME_URL: 'https://tu-app-embebible.example.com', // ← usa una URL que permita iframe
+    POSITION: { mode: 'afterLabel', label: 'Conversaciones', index: 0 }, // o 'Conversations' si tu UI está en inglés
+    IFRAME_SANDBOX: 'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts',
+    IFRAME_ALLOW:   'clipboard-read; clipboard-write; geolocation; microphone; camera; fullscreen'
   };
 
-  /** Utility selectors **/
   const $ = (s, r=document) => { try { return r.querySelector(s); } catch { return null; } };
   const $$ = (s, r=document) => { try { return Array.from(r.querySelectorAll(s)); } catch { return []; } };
   const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts || { passive: true });
-
-  /** Normalize text for robust label matching (case-insensitive; collapse spaces) **/
   const normalize = s => (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
 
-  /** Find the primary sidebar container **/
-  function findSidebar() {
-    return $('[data-testid="sidebar-primary"]') || $('aside');
+  /* Sidebar */
+  function findSidebar() { return $('[data-testid="sidebar-primary"]') || $('aside'); }
+
+  /* PANEL: fijo a la derecha del sidebar, no tapa el sidebar */
+  function ensurePanel() {
+    if ($('#cw-embed-panel')) return $('#cw-embed-panel');
+
+    const panel = document.createElement('div');
+    panel.id = 'cw-embed-panel';
+    // cuando está oculto no recibe clicks; cuando visible, solo ocupa a la derecha del sidebar
+    panel.style.cssText = 'position:fixed; inset:auto 0 0 0; top:0; z-index:9; display:none;';
+    panel.innerHTML = `
+      <iframe id="cw-embed-iframe" style="width:100%;height:100%;border:0;display:block;"
+        ${CFG.IFRAME_SANDBOX ? `sandbox="${CFG.IFRAME_SANDBOX}"` : ''}
+        ${CFG.IFRAME_ALLOW ? `allow="${CFG.IFRAME_ALLOW}"` : ''}
+        referrerpolicy="no-referrer"></iframe>
+    `;
+    document.body.appendChild(panel);
+
+    function layout() {
+      const sb = findSidebar(); if (!sb) return;
+      const r = sb.getBoundingClientRect();
+      panel.style.left = r.right + 'px';
+      panel.style.width = Math.max(0, window.innerWidth - r.right) + 'px';
+      panel.style.background = getComputedStyle(document.body).backgroundColor; // respeta modo claro/oscuro
+    }
+    layout();
+    on(window, 'resize', layout);
+
+    /* Handlers globales */
+    window.__cwShowEmbedPanel = () => {
+      const iframe = $('#cw-embed-iframe');
+      if (iframe) iframe.src = CFG.IFRAME_URL;
+      layout();
+      panel.style.display = 'block';
+    };
+    window.__cwHideEmbedPanel = () => {
+      panel.style.display = 'none';
+      const iframe = $('#cw-embed-iframe');
+      if (iframe) iframe.src = 'about:blank';
+    };
+
+    /* 🔒 AUTO-CIERRE PARA EVITAR “BLOQUEO” AL NAVEGAR */
+    // 1) Clic en cualquier link del SIDEBAR → cerrar panel
+    const sb = findSidebar();
+    if (sb) {
+      on(sb, 'click', (e) => {
+        const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (a) { window.__cwHideEmbedPanel && window.__cwHideEmbedPanel(); }
+      });
+    }
+    // 2) Cambios de ruta SPA → cerrar panel
+    const _pushState = history.pushState;
+    const _replaceState = history.replaceState;
+    history.pushState = function () { window.__cwHideEmbedPanel && window.__cwHideEmbedPanel(); return _pushState.apply(this, arguments); };
+    history.replaceState = function () { window.__cwHideEmbedPanel && window.__cwHideEmbedPanel(); return _replaceState.apply(this, arguments); };
+    on(window, 'popstate', () => window.__cwHideEmbedPanel && window.__cwHideEmbedPanel());
+    // 3) Tecla Esc → cerrar
+    on(window, 'keydown', (e) => { if (e.key === 'Escape') window.__cwHideEmbedPanel && window.__cwHideEmbedPanel(); });
+
+    return panel;
   }
 
-  /** Find the first available UL in the sidebar (fallback target list) **/
-  function findAnyList() {
-    const sb = findSidebar(); if (!sb) return null;
-    return $('ul', sb);
-  }
-
-  /**
-   * Find the UL and LI matching a given label anywhere in the sidebar.
-   * Returns { list: <ul>, ref: <li> } or { list: null, ref: null } if not found.
-   */
+  /* Busca en TODO el sidebar el <ul> y el <li> cuyo texto coincida con label */
   function findListAndRefByLabel(labelWanted) {
     const sb = findSidebar(); if (!sb) return { list: null, ref: null };
     const wanted = normalize(labelWanted);
@@ -40,23 +87,18 @@
       const lis = $$(':scope > li', ul);
       for (const li of lis) {
         const txt = normalize(li.textContent);
-        // Flexible match: exact or contains (handles extra icons/whitespace)
-        if (txt === wanted || txt.includes(wanted)) {
-          return { list: ul, ref: li };
-        }
+        if (txt === wanted || txt.includes(wanted)) { return { list: ul, ref: li }; }
       }
     }
     return { list: null, ref: null };
   }
 
-  /**
-   * Create and insert the custom sidebar item with precise positioning.
-   * Relies on a global panel opener: window.__cwShowEmbedPanel()
-   */
-  function ensureSidebarLink() {
-    if ($('#cw-embed-link')) return; // idempotent
+  function findAnyList() { const sb = findSidebar(); return sb ? $('ul', sb) : null; }
 
-    // Build the <li> for the sidebar
+  /* Inserta el link en el sidebar con posición controlada */
+  function ensureSidebarLink() {
+    if ($('#cw-embed-link')) return;
+
     const li = document.createElement('li');
     li.id = 'cw-embed-link';
     li.style.listStyle = 'none';
@@ -67,30 +109,21 @@
       </a>`;
     const link = li.querySelector('a');
 
-    // Decide the insertion point
-    let parentList = null;
-    let ref = null;
-
+    let parentList = null, ref = null;
     if (CFG.POSITION.mode === 'afterLabel' || CFG.POSITION.mode === 'beforeLabel') {
       const found = findListAndRefByLabel(CFG.POSITION.label);
-      parentList = found.list;
-      ref = found.ref;
+      parentList = found.list; ref = found.ref;
     }
-
-    if (!parentList) parentList = findAnyList(); // fallback to first UL
-    if (!parentList) return; // nowhere to insert
+    if (!parentList) parentList = findAnyList();
+    if (!parentList) return;
 
     const items = $$(':scope > li', parentList);
-
     switch (CFG.POSITION.mode) {
       case 'start':
         parentList.insertBefore(li, items[0] || null);
         break;
       case 'index':
-        parentList.insertBefore(
-          li,
-          items[Math.max(0, Math.min(CFG.POSITION.index, items.length))] || null
-        );
+        parentList.insertBefore(li, items[Math.max(0, Math.min(CFG.POSITION.index, items.length))] || null);
         break;
       case 'afterLabel':
         if (ref && ref.nextSibling) parentList.insertBefore(li, ref.nextSibling);
@@ -105,18 +138,12 @@
         parentList.appendChild(li);
     }
 
-    // Click opens your existing embedded panel (no preventDefault needed)
-    on(link, 'click', () => {
-      if (typeof window.__cwShowEmbedPanel === 'function') window.__cwShowEmbedPanel();
-    });
+    // Abrir panel al click (sin preventDefault)
+    on(link, 'click', () => { window.__cwShowEmbedPanel && window.__cwShowEmbedPanel(); });
   }
 
-  /** Boot once and self-heal on DOM changes (sidebar rerenders) **/
-  function boot() { ensureSidebarLink(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
-
-  new MutationObserver(() => ensureSidebarLink())
-    .observe(document.body, { childList: true, subtree: true });
+  function boot() { ensurePanel(); ensureSidebarLink(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  new MutationObserver(() => ensureSidebarLink()).observe(document.body, { childList: true, subtree: true });
 })();
 </script>
