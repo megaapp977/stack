@@ -1,0 +1,122 @@
+<script>
+(function () {
+  /** CONFIG: set the visible label exactly as it appears in your sidebar **/
+  const CFG = {
+    LINK_TEXT: 'My Application',
+    LINK_ICON: '🧭',
+    IFRAME_URL: 'https://www.google.com',
+    // Choose the label you actually see in the UI: e.g., 'Conversaciones' OR 'Conversations'
+    POSITION: { mode: 'afterLabel', label: 'Conversaciones', index: 0 },
+  };
+
+  /** Utility selectors **/
+  const $ = (s, r=document) => { try { return r.querySelector(s); } catch { return null; } };
+  const $$ = (s, r=document) => { try { return Array.from(r.querySelectorAll(s)); } catch { return []; } };
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts || { passive: true });
+
+  /** Normalize text for robust label matching (case-insensitive; collapse spaces) **/
+  const normalize = s => (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+  /** Find the primary sidebar container **/
+  function findSidebar() {
+    return $('[data-testid="sidebar-primary"]') || $('aside');
+  }
+
+  /** Find the first available UL in the sidebar (fallback target list) **/
+  function findAnyList() {
+    const sb = findSidebar(); if (!sb) return null;
+    return $('ul', sb);
+  }
+
+  /**
+   * Find the UL and LI matching a given label anywhere in the sidebar.
+   * Returns { list: <ul>, ref: <li> } or { list: null, ref: null } if not found.
+   */
+  function findListAndRefByLabel(labelWanted) {
+    const sb = findSidebar(); if (!sb) return { list: null, ref: null };
+    const wanted = normalize(labelWanted);
+    const uls = $$('ul', sb);
+    for (const ul of uls) {
+      const lis = $$(':scope > li', ul);
+      for (const li of lis) {
+        const txt = normalize(li.textContent);
+        // Flexible match: exact or contains (handles extra icons/whitespace)
+        if (txt === wanted || txt.includes(wanted)) {
+          return { list: ul, ref: li };
+        }
+      }
+    }
+    return { list: null, ref: null };
+  }
+
+  /**
+   * Create and insert the custom sidebar item with precise positioning.
+   * Relies on a global panel opener: window.__cwShowEmbedPanel()
+   */
+  function ensureSidebarLink() {
+    if ($('#cw-embed-link')) return; // idempotent
+
+    // Build the <li> for the sidebar
+    const li = document.createElement('li');
+    li.id = 'cw-embed-link';
+    li.style.listStyle = 'none';
+    li.innerHTML = `
+      <a href="javascript:void(0)" style="display:flex;align-items:center;gap:10px;
+        padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;">
+        <span>${CFG.LINK_ICON}</span><span>${CFG.LINK_TEXT}</span>
+      </a>`;
+    const link = li.querySelector('a');
+
+    // Decide the insertion point
+    let parentList = null;
+    let ref = null;
+
+    if (CFG.POSITION.mode === 'afterLabel' || CFG.POSITION.mode === 'beforeLabel') {
+      const found = findListAndRefByLabel(CFG.POSITION.label);
+      parentList = found.list;
+      ref = found.ref;
+    }
+
+    if (!parentList) parentList = findAnyList(); // fallback to first UL
+    if (!parentList) return; // nowhere to insert
+
+    const items = $$(':scope > li', parentList);
+
+    switch (CFG.POSITION.mode) {
+      case 'start':
+        parentList.insertBefore(li, items[0] || null);
+        break;
+      case 'index':
+        parentList.insertBefore(
+          li,
+          items[Math.max(0, Math.min(CFG.POSITION.index, items.length))] || null
+        );
+        break;
+      case 'afterLabel':
+        if (ref && ref.nextSibling) parentList.insertBefore(li, ref.nextSibling);
+        else parentList.appendChild(li);
+        break;
+      case 'beforeLabel':
+        if (ref) parentList.insertBefore(li, ref);
+        else parentList.insertBefore(li, items[0] || null);
+        break;
+      case 'end':
+      default:
+        parentList.appendChild(li);
+    }
+
+    // Click opens your existing embedded panel (no preventDefault needed)
+    on(link, 'click', () => {
+      if (typeof window.__cwShowEmbedPanel === 'function') window.__cwShowEmbedPanel();
+    });
+  }
+
+  /** Boot once and self-heal on DOM changes (sidebar rerenders) **/
+  function boot() { ensureSidebarLink(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+
+  new MutationObserver(() => ensureSidebarLink())
+    .observe(document.body, { childList: true, subtree: true });
+})();
+</script>
