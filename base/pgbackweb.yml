@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  pgbackweb:
+    image: eduardolat/pgbackweb:latest
+    volumes:
+      - backups:/backups
+    environment:
+      PBW_ENCRYPTION_KEY: "bXlTdXBlclNlY3JldEtleTEyMzQ1Njc4OTA="
+      PBW_POSTGRES_CONN_STRING: "postgresql://postgres:password@postgres:5432/pgbackweb?sslmode=disable"
+      TZ: "America/Sao_Paulo"
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.pgbackweb.rule=Host(`pgbackweb.example.com`)
+        - traefik.http.routers.pgbackweb.entrypoints=websecure
+        - traefik.http.routers.pgbackweb.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.pgbackweb.priority=1
+        - traefik.http.routers.pgbackweb.service=pgbackweb
+        - traefik.http.services.pgbackweb.loadbalancer.server.port=8085
+        - traefik.http.services.pgbackweb.loadbalancer.passHostHeader=true
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.http.routers.pgbackweb.middlewares=sslheader
+    networks:
+      - mired
+
+  postgres_pgbackweb:
+    image: postgres:17
+    ports:
+      - 5437:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pgbackweb
+      POSTGRES_PASSWORD: rkeGVLvJISxS0or
+    volumes:
+      - postgres-pgbackupweb:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      labels:
+        - "traefik.enable=false"
+    networks:
+      - mired
+
+volumes:
+  backups:
+    external: true
+  postgres-pgbackupweb:
+    external: true
+
+networks:
+  outr:
+    external: true
