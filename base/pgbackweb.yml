@@ -31,7 +31,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: pgbackweb
-      POSTGRES_PASSWORD: rkeGVLvJISxS0or
+      POSTGRES_PASSWORD: password
     volumes:
       - postgres-pgbackupweb:/var/lib/postgresql/data
     healthcheck:
