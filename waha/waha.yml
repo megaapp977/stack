@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   waha:
-    image: devlikeapro/waha-plus:latest
+    image: devlikeapro/waha-plus:gows-2025.10.4
     networks:
       - waha
     environment:
@@ -13,6 +13,7 @@ services:
       - TZ=America/Sao_Paulo
       # API Key
       - WAHA_API_KEY_PLAIN=admin123
+      - WAHA_NO_API_KEY=True
       # Postgres
       - WHATSAPP_SESSIONS_POSTGRESQL_URL=postgres://postgres:Mfcd62!!Mfcd62!!@postgreswaha:5432/wahadb?sslmode=disable
       # Dashboard (interface web)
