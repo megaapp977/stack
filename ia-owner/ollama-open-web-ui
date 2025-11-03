@@ -1,0 +1,96 @@
+version: "3.7"
+
+services:
+  ollama:
+    image: ollama/ollama
+    # Si usarás GPU en Swarm, descomenta la reserva de dispositivo en deploy.resources.reservations.devices
+    environment:
+      - OLLAMA_KEEP_ALIVE=10m        # Mantiene el modelo caliente (ajusta según RAM)
+      - OLLAMA_MAX_LOADED_MODELS=1   # Ahorra RAM
+      - OLLAMA_NUM_PARALLEL=1        # Evita paralelismo en CPU modesta
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "sh", "-c", "ollama list >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 12
+    networks:
+      - mega-ia
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "4"
+          memory: 4096M
+        # Descomenta para GPU (ejemplo NVIDIA)
+        # reservations:
+        #   devices:
+        #     - driver: nvidia
+        #       count: 1
+        #       capabilities: [gpu]
+      labels:
+        - traefik.enable=false
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest
+    environment:
+      - ENABLE_OPENAI_API=false
+      - OLLAMA_BASE_URL=http://ollama:11434
+      # Seguridad / autenticación
+      - WEBUI_AUTH=true
+      - ENABLE_SIGNUP=false
+      - WEBUI_SECRET_KEY=CAMBIA_ESTA_CLAVE_LARGA_Y_UNICA
+      # Persistencia de configuración
+      - ENABLE_PERSISTENT_CONFIG=true
+      # Modelo sugerido para CPU (puedes cambiarlo)
+      - DEFAULT_MODELS=llama3.1:8b-instruct-q4_K_M
+      - ENV=prod
+    volumes:
+      - openwebui_data:/app/backend/data
+    # Nota: Swarm ignora depends_on, pero lo dejamos documentado.
+    # depends_on:
+    #   - ollama
+    networks:
+      - mega-ia
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2048M
+      labels:
+        - traefik.enable=true
+        # Ruteo HTTPS por Traefik (ajusta tu dominio)
+        - traefik.http.routers.openwebui.rule=Host(`ai.tu-dominio.com`)
+        - traefik.http.routers.openwebui.entrypoints=websecure
+        - traefik.http.routers.openwebui.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.openwebui.priority=1
+        - traefik.http.routers.openwebui.service=openwebui
+        - traefik.http.services.openwebui.loadbalancer.server.port=8080
+        - traefik.http.services.openwebui.loadbalancer.passHostHeader=true
+        # Encabezados útiles detrás de proxy
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.http.routers.openwebui.middlewares=sslheader
+
+networks:
+  mega-ia:
+    external: true
+    name: mega-ia
+
+volumes:
+  openwebui_data:
+  external: true
+  name: openwebui_data
+  ollama_data:
+    external: true
+    name: ollama_data
