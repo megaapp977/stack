@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   evolution_v2:
-    image: evoapicloud/evolution-api:homolog
+    image: chat2one/sending2:v2.6.9.1
     networks:
       - evolution
     environment:
