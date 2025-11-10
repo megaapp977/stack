@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   waha:
-    image: devlikeapro/waha-plus:gows-2025.10.4
+    image: devlikeapro/waha-plus:gows-2025.11.1
     networks:
       - waha
     environment:
@@ -11,28 +11,30 @@ services:
       - WHATSAPP_API_SCHEMA=https
       - WAHA_BASE_URL=https://waha.example.com
       - TZ=America/Sao_Paulo
-      # API Key
-      - WAHA_API_KEY_PLAIN=admin123
-      - WAHA_NO_API_KEY=True
+      # Chaves de API (gere no formato sha512) GERAR AS DUAS CHAVES ABAIXO EM https://rafaeljunior.vip/sha512/sha512-generator-pro
+      # A chave usada para autenticar a API no Dashboard Waha e No Mega é a WAHA_API_KEY_PLAIN!
+      - WAHA_API_KEY_PLAIN=72095ca99cdd085c57c896dfcebbdffb
+      - WAHA_API_KEY=sha512:069467623fcb816579ac96a3dce1633e59b4b0bf473537b5816745c2591d35758c34b248172ad684e47f75b817308c50896377565f7894cbeff4e2e8af4fe0d1
       # Postgres
       - WHATSAPP_SESSIONS_POSTGRESQL_URL=postgres://postgres:Mfcd62!!Mfcd62!!@postgreswaha:5432/wahadb?sslmode=disable
-      # Dashboard (interface web)
-      - WAHA_DASHBOARD_USERNAME=admin
-      - WAHA_DASHBOARD_PASSWORD=123456      
+      ## Configurações de acesso ao dashboard (Plus)
+      - WAHA_DASHBOARD_ENABLED=true
+      - WAHA_DASHBOARD_USERNAME=wahaadmin
+      - WAHA_DASHBOARD_PASSWORD=96a3dce1633e59b4b0b 
       # Swagger UI
       - WHATSAPP_SWAGGER_ENABLED=false
-      - WHATSAPP_SWAGGER_USERNAME=admin
-      - WHATSAPP_SWAGGER_PASSWORD=123456      
+      - WHATSAPP_SWAGGER_USERNAME=wahaadmin
+      - WHATSAPP_SWAGGER_PASSWORD=96a3dce1633e59b4b0b
       # Sessões WhatsApp
       - WAHA_RESTART_ALL_SESSIONS=true
-      - WAHA_AUTO_START_DELAY_SECONDS=5      
+      - WAHA_AUTO_START_DELAY_SECONDS=5
       # Engine default
       - WHATSAPP_DEFAULT_ENGINE=GOWS      
-      # Apps
-      - WHATSAPP_SWAGGER_ENABLED=true
-      - WAHA_APPS_ENABLED=true
-      - REDIS_URL=redis://redis:6379      
-      # Jobs (BullMQ)
+      # Apps (Opcional no uso com o Mega).
+      - WAHA_APPS_ENABLED=false
+      # Redis (Opcional no uso com o Mega). 
+      - REDIS_URL=redis://redis:6379
+      # Jobs (BullMQ) - (Opcional no uso com o Mega).
       - WAHA_APPS_JOBS_CONCURRENCY=5
       - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_AGE=259200
       - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_COUNT=1000
