@@ -1,0 +1,109 @@
+version: "3.7"
+
+services:
+  typebot_builder:
+    image: baptistearno/typebot-builder:latest
+    networks:
+      - mired
+    environment:
+      - DATABASE_URL=postgresql://postgres:examplePassword@123.123.123.123:5432/typebot
+      - ENCRYPTION_SECRET=example-encryption-secret-1234567890
+      - DEFAULT_WORKSPACE_PLAN=UNLIMITED
+      - NEXTAUTH_URL=https://builder.example.com
+      - NEXT_PUBLIC_VIEWER_URL=https://viewer.example.com
+      - DISABLE_SIGNUP=false
+      - ADMIN_EMAIL=admin@example.com
+      - NEXT_PUBLIC_SMTP_FROM='Example Bot' <bot@example.com>
+      - SMTP_AUTH_DISABLED=false
+      - SMTP_USERNAME=bot@example.com
+      - SMTP_PASSWORD=example-smtp-password-1234
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_SECURE=true
+
+      # GOOGLE API (ejemplo)
+      - GOOGLE_AUTH_CLIENT_ID=111111111111-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.apps.googleusercontent.com
+      - GOOGLE_SHEETS_CLIENT_ID=111111111111-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.apps.googleusercontent.com
+      - GOOGLE_AUTH_CLIENT_SECRET=example-google-secret-1234567890
+      - GOOGLE_SHEETS_CLIENT_SECRET=example-google-secret-1234567890
+      - NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY=example-google-api-key-ABCDE12345
+
+      # S3 / MinIO
+      - S3_ACCESS_KEY=example-s3-access-key
+      - S3_SECRET_KEY=example-s3-secret-key
+      - S3_BUCKET=typebot
+      - S3_ENDPOINT=s3.example.com
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.typebot_builder.rule=Host(`builder.example.com`)
+        - traefik.http.routers.typebot_builder.entrypoints=websecure
+        - traefik.http.routers.typebot_builder.tls.certresolver=letsencryptresolver
+        - traefik.http.services.typebot_builder.loadbalancer.server.port=3000
+        - traefik.http.services.typebot_builder.loadbalancer.passHostHeader=true
+        - traefik.http.routers.typebot_builder.service=typebot_builder
+
+  typebot_viewer:
+    image: baptistearno/typebot-viewer:latest
+    networks:
+      - mired
+    environment:
+      - DATABASE_URL=postgresql://postgres:examplePassword@123.123.123.123:5432/typebot
+      - ENCRYPTION_SECRET=example-encryption-secret-1234567890
+      - DEFAULT_WORKSPACE_PLAN=UNLIMITED
+      - NEXTAUTH_URL=https://builder.example.com
+      - NEXT_PUBLIC_VIEWER_URL=https://viewer.example.com
+      - DISABLE_SIGNUP=false
+      - ADMIN_EMAIL=admin@example.com
+      - NEXT_PUBLIC_SMTP_FROM='Example Bot' <bot@example.com>
+      - SMTP_AUTH_DISABLED=false
+      - SMTP_USERNAME=bot@example.com
+      - SMTP_PASSWORD=example-smtp-password-1234
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_SECURE=true
+
+      # Google API (ejemplo)
+      - GOOGLE_AUTH_CLIENT_ID=111111111111-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.apps.googleusercontent.com
+      - GOOGLE_SHEETS_CLIENT_ID=111111111111-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.apps.googleusercontent.com
+      - GOOGLE_AUTH_CLIENT_SECRET=example-google-secret-1234567890
+      - GOOGLE_SHEETS_CLIENT_SECRET=example-google-secret-1234567890
+      - NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY=example-google-api-key-ABCDE12345
+
+      # MinIO / S3
+      - S3_ACCESS_KEY=example-s3-access-key
+      - S3_SECRET_KEY=example-s3-secret-key
+      - S3_BUCKET=typebot
+      - S3_ENDPOINT=s3.example.com
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.typebot_viewer.rule=Host(`viewer.example.com`)
+        - traefik.http.routers.typebot_viewer.entrypoints=websecure
+        - traefik.http.routers.typebot_viewer.tls.certresolver=letsencryptresolver
+        - traefik.http.services.typebot_viewer.loadbalancer.server.port=3000
+        - traefik.http.services.typebot_viewer.loadbalancer.passHostHeader=true
+        - traefik.http.routers.typebot_viewer.service=typebot_viewer
+
+networks:
+  mired:
+    external: true
+    name: mired
