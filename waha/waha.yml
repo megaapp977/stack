@@ -11,35 +11,67 @@ services:
       - WHATSAPP_API_SCHEMA=https
       - WAHA_BASE_URL=https://waha.example.com
       - TZ=America/Sao_Paulo
-      # Chaves de API (gere no formato sha512) GERAR AS DUAS CHAVES ABAIXO EM https://rafaeljunior.vip/sha512/sha512-generator-pro
-      # A chave usada para autenticar a API no Dashboard Waha e No Mega é a WAHA_API_KEY_PLAIN!
+      
+      ## Variaveis para ativar o envio de atividade de conexão ao WhatsAppp(Evita desconexao por inatividade da Sessao).
+      - WAHA_PRESENCE_AUTO_ONLINE=True
+      - WAHA_PRESENCE_AUTO_ONLINE_DURATION_SECONDS=25 #Padrao 25 segundos
+      
+      ## Chaves de APIKEY (gere no formato sha512)
+      ## A chave usada para autenticar a API no Dashboard Waha e No Mega é a WAHA_API_KEY_PLAIN! GERAR AS DUAS CHAVES ABAIXO EM https://rafaeljunior.vip/sha512/sha512-generator-pro
       - WAHA_API_KEY_PLAIN=72095ca99cdd085c57c896dfcebbdffb
       - WAHA_API_KEY=sha512:069467623fcb816579ac96a3dce1633e59b4b0bf473537b5816745c2591d35758c34b248172ad684e47f75b817308c50896377565f7894cbeff4e2e8af4fe0d1
-      # Postgres
+      
+      ## Postgres
       - WHATSAPP_SESSIONS_POSTGRESQL_URL=postgres://postgres:Mfcd62!!Mfcd62!!@postgreswaha:5432/wahadb?sslmode=disable
+      
       ## Configurações de acesso ao dashboard (Plus)
       - WAHA_DASHBOARD_ENABLED=true
       - WAHA_DASHBOARD_USERNAME=wahaadmin
       - WAHA_DASHBOARD_PASSWORD=96a3dce1633e59b4b0b 
-      # Swagger UI
+      
+      ## Swagger UI
       - WHATSAPP_SWAGGER_ENABLED=false
       - WHATSAPP_SWAGGER_USERNAME=wahaadmin
       - WHATSAPP_SWAGGER_PASSWORD=96a3dce1633e59b4b0b
-      # Sessões WhatsApp
+      
+      ## Sessões WhatsApp
       - WAHA_RESTART_ALL_SESSIONS=true
       - WAHA_AUTO_START_DELAY_SECONDS=5
-      # Engine default
-      - WHATSAPP_DEFAULT_ENGINE=GOWS      
-      # Apps (Opcional no uso com o Mega).
-      - WAHA_APPS_ENABLED=false
-      # Redis (Opcional no uso com o Mega). 
-      - REDIS_URL=redis://redis:6379
-      # Jobs (BullMQ) - (Opcional no uso com o Mega).
-      - WAHA_APPS_JOBS_CONCURRENCY=5
-      - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_AGE=259200
-      - WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_COUNT=1000
-      - WAHA_APPS_JOBS_REMOVE_ON_FAIL_AGE=2678400
-      - WAHA_APPS_JOBS_REMOVE_ON_FAIL_COUNT=1000
+      
+      ## Engine default
+      - WHATSAPP_DEFAULT_ENGINE=GOWS
+      
+      ## Configurações de Log
+      - WAHA_LOG_FORMAT=JSON
+      - WAHA_LOG_LEVEL=info
+      - WAHA_HTTP_LOG_LEVEL=info
+      
+      # QR não precisa em produção
+      - WAHA_PRINT_QR=False
+      
+      ## Apps (Opcional no uso com o Mega).
+      - WAHA_APPS_ENABLED=true
+      - WAHA_APPS_ON=calls #App rejeitar ligaçoes automatico e enviar msg
+      
+      ## Redis (Opcional no uso com o Mega). 
+      #- REDIS_URL=redis://redis:6379
+      
+      ## Configurações S3 recomendado melhor desempenho
+      #- WAHA_MEDIA_STORAGE=S3
+      #- WAHA_S3_REGION=
+      #- WAHA_S3_BUCKET=
+      #- WAHA_S3_ACCESS_KEY_ID=
+      #- WAHA_S3_SECRET_ACCESS_KEY=
+      #- WAHA_S3_ENDPOINT=
+      #- WAHA_S3_FORCE_PATH_STYLE=True
+      #- WAHA_S3_PROXY_FILES=False
+      
+      ## Jobs (BullMQ) - (Opcional no uso com o Mega).
+      #- WAHA_APPS_JOBS_CONCURRENCY=5
+      #- WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_AGE=259200
+      #- WAHA_APPS_JOBS_REMOVE_ON_COMPLETE_COUNT=1000
+      #- WAHA_APPS_JOBS_REMOVE_ON_FAIL_AGE=2678400
+      #- WAHA_APPS_JOBS_REMOVE_ON_FAIL_COUNT=1000
     deploy:
       mode: replicated
       replicas: 1
