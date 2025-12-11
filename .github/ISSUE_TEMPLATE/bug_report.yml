@@ -1,0 +1,75 @@
+name: 🐞 Informe de bug
+description: Describe el error ocurrido, qué versión de Mega usas y cómo podemos reproducirlo.
+title: "[BUG]"
+labels: Bug
+body:
+  - type: textarea
+    id: resumen
+    attributes:
+      label: ¿Qué está pasando?
+      description: Describe con detalle el bug y qué esperabas que ocurriera. Adjunta capturas si se puede.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      description: Enumera los pasos exactos para que otro ingeniero reproduzca el problema.
+      placeholder: |
+        1. Entré a Mega y ...
+        2. Con esta configuración ...
+        3. Ejecuté ...
+        4. Obtuve este error ...
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Comportamiento esperado
+      description: Qué esperabas que sucediera en lugar del error.
+  - type: input
+    id: mega_version
+    attributes:
+      label: Versión de Mega
+      description: Indica la versión exacta.
+      placeholder: sendingtk/chatwoot:v4.9.0, etc.
+    validations:
+      required: true
+  - type: dropdown
+    id: entorno
+    attributes:
+      label: Entorno
+      description: ¿Usas Mega Cloud (mega.cloud.com) o una instancia autoalojada? Describe el tipo de despliegue si es propio.
+      options:
+        - Mega Cloud (mega.cloud.com)
+        - VM Linux
+        - Docker
+        - Kubernetes
+        - Heroku
+        - Otro (especifica en contexto adicional)
+    validations:
+      required: true
+  - type: dropdown
+    id: plataforma
+    attributes:
+      label: Plataforma
+      description: Dónde ocurre el bug.
+      options:
+        - Navegador
+        - Móvil
+        - Escritorio
+  - type: input
+    id: sistema_operativo
+    attributes:
+      label: Sistema operativo
+      description: Indica el sistema operativo y versión que estás usando.
+  - type: input
+    id: navegador
+    attributes:
+      label: Navegador y versión
+      description: Nombre y versión del navegador donde aparece el bug.
+  - type: textarea
+    id: context_info
+    attributes:
+      label: Contexto adicional
+      description: Información adicional, logs, comandos (`mega status`, `mega check`) o configuraciones que puedan ayudar.
