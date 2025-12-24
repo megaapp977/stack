@@ -631,7 +631,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 | WhatsApp Uazapi | One-off | ❌ | ✅ | ✅ |
 | Twilio SMS | One-off | ❌ | ❌ | ❌ |
 | SMS | One-off | ❌ | ❌ | ❌ |
-| API Channel | One-off | ❌ | ✅ | ❌ |
+| API Channel | One-off | ❌ | ✅ | ✅  |
 
 ### Gestión de Campañas
 
