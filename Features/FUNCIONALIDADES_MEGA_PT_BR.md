@@ -11,15 +11,16 @@
 
 1. [Canais de Comunicação](#-canais-de-comunicação)
 2. [Gestão de Conversas](#-gestão-de-conversas)
-3. [Automação e IA](#-automação-e-ia)
-4. [CRM e Gestão de Contatos](#-crm-e-gestão-de-contatos)
-5. [Campanhas em Massa](#-campanhas-em-massa)
-6. [Central de Ajuda (Help Center)](#-central-de-ajuda-help-center)
-7. [Relatórios e Analytics](#-relatórios-e-analytics)
-8. [Gestão de Equipes](#-gestão-de-equipes)
-9. [Integrações](#-integrações)
-10. [Funcionalidades Enterprise](#-funcionalidades-enterprise)
-11. [Funcionalidades Exclusivas Mega](#-funcionalidades-exclusivas-mega)
+3. [Comunicação Interna da Equipe](#-comunicação-interna-da-equipe)
+4. [Automação e IA](#-automação-e-ia)
+5. [CRM e Gestão de Contatos](#-crm-e-gestão-de-contatos)
+6. [Campanhas em Massa](#-campanhas-em-massa)
+7. [Central de Ajuda (Help Center)](#-central-de-ajuda-help-center)
+8. [Relatórios e Analytics](#-relatórios-e-analytics)
+9. [Gestão de Equipes](#-gestão-de-equipes)
+10. [Integrações](#-integrações)
+11. [Funcionalidades Enterprise](#-funcionalidades-enterprise)
+12. [Funcionalidades Exclusivas Mega](#-funcionalidades-exclusivas-mega)
 
 ---
 
@@ -410,6 +411,71 @@ Acesso rápido a qualquer ação via teclado:
 - **Tema claro** - Interface tradicional clara
 - **Modo sistema** - Segue a preferência do sistema operacional
 - **Widget adaptável** - O widget também suporta modo escuro
+
+---
+
+## 💬 Comunicação Interna da Equipe
+
+### Salas de Chat (Chat Rooms) *(Mega)*
+
+Sistema de salas de chat internas para comunicação fluida da equipe sem sair da plataforma. Perfeito para coordenação, perguntas rápidas e discussões internas.
+
+**Por que Salas de Chat Internas?**
+
+Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas como Slack ou Teams para comunicação interna, gerencie tudo em um só lugar junto com as conversas com clientes.
+
+**Funcionalidades Principais:**
+
+**Gestão de Salas (Settings):**
+- **Criar salas** - Administradores podem criar salas com nome e descrição
+- **Adicionar usuários** - Seleção múltipla de membros da equipe de sua conta
+- **Editar salas** - Atualizar nome, descrição e membros
+- **Excluir salas** - Remover salas com confirmação de segurança
+- **Avatares de sala** - Imagens personalizadas opcionais para cada sala
+- **Localização** - Acessível em Settings > Chat Rooms
+
+**Permissões e Visibilidade:**
+- **Administradores** - Veem TODAS as salas da conta na barra lateral, podem criar/editar/excluir qualquer sala, podem participar de todas as salas
+- **Agentes e Funções Personalizadas** - Apenas veem as salas onde são membros na barra lateral, só podem participar de suas salas atribuídas, não podem criar/editar/excluir salas
+
+**Interface de Chat:**
+- **Localização na barra lateral** - Conversas > Salas
+- **Visualização de sala** - Cabeçalho com nome da sala + lista de mensagens + campo de envio
+- **Design limpo** - 100% Tailwind CSS, moderno e responsivo
+
+**Tipos de Mensagens:**
+- **Mensagens de texto** - Comunicação de texto simples
+- **Multimídia** - Imagens, vídeos, arquivos de áudio, documentos
+- **Responder (Reply)** - Responder a mensagens específicas (cita a original)
+- **Notas privadas** - Mensagens visíveis apenas para agentes
+- **Gravação de áudio** - Gravador de áudio integrado para notas de voz
+
+**Layout Inteligente de Mensagens:**
+- **Lado direito** - Suas próprias mensagens (saída)
+  - Cor de fundo diferente
+  - Seu avatar exibido
+- **Lado esquerdo** - Mensagens de outros usuários (entrada)
+  - Avatar do remetente exibido
+  - Identificação clara do remetente
+
+**Notificações em Tempo Real:**
+- **Integração WebSocket** - Usando Action Cable para entrega instantânea
+- **Atualizações ao vivo** - Mensagens aparecem imediatamente sem atualizar
+- **Transmissão inteligente** - Administradores recebem eventos de todas as salas, usuários regulares apenas de suas salas
+- **Rastreamento de eventos** - Eventos de mensagem criada e atualizada
+
+**Segurança e Validações:**
+- **Acesso apenas para membros** - Apenas membros da sala podem ver e enviar mensagens
+- **Controles de administrador** - Apenas administradores podem gerenciar salas
+- **Validação de conta** - Associação à sala é validada em relação à conta
+- **Nomes únicos** - Nomes de sala devem ser únicos por conta
+
+**Benefícios para sua equipe:**
+- Não precisa alternar entre ferramentas para comunicação interna
+- Discussões contextuais sem sair da visualização de clientes
+- Comunicação organizada por tópico ou departamento
+- Histórico completo de mensagens e arquivo pesquisável
+- Controle de acesso seguro baseado em permissões
 
 ---
 
@@ -1166,4 +1232,4 @@ Configure o que seus agentes podem ver e acessar:
 
 *MEGA - Transformando a forma como as empresas se comunicam com seus clientes.*
 
-**© 2025 MEGA - Todos os direitos reservados**
+**© 2026 MEGA - Todos os direitos reservados**

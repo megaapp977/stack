@@ -11,15 +11,16 @@
 
 1. [Canales de Comunicación](#-canales-de-comunicación)
 2. [Gestión de Conversaciones](#-gestión-de-conversaciones)
-3. [Automatización e IA](#-automatización-e-ia)
-4. [CRM y Gestión de Contactos](#-crm-y-gestión-de-contactos)
-5. [Campañas Masivas](#-campañas-masivas)
-6. [Centro de Ayuda (Help Center)](#-centro-de-ayuda-help-center)
-7. [Reportes y Analíticas](#-reportes-y-analíticas)
-8. [Gestión de Equipos](#-gestión-de-equipos)
-9. [Integraciones](#-integraciones)
-10. [Funcionalidades Enterprise](#-funcionalidades-enterprise)
-11. [Funcionalidades Exclusivas Mega](#-funcionalidades-exclusivas-mega)
+3. [Comunicación Interna del Equipo](#-comunicación-interna-del-equipo)
+4. [Automatización e IA](#-automatización-e-ia)
+5. [CRM y Gestión de Contactos](#-crm-y-gestión-de-contactos)
+6. [Campañas Masivas](#-campañas-masivas)
+7. [Centro de Ayuda (Help Center)](#-centro-de-ayuda-help-center)
+8. [Reportes y Analíticas](#-reportes-y-analíticas)
+9. [Gestión de Equipos](#-gestión-de-equipos)
+10. [Integraciones](#-integraciones)
+11. [Funcionalidades Enterprise](#-funcionalidades-enterprise)
+12. [Funcionalidades Exclusivas Mega](#-funcionalidades-exclusivas-mega)
 
 ---
 
@@ -398,7 +399,72 @@ Acceso rápido a cualquier acción mediante teclado:
 
 ---
 
-## 🤖 Automatización e IA
+## 💬 Comunicación Interna del Equipo
+
+### Salas de Chat (Chat Rooms) *(Mega)*
+
+Sistema de salas de chat internas para comunicación fluida del equipo sin salir de la plataforma. Perfecto para coordinación, preguntas rápidas y discusiones internas.
+
+**¿Por qué Salas de Chat Internas?**
+
+Mantén a tu equipo conectado y productivo. En lugar de usar herramientas externas como Slack o Teams para comunicación interna, gestiona todo en un solo lugar junto a las conversaciones con clientes.
+
+**Funcionalidades Principales:**
+
+**Gestión de Salas (Settings):**
+- **Crear salas** - Los administradores pueden crear salas con nombre y descripción
+- **Agregar usuarios** - Selección múltiple de miembros del equipo de tu cuenta
+- **Editar salas** - Actualizar nombre, descripción y miembros
+- **Eliminar salas** - Borrar salas con confirmación de seguridad
+- **Avatares de sala** - Imágenes personalizadas opcionales para cada sala
+- **Ubicación** - Accesible desde Settings > Chat Rooms
+
+**Permisos y Visibilidad:**
+- **Administradores** - Ven TODAS las salas de la cuenta en el sidebar, pueden crear/editar/eliminar cualquier sala, pueden participar en todas las salas
+- **Agentes y Roles Personalizados** - Solo ven las salas donde son miembros en el sidebar, solo pueden participar en sus salas asignadas, no pueden crear/editar/eliminar salas
+
+**Interfaz de Chat:**
+- **Ubicación en el sidebar** - Conversations > Rooms
+- **Vista de sala** - Header con nombre de sala + lista de mensajes + input de envío
+- **Diseño limpio** - 100% Tailwind CSS, moderno y responsivo
+
+**Tipos de Mensajes:**
+- **Mensajes de texto** - Comunicación de texto simple
+- **Multimedia** - Imágenes, videos, archivos de audio, documentos
+- **Reply** - Responder a mensajes específicos (cita el original)
+- **Notas privadas** - Mensajes visibles solo para agentes
+- **Grabación de audio** - Grabador de audio integrado para notas de voz
+
+**Diseño Inteligente de Mensajes:**
+- **Lado derecho** - Tus propios mensajes (salientes)
+  - Color de fondo diferente
+  - Tu avatar mostrado
+- **Lado izquierdo** - Mensajes de otros usuarios (entrantes)
+  - Avatar del remitente mostrado
+  - Identificación clara del remitente
+
+**Notificaciones en Tiempo Real:**
+- **Integración WebSocket** - Usando Action Cable para entrega instantánea
+- **Actualizaciones en vivo** - Los mensajes aparecen inmediatamente sin refrescar
+- **Broadcast inteligente** - Los administradores reciben eventos de todas las salas, los usuarios regulares solo de sus salas
+- **Seguimiento de eventos** - Eventos de mensaje creado y actualizado
+
+**Seguridad y Validaciones:**
+- **Acceso solo para miembros** - Solo los miembros de la sala pueden ver y enviar mensajes
+- **Controles de administrador** - Solo los administradores pueden gestionar salas
+- **Validación de cuenta** - La membresía de sala se valida contra la cuenta
+- **Nombres únicos** - Los nombres de sala deben ser únicos por cuenta
+
+**Beneficios para tu equipo:**
+- No necesitas cambiar entre herramientas para comunicación interna
+- Discusiones contextuales sin salir de la vista de clientes
+- Comunicación organizada por tema o departamento
+- Historial completo de mensajes y archivo buscable
+- Control de acceso seguro basado en permisos
+
+---
+
+## 🤖 Automatización e IA## 🤖 Automatización e IA
 
 ### Reglas de Automatización
 
@@ -631,7 +697,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 | WhatsApp Uazapi | One-off | ❌ | ✅ | ✅ |
 | Twilio SMS | One-off | ❌ | ❌ | ❌ |
 | SMS | One-off | ❌ | ❌ | ❌ |
-| API Channel | One-off | ❌ | ✅ | ✅  |
+| API Channel | One-off | ❌ | ✅ | ❌ |
 
 ### Gestión de Campañas
 
@@ -1153,4 +1219,4 @@ Configura qué pueden ver y acceder tus agentes:
 
 *MEGA - Transformando la forma en que las empresas se comunican con sus clientes.*
 
-**© 2025 MEGA - Todos los derechos reservados**
+**© 2026 MEGA - Todos los derechos reservados**

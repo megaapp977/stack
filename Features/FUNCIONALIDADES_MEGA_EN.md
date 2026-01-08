@@ -11,15 +11,16 @@
 
 1. [Communication Channels](#-communication-channels)
 2. [Conversation Management](#-conversation-management)
-3. [Automation & AI](#-automation--ai)
-4. [CRM & Contact Management](#-crm--contact-management)
-5. [Mass Campaigns](#-mass-campaigns)
-6. [Help Center](#-help-center)
-7. [Reports & Analytics](#-reports--analytics)
-8. [Team Management](#-team-management)
-9. [Integrations](#-integrations)
-10. [Enterprise Features](#-enterprise-features)
-11. [Mega Exclusive Features](#-mega-exclusive-features)
+3. [Internal Team Communication](#-internal-team-communication)
+4. [Automation & AI](#-automation--ai)
+5. [CRM & Contact Management](#-crm--contact-management)
+6. [Mass Campaigns](#-mass-campaigns)
+7. [Help Center](#-help-center)
+8. [Reports & Analytics](#-reports--analytics)
+9. [Team Management](#-team-management)
+10. [Integrations](#-integrations)
+11. [Enterprise Features](#-enterprise-features)
+12. [Mega Exclusive Features](#-mega-exclusive-features)
 
 ---
 
@@ -410,6 +411,71 @@ Quick access to any action via keyboard:
 - **Light theme** - Traditional light interface
 - **System mode** - Follows operating system preference
 - **Adaptive widget** - Widget also supports dark mode
+
+---
+
+## 💬 Internal Team Communication
+
+### Chat Rooms *(Mega)*
+
+Internal chat rooms system for seamless team communication without leaving the platform. Perfect for coordination, quick questions, and internal discussions.
+
+**Why Internal Chat Rooms?**
+
+Keep your team connected and productive. Instead of using external tools like Slack or Teams for internal communication, handle everything in one place alongside customer conversations.
+
+**Main Features:**
+
+**Room Management (Settings):**
+- **Create rooms** - Administrators can create rooms with name and description
+- **Add users** - Multi-select team members from your account
+- **Edit rooms** - Update name, description, and members
+- **Delete rooms** - Remove rooms with safety confirmation
+- **Room avatars** - Optional custom images for each room
+- **Location** - Accessible from Settings > Chat Rooms
+
+**Permissions & Visibility:**
+- **Administrators** - See ALL account rooms in the sidebar, can create/edit/delete any room, can participate in all rooms
+- **Agents & Custom Roles** - Only see rooms where they are members in the sidebar, can only participate in their assigned rooms, cannot create/edit/delete rooms
+
+**Chat Interface:**
+- **Sidebar location** - Conversations > Rooms
+- **Room view** - Header with room name + message list + send input
+- **Clean design** - 100% Tailwind CSS, modern and responsive
+
+**Message Types:**
+- **Text messages** - Simple text communication
+- **Multimedia** - Images, videos, audio files, documents
+- **Reply** - Respond to specific messages (quotes the original)
+- **Private notes** - Messages visible only to agents
+- **Audio recording** - Integrated audio recorder for voice notes
+
+**Smart Message Layout:**
+- **Right side** - Your own messages (outgoing)
+  - Different background color
+  - Your avatar displayed
+- **Left side** - Messages from other users (incoming)
+  - Sender's avatar displayed
+  - Clear sender identification
+
+**Real-Time Notifications:**
+- **WebSocket integration** - Using Action Cable for instant delivery
+- **Live updates** - Messages appear immediately without refreshing
+- **Smart broadcasting** - Admins receive events from all rooms, regular users only from their rooms
+- **Event tracking** - Message created and updated events
+
+**Security & Validations:**
+- **Member-only access** - Only room members can view and send messages
+- **Admin controls** - Only administrators can manage rooms
+- **Account validation** - Room membership is validated against account
+- **Unique names** - Room names must be unique per account
+
+**Benefits for your team:**
+- No need to switch between tools for internal communication
+- Context-aware discussions without leaving customer view
+- Organized communication by topic or department
+- Complete message history and searchable archive
+- Secure, permission-based access control
 
 ---
 
@@ -1166,4 +1232,4 @@ Configure what your agents can see and access:
 
 *MEGA - Transforming how businesses communicate with their customers.*
 
-**© 2025 MEGA - All rights reserved**
+**© 2026 MEGA - All rights reserved**
