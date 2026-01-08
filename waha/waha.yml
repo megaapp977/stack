@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   waha:
-    image: devlikeapro/waha-plus:gows-2025.11.1
+    image: devlikeapro/waha-plus:gows-2026.1.1
     networks:
       - waha
     environment:
