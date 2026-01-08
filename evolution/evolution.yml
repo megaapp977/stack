@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   evolution_v2:
-    image: chat2one/sending2:v2.7.0
+    image: chat2one/sending2:v2.7.6
     networks:
       - evolution
     environment:
@@ -50,6 +50,10 @@ services:
       - WEBHOOK_RETRY_MAX_DELAY_SECONDS=300
       - WEBHOOK_RETRY_JITTER_FACTOR=0.2
       - WEBHOOK_RETRY_NON_RETRYABLE_STATUS_CODES=400,401,403,404,422
+      
+      # Archivos de media temporales para webhooks (cuando webhookBase64=false y S3 no está configurado)
+      # Los archivos se auto-eliminan después de WEBHOOK_MEDIA_FILES_LIFETIME segundos
+      - WEBHOOK_MEDIA_FILES_LIFETIME=180
       # ===========================================
       # WEBSOCKET
       # ===========================================
