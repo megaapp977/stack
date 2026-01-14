@@ -3,7 +3,8 @@
 ## Tu Centro de Comando para la Atención al Cliente del Futuro
 
 **Versión:** Enterprise  
-**Basado en:** Chatwoot (Open Source) + Funcionalidades Exclusivas Mega
+**Basado en:** Chatwoot (Open Source) + Funcionalidades Exclusivas Mega  
+**Última Actualización:** Enero 2026
 
 ---
 
@@ -37,6 +38,15 @@ Conecta con tus clientes a través del canal de mensajería más popular del mun
 - **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas
 - **Sincronización de contactos** - Mantén tu base de datos actualizada automáticamente
 - **Soporte de grupos** - Gestiona conversaciones de grupos de WhatsApp directamente
+
+**Tracking de Anuncios WhatsApp:**
+
+Mide el ROI de tu publicidad de WhatsApp:
+
+- **Anuncios Click-to-WhatsApp** - Detecta conversaciones originadas desde anuncios de Facebook/Instagram
+- **Captura de datos del anuncio** - Guarda automáticamente la fuente, campaña e información creativa
+- **Indicador visual** - Ve la tarjeta de información del anuncio en la conversación
+- **Atribución** - Conecta leads con campañas publicitarias específicas
 
 ### Instagram Direct
 
@@ -143,6 +153,7 @@ Muchos clientes prefieren el email para consultas formales, documentación o seg
 - **Firmas personalizadas** - Configura firmas profesionales por agente o por bandeja
 - **Cualquier proveedor** - Conecta Gmail, Outlook, tu servidor propio o cualquier email
 - **Historial completo** - Todo el hilo de correos visible en una sola conversación
+- **Respuestas citadas** - Incluye el email original en tus respuestas para contexto
 
 **Beneficios para tu negocio:**
 
@@ -274,6 +285,21 @@ Si tu negocio atiende clientes en Asia, LINE es imprescindible. En Japón, el 90
 - Usuarios altamente comprometidos
 - Ideal para comercio electrónico internacional
 
+### Twitter / X
+
+Atiende consultas y gestiona la reputación de tu marca en la red social donde ocurren las conversaciones públicas más importantes.
+
+**¿Por qué Twitter/X?**
+
+Twitter es donde los clientes expresan quejas, hacen preguntas y buscan soporte público. Una respuesta rápida y profesional puede convertir una queja en una reseña positiva.
+
+**Funcionalidades principales:**
+
+- **Mensajes directos (DMs)** - Gestiona conversaciones privadas con tus clientes
+- **Menciones públicas** - Opción de monitorear cuando te mencionan
+- **Creación automática de contactos** - Los perfiles de Twitter se guardan automáticamente
+- **Conexión segura** - Autenticación oficial con la API de X
+
 **Beneficios para tu negocio:**
 
 - Responde rápidamente a quejas públicas
@@ -281,13 +307,20 @@ Si tu negocio atiende clientes en Asia, LINE es imprescindible. En Japón, el 90
 - Mejora la percepción de tu marca
 - Identifica tendencias y feedback de clientes
 
-### Canal de Voz *(Enterprise)*
+### Canal de Voz - Twilio *(Enterprise)*
 
-Transforma tu equipo en un centro de llamadas profesional con telefonía VoIP integrada directamente en la plataforma.
+Transforma tu equipo en un centro de llamadas profesional con telefonía VoIP integrada directamente en la plataforma usando Twilio Voice SDK.
 
 **¿Por qué agregar llamadas a tu operación?**
 
 Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urgentes o complejos. Con el Canal de Voz, tus agentes pueden recibir y hacer llamadas sin salir de MEGA.
+
+**Stack Tecnológico:**
+
+- **Twilio Voice SDK** - Proveedor VoIP líder en la industria
+- **WebRTC** - Llamadas desde el navegador, sin software
+- **TwiML Apps** - Manejo personalizado de llamadas y enrutamiento
+- **Provisión de números** - Obtén números en 100+ países
 
 **Llamadas Entrantes:**
 
@@ -295,12 +328,14 @@ Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urge
 - **Identificación de llamante** - Reconoce contactos existentes por su número
 - **Nuevos contactos automáticos** - Si el número es nuevo, se crea el contacto
 - **Historial unificado** - Llamadas y mensajes en el mismo timeline
+- **Gestión de colas** - Maneja alto volumen de llamadas
 
 **Llamadas Salientes:**
 
 - **Click-to-call** - Llama a cualquier contacto con un solo clic
 - **Desde el perfil del contacto** - Sin marcar números manualmente
 - **Llamadas en conferencia** - Conecta agente y cliente fácilmente
+- **Personalización de Caller ID** - Muestra tu número de empresa
 
 **Seguimiento completo:**
 
@@ -308,13 +343,65 @@ Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urge
 - Duración y timestamps de cada llamada
 - Identificación de llamadas entrantes vs salientes
 - Todo el historial visible en la conversación del cliente
+- Almacenamiento de grabaciones
+
+**Funciones del Agente:**
+
+- **Webphone en navegador** - Contesta llamadas directamente en MEGA
+- **Mute/Unmute** - Controla el micrófono durante llamadas
+- **Función de espera** - Pon clientes en espera cuando sea necesario
+- **Transferir llamadas** - Enruta a otro agente o departamento
 
 **Beneficios para tu negocio:**
 
 - Canal adicional sin cambiar de herramienta
 - Contexto completo del cliente al contestar
 - Métricas de llamadas junto con otros canales
-- Integración con Twilio Voice
+- Escalable de 1 a 1000+ agentes
+- Precios pago-por-uso con Twilio
+
+### Llamadas WhatsApp Cloud *(Enterprise/Mega)*
+
+Realiza y recibe llamadas de voz a través de WhatsApp usando la Cloud API de Meta con tecnología WebRTC.
+
+**¿Por qué Llamadas WhatsApp?**
+
+Muchos clientes prefieren la comunicación por voz para temas complejos. Las Llamadas WhatsApp permiten a tus agentes manejar llamadas de voz directamente en la plataforma, usando el mismo número de WhatsApp que para mensajes.
+
+**Llamadas Entrantes:**
+
+- **Notificaciones en tiempo real** - Los agentes reciben alertas de llamada instantáneas
+- **Aceptar/Rechazar desde el navegador** - Maneja llamadas sin ninguna app externa
+- **Asignación inteligente de agentes** - Llamadas enrutadas a agentes disponibles
+- **Auto-rechazo cuando no hay disponibles** - Comportamiento configurable
+- **Identificación del llamante** - Ve información del contacto antes de contestar
+
+**Llamadas Salientes (Business-Initiated):**
+
+- **Click-to-call** - Inicia llamadas desde la vista de conversación
+- **Sistema de permisos** - Solicita y rastrea permisos de llamada de contactos
+- **Estado de permisos** - Sabe qué contactos han otorgado permiso
+- **Tono de ringback** - Audio de feedback mientras se conecta
+
+**Funciones durante la llamada:**
+
+- **WebRTC nativo** - Audio de alta calidad sin SDKs externos
+- **Mute/Unmute** - Alterna el micrófono durante llamadas
+- **Duración de llamada** - Temporizador en tiempo real visible
+- **Optimización VoIP** - Audio optimizado para llamadas de voz
+
+**Historial de Llamadas:**
+
+- **Llamadas contestadas** - Con duración y timestamp
+- **Llamadas perdidas** - Detección automática
+- **Llamadas rechazadas** - Rastrea llamadas declinadas
+- **Integración en timeline** - Todas las llamadas aparecen en el historial
+
+**Requisitos Técnicos:**
+
+- Inbox de WhatsApp Cloud API
+- Número de teléfono empresarial configurado con Meta
+- Navegador moderno con soporte WebRTC
 
 ---
 
@@ -346,15 +433,61 @@ Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urge
 - **Asignación de equipos** - Deriva a departamentos específicos
 - **Menciones (@)** - Notifica a compañeros en conversaciones
 - **Notas privadas** - Comunícate internamente sin que el cliente vea
-- **Participantes** - Múltiples agentes en una conversación
 
-### Herramientas de Productividad
+### Participantes de Conversación
 
-- **Respuestas predefinidas (Canned Responses)** - Plantillas rápidas con atajos
-- **Grabador de voz** - Envía notas de audio
+Múltiples agentes pueden colaborar en una sola conversación:
+
+- **Añadir participantes** - Incluye agentes adicionales en conversaciones
+- **Notificaciones de participantes** - Todos los participantes reciben alertas de mensajes
+- **Fijar conversaciones** - Los participantes pueden fijar conversaciones importantes
+- **Lista de participantes** - Ve todos los agentes involucrados en una conversación
+- **Remover participantes** - Quita agentes cuando ya no sean necesarios
+- **Auto-participantes** - Los agentes que interactúan se añaden automáticamente
+
+### Respuestas Predefinidas (Canned Responses)
+
+Plantillas rápidas con atajos para respuestas más ágiles:
+
+- **Respuestas personales** - Visibles solo para ti
+- **Respuestas compartidas** - Disponibles para todo el equipo
+- **Activación por atajo** - Escribe / para acceder a respuestas
+- **Sustitución de variables** - Placeholders dinámicos para info del contacto
+- **Soporte de adjuntos** - Incluye imágenes, documentos y archivos con respuestas
+- **Múltiples adjuntos** - Adjunta múltiples archivos a una sola respuesta predefinida
+- **Contenido enriquecido** - Formatea texto con soporte markdown
+
+### Grabador de Voz
+
+- **Notas de audio** - Graba y envía mensajes de voz
+- **Grabación fácil** - Un clic para iniciar/detener
+- **Vista previa** - Escucha antes de enviar
+
+### Otras Herramientas de Productividad
+
 - **Adjuntos multimedia** - Imágenes, videos, documentos
 - **Emojis y GIFs** - Comunicación más cercana
 - **Respuesta citada (Reply-to)** - Responde a mensajes específicos
+
+### Conversaciones Fijadas
+
+Mantén las conversaciones importantes en la parte superior de tu lista:
+
+- **Fijar conversaciones** - Fija cualquier conversación arriba
+- **Desfijar cuando quieras** - Quita el fijado cuando ya no sea necesario
+- **Fijados por agente** - Cada agente tiene su propia lista de fijados
+- **Indicador visual** - Las conversaciones fijadas están claramente marcadas
+
+### Filtros Personalizados (Carpetas)
+
+Guarda tus filtros de uso frecuente para acceso rápido:
+
+- **Crear carpetas** - Guarda combinaciones de filtros como carpetas personalizadas
+- **Filtros de conversación** - Filtra conversaciones por cualquier criterio
+- **Filtros de contacto** - Filtra contactos por atributos
+- **Acceso rápido** - Un clic para aplicar filtros guardados
+- **Editar y eliminar** - Gestiona tus carpetas fácilmente
+- **Límites por usuario** - Cada usuario puede crear múltiples carpetas
 
 ### Resolución Automática
 
@@ -464,7 +597,7 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 ---
 
-## 🤖 Automatización e IA## 🤖 Automatización e IA
+## 🤖 Automatización e IA
 
 ### Reglas de Automatización
 
@@ -512,12 +645,62 @@ Ejecuta múltiples acciones con un solo clic:
 
 ### Captain *(Enterprise)*
 
-Asistente de IA avanzado:
+Asistente de IA avanzado impulsado por modelos de lenguaje para automatización inteligente del servicio al cliente.
 
-- **Sugerencias de respuesta** - IA genera respuestas sugeridas
+**Captain Assistants:**
+
+Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
+
+- **Múltiples asistentes** - Crea diferentes asistentes para diferentes propósitos
+- **Configuración personalizada** - Ajusta temperatura, modelo y parámetros de comportamiento
+- **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
+- **Asignación a inbox** - Vincula asistentes a canales específicos
+
+**Captain Documents:**
+
+Sube documentos para entrenar tu asistente de IA:
+
+- **Carga de documentos** - Añade PDFs, archivos de texto y más (hasta 10MB)
+- **Procesamiento automático** - Los documentos se procesan e indexan automáticamente
+- **Respuestas relacionadas** - Ve qué respuestas usan cada documento
+- **Gestión masiva** - Añade y elimina documentos fácilmente
+
+**Captain Scenarios:**
+
+Configura escenarios y flujos de trabajo específicos:
+
+- **Instrucciones personalizadas** - Define comportamiento para situaciones específicas
+- **Asignación de herramientas** - Asigna herramientas específicas por escenario
+- **Reglas de activación** - Define cuándo aplica cada escenario
+- **Ordenamiento por prioridad** - Controla la precedencia de escenarios
+
+**Captain Custom Tools:**
+
+Crea herramientas personalizadas para tu asistente de IA:
+
+- **Integraciones HTTP** - Conecta con APIs externas (GET/POST)
+- **Autenticación** - Soporte para Basic, Bearer y API Key
+- **Mapeo de parámetros** - Define parámetros de entrada/salida
+- **Activar/desactivar** - Alterna herramientas según necesites
+
+**Captain Copilot:**
+
+Asistencia de IA en tiempo real para tus agentes:
+
+- **Hilos de Copilot** - Conversaciones persistentes con la IA
+- **Contexto inteligente** - La IA entiende el contexto de la conversación
+- **Herramientas de agente** - Busca conversaciones, contactos, artículos
+- **Sugerencias** - Sugerencias de respuesta impulsadas por IA
+
+**Acciones de IA:**
+
+- **Sugerencias de respuesta** - La IA genera respuestas sugeridas
 - **Resumen de conversación** - Obtén contexto rápidamente
-- **Copilot para agentes** - Asistencia en tiempo real
-- **Búsqueda semántica** - Encuentra información relevante en el Help Center
+- **Búsqueda de FAQs** - Encuentra FAQs relevantes automáticamente
+- **Handoff** - Transferencia inteligente a agentes humanos
+- **Etiquetado automático** - La IA sugiere etiquetas para conversaciones
+- **Actualizaciones de prioridad** - La IA recomienda cambios de prioridad
+- **Notas privadas** - La IA puede añadir notas internas
 
 ---
 
@@ -564,6 +747,15 @@ Asistente de IA avanzado:
 
 - **Bloqueo manual** - Evita mensajes de contactos problemáticos
 - **Filtrado automático** - No aparecen en la bandeja principal
+
+### CRM V2 *(Beta)*
+
+Gestión de contactos mejorada con mayor flexibilidad:
+
+- **Contactos sin identificadores** - Permite contactos sin email o teléfono
+- **Búsqueda mejorada** - Mejor descubrimiento y filtrado de contactos
+- **Contactos resueltos** - Lógica más inteligente para identificar contactos reales
+- **Compatibilidad con exportación** - Funciona con todas las funciones de exportación
 
 ---
 
@@ -783,6 +975,30 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Uso de etiquetas** - Frecuencia y tendencias
 - **Categorización** - Análisis por clasificación
 
+### Reportes de Bot
+
+Monitorea el rendimiento de tu IA y bots:
+
+- **Dashboard de métricas de bot** - Analíticas completas de bots
+- **Resueltas por bot** - Conversaciones resueltas completamente por IA/bots
+- **Handoffs de bot** - Conversaciones transferidas a agentes humanos
+- **Tasa de resolución** - Porcentaje de resoluciones automatizadas
+- **Ahorro de tiempo** - Tiempo de agente ahorrado por automatización
+- **Filtros** - Por rango de fechas, inbox, tipo de bot
+
+### Reportes de Llamadas *(Enterprise)*
+
+Analíticas completas del canal de voz:
+
+- **Dashboard de llamadas** - Estadísticas completas de llamadas
+- **Total de llamadas** - Resumen de todas las llamadas
+- **Llamadas contestadas** - Llamadas conectadas exitosamente
+- **Llamadas perdidas** - Llamadas entrantes no contestadas
+- **Llamadas en progreso** - Llamadas actualmente activas
+- **Entrantes/Salientes** - Desglose por dirección
+- **Métricas de duración** - Tiempos totales y promedio
+- **Filtros** - Por fecha, inbox, agente, estado, dirección
+
 ### Encuestas CSAT
 
 - **Satisfacción del cliente** - Encuestas post-conversación
@@ -818,6 +1034,27 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Capacidad límite** - Máximo de conversaciones por agente
 - **Políticas de asignación** - Configura reglas de distribución
 
+### Políticas de Asignación
+
+Configura distribución inteligente de conversaciones:
+
+- **Round Robin** - Distribuye conversaciones equitativamente entre agentes
+- **Distribución justa** - Límite configurable (por defecto 100) por ventana de tiempo
+- **Ventana de distribución** - Período de tiempo personalizable (por defecto 3600 segundos)
+- **Prioridad de conversación** - Primera creada o más tiempo esperando
+- **Múltiples inboxes** - Aplica la misma política a múltiples canales
+- **Activar/desactivar** - Alterna políticas según necesites
+
+### Políticas de Capacidad de Agente *(Enterprise)*
+
+Define límites de conversaciones por agente:
+
+- **Límites de capacidad** - Máximo de conversaciones activas por agente
+- **Límites por inbox** - Capacidad diferente por tipo de canal
+- **Reglas de exclusión** - Reglas basadas en JSON para excluir ciertos casos
+- **Distribución balanceada** - Selector inteligente para balance óptimo de carga
+- **Ajuste en tiempo real** - Los cambios de capacidad toman efecto inmediatamente
+
 ### Roles Personalizados *(Enterprise)*
 
 - **Permisos a medida** - Crea roles con permisos específicos
@@ -848,6 +1085,16 @@ Cada agente puede personalizar exactamente cuándo y cómo recibir alertas:
 - **Push** - Notificaciones instantáneas en navegador o app móvil
 - **Personalización total** - Elige qué tipo de alerta recibir por cada canal
 
+### Posponer Notificaciones
+
+Pausa temporalmente las notificaciones de conversaciones específicas:
+
+- **Opciones de posposición** - 1 hora, 3 horas, 1 día, 1 semana o tiempo personalizado
+- **Reapertura automática** - La notificación se reactiva después del período
+- **Acceso desde barra de comandos** - Pospón rápidamente con atajo de teclado
+- **Por notificación** - Pospón notificaciones individuales sin afectar otras
+- **Indicador visual** - Ve cuándo una notificación está pospuesta
+
 ---
 
 ## 🔌 Integraciones
@@ -863,8 +1110,26 @@ Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
 
 ### Apps de Dashboard
 
+Embebe aplicaciones personalizadas en la vista de conversación:
+
 - **iFrames personalizados** - Embebe apps externas en conversaciones
-- **Contexto dinámico** - Pasa información de la conversación a la app
+- **Contexto dinámico** - Pasa información de conversación y contacto a la app
+- **Apps por usuario** - Las apps pueden configurarse por agente
+- **Múltiples apps** - Añade varias apps al mismo inbox
+- **Seguro** - Las apps corren en iframes aislados
+- **Datos en tiempo real** - Las apps reciben actualizaciones de conversación en vivo
+
+### Platform Apps
+
+Construye y conecta aplicaciones externas con acceso completo a la API:
+
+- **Acceso completo a API** - Acceso programático completo a la plataforma
+- **Permissibles** - Control granular sobre qué recursos puede acceder la app
+- **Gestión de cuentas** - Crea y gestiona cuentas programáticamente
+- **Gestión de usuarios** - Administra usuarios vía API
+- **Integración de bots** - Conecta bots personalizados vía Platform Apps
+- **Tokens seguros** - Tokens de API con permisos delimitados
+- **Casos de uso** - Integraciones CRM, dashboards personalizados, sistemas de automatización
 
 ### Slack
 
@@ -932,6 +1197,16 @@ Integración completa con WooCommerce:
 - **Sincronización de leads** - Envía contactos a tu CRM
 - **Historial unificado** - Vista 360 del cliente
 
+### Plantillas de Email
+
+Personaliza las comunicaciones por email con tu marca:
+
+- **Plantillas personalizadas** - Crea plantillas de email con tu marca
+- **Plantillas por cuenta** - Diferentes plantillas para cada cuenta
+- **Variables Liquid** - Contenido dinámico con sustitución de variables
+- **Plantillas de instalación** - Plantillas predeterminadas para toda la instalación
+- **Tipos de plantilla** - Soporte para diferentes tipos de email (notificaciones, transcripciones, etc.)
+
 ---
 
 ## 💎 Funcionalidades Enterprise
@@ -954,9 +1229,31 @@ Integración completa con WooCommerce:
 
 ### SAML/SSO
 
-- **Single Sign-On** - Autenticación empresarial
-- **Proveedores de identidad** - Okta, Azure AD, etc.
-- **Seguridad centralizada** - Gestión de acceso unificada
+Single Sign-On empresarial para autenticación centralizada:
+
+**Proveedores soportados:**
+
+- **Okta** - Integración completa con Okta
+- **Azure AD** - Microsoft Entra ID
+- **Google Workspace** - Google como proveedor de identidad
+- **OneLogin** - Soporte completo
+- **Auth0** - Integración disponible
+- **SAML 2.0 genérico** - Cualquier proveedor compatible
+
+**Funcionalidades:**
+
+- **Provisionamiento automático** - Crea usuarios automáticamente en el primer login
+- **Mapeo de grupos** - Sincroniza grupos/equipos del IdP
+- **Forzar SSO** - Exige SSO para todos los usuarios de la cuenta
+- **Múltiples dominios** - Configura SSO para diferentes dominios de email
+- **Logout único** - Single Logout (SLO) soportado
+
+**Seguridad:**
+
+- **Autenticación centralizada** - Gestión de acceso unificada
+- **Políticas de contraseña en IdP** - Usa las reglas de contraseña corporativas
+- **MFA en IdP** - Multi-factor authentication del proveedor
+- **Revocación instantánea** - Elimina acceso desactivando en el IdP
 
 ### Asignación Avanzada (V2)
 
@@ -1131,16 +1428,38 @@ Proveedor brasileño que combina la API oficial de WhatsApp Business con facilid
 
 ---
 
-### 🎙️ Integración WaVoIP (Webphone)
+### 🎙️ Integración WaVoIP (Webphone) *(Evolution/WAHA/Uazapi)*
 
-Realiza llamadas de voz por WhatsApp directamente desde la plataforma:
+Realiza llamadas de voz por WhatsApp directamente desde la plataforma usando proveedores alternativos:
 
-- **Llamadas entrantes y salientes** - Voz sobre WhatsApp
-- **Interfaz intuitiva** - Widget flotante fácil de usar
-- **Controles completos** - Silenciar, colgar, aceptar, rechazar
+**¿Qué es WaVoIP?**
+
+WaVoIP permite llamadas de voz a través de WhatsApp para proveedores que no usan la Cloud API oficial de Meta (Evolution, WAHA, Uazapi). Es un servicio de terceros que conecta las llamadas de voz a tu navegador.
+
+**Características principales:**
+
+- **Llamadas entrantes y salientes** - Soporte completo de voz sobre WhatsApp
+- **Webphone intuitivo** - Widget flotante fácil de usar en tu navegador
+- **Controles completos** - Silenciar, colgar, aceptar, rechazar llamadas
 - **Duración en tiempo real** - Cronómetro visible durante la llamada
-- **Indicador de calidad** - Monitorea la calidad de la conexión
-- **Grabación automática** - Descarga la grabación al finalizar
+- **Indicador de calidad** - Monitorea la calidad de conexión en vivo
+- **Grabación automática** - Grabación automática con opción de descarga
+- **Almacenamiento de grabaciones** - Grabaciones guardadas y adjuntadas a conversaciones
+
+**Cómo funciona:**
+
+1. Configura tus credenciales de cuenta WaVoIP
+2. Habilita la función WaVoIP en tu cuenta
+3. El widget webphone aparece cuando llegan llamadas
+4. Acepta/rechaza llamadas directamente desde el navegador
+5. Realiza llamadas salientes desde el perfil del contacto
+
+**Beneficios:**
+
+- Llamadas de voz sin API oficial de WhatsApp Business
+- Funciona con números personales de WhatsApp
+- Sin cargos por llamada de Meta
+- Historial completo de llamadas en la conversación
 
 ---
 
@@ -1168,6 +1487,39 @@ Configura qué pueden ver y acceder tus agentes:
 - **Ocultar contactos** - Restringe acceso a la base de datos completa
 - **Interfaz simplificada** - Oculta opciones que no necesitan usar
 - **Control granular** - Configura permisos por cuenta
+
+---
+
+### 📝 Edición y Eliminación de Mensajes *(Evolution/WAHA/Uazapi)*
+
+Edita y elimina mensajes de WhatsApp después de enviarlos:
+
+**Editar Mensajes:**
+
+- **Ventana de 15 minutos** - Edita mensajes enviados dentro de 15 minutos
+- **Sincronización de actualizaciones** - Los mensajes editados se sincronizan automáticamente desde WhatsApp
+- **Indicador de edición** - Los mensajes editados muestran la etiqueta "editado"
+- **Todos los proveedores** - Funciona con Evolution, WAHA y Uazapi
+
+**Eliminar Mensajes:**
+
+- **Eliminar para todos** - Quita mensajes enviados
+- **Confirmación** - Confirmación de seguridad antes de eliminar
+- **Actualización de estado** - Los mensajes eliminados se muestran como eliminados en la conversación
+
+---
+
+### 📊 Resumen del Año (Year in Review)
+
+Estadísticas e insights anuales para tu cuenta:
+
+- **Resumen anual** - Vista completa del rendimiento de tu año
+- **Métricas clave** - Conversaciones, mensajes, tiempos de resolución
+- **Día más ocupado** - Identifica tu día de mayor actividad
+- **Tipo de personalidad** - Categorización divertida basada en tus patrones de trabajo
+- **Slides interactivos** - Presentación atractiva de tus estadísticas
+- **Resultados en caché** - Carga rápida para vistas repetidas
+- **Compartir** - Comparte tus logros con tu equipo
 
 ---
 

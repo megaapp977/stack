@@ -3,7 +3,8 @@
 ## Your Command Center for the Future of Customer Service
 
 **Version:** Enterprise  
-**Based on:** Chatwoot (Open Source) + Mega Exclusive Features
+**Based on:** Chatwoot (Open Source) + Mega Exclusive Features  
+**Last Updated:** January 2026
 
 ---
 
@@ -37,6 +38,15 @@ Connect with your customers through the world's most popular messaging channel.
 - **Template Messages** - Send messages outside the 24-hour window with approved templates
 - **Contact Sync** - Keep your database automatically updated
 - **Group Support** - Manage WhatsApp group conversations directly
+
+**WhatsApp Ad Tracking:**
+
+Measure your WhatsApp advertising ROI:
+
+- **Click-to-WhatsApp Ads** - Detect conversations from Facebook/Instagram ads
+- **Ad Data Capture** - Automatically save ad source, campaign, and creative info
+- **Visual Indicator** - See ad information card in conversation
+- **Attribution** - Connect leads with specific ad campaigns
 
 ### Instagram Direct
 
@@ -143,6 +153,7 @@ Many customers prefer email for formal inquiries, documentation, or follow-ups. 
 - **Custom signatures** - Configure professional signatures per agent or inbox
 - **Any provider** - Connect Gmail, Outlook, your own server, or any email
 - **Complete history** - Entire email thread visible in one conversation
+- **Quoted replies** - Include original email in your responses for context
 
 **Benefits for your business:**
 
@@ -296,13 +307,20 @@ Twitter is where customers express complaints, ask questions, and seek public su
 - Improve your brand perception
 - Identify trends and customer feedback
 
-### Voice Channel *(Enterprise)*
+### Voice Channel - Twilio *(Enterprise)*
 
-Transform your team into a professional call center with VoIP telephony integrated directly into the platform.
+Transform your team into a professional call center with VoIP telephony integrated directly into the platform using Twilio Voice SDK.
 
 **Why add calls to your operation?**
 
 Some customers prefer talking on the phone, especially for urgent or complex matters. With Voice Channel, your agents can receive and make calls without leaving MEGA.
+
+**Technology Stack:**
+
+- **Twilio Voice SDK** - Industry-leading VoIP provider
+- **WebRTC** - Browser-based calling, no software required
+- **TwiML Apps** - Custom call handling and routing
+- **Phone number provisioning** - Get numbers in 100+ countries
 
 **Inbound Calls:**
 
@@ -310,12 +328,14 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 - **Caller identification** - Recognize existing contacts by phone number
 - **Automatic new contacts** - If the number is new, contact is created
 - **Unified history** - Calls and messages in the same timeline
+- **Queue management** - Handle high call volumes
 
 **Outbound Calls:**
 
 - **Click-to-call** - Call any contact with a single click
 - **From contact profile** - No manual number dialing
 - **Conference calls** - Easily connect agent and customer
+- **Caller ID customization** - Show your business number
 
 **Complete tracking:**
 
@@ -323,13 +343,65 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 - Duration and timestamps for each call
 - Identification of inbound vs outbound calls
 - Full history visible in customer conversation
+- Call recordings storage
+
+**Agent Features:**
+
+- **Browser webphone** - Answer calls directly in MEGA
+- **Mute/Unmute** - Control microphone during calls
+- **Hold function** - Place customers on hold when needed
+- **Transfer calls** - Route to another agent or department
 
 **Benefits for your business:**
 
 - Additional channel without switching tools
 - Complete customer context when answering
 - Call metrics alongside other channels
-- Twilio Voice integration
+- Scalable from 1 to 1000+ agents
+- Pay-as-you-go pricing with Twilio
+
+### WhatsApp Cloud Calls *(Enterprise/Mega)*
+
+Make and receive voice calls through WhatsApp using Meta's Cloud API with WebRTC technology.
+
+**Why WhatsApp Calls?**
+
+Many customers prefer voice communication for complex issues. WhatsApp Calls let your agents handle voice calls directly within the platform, using the same WhatsApp number used for messaging.
+
+**Inbound Calls:**
+
+- **Real-time notifications** - Agents receive instant call alerts
+- **Accept/Reject from browser** - Handle calls without any external app
+- **Smart agent assignment** - Calls routed to available agents
+- **Auto-reject when unavailable** - Configurable behavior when no agents online
+- **Caller identification** - See contact info before answering
+
+**Outbound Calls (Business-Initiated):**
+
+- **Click-to-call** - Start calls from the conversation view
+- **Permission system** - Request and track call permissions from contacts
+- **Call permission status** - Know which contacts have granted permission
+- **Ringback tone** - Audio feedback while connecting
+
+**Call Features:**
+
+- **WebRTC native** - High-quality audio without external SDKs
+- **Mute/Unmute** - Toggle microphone during calls
+- **Call duration** - Real-time timer visible during call
+- **VoIP optimization** - Audio optimized for voice calls
+
+**Call History:**
+
+- **Answered calls** - With duration and timestamp
+- **Missed calls** - Automatic detection
+- **Rejected calls** - Track declined calls
+- **Timeline integration** - All calls appear in conversation history
+
+**Technical Requirements:**
+
+- WhatsApp Cloud API inbox
+- Business phone number configured with Meta
+- Modern browser with WebRTC support
 
 ---
 
@@ -361,15 +433,61 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 - **Team assignment** - Route to specific departments
 - **Mentions (@)** - Notify colleagues in conversations
 - **Private notes** - Communicate internally without customer seeing
-- **Participants** - Multiple agents in one conversation
 
-### Productivity Tools
+### Conversation Participants
 
-- **Canned Responses** - Quick templates with shortcuts
-- **Voice recorder** - Send audio notes
+Multiple agents can collaborate on a single conversation:
+
+- **Add participants** - Include additional agents in conversations
+- **Participant notifications** - All participants receive message alerts
+- **Pin conversations** - Participants can pin important conversations
+- **Participant list** - See all agents involved in a conversation
+- **Remove participants** - Remove agents when no longer needed
+- **Auto-participants** - Agents who interact are automatically added
+
+### Canned Responses
+
+Quick templates with shortcuts for faster responses:
+
+- **Personal responses** - Visible only to you
+- **Shared responses** - Available to entire team
+- **Shortcut activation** - Type / to access responses
+- **Variable substitution** - Dynamic placeholders for contact info
+- **Attachments support** - Include images, documents, and files with responses
+- **Multi-file attachments** - Attach multiple files to a single canned response
+- **Rich content** - Format text with markdown support
+
+### Voice Recorder
+
+- **Audio notes** - Record and send voice messages
+- **Easy recording** - One-click start/stop
+- **Preview** - Listen before sending
+
+### Other Productivity Tools
+
 - **Multimedia attachments** - Images, videos, documents
 - **Emojis and GIFs** - More personal communication
 - **Reply-to** - Respond to specific messages
+
+### Pinned Conversations
+
+Keep important conversations at the top of your list:
+
+- **Pin conversations** - Pin any conversation to the top
+- **Unpin anytime** - Remove pin when no longer needed
+- **Per-agent pins** - Each agent has their own pinned list
+- **Visual indicator** - Pinned conversations are clearly marked
+
+### Custom Filters (Folders)
+
+Save your frequently used filters for quick access:
+
+- **Create folders** - Save filter combinations as custom folders
+- **Conversation filters** - Filter conversations by any criteria
+- **Contact filters** - Filter contacts by attributes
+- **Quick access** - One-click to apply saved filters
+- **Edit and delete** - Manage your folders easily
+- **Per-user limits** - Each user can create multiple folders
 
 ### Auto-Resolution
 
@@ -527,12 +645,62 @@ Execute multiple actions with a single click:
 
 ### Captain *(Enterprise)*
 
-Advanced AI assistant:
+Advanced AI assistant powered by large language models for intelligent customer service automation.
+
+**Captain Assistants:**
+
+Create and configure AI assistants tailored to your business needs:
+
+- **Multiple assistants** - Create different assistants for different purposes
+- **Custom configuration** - Set temperature, model, and behavior parameters
+- **Knowledge training** - Train assistants with your business documents
+- **Inbox assignment** - Link assistants to specific channels
+
+**Captain Documents:**
+
+Upload documents to train your AI assistant:
+
+- **Document upload** - Add PDFs, text files, and more (up to 10MB)
+- **Automatic processing** - Documents are processed and indexed
+- **Related responses** - See which responses use each document
+- **Bulk management** - Add and remove documents easily
+
+**Captain Scenarios:**
+
+Configure specific scenarios and workflows:
+
+- **Custom instructions** - Define behavior for specific situations
+- **Tool assignment** - Assign specific tools per scenario
+- **Activation rules** - Define when each scenario applies
+- **Priority ordering** - Control scenario precedence
+
+**Captain Custom Tools:**
+
+Create custom tools for your AI assistant:
+
+- **HTTP integrations** - Connect to external APIs (GET/POST)
+- **Authentication** - Support for Basic, Bearer, and API Key auth
+- **Parameter mapping** - Define input/output parameters
+- **Enable/disable** - Toggle tools on or off as needed
+
+**Captain Copilot:**
+
+Real-time AI assistance for your agents:
+
+- **Copilot threads** - Persistent conversation threads with the AI
+- **Context-aware** - AI understands conversation context
+- **Agent tools** - Search conversations, contacts, articles
+- **Suggestions** - AI-powered response suggestions
+
+**AI Actions:**
 
 - **Response suggestions** - AI generates suggested responses
 - **Conversation summary** - Get context quickly
-- **Agent copilot** - Real-time assistance
-- **Semantic search** - Find relevant information in Help Center
+- **FAQ lookup** - Find relevant FAQs automatically
+- **Handoff** - Smart transfer to human agents
+- **Auto labeling** - AI suggests conversation labels
+- **Priority updates** - AI recommends priority changes
+- **Private notes** - AI can add internal notes
 
 ---
 
@@ -579,6 +747,15 @@ Advanced AI assistant:
 
 - **Manual blocking** - Avoid messages from problematic contacts
 - **Auto filtering** - Don't appear in main inbox
+
+### CRM V2 *(Beta)*
+
+Enhanced contact management with improved flexibility:
+
+- **Contacts without identifiers** - Allow contacts without email or phone number
+- **Improved search** - Better contact discovery and filtering
+- **Resolved contacts** - Smarter logic for identifying real contacts
+- **Export compatibility** - Works with all export features
 
 ---
 
@@ -798,6 +975,30 @@ The system includes multiple protections to maintain send quality:
 - **Label usage** - Frequency and trends
 - **Categorization** - Analysis by classification
 
+### Bot Reports
+
+Monitor your AI and bot performance:
+
+- **Bot metrics dashboard** - Comprehensive bot analytics
+- **Resolved by bot** - Conversations fully resolved by AI/bots
+- **Bot handoffs** - Conversations transferred to human agents
+- **Resolution rate** - Percentage of automated resolutions
+- **Time savings** - Agent time saved by automation
+- **Filters** - By date range, inbox, bot type
+
+### Call Reports *(Enterprise)*
+
+Complete voice channel analytics:
+
+- **Call dashboard** - Comprehensive call statistics
+- **Total calls** - Overview of all calls
+- **Answered calls** - Successfully connected calls
+- **Missed calls** - Unanswered incoming calls
+- **In-progress calls** - Currently active calls
+- **Inbound/Outbound** - Direction breakdown
+- **Duration metrics** - Total and average call times
+- **Filters** - By date, inbox, agent, status, direction
+
 ### CSAT Surveys
 
 - **Customer satisfaction** - Post-conversation surveys
@@ -833,6 +1034,27 @@ The system includes multiple protections to maintain send quality:
 - **Capacity limit** - Maximum conversations per agent
 - **Assignment policies** - Configure distribution rules
 
+### Assignment Policies
+
+Configure intelligent conversation distribution:
+
+- **Round Robin** - Distribute conversations evenly among agents
+- **Fair distribution** - Configurable limit (default 100) per time window
+- **Distribution window** - Customizable time period (default 3600 seconds)
+- **Conversation priority** - Earliest created or longest waiting first
+- **Multiple inboxes** - Apply same policy to multiple channels
+- **Enable/disable** - Toggle policies on or off
+
+### Agent Capacity Policies *(Enterprise)*
+
+Define conversation limits per agent:
+
+- **Capacity limits** - Maximum active conversations per agent
+- **Per-inbox limits** - Different capacity by channel type
+- **Exclusion rules** - JSON-based rules to exclude certain cases
+- **Balanced distribution** - Smart selector for optimal load balancing
+- **Real-time adjustment** - Capacity updates take effect immediately
+
 ### Custom Roles *(Enterprise)*
 
 - **Custom permissions** - Create roles with specific permissions
@@ -863,6 +1085,16 @@ Each agent can customize exactly when and how to receive alerts:
 - **Push** - Instant notifications in browser or mobile app
 - **Full customization** - Choose which alert type to receive per channel
 
+### Notification Snooze
+
+Temporarily pause notifications for specific conversations:
+
+- **Snooze options** - 1 hour, 3 hours, 1 day, 1 week, or custom time
+- **Auto-reopen** - Notification reactivates after snooze period
+- **Command bar access** - Quickly snooze via keyboard shortcut
+- **Per-notification** - Snooze individual notifications without affecting others
+- **Visual indicator** - See when a notification is snoozed
+
 ---
 
 ## 🔌 Integrations
@@ -878,8 +1110,26 @@ Connect MEGA with any external system through automatic notifications:
 
 ### Dashboard Apps
 
+Embed custom applications within the conversation view:
+
 - **Custom iFrames** - Embed external apps in conversations
-- **Dynamic context** - Pass conversation information to the app
+- **Dynamic context** - Pass conversation and contact information to the app
+- **Per-user apps** - Apps can be configured per agent
+- **Multiple apps** - Add several apps to the same inbox
+- **Secure** - Apps run in sandboxed iframes
+- **Real-time data** - Apps receive live conversation updates
+
+### Platform Apps
+
+Build and connect external applications with full API access:
+
+- **Full API access** - Complete programmatic access to the platform
+- **Permissibles** - Granular control over which resources the app can access
+- **Account management** - Create and manage accounts programmatically
+- **User management** - Manage users via API
+- **Bot integration** - Connect custom bots via Platform Apps
+- **Secure tokens** - API tokens with scoped permissions
+- **Use cases** - CRM integrations, custom dashboards, automation systems
 
 ### Slack
 
@@ -947,6 +1197,16 @@ Complete WooCommerce integration:
 - **Lead sync** - Send contacts to your CRM
 - **Unified history** - 360 customer view
 
+### Email Templates
+
+Customize email communications with your branding:
+
+- **Custom templates** - Create branded email templates
+- **Per-account templates** - Different templates for each account
+- **Liquid variables** - Dynamic content with variable substitution
+- **Installation templates** - Default templates for the entire installation
+- **Template types** - Support for different email types (notifications, transcripts, etc.)
+
 ---
 
 ## 💎 Enterprise Features
@@ -972,6 +1232,9 @@ Complete WooCommerce integration:
 - **Single Sign-On** - Enterprise authentication
 - **Identity providers** - Okta, Azure AD, etc.
 - **Centralized security** - Unified access management
+- **Role mappings** - Map SAML groups to Chatwoot roles
+- **Auto-conversion** - Existing users automatically converted to SAML
+- **Per-account settings** - SAML configuration per account
 
 ### Advanced Assignment (V2)
 
@@ -1144,16 +1407,38 @@ Brazilian provider combining the official WhatsApp Business API with ease of use
 
 ---
 
-### 🎙️ WaVoIP Integration (Webphone)
+### 🎙️ WaVoIP Integration (Webphone) *(Evolution/WAHA/Uazapi)*
 
-Make voice calls via WhatsApp directly from the platform:
+Make voice calls via WhatsApp directly from the platform using alternative WhatsApp providers:
 
-- **Inbound and outbound calls** - Voice over WhatsApp
-- **Intuitive interface** - Easy-to-use floating widget
-- **Complete controls** - Mute, hang up, accept, reject
+**What is WaVoIP?**
+
+WaVoIP enables voice calls through WhatsApp for providers that don't use Meta's official Cloud API (Evolution, WAHA, Uazapi). It's a third-party service that bridges voice calls to your browser.
+
+**Main features:**
+
+- **Inbound and outbound calls** - Full voice over WhatsApp support
+- **Intuitive webphone** - Easy-to-use floating widget in your browser
+- **Complete controls** - Mute, hang up, accept, reject calls
 - **Real-time duration** - Timer visible during call
-- **Quality indicator** - Monitor connection quality
-- **Auto recording** - Download recording when finished
+- **Quality indicator** - Monitor connection quality live
+- **Auto recording** - Automatic call recording with download option
+- **Recording storage** - Recordings saved and attached to conversations
+
+**How it works:**
+
+1. Configure your WaVoIP account credentials
+2. Enable WaVoIP feature on your account
+3. Webphone widget appears when calls come in
+4. Accept/reject calls directly from browser
+5. Make outbound calls from contact profile
+
+**Benefits:**
+
+- Voice calls without official WhatsApp Business API
+- Works with personal WhatsApp numbers
+- No per-call Meta charges
+- Complete call history in conversation
 
 ---
 
@@ -1181,6 +1466,39 @@ Configure what your agents can see and access:
 - **Hide contacts** - Restrict access to complete database
 - **Simplified interface** - Hide options they don't need
 - **Granular control** - Configure permissions per account
+
+---
+
+### 📝 Message Editing & Deletion *(Evolution/WAHA/Uazapi)*
+
+Edit and delete WhatsApp messages after sending:
+
+**Edit Messages:**
+
+- **15-minute window** - Edit sent messages within 15 minutes
+- **Sync updates** - Edited messages sync from WhatsApp automatically
+- **Edit indicator** - Edited messages show "edited" label
+- **All providers** - Works with Evolution, WAHA, and Uazapi
+
+**Delete Messages:**
+
+- **Delete for everyone** - Remove sent messages
+- **Confirmation** - Safety confirmation before deletion
+- **Status update** - Deleted messages show as deleted in conversation
+
+---
+
+### 📊 Year in Review
+
+Annual statistics and insights for your account:
+
+- **Annual summary** - Complete overview of your year's performance
+- **Key metrics** - Conversations, messages, resolution times
+- **Busiest day** - Identify your peak activity day
+- **Personality type** - Fun categorization based on your work patterns
+- **Interactive slides** - Engaging presentation of your stats
+- **Cached results** - Fast loading for repeated views
+- **Share** - Share your achievements with your team
 
 ---
 
