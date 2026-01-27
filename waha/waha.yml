@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   waha:
-    image: devlikeapro/waha-plus:gows-2026.1.1
+    image: devlikeapro/waha-plus:gows-2026.1.4
     networks:
       - waha
     environment:
@@ -11,6 +11,11 @@ services:
       - WHATSAPP_API_SCHEMA=https
       - WAHA_BASE_URL=https://waha.example.com
       - TZ=America/Sao_Paulo
+
+      ## Nome customizado do DEVICE.
+      - WAHA_CLIENT_DEVICE_NAME=Waha API #Nome do Dispositivo exibido na lista de Dispositivos Vinculados.
+      ## Recomendamos alterar apenas o nome do dispositivo e manter o nome real do navegador: Chrome, Firefox, IE, Opera, Safari, Edge.
+      - WAHA_CLIENT_BROWSER_NAME=Chrome #Nome do navegador exibido na lista de Dispositivos Vinculados.
       
       ## Variaveis para ativar o envio de atividade de conexão ao WhatsAppp(Evita desconexao por inatividade da Sessao).
       - WAHA_PRESENCE_AUTO_ONLINE=True
@@ -49,10 +54,11 @@ services:
       # QR não precisa em produção
       - WAHA_PRINT_QR=False
       
-      ## Apps (Opcional no uso com o Mega).
+      ## Apps "chatwoot ou calls" (Opcional no uso com o Mega).
       - WAHA_APPS_ENABLED=true
       - WAHA_APPS_ON=calls #App rejeitar ligaçoes automatico e enviar msg
-      
+      # - WAHA_APPS_OFF=chatwoot #- Desativa aplicativos específicos (separados por vírgula).
+
       ## Redis (Opcional no uso com o Mega). 
       #- REDIS_URL=redis://redis:6379
       
