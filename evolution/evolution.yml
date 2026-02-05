@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   evolution_v2:
-    image: chat2one/sending2:v2.7.7
+    image: chat2one/sending2:v2.8.0
     networks:
       - evolution
     environment:
@@ -97,8 +97,10 @@ services:
       - CACHE_REDIS_ENABLED=true
       - CACHE_REDIS_URI=redis://redis:6379/1
       - CACHE_REDIS_PREFIX_KEY=evolution_v2
+      - CACHE_REDIS_TTL=604800
       - CACHE_REDIS_SAVE_INSTANCES=false
-      - CACHE_LOCAL_ENABLED=false
+      - CACHE_LOCAL_ENABLED=true # ← Fallback habilitado
+      - CACHE_LOCAL_TTL=86400
       # ===========================================
       # S3 / MINIO
       # ===========================================
@@ -133,8 +135,17 @@ services:
           - node.role == manager
       resources:
         limits:
-          cpus: "2"
-          memory: 5120M
+          cpus: "4"        # ← Aumentar CPU (antes 3)
+          memory: 8192M    # ← Aumentar RAM a 8GB (antes 5GB)
+        reservations:
+          cpus: "2"        # ← Garantizar mínimo 2 CPUs
+          memory: 4096M    # ← Garantizar mínimo 4GB
+      # ✅ Reinicio automático si falla
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
       labels:
         - traefik.enable=true
         - traefik.http.routers.evolution_v2.rule=Host(`example.com`)
@@ -149,19 +160,36 @@ services:
 
   redis:
     image: redis:7.4.2
+    # ✅ CACHE PURO - SIN PERSISTENCIA (mejor performance)
     command: [
         "redis-server",
-        "--appendonly",
-        "yes",
         "--port", "6379",
-        "--maxmemory", "1gb",
+        # Memoria
+        "--maxmemory", "2gb",              # ← Aumentado de 1GB a 2GB
         "--maxmemory-policy", "allkeys-lru",
-        "--save", "900", "1",
-        "--save", "300", "10",
-        "--save", "60", "10000"
+        # Sin persistencia (cache puro)
+        "--appendonly", "no",
+        "--save", "",
+        # Optimizaciones
+        "--tcp-backlog", "511",
+        "--timeout", "300",
+        "--tcp-keepalive", "300",
+        "--maxclients", "10000",
+        # Disable slow log
+        "--slowlog-log-slower-than", "-1",
+        "--latency-monitor-threshold", "0",
+        # Threading (mejor para multi-core)
+        "--io-threads", "4",
+        "--io-threads-do-reads", "yes"
       ]
     networks:
       - evolution
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
     deploy:
       placement:
         constraints:
@@ -169,7 +197,14 @@ services:
       resources:
         limits:
           cpus: "2"
+          memory: 3072M  # ← 3GB para Redis (2GB cache + 1GB overhead)
+        reservations:
+          cpus: "1"
           memory: 2048M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
 
 networks:
   evolution:
