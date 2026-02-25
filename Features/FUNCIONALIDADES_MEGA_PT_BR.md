@@ -2,8 +2,9 @@
 
 ## Seu Centro de Comando para o Atendimento ao Cliente do Futuro
 
-**Versão:** Enterprise  
+**Versão:** Enterprise
 **Baseado em:** Chatwoot (Open Source) + Funcionalidades Exclusivas Mega
+**Última Atualização:** Fevereiro 2026
 
 ---
 
@@ -49,6 +50,22 @@ Meça o ROI dos seus anúncios do Facebook/Instagram que direcionam para WhatsAp
 - **ID de anúncio** - Rastreia o anúncio específico que gerou a conversa
 - **Contexto da mensagem** - Veja o texto do anúncio que o cliente clicou
 
+**Gerenciamento de Membros de Grupos:** *(Mega)*
+
+Controle completo dos grupos de WhatsApp diretamente da MEGA:
+
+- **Lista de membros** - Visualize todos os participantes do grupo com seu papel e status
+- **Sincronização automática** - Os membros são sincronizados automaticamente ao criar a conversa
+- **Adicionar participantes** - Adicione novos membros ao grupo pela plataforma
+- **Remover participantes** - Remova membros do grupo sem sair da MEGA
+- **Alterar papéis** - Promova ou rebaixe membros a administrador
+- **Menções no grupo** - Use @ para mencionar membros específicos nas mensagens
+- **Busca de membros** - Encontre rapidamente participantes em grupos grandes
+- **Paginação inteligente** - Carregamento eficiente para grupos com muitos membros
+- **Avatares de membros** - Visualize a foto de perfil de cada participante
+- **Sincronização em segundo plano** - Atualização periódica de nomes e fotos
+- **Suporte multi-provedor** - Funciona com Evolution, WAHA, Uazapi e Cloud API
+
 ### Instagram Direct
 
 Conecte-se com seu público do Instagram e converta seguidores em clientes no lugar onde eles já interagem com sua marca.
@@ -61,6 +78,7 @@ Com mais de 2 bilhões de usuários ativos, o Instagram é essencial para marcas
 
 - **Mensagens diretas (DMs)** - Responda a consultas privadas de seus seguidores
 - **Respostas a Stories** - Atenda quem reage aos seus stories
+- **Respostas a Stories com conteúdo** - Veja imagens e vídeos anexados quando respondem aos seus stories
 - **Menções em Stories** - Receba alertas quando te mencionam
 - **Reações** - Visualize quando reagem às suas mensagens
 
@@ -131,6 +149,9 @@ Com mais de um bilhão de usuários ativos, o TikTok se tornou uma plataforma es
 - **Stickers** - Visualize os stickers que seus clientes enviam
 - **Posts compartilhados** - Quando um cliente compartilha um post com você, veja diretamente na conversa
 - **Respostas a mensagens específicas** - Responda em contexto a mensagens anteriores
+- **Perfil social do contato** - Veja o perfil do TikTok do cliente diretamente nos dados de contato
+- **Mensagens não suportadas** - Indicadores claros quando conteúdo incompatível é recebido
+- **Versão de API configurável** - Flexibilidade para adaptar-se a diferentes versões da API
 
 **Benefícios para seu negócio:**
 
@@ -193,6 +214,8 @@ Os visitantes do seu site querem respostas imediatas. Um chat ao vivo aumenta as
 - **Modo escuro** - Se adapta às preferências do visitante
 - **Help Center integrado** - Mostre artigos de ajuda diretamente no widget
 - **Mensagens predefinidas** - Inicie conversas com contexto
+- **Domínios permitidos** - Restrinja o widget a domínios autorizados para maior segurança
+- **Mostrar nome do agente** - Configure por inbox se o nome do agente é exibido ao visitante
 
 **Benefícios para seu negócio:**
 
@@ -420,8 +443,21 @@ Muitos clientes preferem comunicação por voz para questões complexas. As Cham
 
 - **Visão unificada** - Todas as conversas em um só lugar
 - **Filtros avançados** - Por status, caixa de entrada, agente, equipe, etiquetas
+- **Filtros multi-seleção** - Selecione múltiplas caixas de entrada ou equipes simultaneamente
+- **Filtros de etiquetas com lógica AND** - Filtre por múltiplas etiquetas que devem todas corresponder
 - **Visões personalizadas** - Salve filtros frequentes como visões rápidas
 - **Busca poderosa** - Encontre conversas por conteúdo, contato ou metadados
+
+### Busca de Mensagens na Conversa
+
+Encontre mensagens específicas dentro de uma conversa:
+
+- **Busca de texto** - Procure palavras ou frases em todas as mensagens
+- **Filtro por datas** - Restrinja a busca a um período específico
+- **Destaque de resultados** - Mensagens encontradas são destacadas visualmente
+- **Scroll automático** - Navegue instantaneamente até a mensagem encontrada
+- **Paginação de resultados** - Navegue entre múltiplas correspondências facilmente
+- **Contexto preservado** - Veja a mensagem em seu contexto original de conversa
 
 ### Status de Conversa
 
@@ -462,7 +498,7 @@ Adicione múltiplos agentes para colaborar em conversas:
 - Supervisores acompanhando conversas específicas
 - Trabalho em equipe para casos complexos
 
-### Conversas Fixadas (Pinned) *(Enterprise)*
+### Conversas Fixadas (Pinned)
 
 Fixe conversas importantes para acesso rápido:
 
@@ -479,7 +515,7 @@ Fixe conversas importantes para acesso rápido:
 - Casos em andamento de alta prioridade
 - Conversas com acompanhamento contínuo
 
-### Filtros Personalizados (Pastas) *(Enterprise)*
+### Filtros Personalizados (Pastas)
 
 Crie visões personalizadas para organizar suas conversas:
 
@@ -522,6 +558,7 @@ Templates rápidos com atalhos para respostas mais rápidas:
 - **Anexos multimídia** - Imagens, vídeos, documentos
 - **Emojis e GIFs** - Comunicação mais próxima
 - **Resposta citada (Reply-to)** - Responda a mensagens específicas
+- **Rascunhos de mensagens** - Salva automaticamente rascunhos enquanto você digita, restaurados ao voltar à conversa
 - **Edição de mensagens** - Corrija mensagens enviadas (canais compatíveis)
 - **Exclusão de mensagens** - Remova mensagens enviadas por engano
 
@@ -529,6 +566,7 @@ Templates rápidos com atalhos para respostas mais rápidas:
 
 - **Auto-resolve** - Feche conversas inativas automaticamente
 - **Temporizadores configuráveis** - Defina tempos por caixa de entrada
+- **Limpeza de conversas órfãs** - Remove automaticamente conversas sem contato associado
 
 ### Ações em Lote (Bulk Actions)
 
@@ -581,6 +619,7 @@ Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas c
 **Funcionalidades Principais:**
 
 **Gestão de Salas (Settings):**
+
 - **Criar salas** - Administradores podem criar salas com nome e descrição
 - **Adicionar usuários** - Seleção múltipla de membros da equipe de sua conta
 - **Editar salas** - Atualizar nome, descrição e membros
@@ -589,15 +628,18 @@ Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas c
 - **Localização** - Acessível em Settings > Chat Rooms
 
 **Permissões e Visibilidade:**
+
 - **Administradores** - Veem TODAS as salas da conta na barra lateral, podem criar/editar/excluir qualquer sala, podem participar de todas as salas
 - **Agentes e Funções Personalizadas** - Apenas veem as salas onde são membros na barra lateral, só podem participar de suas salas atribuídas, não podem criar/editar/excluir salas
 
 **Interface de Chat:**
+
 - **Localização na barra lateral** - Conversas > Salas
 - **Visualização de sala** - Cabeçalho com nome da sala + lista de mensagens + campo de envio
 - **Design limpo** - 100% Tailwind CSS, moderno e responsivo
 
 **Tipos de Mensagens:**
+
 - **Mensagens de texto** - Comunicação de texto simples
 - **Multimídia** - Imagens, vídeos, arquivos de áudio, documentos
 - **Responder (Reply)** - Responder a mensagens específicas (cita a original)
@@ -605,6 +647,7 @@ Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas c
 - **Gravação de áudio** - Gravador de áudio integrado para notas de voz
 
 **Layout Inteligente de Mensagens:**
+
 - **Lado direito** - Suas próprias mensagens (saída)
   - Cor de fundo diferente
   - Seu avatar exibido
@@ -613,18 +656,21 @@ Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas c
   - Identificação clara do remetente
 
 **Notificações em Tempo Real:**
+
 - **Integração WebSocket** - Usando Action Cable para entrega instantânea
 - **Atualizações ao vivo** - Mensagens aparecem imediatamente sem atualizar
 - **Transmissão inteligente** - Administradores recebem eventos de todas as salas, usuários regulares apenas de suas salas
 - **Rastreamento de eventos** - Eventos de mensagem criada e atualizada
 
 **Segurança e Validações:**
+
 - **Acesso apenas para membros** - Apenas membros da sala podem ver e enviar mensagens
 - **Controles de administrador** - Apenas administradores podem gerenciar salas
 - **Validação de conta** - Associação à sala é validada em relação à conta
 - **Nomes únicos** - Nomes de sala devem ser únicos por conta
 
 **Benefícios para sua equipe:**
+
 - Não precisa alternar entre ferramentas para comunicação interna
 - Discussões contextuais sem sair da visualização de clientes
 - Comunicação organizada por tópico ou departamento
@@ -691,6 +737,10 @@ Crie assistentes especializados para diferentes necessidades:
 - **Contexto personalizado** - Cada assistente entende seu domínio específico
 - **Personalidade configurável** - Defina tom, estilo e abordagem
 - **Troca fácil** - Alterne entre assistentes conforme necessário
+- **Compreensão de imagens** - O assistente pode analisar imagens enviadas nas conversas
+- **Suporte multimodal** - Processa texto e imagens simultaneamente para respostas contextuais
+- **Ignorar grupos** - Configure o assistente para não responder em conversas de grupo
+- **Alvos ignorados** - Defina conversas ou contatos específicos que o assistente deve pular
 
 **Base de Conhecimento (Documentos):**
 
@@ -719,6 +769,15 @@ Estenda as capacidades do Captain com integrações:
 - **Ferramentas personalizadas** - Crie ações específicas para seu negócio
 - **Contexto dinâmico** - Busque informação em tempo real
 
+**Servidores MCP (Model Context Protocol):**
+
+Conecte servidores MCP para ampliar as capacidades do seu assistente:
+
+- **Protocolo padrão** - Compatível com o padrão MCP para integração com ferramentas externas
+- **Atribuição a assistentes** - Vincule servidores MCP a assistentes específicos
+- **Configuração flexível** - Defina URL e parâmetros de conexão
+- **Gestão centralizada** - Administre todos seus servidores MCP nas configurações
+
 **Copilot para Agentes:**
 
 Assistência em tempo real enquanto os agentes trabalham:
@@ -736,6 +795,24 @@ Assistência em tempo real enquanto os agentes trabalham:
 - **Simplificação** - Torne respostas complexas mais claras
 - **Mudança de tom** - Formal, amigável, profissional
 - **Resumos** - Condense conversas longas
+
+**Transcrição de Áudio (Whisper):**
+
+Transcreva automaticamente mensagens de áudio para texto:
+
+- **Transcrição automática** - Converta notas de voz em texto legível
+- **Modelo Whisper** - Usa OpenAI Whisper para transcrição de alta precisão
+- **Multi-idioma** - Suporte para múltiplos idiomas
+- **Contexto nas conversas** - Os agentes podem ler o conteúdo dos áudios rapidamente
+
+**Provedores de IA suportados:**
+
+- **OpenAI** - GPT-4o, GPT-4, GPT-3.5 Turbo
+- **Anthropic** - Claude (Sonnet, Opus, Haiku)
+- **Google** - Gemini (Pro, Flash)
+- **Azure OpenAI** - Implementações de OpenAI no Azure
+- **Amazon Bedrock** - Modelos hospedados na AWS
+- **DeepSeek** - Modelos de IA de código aberto
 
 ---
 
@@ -797,9 +874,12 @@ Sistema avançado de gestão de relacionamento com clientes:
 
 - **Campos personalizados** - Crie atributos ilimitados
 - **Empresas/Organizações** - Agrupe contatos por empresa
+- **Busca por empresa** - Encontre contatos pelo nome da empresa/organização
 - **Relacionamentos** - Conecte contatos relacionados
 - **Scoring de leads** - Priorize contatos por valor
 - **Segmentação** - Crie segmentos dinâmicos
+- **Scroll infinito** - Carregamento automático de mais contatos ao rolar
+- **Paginação inteligente** - Indicador de mais resultados disponíveis
 
 ---
 
@@ -856,6 +936,7 @@ Envios em massa para uma audiência segmentada:
 
 - Mensagem personalizável com texto livre
 - Suporte a emojis
+- **Spintax** - Variações automáticas de texto usando sintaxe `{Olá|Bom dia} {amigo|parceiro}` para mensagens únicas por destinatário
 
 **Arquivos anexos** *(Evolution/WAHA/Uazapi/API)*:
 
@@ -1025,6 +1106,13 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Notas 1-5** - Escala de satisfação
 - **Comentários** - Feedback qualitativo
 - **Filtros** - Por agente, inbox, equipe, data
+- **Notas de revisão** *(Enterprise)* - Adicione notas internas às respostas CSAT para acompanhamento de qualidade
+
+### Relatórios Resumidos
+
+- **Métricas consolidadas** - Visão geral das métricas chave em um só lugar
+- **Filtros por período** - Filtre por faixa de datas personalizada
+- **Agrupamento** - Agrupe dados por agente, equipe ou inbox
 
 ### Exportação
 
@@ -1165,6 +1253,8 @@ Controle avançado da carga de trabalho:
 - **Disponibilidade por inbox** - Defina horários de atendimento
 - **Fusos horários** - Suporte multi-região
 - **Mensagens fora do horário** - Respostas automáticas
+- **Pausa para almoço** - Configure intervalos de descanso dentro do horário comercial
+- **Horários por dia** - Defina horários diferentes para cada dia da semana
 
 ### Configuração de Notificações
 
@@ -1302,6 +1392,15 @@ Videochamadas integradas diretamente na conversa:
 - **Botão na caixa de resposta** - Acesso rápido da caixa de resposta
 - **Tipo de mensagem de vídeo** - As chamadas aparecem na timeline
 
+### Google Translate
+
+Tradução automática de mensagens nas conversas:
+
+- **Tradução automática** - Traduza mensagens recebidas para seu idioma configurado
+- **Detecção de idioma** - Identifica automaticamente o idioma da mensagem
+- **Tradução em contexto** - As mensagens traduzidas são exibidas inline na conversa
+- **Suporte multi-idioma** - Compatível com todos os idiomas do Google Translate
+
 ### Linear *(Enterprise)*
 
 - **Gestão de tickets** - Crie issues a partir de conversas
@@ -1410,6 +1509,22 @@ Resumo visual do ano da sua equipe de atendimento:
 - **Filtros combinados** - Múltiplos critérios simultâneos
 - **Resultados instantâneos** - Performance otimizada
 
+### Atributos Obrigatórios de Conversa
+
+Obrigue os agentes a preencher atributos específicos antes de resolver conversas:
+
+- **Campos obrigatórios** - Defina quais atributos personalizados devem ser preenchidos
+- **Validação ao resolver** - Bloqueia a resolução até completar os campos obrigatórios
+- **Melhoria na qualidade dos dados** - Garanta que toda conversa tenha as informações necessárias
+
+### Conferências de Voz
+
+Conferências de chamadas de voz entre agentes e clientes:
+
+- **Chamadas múltiplas** - Conecte vários participantes em uma única chamada
+- **Gestão de conferência** - Controles completos da conferência
+- **Integrado nas conversas** - As conferências são associadas a conversas existentes
+
 ### Marca Personalizada (Custom Branding)
 
 Personalize completamente a aparência da sua plataforma:
@@ -1455,6 +1570,27 @@ Crie funções sob medida para sua organização com controle granular de permis
 ---
 
 ## ⭐ Funcionalidades Exclusivas Mega
+
+### 📅 Mensagens Programadas
+
+Programe o envio automático de mensagens nas suas conversas:
+
+- **Programação flexível** - Escolha data e hora exata para enviar a mensagem
+- **Recorrência** - Programe mensagens recorrentes: diário, semanal, mensal ou anual
+- **Templates** - Use templates de mensagens predefinidos para envios programados
+- **Anexos** - Inclua imagens, documentos e arquivos em mensagens programadas
+- **Status de acompanhamento** - Monitore o status: pendente, enviado, falhou, cancelado
+- **Cancelamento** - Cancele mensagens programadas antes de serem enviadas
+- **Múltiplas por conversa** - Programe várias mensagens na mesma conversa
+- **Histórico** - Consulte o histórico de mensagens programadas e seu status
+
+### 🔒 Placeholder de Mensagem Excluída
+
+Configure por inbox se as mensagens excluídas mostram um placeholder ou desaparecem completamente:
+
+- **Placeholder visível** - Mostra "Esta mensagem foi excluída" em vez de remover completamente
+- **Configurável por inbox** - Cada canal pode ter sua própria configuração
+- **Transparência** - Mantém o contexto da conversa indicando que houve uma mensagem excluída
 
 ### Provedores de WhatsApp Alternativos
 
@@ -1535,6 +1671,15 @@ Solução econômica e escalável para operações de alto volume.
 - Textos, imagens, vídeos
 - Áudio e notas de voz
 - Documentos
+
+**Configuração de filtros de chat:**
+
+Defina quais conversas você deseja receber na plataforma:
+
+- **Filtrar por tipo** - Receba apenas chats individuais, grupos, ou ambos
+- **Lista de exclusão** - Ignore números específicos
+- **Lista de inclusão** - Receba apenas de números específicos
+- **Configuração pela UI** - Gerencie filtros diretamente das configurações do canal
 
 **Ideal para:**
 
@@ -1674,11 +1819,46 @@ Edite e exclua mensagens do WhatsApp após o envio:
 
 ## 📱 Aplicativos
 
-### Aplicativo Web
+### Aplicativo Web Progressivo (PWA) *(Mega)*
 
-- **Acesso imediato** - Funciona em qualquer navegador sem instalação
-- **Instalável** - Adicione à sua área de trabalho como app nativo
-- **Notificações em tempo real** - Nunca perca uma conversa importante
+MEGA funciona como um **Progressive Web App** completo: instale em qualquer dispositivo e tenha uma experiência idêntica a um app nativo, sem passar por lojas de aplicativos.
+
+**Instalação e Experiência Nativa:**
+
+- **Instalável com um toque** - Banner inteligente que aparece automaticamente em dispositivos móveis convidando a instalar o app
+- **Desktop e celular** - Funciona no Chrome, Edge, Safari (iOS/macOS) e qualquer navegador compatível com PWA
+- **Tela cheia** - Executa em modo standalone, sem a barra de endereços do navegador
+- **Splash screen personalizada** - Tela de carregamento animada com o logo e cores da sua marca ao iniciar o app
+- **Atalhos rápidos** - Acesse diretamente Conversas ou Notificações pelo menu contextual do ícone do app
+- **Ícone dinâmico** - O ícone do app é gerado automaticamente a partir do seu logo configurado, em todos os tamanhos necessários (48px a 512px)
+- **Badge monocromático** - Ícone badge otimizado com silhueta monocromática para notificações do sistema
+
+**Notificações Push Avançadas:**
+
+- **Notificações push nativas** - Receba alertas instantâneos mesmo com o app fechado, diretamente no sistema operacional
+- **Resposta rápida inline** - Responda mensagens diretamente pela notificação sem abrir o app
+- **Marcar como lido** - Marque notificações como lidas pela própria notificação com um toque
+- **Empilhamento de mensagens** - Mensagens da mesma conversa são empilhadas em uma única notificação (estilo WhatsApp) mostrando até 10 mensagens
+- **Contador de não lidos** - O badge do ícone do app mostra o número exato de notificações não lidas
+- **Ativação inteligente** - Prompt automático ao abrir a PWA pela primeira vez para ativar notificações com flags pré-configurados (atribuição, menção, mensagem nova)
+- **Som configurável** - Alertas de áudio que funcionam até no iOS, com desbloqueio automático do AudioContext ao primeiro toque
+- **Som diferido** - Se o app está em segundo plano e não consegue reproduzir áudio, reproduz automaticamente quando você volta ao app
+- **Vibração** - Padrão de vibração personalizado em dispositivos móveis ao receber notificações
+
+**Funcionamento Offline:**
+
+- **Página offline personalizada** - Quando não há conexão, exibe uma página elegante com o logo da sua marca e botão de tentar novamente
+- **Cache inteligente** - Os assets estáticos (JS, CSS, fontes, imagens) são cacheados automaticamente para carregamento instantâneo
+- **Navegação resiliente** - As páginas visitadas são cacheadas com estratégia network-first, permitindo acesso mesmo sem conexão
+- **Limpeza automática** - O Service Worker remove caches obsoletos de versões anteriores ao se atualizar
+
+**Personalização de Marca (White-label):**
+
+- **Manifesto dinâmico** - O manifesto PWA é gerado dinamicamente com o nome, descrição, cores e logo da sua instalação
+- **Suporte SVG** - Os logos SVG são convertidos automaticamente para PNG de alta resolução usando rsvg-convert para máxima compatibilidade
+- **Ícones para Apple** - Geração automática de apple-touch-icons em todos os tamanhos exigidos pelo iOS
+- **Splash screens iOS** - 14 resoluções de splash screen pré-geradas para todos os modelos de iPhone e iPad
+- **Cores da marca** - O theme-color e background-color do manifesto usam sua cor primária configurada
 
 ### Aplicativo Móvel *(Em desenvolvimento)*
 

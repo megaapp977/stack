@@ -2,9 +2,9 @@
 
 ## Your Command Center for the Future of Customer Service
 
-**Version:** Enterprise  
-**Based on:** Chatwoot (Open Source) + Mega Exclusive Features  
-**Last Updated:** January 2026
+**Version:** Enterprise
+**Based on:** Chatwoot (Open Source) + Mega Exclusive Features
+**Last Updated:** February 2026
 
 ---
 
@@ -48,6 +48,22 @@ Measure your WhatsApp advertising ROI:
 - **Visual Indicator** - See ad information card in conversation
 - **Attribution** - Connect leads with specific ad campaigns
 
+**Group Members Management:** *(Mega)*
+
+Complete control of WhatsApp groups directly from MEGA:
+
+- **Member List** - View all group participants with their role and status
+- **Automatic Sync** - Members are automatically synced when conversation is created
+- **Add Participants** - Add new members to the group from the platform
+- **Remove Participants** - Remove members from the group without leaving MEGA
+- **Change Roles** - Promote or demote members to admin
+- **Group Mentions** - Use @ to mention specific members in messages
+- **Member Search** - Quickly find participants in large groups
+- **Smart Pagination** - Efficient loading for groups with many members
+- **Member Avatars** - View each participant's profile picture
+- **Background Sync** - Periodic updates of names and photos
+- **Multi-provider Support** - Works with Evolution, WAHA, Uazapi and Cloud API
+
 ### Instagram Direct
 
 Connect with your Instagram audience and convert followers into customers right where they already interact with your brand.
@@ -60,6 +76,7 @@ With over 2 billion active users, Instagram is essential for visual brands. 90% 
 
 - **Direct Messages (DMs)** - Respond to private inquiries from your followers
 - **Story Replies** - Engage with those who react to your stories
+- **Story Replies with Content** - See images and videos attached when replying to your stories
 - **Story Mentions** - Get alerts when you're mentioned
 - **Reactions** - See when they react to your messages
 
@@ -130,6 +147,9 @@ With over one billion active users, TikTok has become an essential platform for 
 - **Stickers** - View stickers your customers send
 - **Shared posts** - When a customer shares a post with you, see it directly in the conversation
 - **Reply to specific messages** - Respond in context to previous messages
+- **Social profile link** - View customer's TikTok profile directly in their contact info
+- **Unsupported messages** - Clear indicators when incompatible content is received
+- **Configurable API version** - Flexibility to adapt to different API versions
 
 **Benefits for your business:**
 
@@ -191,6 +211,8 @@ Your website visitors want immediate answers. Live chat increases conversions by
 - **Dark mode** - Adapts to visitor preferences
 - **Integrated Help Center** - Show help articles directly in the widget
 - **Predefined messages** - Start conversations with context
+- **Allowed domains** - Restrict widget to authorized domains for added security
+- **Show agent name** - Configure per inbox whether the agent's name is shown to visitors
 
 **Benefits for your business:**
 
@@ -411,8 +433,21 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 
 - **Unified view** - All conversations in one place
 - **Advanced filters** - By status, inbox, agent, team, labels
+- **Multi-select filters** - Select multiple inboxes or teams simultaneously
+- **Label filters with AND logic** - Filter by multiple labels that must all match
 - **Custom views** - Save frequent filters as quick views
 - **Powerful search** - Find conversations by content, contact, or metadata
+
+### Message Search in Conversation
+
+Find specific messages within a conversation:
+
+- **Text search** - Search for words or phrases within all messages
+- **Date filter** - Narrow search to a specific date range
+- **Result highlighting** - Found messages are visually highlighted
+- **Auto-scroll** - Navigate instantly to the found message
+- **Result pagination** - Navigate between multiple matches easily
+- **Context preserved** - See the message in its original conversation context
 
 ### Conversation Status
 
@@ -468,6 +503,9 @@ Quick templates with shortcuts for faster responses:
 - **Multimedia attachments** - Images, videos, documents
 - **Emojis and GIFs** - More personal communication
 - **Reply-to** - Respond to specific messages
+- **Draft messages** - Automatically saves drafts as you type, restored when returning to the conversation
+- **Edit sent messages** - Correct messages after sending (provider dependent)
+- **Delete sent messages** - Delete messages for everyone (provider dependent)
 
 ### Pinned Conversations
 
@@ -493,6 +531,7 @@ Save your frequently used filters for quick access:
 
 - **Auto-resolve** - Automatically close inactive conversations
 - **Configurable timers** - Define times per inbox
+- **Orphan conversation cleanup** - Automatically remove conversations without associated contact
 
 ### Bulk Actions
 
@@ -545,6 +584,7 @@ Keep your team connected and productive. Instead of using external tools like Sl
 **Main Features:**
 
 **Room Management (Settings):**
+
 - **Create rooms** - Administrators can create rooms with name and description
 - **Add users** - Multi-select team members from your account
 - **Edit rooms** - Update name, description, and members
@@ -553,15 +593,18 @@ Keep your team connected and productive. Instead of using external tools like Sl
 - **Location** - Accessible from Settings > Chat Rooms
 
 **Permissions & Visibility:**
+
 - **Administrators** - See ALL account rooms in the sidebar, can create/edit/delete any room, can participate in all rooms
 - **Agents & Custom Roles** - Only see rooms where they are members in the sidebar, can only participate in their assigned rooms, cannot create/edit/delete rooms
 
 **Chat Interface:**
+
 - **Sidebar location** - Conversations > Rooms
 - **Room view** - Header with room name + message list + send input
 - **Clean design** - 100% Tailwind CSS, modern and responsive
 
 **Message Types:**
+
 - **Text messages** - Simple text communication
 - **Multimedia** - Images, videos, audio files, documents
 - **Reply** - Respond to specific messages (quotes the original)
@@ -569,6 +612,7 @@ Keep your team connected and productive. Instead of using external tools like Sl
 - **Audio recording** - Integrated audio recorder for voice notes
 
 **Smart Message Layout:**
+
 - **Right side** - Your own messages (outgoing)
   - Different background color
   - Your avatar displayed
@@ -577,18 +621,21 @@ Keep your team connected and productive. Instead of using external tools like Sl
   - Clear sender identification
 
 **Real-Time Notifications:**
+
 - **WebSocket integration** - Using Action Cable for instant delivery
 - **Live updates** - Messages appear immediately without refreshing
 - **Smart broadcasting** - Admins receive events from all rooms, regular users only from their rooms
 - **Event tracking** - Message created and updated events
 
 **Security & Validations:**
+
 - **Member-only access** - Only room members can view and send messages
 - **Admin controls** - Only administrators can manage rooms
 - **Account validation** - Room membership is validated against account
 - **Unique names** - Room names must be unique per account
 
 **Benefits for your team:**
+
 - No need to switch between tools for internal communication
 - Context-aware discussions without leaving customer view
 - Organized communication by topic or department
@@ -655,6 +702,10 @@ Create and configure AI assistants tailored to your business needs:
 - **Custom configuration** - Set temperature, model, and behavior parameters
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
+- **Image comprehension** - Assistant can analyze images sent in conversations
+- **Multimodal support** - Process text and images simultaneously for contextual responses
+- **Ignore groups** - Configure assistant to not respond in group conversations
+- **Ignored targets** - Define specific conversations or contacts the assistant should skip
 
 **Captain Documents:**
 
@@ -683,6 +734,15 @@ Create custom tools for your AI assistant:
 - **Parameter mapping** - Define input/output parameters
 - **Enable/disable** - Toggle tools on or off as needed
 
+**Captain MCP Servers:**
+
+Connect MCP (Model Context Protocol) servers to expand your assistant's capabilities:
+
+- **Standard protocol** - Compatible with the MCP standard for integration with external tools
+- **Assistant assignment** - Link MCP servers to specific assistants
+- **Flexible configuration** - Define URL and connection parameters
+- **Centralized management** - Manage all your MCP servers from settings
+
 **Captain Copilot:**
 
 Real-time AI assistance for your agents:
@@ -701,6 +761,24 @@ Real-time AI assistance for your agents:
 - **Auto labeling** - AI suggests conversation labels
 - **Priority updates** - AI recommends priority changes
 - **Private notes** - AI can add internal notes
+
+**Audio Transcription (Whisper):**
+
+Automatically transcribe audio messages to text:
+
+- **Automatic transcription** - Convert voice notes into readable text
+- **Whisper model** - Uses OpenAI Whisper for high-accuracy transcription
+- **Multi-language** - Support for multiple languages
+- **In-conversation context** - Agents can quickly read audio content
+
+**Supported AI Providers:**
+
+- **OpenAI** - GPT-4o, GPT-4, GPT-3.5 Turbo
+- **Anthropic** - Claude (Sonnet, Opus, Haiku)
+- **Google** - Gemini (Pro, Flash)
+- **Azure OpenAI** - OpenAI deployments on Azure
+- **Amazon Bedrock** - AWS-hosted models
+- **DeepSeek** - Open-source AI models
 
 ---
 
@@ -754,8 +832,11 @@ Enhanced contact management with improved flexibility:
 
 - **Contacts without identifiers** - Allow contacts without email or phone number
 - **Improved search** - Better contact discovery and filtering
+- **Search by company** - Find contacts by company/organization name
 - **Resolved contacts** - Smarter logic for identifying real contacts
 - **Export compatibility** - Works with all export features
+- **Infinite scroll** - Automatic loading of more contacts as you scroll
+- **Smart pagination** - Indicator for more results available
 
 ---
 
@@ -812,6 +893,7 @@ Mass sends to a segmented audience:
 
 - Customizable message with free text
 - Emoji support
+- **Spintax** - Automatic text variations using `{Hello|Hi} {friend|buddy}` syntax for unique messages per recipient
 
 **File attachments** *(Evolution/WAHA/Uazapi/API)*:
 
@@ -1005,6 +1087,13 @@ Complete voice channel analytics:
 - **1-5 ratings** - Satisfaction scale
 - **Comments** - Qualitative feedback
 - **Filters** - By agent, inbox, team, date
+- **Review notes** *(Enterprise)* - Add internal notes to CSAT responses for quality tracking
+
+### Summary Reports
+
+- **Consolidated metrics** - Overview of key metrics in one place
+- **Period filters** - Filter by custom date range
+- **Grouping** - Group data by agent, team, or inbox
 
 ### Export
 
@@ -1066,6 +1155,8 @@ Define conversation limits per agent:
 - **Inbox availability** - Define service hours
 - **Timezones** - Multi-region support
 - **After-hours messages** - Automatic responses
+- **Lunch break** - Configure break intervals within business hours
+- **Per-day schedules** - Define different hours for each day of the week
 
 ### Notification Settings
 
@@ -1167,6 +1258,15 @@ Video calls integrated directly into the conversation:
 - **Reply box button** - Quick access from reply box
 - **Video message type** - Calls appear in timeline
 
+### Google Translate
+
+Automatic message translation in conversations:
+
+- **Automatic translation** - Translate incoming messages to your configured language
+- **Language detection** - Automatically identifies the message language
+- **In-context translation** - Translated messages displayed inline in the conversation
+- **Multi-language support** - Compatible with all Google Translate languages
+
 ### Linear *(Enterprise)*
 
 - **Ticket management** - Create issues from conversations
@@ -1229,12 +1329,31 @@ Customize email communications with your branding:
 
 ### SAML/SSO
 
-- **Single Sign-On** - Enterprise authentication
-- **Identity providers** - Okta, Azure AD, etc.
-- **Centralized security** - Unified access management
-- **Role mappings** - Map SAML groups to Chatwoot roles
-- **Auto-conversion** - Existing users automatically converted to SAML
-- **Per-account settings** - SAML configuration per account
+Enterprise Single Sign-On for centralized authentication:
+
+**Supported providers:**
+
+- **Okta** - Full Okta integration
+- **Azure AD** - Microsoft Entra ID
+- **Google Workspace** - Google as identity provider
+- **OneLogin** - Full support
+- **Auth0** - Integration available
+- **Generic SAML 2.0** - Any compatible provider
+
+**Features:**
+
+- **Auto-provisioning** - Automatically create users on first login
+- **Group mapping** - Sync groups/teams from IdP
+- **Force SSO** - Require SSO for all account users
+- **Multiple domains** - Configure SSO for different email domains
+- **Single Logout** - SLO supported
+
+**Security:**
+
+- **Centralized authentication** - Unified access management
+- **IdP password policies** - Use corporate password rules
+- **IdP MFA** - Multi-factor authentication from provider
+- **Instant revocation** - Remove access by deactivating in IdP
 
 ### Advanced Assignment (V2)
 
@@ -1247,6 +1366,22 @@ Customize email communications with your branding:
 - **Full indexing** - Search all messages
 - **Combined filters** - Multiple simultaneous criteria
 - **Instant results** - Optimized performance
+
+### Required Conversation Attributes
+
+Force agents to complete specific attributes before resolving conversations:
+
+- **Required fields** - Define which custom attributes must be filled
+- **Resolution validation** - Block resolution until required fields are completed
+- **Improved data quality** - Ensure every conversation has the necessary information
+
+### Voice Conferences
+
+Voice conference calls between agents and customers:
+
+- **Multi-party calls** - Connect multiple participants in one call
+- **Conference management** - Full conference controls
+- **Integrated in conversations** - Conferences are linked to existing conversations
 
 ### Custom Branding
 
@@ -1293,6 +1428,27 @@ Create roles tailored to your organization with granular permission control:
 ---
 
 ## ⭐ Mega Exclusive Features
+
+### 📅 Scheduled Messages
+
+Schedule automatic message delivery in your conversations:
+
+- **Flexible scheduling** - Choose exact date and time to send the message
+- **Recurrence** - Schedule recurring messages: daily, weekly, monthly, or yearly
+- **Templates** - Use predefined message templates for scheduled sends
+- **Attachments** - Include images, documents, and files in scheduled messages
+- **Status tracking** - Monitor status: pending, sent, failed, cancelled
+- **Cancellation** - Cancel scheduled messages before they are sent
+- **Multiple per conversation** - Schedule several messages in the same conversation
+- **History** - View the history of scheduled messages and their status
+
+### 🔒 Deleted Message Placeholder
+
+Configure per inbox whether deleted messages show a placeholder or disappear completely:
+
+- **Visible placeholder** - Shows "This message was deleted" instead of removing completely
+- **Per-inbox configuration** - Each channel can have its own setting
+- **Transparency** - Maintains conversation context by indicating a message was deleted
 
 ### Alternative WhatsApp Providers
 
@@ -1373,6 +1529,15 @@ Economic and scalable solution for high-volume operations.
 - Texts, images, videos
 - Audio and voice notes
 - Documents
+
+**Chat filter configuration:**
+
+Define which conversations you want to receive in the platform:
+
+- **Filter by type** - Receive only individual chats, groups, or both
+- **Exclusion list** - Ignore specific numbers
+- **Inclusion list** - Receive only from specific numbers
+- **UI configuration** - Manage filters directly from channel settings
 
 **Ideal for:**
 
@@ -1526,11 +1691,46 @@ Annual statistics and insights for your account:
 
 ## 📱 Applications
 
-### Web Application
+### Progressive Web App (PWA) *(Mega)*
 
-- **Immediate access** - Works from any browser without installation
-- **Installable** - Add to your desktop as native app
-- **Real-time notifications** - Never miss an important conversation
+MEGA works as a full **Progressive Web App**: install it on any device and get a native app-like experience without going through app stores.
+
+**Installation & Native Experience:**
+
+- **One-tap install** - Smart banner automatically appears on mobile devices inviting users to install the app
+- **Desktop and mobile** - Works on Chrome, Edge, Safari (iOS/macOS) and any PWA-compatible browser
+- **Full screen** - Runs in standalone mode, without the browser address bar
+- **Custom splash screen** - Animated loading screen with your brand logo and colors when launching the app
+- **Quick shortcuts** - Access Conversations or Notifications directly from the app icon's context menu
+- **Dynamic icon** - The app icon is automatically generated from your configured logo, in all required sizes (48px to 512px)
+- **Monochrome badge** - Optimized badge icon with monochrome silhouette for system notifications
+
+**Advanced Push Notifications:**
+
+- **Native push notifications** - Receive instant alerts even with the app closed, directly in the operating system
+- **Inline quick reply** - Reply to messages directly from the notification without opening the app
+- **Mark as read** - Mark notifications as read from the notification itself with a single tap
+- **Message stacking** - Messages from the same conversation stack into a single notification (WhatsApp-style) showing up to 10 messages
+- **Unread counter** - The app icon badge shows the exact number of unread notifications
+- **Smart activation** - Automatic prompt when opening the PWA for the first time to enable notifications with pre-configured flags (assignment, mention, new message)
+- **Configurable sound** - Audio alerts that work even on iOS, with automatic AudioContext unlock on first touch
+- **Deferred sound** - If the app is in the background and can't play audio, it automatically plays when you return to the app
+- **Vibration** - Custom vibration pattern on mobile devices when receiving notifications
+
+**Offline Support:**
+
+- **Custom offline page** - When there's no connection, displays an elegant page with your brand logo and retry button
+- **Smart caching** - Static assets (JS, CSS, fonts, images) are automatically cached for instant loading
+- **Resilient navigation** - Visited pages are cached with a network-first strategy, allowing access even without connection
+- **Automatic cleanup** - The Service Worker removes outdated caches from previous versions when updating
+
+**Brand Customization (White-label):**
+
+- **Dynamic manifest** - The PWA manifest is dynamically generated with your installation's name, description, colors and logo
+- **SVG support** - SVG logos are automatically converted to high-resolution PNG using rsvg-convert for maximum compatibility
+- **Apple icons** - Automatic generation of apple-touch-icons in all sizes required by iOS
+- **iOS splash screens** - 14 pre-generated splash screen resolutions for all iPhone and iPad models
+- **Brand colors** - The manifest's theme-color and background-color use your configured primary color
 
 ### Mobile Application *(In development)*
 
