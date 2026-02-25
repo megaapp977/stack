@@ -4,6 +4,14 @@
 #
 # bundle exec rails db:chatwoot_prepare
 #
+# Sidekiq dividido en 3 workers:
+#   Worker 1 (critical): critical, high, default
+#   Worker 2 (medium):   medium, mailers, action_mailbox_routing, scheduled_messages
+#   Worker 3 (low):      low, scheduled_jobs, deferred, purgable, housekeeping,
+#                         async_database_migration, bulk_reindex_low,
+#                         active_storage_analysis, active_storage_purge,
+#                         action_mailbox_incineration
+#
 #############
 
 x-variables:
@@ -40,7 +48,7 @@ x-variables:
   # STORAGE_ENDPOINT=https://nyc3.digitaloceanspaces.com
   #set force_path_style to true if using minio
   #STORAGE_FORCE_PATH_STYLE=true
-  
+
   DIRECT_UPLOADS_ENABLED: "true"
   RAILS_LOG_TO_STDOUT: "true"
   USE_INBOX_AVATAR_FOR_BOT: "true"
@@ -54,9 +62,7 @@ x-variables:
   SMTP_ENABLE_STARTTLS_AUTO: "true"
   SMTP_OPENSSL_VERIFY_MODE: peer
   MAILER_INBOUND_EMAIL_DOMAIN: example.com
-  SIDEKIQ_CONCURRENCY: 20
   WEB_CONCURRENCY: 2
-  RAILS_MAX_THREADS: 20
   RACK_TIMEOUT_SERVICE_TIMEOUT: 0
   ENABLE_RACK_ATTACK: "false"
   TZ: UTC
@@ -71,6 +77,7 @@ x-variables:
   UAZAPI_ADMIN_TOKEN: exampletoken1234567890
   # SSO activation login
   SSO: "false"
+
 services:
   mega_app:
     image: sendingtk/chatwoot:v4.11.0
@@ -102,7 +109,6 @@ services:
       # - /opt/branding/mega/brand-assets/logo_dark.svg:/app/public/brand-assets/logo_dark.svg
       # - /opt/branding/mega/brand-assets/logo_thumbnail.svg:/app/public/brand-assets/logo_thumbnail.svg
       # - /opt/branding/mega/brand-assets/logo_thumbnail_dark.svg:/app/public/brand-assets/logo_thumbnail_dark.svg
-
     networks:
       - examplenet
     environment:
@@ -129,9 +135,16 @@ services:
         - traefik.http.routers.mega_app.middlewares=sslheader
         - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
 
-  mega_sidekiq:
+  ##############################################################
+  # SIDEKIQ WORKER 1 – CRITICAL
+  # Colas: critical, high, default
+  # Procesa: mensajes en tiempo real, enrutamiento de
+  # conversaciones, webhooks entrantes, asignaciones y todo
+  # lo que requiere respuesta inmediata.
+  ##############################################################
+  mega_sidekiq_critical:
     image: sendingtk/chatwoot:v4.11.0
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    command: bundle exec sidekiq -q critical -q high -q default -c 15
     restart: always
     networks:
       - examplenet
@@ -139,16 +152,80 @@ services:
       - examplechat_dat:/app/storage
     environment:
       <<: *default_env
+      SIDEKIQ_CONCURRENCY: 15
+      RAILS_MAX_THREADS: 15
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
       placement:
         constraints:
           - node.role == manager
       resources:
         limits:
-          cpus: "3"
+          cpus: "2"
           memory: 2048M
+
+  ##############################################################
+  # SIDEKIQ WORKER 2 – MEDIUM
+  # Colas: medium, mailers, action_mailbox_routing, scheduled_messages
+  # Procesa: envío de emails, routing de action_mailbox,
+  # mensajes programados y tareas de prioridad media.
+  ##############################################################
+  mega_sidekiq_medium:
+    image: sendingtk/chatwoot:v4.11.0
+    command: bundle exec sidekiq -q medium -q mailers -q action_mailbox_routing -q scheduled_messages -c 10
+    restart: always
+    networks:
+      - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
+    environment:
+      <<: *default_env
+      SIDEKIQ_CONCURRENCY: 10
+      RAILS_MAX_THREADS: 10
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+  ##############################################################
+  # SIDEKIQ WORKER 3 – LOW
+  # Colas: low, scheduled_jobs, deferred, purgable, housekeeping,
+  #        async_database_migration, bulk_reindex_low,
+  #        active_storage_analysis, active_storage_purge,
+  #        action_mailbox_incineration
+  # Procesa: tareas programadas, limpieza, migraciones async,
+  # reindexación, análisis/purga de active_storage, incineración
+  # de mailbox. Toleran mayor latencia.
+  ##############################################################
+  mega_sidekiq_low:
+    image: sendingtk/chatwoot:v4.11.0
+    command: bundle exec sidekiq -q low -q scheduled_jobs -q deferred -q purgable -q housekeeping -q async_database_migration -q bulk_reindex_low -q active_storage_analysis -q active_storage_purge -q action_mailbox_incineration -c 10
+    restart: always
+    networks:
+      - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
+    environment:
+      <<: *default_env
+      SIDEKIQ_CONCURRENCY: 10
+      RAILS_MAX_THREADS: 10
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
 
   example_redis:
     image: redis:7.4.2
@@ -163,10 +240,12 @@ services:
         limits:
           cpus: "2"
           memory: 2048M
+
 volumes:
   examplechat_dat:
     external: true
     name: examplechat_dat
+
 networks:
   examplenet:
     external: true
