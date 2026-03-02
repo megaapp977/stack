@@ -17,7 +17,7 @@ services:
 ## --------------------------- CHATWOOT APP --------------------------- ##
 
   chatwoot_app:
-    image: sendingtk/chatwoot:v4.11.0 ## Versão do Chatwoot
+    image: sendingtk/chatwoot:v4.11.1 ## Versão do Chatwoot
     command: bundle exec rails s -p 3000 -b 0.0.0.0
 
     volumes:
@@ -117,7 +117,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_critical:
-    image: sendingtk/chatwoot:v4.11.0 ## Versão do Chatwoot
+    image: sendingtk/chatwoot:v4.11.1 ## Versão do Chatwoot
     command: bundle exec sidekiq -q critical -q high -q default -c 15
 
     volumes:
@@ -207,7 +207,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_medium:
-    image: sendingtk/chatwoot:v4.11.0 ## Versão do Chatwoot
+    image: sendingtk/chatwoot:v4.11.1 ## Versão do Chatwoot
     command: bundle exec sidekiq -q medium -q mailers -q action_mailbox_routing -q scheduled_messages -c 10
 
     volumes:
@@ -300,7 +300,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_low:
-    image: sendingtk/chatwoot:v4.11.0 ## Versão do Chatwoot
+    image: sendingtk/chatwoot:v4.11.1 ## Versão do Chatwoot
     command: bundle exec sidekiq -q low -q scheduled_jobs -q deferred -q purgable -q housekeeping -q async_database_migration -q bulk_reindex_low -q active_storage_analysis -q active_storage_purge -q action_mailbox_incineration -c 10
 
     volumes:
@@ -386,25 +386,67 @@ services:
 ## --------------------------- REDIS --------------------------- ##
 
   chatwoot_redis:
-    image: redis:7.4.2  ## Versão do Redis
+    image: redis:7.4.2
     command: [
         "redis-server",
+        "--port",
+        "6379",
+        # Memoria — dejar 512MB+ de overhead para el proceso
+        "--maxmemory",
+        "1536mb",
+        "--maxmemory-policy",
+        "noeviction",
+        # Persistencia mínima para Sidekiq (protege jobs encolados)
         "--appendonly",
         "yes",
-        "--port",
-        "6379"
+        "--appendfsync",
+        "everysec",
+        "--auto-aof-rewrite-percentage",
+        "100",
+        "--auto-aof-rewrite-min-size",
+        "64mb",
+        "--save",
+        "",
+        # Conexiones
+        "--tcp-backlog",
+        "511",
+        "--timeout",
+        "300",
+        "--tcp-keepalive",
+        "60",
+        "--maxclients",
+        "10000",
+        # Diagnósticos (esenciales para troubleshooting)
+        "--slowlog-log-slower-than",
+        "10000",
+        "--slowlog-max-len",
+        "128",
+        "--latency-monitor-threshold",
+        "100",
+        # NO usar io-threads con 1 CPU
+        # "--io-threads", "4",
+        # "--io-threads-do-reads", "yes",
+        # Rendimiento
+        "--hz",
+        "50",
+        "--dynamic-hz",
+        "yes",
+        "--activedefrag",
+        "yes",
       ]
-
     networks:
       - mired ## Nome da rede interna
-
+    volumes:
+      - mega_redis_data:/data
     deploy:
       placement:
         constraints:
           - node.role == manager
       resources:
         limits:
-          cpus: "1"
+          cpus: "2"
+          memory: 2560M
+        reservations:
           memory: 1024M
 
 ## --------------------------- VOLUMES & REDES --------------------------- ##
@@ -413,6 +455,10 @@ volumes:
   chatwoot_storage:
     external: true
     name: chatwoot_storage
+
+  mega_redis_data:
+    external: true
+    name: mega_redis_data
 
 networks:
   mired: ## Nome da rede interna

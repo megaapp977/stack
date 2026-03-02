@@ -6,8 +6,7 @@
 #
 #############
 
-x-variables:
-  &default_env
+x-variables: &default_env
   INSTALLATION_NAME: ExampleChat
   NODE_ENV: production
   RAILS_ENV: production
@@ -40,7 +39,7 @@ x-variables:
   # STORAGE_ENDPOINT=https://nyc3.digitaloceanspaces.com
   #set force_path_style to true if using minio
   #STORAGE_FORCE_PATH_STYLE=true
-  
+
   DIRECT_UPLOADS_ENABLED: "true"
   RAILS_LOG_TO_STDOUT: "true"
   USE_INBOX_AVATAR_FOR_BOT: "true"
@@ -73,7 +72,7 @@ x-variables:
   SSO: "false"
 services:
   mega_app:
-    image: sendingtk/chatwoot:v4.11.0
+    image: sendingtk/chatwoot:v4.11.1
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     entrypoint: docker/entrypoints/rails.sh
     restart: always
@@ -130,7 +129,7 @@ services:
         - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
 
   mega_sidekiq:
-    image: sendingtk/chatwoot:v4.11.0
+    image: sendingtk/chatwoot:v4.11.1
     command: bundle exec sidekiq -C config/sidekiq.yml
     restart: always
     networks:
@@ -150,11 +149,59 @@ services:
           cpus: "3"
           memory: 2048M
 
-  example_redis:
+  redis:
     image: redis:7.4.2
-    restart: always
+    command: [
+        "redis-server",
+        "--port",
+        "6379",
+        # Memoria — dejar 512MB+ de overhead para el proceso
+        "--maxmemory",
+        "1536mb",
+        "--maxmemory-policy",
+        "noeviction",
+        # Persistencia mínima para Sidekiq (protege jobs encolados)
+        "--appendonly",
+        "yes",
+        "--appendfsync",
+        "everysec",
+        "--auto-aof-rewrite-percentage",
+        "100",
+        "--auto-aof-rewrite-min-size",
+        "64mb",
+        "--save",
+        "",
+        # Conexiones
+        "--tcp-backlog",
+        "511",
+        "--timeout",
+        "300",
+        "--tcp-keepalive",
+        "60",
+        "--maxclients",
+        "10000",
+        # Diagnósticos (esenciales para troubleshooting)
+        "--slowlog-log-slower-than",
+        "10000",
+        "--slowlog-max-len",
+        "128",
+        "--latency-monitor-threshold",
+        "100",
+        # NO usar io-threads con 1 CPU
+        # "--io-threads", "4",
+        # "--io-threads-do-reads", "yes",
+        # Rendimiento
+        "--hz",
+        "50",
+        "--dynamic-hz",
+        "yes",
+        "--activedefrag",
+        "yes",
+      ]
     networks:
-      - examplenet
+      - mired ## Nome da rede interna
+    volumes:
+      - mega_redis_data:/data
     deploy:
       placement:
         constraints:
@@ -162,11 +209,16 @@ services:
       resources:
         limits:
           cpus: "2"
-          memory: 2048M
+          memory: 2560M
+        reservations:
+          memory: 1024M
 volumes:
   examplechat_dat:
     external: true
     name: examplechat_dat
+  mega_redis_data:
+    external: true
+    name: mega_redis_data
 networks:
   examplenet:
     external: true
