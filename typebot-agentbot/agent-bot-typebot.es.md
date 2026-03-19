@@ -33,6 +33,8 @@ Se envían solo en la primera solicitud de una sesión:
 - Contacto: `contact_name`, `contact_email`, `contact_phone`, `contact_id`, `contact_labels`, `contact_attributes`, `contact_custom_attribute_<key>`
 - Conversación: `conversation_labels`, `conversation_id`, `conversation_display_id`, `conversation_attributes`, `custom_attribute_<key>`
 - Cuenta: `account_id`
+- Agentes: `agents_json` (array JSON con id, name, availability_status), `agents_formatted` (lista numerada con emoji de disponibilidad, ej: `1. 🟢 Juan`)
+- Equipos: `teams_json` (array JSON con id y name), `teams_formatted` (lista numerada, ej: `1. Ventas`)
 
 Los valores de `<key>` se sanitizan a snake_case en minúsculas.
 
@@ -58,3 +60,71 @@ Los valores de `<key>` se sanitizan a snake_case en minúsculas.
 - Asegúrese de que `public_name` coincida con el slug público publicado en Typebot y que `api_token` esté configurado para bots privados.
 - Para los disparadores por palabra clave, confirme que tanto `trigger_operator` como `trigger_value` están configurados.
 - Si las respuestas se detienen a mitad del flujo, revise `additional_attributes.typebot` en la conversación en busca de un `session_id` obsoleto y considere usar la palabra clave de finalización o volver a abrir/cerrar la conversación para reiniciarla.
+
+## MEGA_CMD — Intercepción local de comandos
+
+Dado que un servidor Typebot externo generalmente no puede hacer llamadas HTTP de vuelta a la instancia de Mega (firewalls, aislamiento de red Docker, etc.), MEGA_CMD proporciona una forma de ejecutar acciones localmente sin webhooks.
+
+### Cómo funciona
+
+1. En tu flujo de Typebot, incluye una **burbuja de texto** con un marcador de comando: `[MEGA_CMD:acción:valor]`
+2. Cuando Mega recibe la respuesta de Typebot, intercepta el marcador **antes** de enviar el mensaje a la conversación.
+3. El comando se ejecuta del lado del servidor (ej: asignar un agente o equipo).
+4. El marcador se elimina del texto — el usuario final nunca lo ve.
+
+### Acciones soportadas
+
+| Acción | Valor | Ejemplo | Descripción |
+|--------|-------|---------|-------------|
+| `assign_agent` | ID del agente | `[MEGA_CMD:assign_agent:5]` | Asigna el agente con id 5 a la conversación |
+| `assign_team` | ID del equipo | `[MEGA_CMD:assign_team:3]` | Asigna el equipo con id 3 a la conversación |
+
+### Ejemplo en un flujo de Typebot
+
+Una burbuja de texto en Typebot puede contener:
+
+```text
+¡Gracias! Serás conectado con nuestro equipo de soporte en breve.
+[MEGA_CMD:assign_team:3]
+```
+
+El usuario ve solo: *"¡Gracias! Serás conectado con nuestro equipo de soporte en breve."*
+
+El comando puede combinarse con texto regular. También se soportan múltiples comandos en el mismo mensaje.
+
+## Placeholders de listas — Menús numerados dinámicos
+
+La interpolación de variables de Typebot puede ser poco confiable al construir listas numeradas para WhatsApp (no soporta botones). Mega provee **placeholders de listas** del lado del servidor que se reemplazan con listas numeradas generadas dinámicamente antes de entregar el mensaje.
+
+### Placeholders disponibles
+
+| Placeholder | Se reemplaza con |
+|-------------|-----------------|
+| `[TEAMS_LIST]` | Lista numerada de todos los equipos de la cuenta, ordenados por nombre. Ejemplo: `1. Ventas\n2. Soporte` |
+| `[AGENTS_LIST]` | Lista numerada de agentes en línea con emoji de disponibilidad. Ejemplo: `1. 🟢 Juan\n2. 🟢 María` |
+
+### Cómo usar en un flujo de Typebot
+
+En una burbuja de texto, incluye el placeholder:
+
+```text
+Por favor selecciona un equipo:
+
+[TEAMS_LIST]
+
+0. ⬅️ Volver al menú
+```
+
+Mega reemplaza `[TEAMS_LIST]` con la lista numerada real antes de entregar el mensaje.
+
+### Escape de listas Markdown
+
+Las listas numeradas (ej: `1. Ventas`) normalmente serían parseadas como listas ordenadas por el renderizador Markdown del dashboard, lo que renumera los ítems (ej: convirtiendo `0.` en `3.`). Mega inserta un espacio de ancho cero (U+200B) entre el dígito-punto y el espacio para evitar esto, manteniendo la numeración original tanto en WhatsApp como en el dashboard.
+
+## Acceso API con token de bot
+
+Para soportar las variables prellenadas con datos de agentes y equipos, los siguientes endpoints de la API son accesibles con tokens de bot:
+
+- `GET /api/v1/accounts/:id/agents` — Listar agentes
+- `GET /api/v1/accounts/:id/teams` — Listar equipos
+- `GET /api/v1/accounts/:id/contacts` — Listar/crear/actualizar contactos

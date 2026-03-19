@@ -33,6 +33,8 @@ Sent only on the first request of a session:
 - Contact: `contact_name`, `contact_email`, `contact_phone`, `contact_id`, `contact_labels`, `contact_attributes`, `contact_custom_attribute_<key>`
 - Conversation: `conversation_labels`, `conversation_id`, `conversation_display_id`, `conversation_attributes`, `custom_attribute_<key>`
 - Account: `account_id`
+- Agents: `agents_json` (JSON array with id, name, availability_status), `agents_formatted` (numbered list with availability emoji, e.g., `1. 🟢 John`)
+- Teams: `teams_json` (JSON array with id and name), `teams_formatted` (numbered list, e.g., `1. Sales`)
 
 `<key>` values are sanitized to lowercase snake_case.
 
@@ -58,3 +60,71 @@ Sent only on the first request of a session:
 - Ensure `public_name` matches the Typebot publish slug and `api_token` is set for private bots.
 - For keyword triggers, confirm both `trigger_operator` and `trigger_value` are configured.
 - If responses stop mid-flow, check `additional_attributes.typebot` on the conversation for a stale `session_id` and consider using the finish keyword or reopening/closing the conversation to reset.
+
+## MEGA_CMD — Local command interception
+
+Since an external Typebot server often cannot make HTTP calls back to the Mega instance (firewalls, Docker network isolation, etc.), MEGA_CMD provides a way to execute actions locally without webhooks.
+
+### How it works
+
+1. In your Typebot flow, include a **text bubble** with a command marker: `[MEGA_CMD:action:value]`
+2. When Mega receives the Typebot response, it intercepts the marker **before** sending the message to the conversation.
+3. The command is executed server-side (e.g., assign an agent or team).
+4. The marker is stripped from the text — the end user never sees it.
+
+### Supported actions
+
+| Action | Value | Example | Description |
+|--------|-------|---------|-------------|
+| `assign_agent` | Agent ID | `[MEGA_CMD:assign_agent:5]` | Assigns agent with id 5 to the conversation |
+| `assign_team` | Team ID | `[MEGA_CMD:assign_team:3]` | Assigns team with id 3 to the conversation |
+
+### Example in a Typebot flow
+
+A text bubble in Typebot might contain:
+
+```
+Thank you! You will be connected to our support team shortly.
+[MEGA_CMD:assign_team:3]
+```
+
+The user sees only: *"Thank you! You will be connected to our support team shortly."*
+
+The command can be combined with regular text. Multiple commands in the same message are also supported.
+
+## List placeholders — Dynamic numbered menus
+
+Typebot's variable interpolation can be unreliable when building numbered lists for WhatsApp (no button support). Mega provides server-side **list placeholders** that are replaced with dynamically generated, numbered lists before the message is delivered.
+
+### Available placeholders
+
+| Placeholder | Replaced with |
+|-------------|---------------|
+| `[TEAMS_LIST]` | Numbered list of all teams in the account, ordered by name. Example: `1. Sales\n2. Support` |
+| `[AGENTS_LIST]` | Numbered list of online agents with availability emoji. Example: `1. 🟢 John\n2. 🟢 Maria` |
+
+### How to use in a Typebot flow
+
+In a text bubble, include the placeholder:
+
+```
+Please select a team:
+
+[TEAMS_LIST]
+
+0. ⬅️ Back to menu
+```
+
+Mega replaces `[TEAMS_LIST]` with the actual numbered list before delivering the message.
+
+### Markdown list escaping
+
+Numbered lists (e.g., `1. Sales`) would normally be parsed as ordered lists by the dashboard's Markdown renderer, which renumbers items (e.g., turning `0.` into `3.`). Mega inserts a zero-width space (U+200B) between the digit-dot and the space to prevent this, keeping the original numbering intact in both WhatsApp and the dashboard.
+
+## Bot token API access
+
+To support prefilled variables with agent and team data, the following API endpoints are accessible with bot tokens:
+
+- `GET /api/v1/accounts/:id/agents` — List agents
+- `GET /api/v1/accounts/:id/teams` — List teams
+- `GET /api/v1/accounts/:id/contacts` — List/create/update contacts
