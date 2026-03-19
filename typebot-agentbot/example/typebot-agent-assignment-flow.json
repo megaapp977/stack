@@ -1,0 +1,1081 @@
+{
+    "version": "6.1",
+    "id": "mega-agent-assignment-flow-v3",
+    "name": "Mega - Asignación de Agentes y Equipos v3",
+    "events": [
+        {
+            "id": "evt_start",
+            "outgoingEdgeId": "edge_start_to_config",
+            "graphCoordinates": {
+                "x": 0,
+                "y": 0
+            },
+            "type": "start"
+        }
+    ],
+    "groups": [
+        {
+            "id": "grp_config",
+            "title": "Configuración",
+            "graphCoordinates": {
+                "x": 50,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_parse_agents",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_agents_parsed",
+                        "expressionToEvaluate": "try {\n  let raw = {{agents_json}}\n  if (typeof raw === 'string') raw = JSON.parse(raw)\n  if (!Array.isArray(raw)) return '[]'\n  return JSON.stringify(raw)\n} catch(e) { return '[]' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_parse_teams",
+                    "outgoingEdgeId": "edge_config_to_welcome",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_teams_parsed",
+                        "expressionToEvaluate": "try {\n  let raw = {{teams_json}}\n  if (typeof raw === 'string') raw = JSON.parse(raw)\n  if (!Array.isArray(raw)) return '[]'\n  return JSON.stringify(raw)\n} catch(e) { return '[]' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_welcome",
+            "title": "Menú Principal",
+            "graphCoordinates": {
+                "x": 400,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_welcome_text",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "Hola 👋 "
+                                    },
+                                    {
+                                        "bold": true,
+                                        "text": "{{contact_name}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "¿Cómo te gustaría que te atendamos?"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "1. 🤖 Agente disponible (automático)"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "2. 👤 Elegir un agente"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "3. 👥 Elegir un equipo"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "blk_welcome_input",
+                    "outgoingEdgeId": "edge_welcome_to_menu_cond",
+                    "type": "text input",
+                    "options": {
+                        "variableId": "var_user_choice",
+                        "labels": {
+                            "placeholder": "Escribe 1, 2 o 3"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_menu_condition",
+            "title": "Condición del Menú",
+            "graphCoordinates": {
+                "x": 800,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_menu_cond",
+                    "outgoingEdgeId": "edge_menu_default_to_welcome",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_cond_auto",
+                            "outgoingEdgeId": "edge_cond_to_auto",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_auto",
+                                        "variableId": "var_user_choice",
+                                        "comparisonOperator": "Equal to",
+                                        "value": "1"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "item_cond_agent",
+                            "outgoingEdgeId": "edge_cond_to_agent",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_agent",
+                                        "variableId": "var_user_choice",
+                                        "comparisonOperator": "Equal to",
+                                        "value": "2"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "item_cond_team",
+                            "outgoingEdgeId": "edge_cond_to_team",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_team",
+                                        "variableId": "var_user_choice",
+                                        "comparisonOperator": "Equal to",
+                                        "value": "3"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "grp_auto_assign",
+            "title": "Auto-asignar Agente",
+            "graphCoordinates": {
+                "x": 1200,
+                "y": -200
+            },
+            "blocks": [
+                {
+                    "id": "blk_auto_pick_id",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_agent_id",
+                        "expressionToEvaluate": "try {\n  const agents = JSON.parse({{agents_parsed}})\n  if (!agents.length) return ''\n  const online = agents.find(a => a.availability_status === 'online')\n  if (online) return String(online.id)\n  const busy = agents.find(a => a.availability_status === 'busy')\n  if (busy) return String(busy.id)\n  return String(agents[0].id)\n} catch(e) { return '' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_auto_pick_name",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_agent_name",
+                        "expressionToEvaluate": "try {\n  const agents = JSON.parse({{agents_parsed}})\n  const selId = String({{selected_agent_id}})\n  const found = agents.find(a => String(a.id) === selId)\n  return found ? found.name : 'un agente'\n} catch(e) { return 'un agente' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_auto_check",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_auto_found",
+                            "outgoingEdgeId": "edge_auto_to_confirm",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_auto_found",
+                                        "variableId": "var_selected_agent_id",
+                                        "comparisonOperator": "Is set"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outgoingEdgeId": "edge_auto_to_no_agents"
+                }
+            ]
+        },
+        {
+            "id": "grp_auto_confirm",
+            "title": "Confirmar Auto-asignación",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": -200
+            },
+            "blocks": [
+                {
+                    "id": "blk_auto_confirm_text",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "✅ Te conectamos con "
+                                    },
+                                    {
+                                        "bold": true,
+                                        "text": "{{selected_agent_name}}"
+                                    },
+                                    {
+                                        "text": ". Te atenderá en breve 🙌"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "[MEGA_CMD:assign_agent:{{selected_agent_id}}]"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_auto_no_agents",
+            "title": "Sin Agentes Disponibles",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": -400
+            },
+            "blocks": [
+                {
+                    "id": "blk_no_agents_msg",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "😔 No hay agentes disponibles en este momento."
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "Tu conversación será abierta y te atenderán lo antes posible. 🙌"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_choose_agent",
+            "title": "Elegir Agente",
+            "graphCoordinates": {
+                "x": 1200,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_format_agents",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_agents_list_text",
+                        "expressionToEvaluate": "{{agents_formatted}}",
+                        "type": "Custom",
+                        "isCode": false
+                    }
+                },
+                {
+                    "id": "blk_show_agents",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "bold": true,
+                                        "text": "👤 Elige un agente:"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "🟢 Online  🟡 Ocupado  ⚪ Offline"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "[AGENTS_LIST]"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "0. ⬅️ Volver al menú"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "blk_agent_input",
+                    "outgoingEdgeId": "edge_agent_input_to_validate",
+                    "type": "text input",
+                    "options": {
+                        "variableId": "var_agent_pick_number",
+                        "labels": {
+                            "placeholder": "Escribe el número del agente o 0 para volver"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_agent_validate",
+            "title": "Validar Agente",
+            "graphCoordinates": {
+                "x": 1400,
+                "y": 0
+            },
+            "blocks": [
+                {
+                    "id": "blk_agent_back_check",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_agent_back",
+                            "outgoingEdgeId": "edge_agent_back_to_welcome",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_agent_back",
+                                        "variableId": "var_agent_pick_number",
+                                        "comparisonOperator": "Equal to",
+                                        "value": "0"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outgoingEdgeId": "edge_agent_to_map"
+                }
+            ]
+        },
+        {
+            "id": "grp_agent_map",
+            "title": "Mapear Agente",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_map_agent_id",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_agent_id",
+                        "expressionToEvaluate": "try {\n  const agents = JSON.parse({{agents_parsed}})\n  const pick = parseInt({{agent_pick_number}})\n  if (!agents.length || isNaN(pick) || pick < 1 || pick > agents.length) return ''\n  return String(agents[pick - 1].id)\n} catch(e) { return '' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_map_agent_name",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_agent_name",
+                        "expressionToEvaluate": "try {\n  const agents = JSON.parse({{agents_parsed}})\n  const pick = parseInt({{agent_pick_number}})\n  if (!agents.length || isNaN(pick) || pick < 1 || pick > agents.length) return ''\n  return agents[pick - 1].name\n} catch(e) { return '' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_agent_valid_check",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_agent_valid",
+                            "outgoingEdgeId": "edge_agent_to_confirm",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_agent_valid",
+                                        "variableId": "var_selected_agent_id",
+                                        "comparisonOperator": "Is set"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outgoingEdgeId": "edge_agent_to_invalid"
+                }
+            ]
+        },
+        {
+            "id": "grp_agent_invalid",
+            "title": "Agente Inválido",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": -50
+            },
+            "blocks": [
+                {
+                    "id": "blk_agent_invalid_msg",
+                    "outgoingEdgeId": "edge_agent_invalid_to_choose",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "⚠️ Número inválido. Por favor, elige un número de la lista."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_agent_confirm",
+            "title": "Confirmar Agente",
+            "graphCoordinates": {
+                "x": 2000,
+                "y": 100
+            },
+            "blocks": [
+                {
+                    "id": "blk_agent_confirm_text",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "✅ Te conectamos con "
+                                    },
+                                    {
+                                        "bold": true,
+                                        "text": "{{selected_agent_name}}"
+                                    },
+                                    {
+                                        "text": ". Te atenderá en breve 🙌"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "[MEGA_CMD:assign_agent:{{selected_agent_id}}]"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_choose_team",
+            "title": "Elegir Equipo",
+            "graphCoordinates": {
+                "x": 1200,
+                "y": 400
+            },
+            "blocks": [
+                {
+                    "id": "blk_format_teams",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_teams_list_text",
+                        "expressionToEvaluate": "{{teams_formatted}}",
+                        "type": "Custom",
+                        "isCode": false
+                    }
+                },
+                {
+                    "id": "blk_show_teams",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "bold": true,
+                                        "text": "👥 Elige un equipo:"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "[TEAMS_LIST]"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "0. ⬅️ Volver al menú"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "blk_team_input",
+                    "outgoingEdgeId": "edge_team_input_to_validate",
+                    "type": "text input",
+                    "options": {
+                        "variableId": "var_team_pick_number",
+                        "labels": {
+                            "placeholder": "Escribe el número del equipo o 0 para volver"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_team_validate",
+            "title": "Validar Equipo",
+            "graphCoordinates": {
+                "x": 1400,
+                "y": 500
+            },
+            "blocks": [
+                {
+                    "id": "blk_team_back_check",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_team_back",
+                            "outgoingEdgeId": "edge_team_back_to_welcome",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_team_back",
+                                        "variableId": "var_team_pick_number",
+                                        "comparisonOperator": "Equal to",
+                                        "value": "0"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outgoingEdgeId": "edge_team_to_map"
+                }
+            ]
+        },
+        {
+            "id": "grp_team_map",
+            "title": "Mapear Equipo",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": 400
+            },
+            "blocks": [
+                {
+                    "id": "blk_map_team_id",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_team_id",
+                        "expressionToEvaluate": "try {\n  const teams = JSON.parse({{teams_parsed}})\n  const pick = parseInt({{team_pick_number}})\n  if (!teams.length || isNaN(pick) || pick < 1 || pick > teams.length) return ''\n  return String(teams[pick - 1].id)\n} catch(e) { return '' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_map_team_name",
+                    "type": "Set variable",
+                    "options": {
+                        "variableId": "var_selected_team_name",
+                        "expressionToEvaluate": "try {\n  const teams = JSON.parse({{teams_parsed}})\n  const pick = parseInt({{team_pick_number}})\n  if (!teams.length || isNaN(pick) || pick < 1 || pick > teams.length) return ''\n  return teams[pick - 1].name\n} catch(e) { return '' }",
+                        "type": "Custom",
+                        "isCode": true
+                    }
+                },
+                {
+                    "id": "blk_team_valid_check",
+                    "type": "Condition",
+                    "items": [
+                        {
+                            "id": "item_team_valid",
+                            "outgoingEdgeId": "edge_team_to_confirm",
+                            "content": {
+                                "comparisons": [
+                                    {
+                                        "id": "cmp_team_valid",
+                                        "variableId": "var_selected_team_id",
+                                        "comparisonOperator": "Is set"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "outgoingEdgeId": "edge_team_to_invalid"
+                }
+            ]
+        },
+        {
+            "id": "grp_team_invalid",
+            "title": "Equipo Inválido",
+            "graphCoordinates": {
+                "x": 1600,
+                "y": 550
+            },
+            "blocks": [
+                {
+                    "id": "blk_team_invalid_msg",
+                    "outgoingEdgeId": "edge_team_invalid_to_choose",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "⚠️ Número inválido. Por favor, elige un número de la lista."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "grp_team_confirm",
+            "title": "Confirmar Equipo",
+            "graphCoordinates": {
+                "x": 2000,
+                "y": 400
+            },
+            "blocks": [
+                {
+                    "id": "blk_team_confirm_text",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "✅ Te conectamos con el equipo "
+                                    },
+                                    {
+                                        "bold": true,
+                                        "text": "{{selected_team_name}}"
+                                    },
+                                    {
+                                        "text": ". Te atenderán en breve 🙌"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "[MEGA_CMD:assign_team:{{selected_team_id}}]"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "edge_start_to_config",
+            "from": {
+                "eventId": "evt_start"
+            },
+            "to": {
+                "groupId": "grp_config"
+            }
+        },
+        {
+            "id": "edge_config_to_welcome",
+            "from": {
+                "blockId": "blk_parse_teams"
+            },
+            "to": {
+                "groupId": "grp_welcome"
+            }
+        },
+        {
+            "id": "edge_welcome_to_menu_cond",
+            "from": {
+                "blockId": "blk_welcome_input"
+            },
+            "to": {
+                "groupId": "grp_menu_condition"
+            }
+        },
+        {
+            "id": "edge_cond_to_auto",
+            "from": {
+                "blockId": "blk_menu_cond",
+                "itemId": "item_cond_auto"
+            },
+            "to": {
+                "groupId": "grp_auto_assign"
+            }
+        },
+        {
+            "id": "edge_cond_to_agent",
+            "from": {
+                "blockId": "blk_menu_cond",
+                "itemId": "item_cond_agent"
+            },
+            "to": {
+                "groupId": "grp_choose_agent"
+            }
+        },
+        {
+            "id": "edge_cond_to_team",
+            "from": {
+                "blockId": "blk_menu_cond",
+                "itemId": "item_cond_team"
+            },
+            "to": {
+                "groupId": "grp_choose_team"
+            }
+        },
+        {
+            "id": "edge_menu_default_to_welcome",
+            "from": {
+                "blockId": "blk_menu_cond"
+            },
+            "to": {
+                "groupId": "grp_welcome"
+            }
+        },
+        {
+            "id": "edge_auto_to_confirm",
+            "from": {
+                "blockId": "blk_auto_check",
+                "itemId": "item_auto_found"
+            },
+            "to": {
+                "groupId": "grp_auto_confirm"
+            }
+        },
+        {
+            "id": "edge_auto_to_no_agents",
+            "from": {
+                "blockId": "blk_auto_check"
+            },
+            "to": {
+                "groupId": "grp_auto_no_agents"
+            }
+        },
+        {
+            "id": "edge_agent_input_to_validate",
+            "from": {
+                "blockId": "blk_agent_input"
+            },
+            "to": {
+                "groupId": "grp_agent_validate"
+            }
+        },
+        {
+            "id": "edge_agent_back_to_welcome",
+            "from": {
+                "blockId": "blk_agent_back_check",
+                "itemId": "item_agent_back"
+            },
+            "to": {
+                "groupId": "grp_welcome"
+            }
+        },
+        {
+            "id": "edge_agent_to_map",
+            "from": {
+                "blockId": "blk_agent_back_check"
+            },
+            "to": {
+                "groupId": "grp_agent_map"
+            }
+        },
+        {
+            "id": "edge_agent_to_confirm",
+            "from": {
+                "blockId": "blk_agent_valid_check",
+                "itemId": "item_agent_valid"
+            },
+            "to": {
+                "groupId": "grp_agent_confirm"
+            }
+        },
+        {
+            "id": "edge_agent_to_invalid",
+            "from": {
+                "blockId": "blk_agent_valid_check"
+            },
+            "to": {
+                "groupId": "grp_agent_invalid"
+            }
+        },
+        {
+            "id": "edge_agent_invalid_to_choose",
+            "from": {
+                "blockId": "blk_agent_invalid_msg"
+            },
+            "to": {
+                "groupId": "grp_choose_agent"
+            }
+        },
+        {
+            "id": "edge_team_input_to_validate",
+            "from": {
+                "blockId": "blk_team_input"
+            },
+            "to": {
+                "groupId": "grp_team_validate"
+            }
+        },
+        {
+            "id": "edge_team_back_to_welcome",
+            "from": {
+                "blockId": "blk_team_back_check",
+                "itemId": "item_team_back"
+            },
+            "to": {
+                "groupId": "grp_welcome"
+            }
+        },
+        {
+            "id": "edge_team_to_map",
+            "from": {
+                "blockId": "blk_team_back_check"
+            },
+            "to": {
+                "groupId": "grp_team_map"
+            }
+        },
+        {
+            "id": "edge_team_to_confirm",
+            "from": {
+                "blockId": "blk_team_valid_check",
+                "itemId": "item_team_valid"
+            },
+            "to": {
+                "groupId": "grp_team_confirm"
+            }
+        },
+        {
+            "id": "edge_team_to_invalid",
+            "from": {
+                "blockId": "blk_team_valid_check"
+            },
+            "to": {
+                "groupId": "grp_team_invalid"
+            }
+        },
+        {
+            "id": "edge_team_invalid_to_choose",
+            "from": {
+                "blockId": "blk_team_invalid_msg"
+            },
+            "to": {
+                "groupId": "grp_choose_team"
+            }
+        }
+    ],
+    "variables": [
+        {
+            "id": "var_contact_name",
+            "name": "contact_name"
+        },
+        {
+            "id": "var_agents_json",
+            "name": "agents_json"
+        },
+        {
+            "id": "var_teams_json",
+            "name": "teams_json"
+        },
+        {
+            "id": "var_agents_parsed",
+            "name": "agents_parsed"
+        },
+        {
+            "id": "var_teams_parsed",
+            "name": "teams_parsed"
+        },
+        {
+            "id": "var_agents_list_text",
+            "name": "agents_list_text"
+        },
+        {
+            "id": "var_teams_list_text",
+            "name": "teams_list_text"
+        },
+        {
+            "id": "var_user_choice",
+            "name": "user_choice"
+        },
+        {
+            "id": "var_agent_pick_number",
+            "name": "agent_pick_number"
+        },
+        {
+            "id": "var_team_pick_number",
+            "name": "team_pick_number"
+        },
+        {
+            "id": "var_selected_agent_id",
+            "name": "selected_agent_id"
+        },
+        {
+            "id": "var_selected_agent_name",
+            "name": "selected_agent_name"
+        },
+        {
+            "id": "var_selected_team_id",
+            "name": "selected_team_id"
+        },
+        {
+            "id": "var_selected_team_name",
+            "name": "selected_team_name"
+        },
+        {
+            "id": "var_agents_formatted",
+            "name": "agents_formatted",
+            "isSessionVariable": true
+        },
+        {
+            "id": "var_teams_formatted",
+            "name": "teams_formatted",
+            "isSessionVariable": true
+        }
+    ],
+    "theme": {},
+    "selectedThemeTemplateId": null,
+    "settings": {
+        "general": {
+            "isBrandingEnabled": false
+        }
+    },
+    "createdAt": "2025-03-19T00:00:00.000Z",
+    "updatedAt": "2025-03-19T00:00:00.000Z",
+    "icon": null,
+    "folderId": null,
+    "publicId": "mega-agent-assignment-v3",
+    "customDomain": null,
+    "resultsTablePreferences": null,
+    "isArchived": false,
+    "isClosed": false,
+    "whatsAppCredentialsId": null,
+    "riskLevel": null
+}
