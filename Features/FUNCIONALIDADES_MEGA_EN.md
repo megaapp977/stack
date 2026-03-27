@@ -454,7 +454,7 @@ Find specific messages within a conversation:
 - **Open** - Conversations requiring attention
 - **Pending** - Awaiting customer response
 - **Resolved** - Completed conversations
-- **Snoozed** - Schedule automatic reactivation
+- **Snoozed** - Schedule automatic reactivation using natural language: type "tomorrow at 3pm", "in 2 hours", "next Monday" or any time expression and the system parses it automatically; classic date picker also available
 
 ### Prioritization
 
@@ -689,6 +689,17 @@ Execute multiple actions with a single click:
 - **Typebot integration** - Connect with Typebot conversational flows
 - **Human handover** - Smooth transfer to real agents
 - **Bots per inbox** - Configure specific bots per channel
+- **Typing indicator** - Bots can toggle the "typing..." indicator for a more natural experience
+- **Advanced webhook options** *(Enterprise)* - Configure custom timeout for bot requests, automatic retries on failure, and granular error handling; improves reliability for integrations with slow or unstable external systems
+
+### Typebot *(Mega — Advanced Options)*
+
+Beyond the standard Typebot integration, MEGA extends its capabilities with special commands:
+
+- **Agent assignment via MEGA_CMD** - Use the `MEGA_CMD:assign_agent:email@company.com` command in Typebot to automatically assign the conversation to a specific agent
+- **Team assignment via MEGA_CMD** - Use `MEGA_CMD:assign_team:team_name` to route the conversation to the appropriate team from within the bot flow
+- **List placeholders** - Inject dynamic lists of agents or teams as Typebot variables to build custom selection menus
+- **No extra code** - Everything is configured directly in the Typebot flow, without modifying the MEGA bot
 
 ### Captain *(Enterprise)*
 
@@ -743,6 +754,15 @@ Connect MCP (Model Context Protocol) servers to expand your assistant's capabili
 - **Flexible configuration** - Define URL and connection parameters
 - **Centralized management** - Manage all your MCP servers from settings
 
+**Captain Auto-Resolve Mode:**
+
+Configure how Captain handles automatic conversation resolution:
+
+- **Evaluated mode** - Captain analyzes context and autonomously decides whether to resolve or keep the conversation open
+- **Legacy mode** - Original behavior: automatically resolves pending conversations based on the timer
+- **Disabled mode** - Captain does not automatically resolve conversations
+- **Per account** - Configurable at account level in the Captain settings
+
 **Captain Copilot:**
 
 Real-time AI assistance for your agents:
@@ -796,6 +816,7 @@ Automatically transcribe audio messages to text:
 - **Flexible fields** - Create attributes for contacts and conversations
 - **Data types** - Text, number, list, date, checkbox, link
 - **Automation integration** - Use attributes as conditions
+- **Visibility control** *(Enterprise)* - Define which roles can see each attribute; hide sensitive fields from lower-level agents
 
 ### Labels
 
@@ -809,6 +830,7 @@ Automatically transcribe audio messages to text:
 - **Group contacts** - Organize contacts by company
 - **Auto domain** - Association by email domain
 - **Unified view** - History of all company conversations
+- **Automatic favicon** - The system automatically downloads the company's domain favicon to display as its avatar; works with any website that has a configured favicon
 
 ### Notes
 
@@ -976,9 +998,19 @@ The system includes multiple protections to maintain send quality:
 ### Campaign Management
 
 - **Create and edit** - Intuitive interface for configuring campaigns
-- **Pause and resume** - Full control over status
+- **Pause and resume** *(Mega)* - Pause a running campaign and resume it at any time without losing progress
+- **Edit before sending** *(Mega)* - Modify the content, audience and configuration of campaigns that haven't been sent yet or are paused
 - **View metrics** - Dashboard with real-time statistics
 - **Export reports** - Download campaign details
+
+### Campaign Metrics
+
+- **Audience counter** - Know how many contacts your campaign will reach
+- **Messages sent** - Real-time progress tracking
+- **Failed messages** - Identify delivery issues
+- **Error report** - Download failed delivery details for correction
+- **Real-time progress** *(Mega)* - Live progress bar that updates automatically as the campaign executes
+- **Estimated ETA** *(Mega)* - Estimated completion time visible during campaign execution
 
 ---
 
@@ -997,12 +1029,14 @@ The system includes multiple protections to maintain send quality:
 - **Subfolders** - Hierarchical organization
 - **Articles** - Rich content with markdown
 - **Positioning** - Order articles manually
+- **Category reordering** - Drag and drop to reorder help center categories; the order is saved automatically
 
 ### Article Status
 
 - **Draft** - In preparation
 - **Published** - Visible to users
 - **Archived** - Hidden but preserved
+- **Draft per language** - Each translation of an article can be in draft state independently; publish only the languages that are ready without affecting others
 
 ### SEO & Access
 
@@ -1088,6 +1122,7 @@ Complete voice channel analytics:
 - **Comments** - Qualitative feedback
 - **Filters** - By agent, inbox, team, date
 - **Review notes** *(Enterprise)* - Add internal notes to CSAT responses for quality tracking
+- **CSAT via WhatsApp Templates** *(Mega)* - Send CSAT surveys using official WhatsApp templates instead of the classic in-chat message; requires Meta approval; the system automatically creates and manages the template with versioning; configurable per inbox with toggle between classic and template mode
 
 ### Summary Reports
 
@@ -1198,6 +1233,35 @@ Connect MEGA with any external system through automatic notifications:
 - **CRM integration** - Sync data automatically
 - **External automations** - Trigger flows in other tools
 - **Total flexibility** - Configure which events interest you
+- **Subscription aliases** - Assign descriptive names to each webhook subscription for easier management
+- **Global webhook secret** *(Enterprise)* - Configure a security signature at installation level to verify the authenticity of all outgoing webhook events; payloads are signed with HMAC-SHA256 using the configured secret
+
+### Meta Template Builder *(Mega)*
+
+Create and manage your WhatsApp templates directly from MEGA, without needing to access Meta Business Manager:
+
+**Template management:**
+
+- **Centralized list** - View all templates from all your WhatsApp inboxes in one place
+- **Approval status** - Monitor whether each template is approved, pending, or rejected by Meta
+- **Usage metrics** - See how many times each template was delivered and its read rate
+- **Advanced filters** - Filter by status, category, language, channel, and date range
+- **Search** - Quickly find templates by name or content
+- **Delete templates** - Delete individual or bulk templates with confirmation
+- **Sync templates** - Sync button to pull new templates from Meta
+
+**Visual builder:**
+
+- **Step-by-step template creation** - Guided flow: Basic Info → Builder
+- **Optional header** - Text or multimedia header (image, video, document)
+- **Message body** - Editor with bold *text*, italic *text*, variables {{1}}, {{2}}
+- **Format toolbar** - Format buttons and variable insertion with one click
+- **Optional footer** - Footer text (up to 60 characters)
+- **Action buttons** - Visit website, call phone, quick reply, or copy code
+- **Real-time preview** - See how the template will look before sending
+- **Sample values** - Define examples for variables to ease Meta approval
+- **Categories** - Marketing, Utility, Authentication
+- **Multi-language** - Create templates in any language supported by WhatsApp
 
 ### Dashboard Apps
 

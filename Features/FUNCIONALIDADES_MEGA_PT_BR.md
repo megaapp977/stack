@@ -464,7 +464,7 @@ Encontre mensagens específicas dentro de uma conversa:
 - **Aberta** - Conversas que precisam de atenção
 - **Pendente** - Aguardando resposta do cliente
 - **Resolvida** - Conversas finalizadas
-- **Adiada (Snooze)** - Programe reativação automática
+- **Adiada (Snooze)** - Programe reativação automática usando linguagem natural: escreva "amanhã às 3pm", "em 2 horas", "próxima segunda" ou qualquer expressão de tempo e o sistema interpreta automaticamente; seletor de data clássico também disponível
 
 ### Priorização
 
@@ -724,6 +724,17 @@ Execute múltiplas ações com um só clique:
 - **Integração Typebot** - Conecte com fluxos conversacionais do Typebot
 - **Handover para humanos** - Transferência suave para agentes reais
 - **Bots por caixa de entrada** - Configure bots específicos por canal
+- **Indicador de digitação** - Os bots podem ativar e desativar o indicador "digitando..." para uma experiência mais natural
+- **Opções avançadas de webhook** *(Enterprise)* - Configure timeout personalizado para requisições do bot, novas tentativas automáticas em caso de falha e tratamento granular de erros; melhora a confiabilidade das integrações com sistemas externos lentos ou instáveis
+
+### Typebot *(Mega — Opções Avançadas)*
+
+Além da integração padrão, a MEGA estende as capacidades do Typebot com comandos especiais:
+
+- **Atribuição de agente via MEGA_CMD** - Use o comando `MEGA_CMD:assign_agent:email@empresa.com` no Typebot para atribuir automaticamente a conversa a um agente específico
+- **Atribuição de equipe via MEGA_CMD** - Use `MEGA_CMD:assign_team:nome_equipe` para encaminhar a conversa à equipe correspondente de dentro do fluxo do bot
+- **Placeholders de lista** - Injete listas dinâmicas de agentes ou equipes como variáveis Typebot para criar menus de seleção personalizados
+- **Sem código adicional** - Tudo é configurado diretamente no fluxo do Typebot, sem modificar o bot da MEGA
 
 ### Captain *(Enterprise)*
 
@@ -778,6 +789,15 @@ Conecte servidores MCP para ampliar as capacidades do seu assistente:
 - **Configuração flexível** - Defina URL e parâmetros de conexão
 - **Gestão centralizada** - Administre todos seus servidores MCP nas configurações
 
+**Modo Auto-Resolve do Captain:**
+
+Configure como o Captain gerencia a resolução automática de conversas:
+
+- **Modo avaliado** - O Captain analisa o contexto e decide autonomamente se resolve ou mantém a conversa aberta
+- **Modo legado** - Comportamento original: resolve automaticamente conversas pendentes com base no temporizador
+- **Modo desativado** - O Captain não resolve conversas automaticamente
+- **Por conta** - Configurável no nível da conta nas configurações do Captain
+
 **Copilot para Agentes:**
 
 Assistência em tempo real enquanto os agentes trabalham:
@@ -830,6 +850,7 @@ Transcreva automaticamente mensagens de áudio para texto:
 - **Campos flexíveis** - Crie atributos para contatos e conversas
 - **Tipos de dados** - Texto, número, lista, data, checkbox, link
 - **Integração com automações** - Use atributos como condições
+- **Visibilidade configurável** *(Enterprise)* - Defina quais funções (roles) podem ver cada atributo; oculte campos sensíveis de agentes com nível inferior
 
 ### Etiquetas
 
@@ -843,6 +864,7 @@ Transcreva automaticamente mensagens de áudio para texto:
 - **Agrupe contatos** - Organize contatos por empresa
 - **Domínio automático** - Associação por domínio de email
 - **Visão unificada** - Histórico de todas as conversas da empresa
+- **Favicon automático** - O sistema baixa automaticamente o favicon do domínio da empresa para exibir como avatar; funciona com qualquer site que tenha favicon configurado
 
 ### Notas
 
@@ -1019,9 +1041,19 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 ### Gestão de Campanhas
 
 - **Criar e editar** - Interface intuitiva para configurar campanhas
-- **Pausar e retomar** - Controle total sobre o status
+- **Pausar e retomar** *(Mega)* - Pause uma campanha em execução e retome a qualquer momento sem perder o progresso
+- **Editar antes de enviar** *(Mega)* - Modifique o conteúdo, audiência e configuração de campanhas que ainda não foram enviadas ou estão pausadas
 - **Ver métricas** - Dashboard com estatísticas em tempo real
 - **Exportar relatórios** - Baixe detalhes da campanha
+
+### Métricas de Campanha
+
+- **Contador de audiência** - Saiba quantos contatos a campanha vai atingir
+- **Mensagens enviadas** - Acompanhamento do progresso em tempo real
+- **Mensagens com falha** - Identifique problemas de entrega
+- **Relatório de erros** - Baixe detalhes de envios com falha para correção
+- **Progresso em tempo real** *(Mega)* - Barra de progresso ao vivo que se atualiza automaticamente enquanto a campanha é executada
+- **ETA estimado** *(Mega)* - Tempo estimado de conclusão visível durante a execução da campanha
 
 ---
 
@@ -1040,12 +1072,14 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Subpastas** - Organização hierárquica
 - **Artigos** - Conteúdo rico com markdown
 - **Posicionamento** - Ordene artigos manualmente
+- **Reordenamento de categorias** - Arraste e solte para reordenar categorias do help center; a ordem é salva automaticamente
 
 ### Status de Artigos
 
 - **Rascunho** - Em preparação
 - **Publicado** - Visível para usuários
 - **Arquivado** - Oculto mas preservado
+- **Rascunho por idioma** - Cada tradução de um artigo pode estar em rascunho de forma independente; publique apenas os idiomas prontos sem afetar os demais
 
 ### SEO e Acesso
 
@@ -1107,6 +1141,7 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Comentários** - Feedback qualitativo
 - **Filtros** - Por agente, inbox, equipe, data
 - **Notas de revisão** *(Enterprise)* - Adicione notas internas às respostas CSAT para acompanhamento de qualidade
+- **CSAT via Templates WhatsApp** *(Mega)* - Envie pesquisas CSAT usando templates oficiais do WhatsApp em vez da mensagem clássica no chat; requer aprovação da Meta; o sistema cria e gerencia automaticamente o template com versionamento; configurável por inbox com alternância entre modo clássico e modo template
 
 ### Relatórios Resumidos
 
@@ -1296,6 +1331,35 @@ Conecte a MEGA com qualquer sistema externo através de notificações automáti
 - **Integração com seu CRM** - Sincronize dados automaticamente
 - **Automações externas** - Acione fluxos em outras ferramentas
 - **Flexibilidade total** - Configure quais eventos te interessam
+- **Aliases de inscrição** - Atribua nomes descritivos a cada inscrição de webhook para facilitar o gerenciamento
+- **Segredo global de webhook** *(Enterprise)* - Configure uma assinatura de segurança no nível da instalação para verificar a autenticidade de todos os eventos webhook; os payloads são assinados com HMAC-SHA256 usando o segredo configurado
+
+### Construtor de Templates Meta *(Mega)*
+
+Crie e gerencie seus templates do WhatsApp diretamente da MEGA, sem precisar acessar o Meta Business Manager:
+
+**Gestão de templates:**
+
+- **Lista centralizada** - Veja todos os templates de todas as suas caixas de entrada do WhatsApp em um só lugar
+- **Status de aprovação** - Monitore se cada template está aprovado, pendente ou rejeitado pela Meta
+- **Métricas de uso** - Veja quantas vezes cada template foi entregue e sua taxa de leitura
+- **Filtros avançados** - Filtre por status, categoria, idioma, canal e intervalo de datas
+- **Busca** - Encontre templates rapidamente por nome ou conteúdo
+- **Excluir templates** - Exclua templates individuais ou em lote com confirmação
+- **Sincronizar templates** - Botão de sincronização para trazer novos templates da Meta
+
+**Construtor visual:**
+
+- **Criação passo a passo** - Fluxo guiado: Informações Básicas → Construtor
+- **Cabeçalho opcional** - Cabeçalho de texto ou multimídia (imagem, vídeo, documento)
+- **Corpo da mensagem** - Editor com negrito *texto*, itálico *texto*, variáveis {{1}}, {{2}}
+- **Barra de formatação** - Botões de formato e inserção de variáveis com um clique
+- **Rodapé opcional** - Texto de rodapé (até 60 caracteres)
+- **Botões de ação** - Visitar site, ligar, resposta rápida ou copiar código
+- **Pré-visualização em tempo real** - Veja como o template ficará antes de enviar
+- **Valores de exemplo** - Defina exemplos para variáveis para facilitar a aprovação da Meta
+- **Categorias** - Marketing, Utilidade, Autenticação
+- **Multi-idioma** - Crie templates em qualquer idioma suportado pelo WhatsApp
 
 ### Apps de Dashboard
 
