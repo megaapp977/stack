@@ -4,7 +4,7 @@
 
 **Versión:** Enterprise
 **Basado en:** Chatwoot (Open Source) + Funcionalidades Exclusivas Mega
-**Última Actualización:** Febrero 2026
+**Última Actualización:** Abril 2026
 
 ---
 
@@ -35,6 +35,9 @@ Conecta con tus clientes a través del canal de mensajería más popular del mun
 - **WhatsApp Evolution** *(Mega)* - Conexión directa sin API oficial, ideal para cuentas personales
 - **WhatsApp WAHA** *(Mega)* - Proveedor alternativo con soporte completo de mensajes multimedia
 - **WhatsApp Uazapi** *(Mega)* - Solución de bajo costo para múltiples líneas
+- **Arquitectura multi-servidor** *(Mega)* - Configura varios servidores por proveedor con resolución automática de credenciales
+- **Capacidad por servidor** *(Mega)* - Define límites por servidor para distribuir carga operativa
+- **Soporte BSUID** *(Mega)* - Identificación robusta del contacto y envío confiable incluso sin `wa_id` tradicional
 - **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas
 - **Sincronización de contactos** - Mantén tu base de datos actualizada automáticamente
 - **Soporte de grupos** - Gestiona conversaciones de grupos de WhatsApp directamente
@@ -213,6 +216,7 @@ Los visitantes de tu web quieren respuestas inmediatas. Un chat en vivo aumenta 
 - **Mensajes predefinidos** - Inicia conversaciones con contexto
 - **Dominios permitidos** - Restringe el widget a dominios autorizados para mayor seguridad
 - **Mostrar nombre del agente** - Configura por inbox si el nombre del agente se muestra al visitante
+- **Capas y fondos corregidos** - Mejor renderizado visual entre launcher y portal, incluyendo modo oscuro
 
 **Beneficios para tu negocio:**
 
@@ -526,6 +530,7 @@ Guarda tus filtros de uso frecuente para acceso rápido:
 - **Acceso rápido** - Un clic para aplicar filtros guardados
 - **Editar y eliminar** - Gestiona tus carpetas fácilmente
 - **Límites por usuario** - Cada usuario puede crear múltiples carpetas
+- **Multi-etiqueta consistente** - Normalización de valores para filtros con múltiples etiquetas
 
 ### Resolución Automática
 
@@ -688,6 +693,7 @@ Ejecuta múltiples acciones con un solo clic:
 - **Bots de webhook** - Conecta con lógica externa vía HTTP
 - **Integración Typebot** - Conecta con flujos conversacionales de Typebot
 - **Handover a humanos** - Transferencia fluida a agentes reales
+- **Handover inteligente** - Si un humano responde en conversación pendiente del bot, se transfiere automáticamente
 - **Bots por inbox** - Configura bots específicos por canal
 - **Indicador de escritura** - Los bots pueden activar y desactivar el indicador "escribiendo..." para una experiencia más natural
 - **Opciones avanzadas de webhook** *(Enterprise)* - Configura timeout personalizado para peticiones del bot, reintentos automáticos ante fallos, y manejo de errores granular; mejora la fiabilidad de integraciones con sistemas externos lentos o inestables
@@ -699,6 +705,9 @@ Además de la integración estándar de Typebot, MEGA extiende sus capacidades c
 - **Asignación de agente vía MEGA_CMD** - Usa el comando `MEGA_CMD:assign_agent:email@empresa.com` en Typebot para asignar automáticamente la conversación a un agente específico
 - **Asignación de equipo vía MEGA_CMD** - Usa `MEGA_CMD:assign_team:nombre_equipo` para derivar la conversación al equipo correspondiente desde el flujo del bot
 - **Placeholders de lista** - Inyecta listas dinámicas de agentes o equipos como variables Typebot para crear menús de selección personalizados
+- **Primer mensaje multimedia** - Si la primera interacción llega solo con media, la conversación se abre correctamente
+- **Ubicación compatible** - Reenvío de coordenadas en formato de enlace de mapas para continuidad del flujo
+- **Delay por defecto estable** - Mejor consistencia en tiempos de espera cuando el bot no define delay explícito
 - **Sin código adicional** - Todo se configura directamente en el flujo de Typebot, sin modificar el bot de MEGA
 
 ### Captain *(Enterprise)*
@@ -945,6 +954,9 @@ Crea y gestiona tus plantillas de WhatsApp directamente desde MEGA, sin necesida
 - **Búsqueda** - Encuentra plantillas rápidamente por nombre o contenido
 - **Eliminar plantillas** - Elimina plantillas individuales o en lote con confirmación
 - **Sincronizar plantillas** - Botón de sincronización para traer plantillas nuevas desde Meta
+- **Sincronización inicial automática** - Al crear el canal, se ejecuta una sincronización inicial de plantillas
+- **Prevención de duplicados** - Validaciones de inserción para evitar duplicados durante sincronizaciones
+- **Tabla responsive** - Mejor visualización de metadata de plantillas en desktop y móvil
 
 **Constructor visual:**
 
@@ -964,6 +976,8 @@ Crea y gestiona tus plantillas de WhatsApp directamente desde MEGA, sin necesida
 - **Editar plantilla existente** - Modifica una plantilla ya creada
 - **Nueva versión** - Al editar, el sistema crea una nueva versión y la envía a aprobación
 - **Estado de versión** - Sigue el historial de aprobación de cada versión
+- **Vista de detalle** - Consulta una plantilla completa antes de pasar a modo edición
+- **Carga de media optimizada** - Ajustes en subida de archivos multimedia para edición/envío
 
 ### Multi-Inbox (Rotación de Líneas) *(Mega)*
 
@@ -1049,12 +1063,14 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Dominio personalizado** - Aloja en tu propio dominio
 - **Diseño configurable** - Colores, logo, texto de cabecera
 - **Multi-idioma** - Artículos en múltiples idiomas
+- **Embeds GuideJar** - Inserta guías interactivas de GuideJar dentro del contenido del Help Center
 
 ### Organización de Contenido
 
 - **Categorías** - Agrupa artículos por tema
 - **Subcarpetas** - Organización jerárquica
 - **Artículos** - Contenido rico con markdown
+- **Tablas Markdown** - Renderizado correcto de tablas en artículos del portal
 - **Posicionamiento** - Ordena artículos manualmente
 - **Reordenamiento de categorías** - Arrastra y suelta para reordenar categorías en el portal; el orden se guarda automáticamente
 
@@ -1076,6 +1092,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Búsqueda de artículos** - Busca artículos desde la caja de respuesta
 - **Vista previa** - Visualiza el artículo antes de insertar
 - **Insertar como enlace** - Añade el link del artículo al mensaje
+- **Resultados en popover** - Búsqueda de artículos restaurada y estable desde el panel de conversación
 - **Copiar enlace** - Copia la URL del artículo al portapapeles
 - **Acceso rápido** - Botón dedicado en el panel de respuesta
 
@@ -1161,6 +1178,7 @@ Analíticas completas del canal de voz:
 
 - **CSV/Excel** - Descarga datos para análisis externo
 - **Filtros personalizados** - Exporta exactamente lo que necesitas
+- **Formato regional mejorado** - Exportación CSV con UTF-8 BOM y separador `;` para compatibilidad con hojas de cálculo locales
 
 ---
 
@@ -1260,6 +1278,9 @@ Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
 - **Integración con tu CRM** - Sincroniza datos automáticamente
 - **Automatizaciones externas** - Activa flujos en otras herramientas
 - **Flexibilidad total** - Configura qué eventos te interesan
+- **Normalización de suscripciones** - Validación consistente de eventos y aliases de suscripción
+- **Payload enriquecido de adjuntos** - Incluye `content_type` y extensión de archivos en eventos webhook
+- **Evento de actualización de Agent Bot** - Dispara webhook cuando se actualiza una conversación gestionada por bot
 - **Alias de suscripción** - Asigna nombres descriptivos a cada suscripción de webhook para facilitar la gestión
 - **Secreto global de webhook** *(Enterprise)* - Configura una firma de seguridad a nivel de instalación para verificar la autenticidad de todos los eventos webhook; los payloads se firman con HMAC-SHA256 usando el secreto configurado
 
@@ -1518,6 +1539,13 @@ Configura por inbox si los mensajes eliminados muestran un placeholder o desapar
 
 MEGA incluye múltiples proveedores de WhatsApp además de la API oficial de Meta, permitiendo flexibilidad en costos, funcionalidades y casos de uso.
 
+**Gestión multi-servidor (Mega):**
+
+- **Múltiples servidores por proveedor** - Configura más de un servidor por canal para continuidad operativa
+- **Capacidad configurable** - Define límites por servidor para distribuir volumen de mensajes
+- **Edición parcial de servidores legacy** - Ajusta configuraciones existentes sin recrear la conexión completa
+- **Servidor asignado visible** - Visualiza qué servidor está vinculado a cada inbox desde la configuración
+
 ---
 
 ### 📱 WhatsApp Evolution
@@ -1753,6 +1781,8 @@ Estadísticas e insights anuales para tu cuenta:
 - **Encriptación en tránsito** - HTTPS obligatorio
 - **Encriptación en reposo** - Datos protegidos
 - **Backups automáticos** - Recuperación ante desastres
+- **Protección de licencia** *(Mega)* - Verificación de integridad para reforzar control de despliegues
+- **Observabilidad de release** - Mejor trazabilidad de errores por versión en monitoreo
 
 ---
 
@@ -1779,6 +1809,7 @@ MEGA funciona como una **Progressive Web App** completa: instálala en cualquier
 - **Marcar como leído** - Marca notificaciones como leídas desde la propia notificación con un toque
 - **Apilamiento de mensajes** - Los mensajes de la misma conversación se apilan en una sola notificación (estilo WhatsApp) mostrando hasta 10 mensajes
 - **Contador de no leídos** - El badge del ícono de la app muestra el número exacto de notificaciones sin leer
+- **Timestamp de caché preciso** - Invalidación consistente de assets del Service Worker para evitar contenido desactualizado
 - **Activación inteligente** - Prompt automático al abrir la PWA por primera vez para activar notificaciones con flags preconfigurados (asignación, mención, mensaje nuevo)
 - **Sonido configurable** - Alertas de audio que funcionan incluso en iOS, con desbloqueo automático de AudioContext al primer toque
 - **Sonido diferido** - Si la app está en segundo plano y no puede reproducir audio, lo reproduce automáticamente cuando vuelves a la app

@@ -4,7 +4,7 @@
 
 **Version:** Enterprise
 **Based on:** Chatwoot (Open Source) + Mega Exclusive Features
-**Last Updated:** February 2026
+**Last Updated:** April 2026
 
 ---
 
@@ -35,6 +35,9 @@ Connect with your customers through the world's most popular messaging channel.
 - **WhatsApp Evolution** *(Mega)* - Direct connection without official API, ideal for personal accounts
 - **WhatsApp WAHA** *(Mega)* - Alternative provider with full multimedia message support
 - **WhatsApp Uazapi** *(Mega)* - Low-cost solution for multiple lines
+- **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
+- **Per-server capacity** *(Mega)* - Define limits by server to distribute operational load
+- **BSUID support** *(Mega)* - Reliable contact identification and delivery even when traditional `wa_id` is missing
 - **Template Messages** - Send messages outside the 24-hour window with approved templates
 - **Contact Sync** - Keep your database automatically updated
 - **Group Support** - Manage WhatsApp group conversations directly
@@ -213,6 +216,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 - **Predefined messages** - Start conversations with context
 - **Allowed domains** - Restrict widget to authorized domains for added security
 - **Show agent name** - Configure per inbox whether the agent's name is shown to visitors
+- **Layering/background fixes** - Better visual rendering between launcher and portal, including dark mode scenarios
 
 **Benefits for your business:**
 
@@ -526,6 +530,7 @@ Save your frequently used filters for quick access:
 - **Quick access** - One-click to apply saved filters
 - **Edit and delete** - Manage your folders easily
 - **Per-user limits** - Each user can create multiple folders
+- **Consistent multi-label behavior** - Normalized values for filters that include multiple labels
 
 ### Auto-Resolution
 
@@ -688,6 +693,7 @@ Execute multiple actions with a single click:
 - **Webhook bots** - Connect with external logic via HTTP
 - **Typebot integration** - Connect with Typebot conversational flows
 - **Human handover** - Smooth transfer to real agents
+- **Smart handover** - If a human replies in a pending bot conversation, ownership is transferred automatically
 - **Bots per inbox** - Configure specific bots per channel
 - **Typing indicator** - Bots can toggle the "typing..." indicator for a more natural experience
 - **Advanced webhook options** *(Enterprise)* - Configure custom timeout for bot requests, automatic retries on failure, and granular error handling; improves reliability for integrations with slow or unstable external systems
@@ -699,6 +705,9 @@ Beyond the standard Typebot integration, MEGA extends its capabilities with spec
 - **Agent assignment via MEGA_CMD** - Use the `MEGA_CMD:assign_agent:email@company.com` command in Typebot to automatically assign the conversation to a specific agent
 - **Team assignment via MEGA_CMD** - Use `MEGA_CMD:assign_team:team_name` to route the conversation to the appropriate team from within the bot flow
 - **List placeholders** - Inject dynamic lists of agents or teams as Typebot variables to build custom selection menus
+- **Media-only first message handling** - Correctly opens a new conversation when the first interaction is media-only
+- **Location compatibility** - Forwards coordinates as map links for consistent bot flow handling
+- **Stable default delay** - More predictable behavior when no explicit delay is configured in the bot
 - **No extra code** - Everything is configured directly in the Typebot flow, without modifying the MEGA bot
 
 ### Captain *(Enterprise)*
@@ -1022,12 +1031,14 @@ The system includes multiple protections to maintain send quality:
 - **Custom domain** - Host on your own domain
 - **Configurable design** - Colors, logo, header text
 - **Multi-language** - Articles in multiple languages
+- **GuideJar embeds** - Insert interactive GuideJar guides in Help Center content
 
 ### Content Organization
 
 - **Categories** - Group articles by topic
 - **Subfolders** - Hierarchical organization
 - **Articles** - Rich content with markdown
+- **Markdown tables** - Correct rendering for table blocks inside help articles
 - **Positioning** - Order articles manually
 - **Category reordering** - Drag and drop to reorder help center categories; the order is saved automatically
 
@@ -1049,6 +1060,7 @@ The system includes multiple protections to maintain send quality:
 - **Article search** - Search articles from the reply box
 - **Preview** - View the article before inserting
 - **Insert as link** - Add article link to message
+- **Popover search reliability** - Restored and stable article search results in conversation popover
 - **Copy link** - Copy article URL to clipboard
 - **Quick access** - Dedicated button in reply panel
 
@@ -1134,6 +1146,7 @@ Complete voice channel analytics:
 
 - **CSV/Excel** - Download data for external analysis
 - **Custom filters** - Export exactly what you need
+- **Regional CSV compatibility** - CSV export with UTF-8 BOM and `;` separator for spreadsheet tooling
 
 ---
 
@@ -1233,6 +1246,9 @@ Connect MEGA with any external system through automatic notifications:
 - **CRM integration** - Sync data automatically
 - **External automations** - Trigger flows in other tools
 - **Total flexibility** - Configure which events interest you
+- **Subscription normalization** - Consistent validation/normalization of webhook events and aliases
+- **Attachment-enriched payloads** - Includes attachment `content_type` and extension in webhook events
+- **Agent Bot update event** - Dispatches webhook when a bot-managed conversation is updated
 - **Subscription aliases** - Assign descriptive names to each webhook subscription for easier management
 - **Global webhook secret** *(Enterprise)* - Configure a security signature at installation level to verify the authenticity of all outgoing webhook events; payloads are signed with HMAC-SHA256 using the configured secret
 
@@ -1249,6 +1265,9 @@ Create and manage your WhatsApp templates directly from MEGA, without needing to
 - **Search** - Quickly find templates by name or content
 - **Delete templates** - Delete individual or bulk templates with confirmation
 - **Sync templates** - Sync button to pull new templates from Meta
+- **Automatic initial sync** - Runs an initial template sync right after channel creation
+- **Duplicate prevention** - Insert validations to prevent duplicate templates during sync
+- **Responsive table layout** - Improved template metadata table visibility on desktop and mobile
 
 **Visual builder:**
 
@@ -1262,6 +1281,11 @@ Create and manage your WhatsApp templates directly from MEGA, without needing to
 - **Sample values** - Define examples for variables to ease Meta approval
 - **Categories** - Marketing, Utility, Authentication
 - **Multi-language** - Create templates in any language supported by WhatsApp
+
+**Template editing:**
+
+- **Detail view** - Inspect full template structure before entering edit mode
+- **Optimized media uploads** - Improved media file upload behavior for edit/send flows
 
 ### Dashboard Apps
 
@@ -1518,6 +1542,13 @@ Configure per inbox whether deleted messages show a placeholder or disappear com
 
 MEGA includes multiple WhatsApp providers beyond Meta's official API, allowing flexibility in costs, features, and use cases.
 
+**Multi-server management (Mega):**
+
+- **Multiple servers per provider** - Configure more than one server per channel for operational continuity
+- **Configurable capacity** - Define per-server limits to distribute messaging volume
+- **Partial legacy server editing** - Adjust existing server settings without recreating full connections
+- **Assigned server visibility** - Quickly identify which server is linked to each inbox
+
 ---
 
 ### 📱 WhatsApp Evolution
@@ -1750,6 +1781,8 @@ Annual statistics and insights for your account:
 - **Encryption in transit** - Mandatory HTTPS
 - **Encryption at rest** - Protected data
 - **Auto backups** - Disaster recovery
+- **License protection** *(Mega)* - Integrity verification to strengthen deployment control
+- **Release observability** - Better release-level error traceability in monitoring
 
 ---
 
@@ -1776,6 +1809,7 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 - **Mark as read** - Mark notifications as read from the notification itself with a single tap
 - **Message stacking** - Messages from the same conversation stack into a single notification (WhatsApp-style) showing up to 10 messages
 - **Unread counter** - The app icon badge shows the exact number of unread notifications
+- **Accurate cache timestamps** - Consistent Service Worker asset invalidation to avoid stale resources
 - **Smart activation** - Automatic prompt when opening the PWA for the first time to enable notifications with pre-configured flags (assignment, mention, new message)
 - **Configurable sound** - Audio alerts that work even on iOS, with automatic AudioContext unlock on first touch
 - **Deferred sound** - If the app is in the background and can't play audio, it automatically plays when you return to the app
