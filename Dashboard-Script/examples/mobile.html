@@ -1,0 +1,341 @@
+<script data-name="mobile-bottom-navigation">
+(() => {
+  const MOBILE_MAX_WIDTH = 767;
+  const NAV_ID = 'mega-mobile-bottom-nav';
+  const STYLE_ID = 'mega-mobile-bottom-nav-style';
+  const APP_FONT_FAMILY = "'Inter', -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Tahoma, Arial, sans-serif";
+
+  const navItems = [
+    {
+      label: 'Conversas',
+      route: 'dashboard',
+      match: path => /\/app\/accounts\/\d+\/?$/.test(path) || path.includes('/dashboard'),
+      icon: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/>',
+    },
+    {
+      label: 'Contatos',
+      route: 'contacts',
+      match: path => path.includes('/contacts'),
+      icon: '<path d="M16 11a4 4 0 1 0-8 0"/><path d="M3 21a9 9 0 0 1 18 0"/><circle cx="12" cy="7" r="4"/>',
+    },
+    {
+      label: 'Kanban',
+      route: 'kanban',
+      match: path => path.includes('/kanban'),
+      icon: '<rect x="3" y="4" width="6" height="16" rx="2"/><rect x="15" y="4" width="6" height="10" rx="2"/>',
+    },
+    {
+      label: 'Relatórios',
+      route: 'reports/overview',
+      match: path => path.includes('/reports'),
+      icon: '<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16V9"/><path d="M13 16V6"/><path d="M18 16v-4"/>',
+    },
+    {
+      label: 'Ajustes',
+      route: 'settings/general',
+      match: path => path.includes('/settings'),
+      icon: '<path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04a2 2 0 1 1-2.83 2.83l-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.09 1.65V21a2 2 0 1 1-4 0v-.06a1.8 1.8 0 0 0-1.09-1.65 1.8 1.8 0 0 0-1.98.36l-.04.04a2 2 0 1 1-2.83-2.83l.04-.04A1.8 1.8 0 0 0 4.6 15a1.8 1.8 0 0 0-1.65-1.09H3a2 2 0 1 1 0-4h.06A1.8 1.8 0 0 0 4.7 8.82a1.8 1.8 0 0 0-.36-1.98l-.04-.04A2 2 0 1 1 7.13 3.97l.04.04a1.8 1.8 0 0 0 1.98.36H9.2A1.8 1.8 0 0 0 10.3 2.7V2a2 2 0 1 1 4 0v.06a1.8 1.8 0 0 0 1.09 1.65 1.8 1.8 0 0 0 1.98-.36l.04-.04a2 2 0 1 1 2.83 2.83l-.04.04a1.8 1.8 0 0 0-.36 1.98v.05A1.8 1.8 0 0 0 21.3 9.9H22a2 2 0 1 1 0 4h-.06A1.8 1.8 0 0 0 19.4 15Z"/>',
+    },
+  ];
+
+  function isMobile() {
+    return window.innerWidth <= MOBILE_MAX_WIDTH;
+  }
+
+  function getAccountId() {
+    return window.location.pathname.match(/\/app\/accounts\/(\d+)/)?.[1];
+  }
+
+  function svg(path) {
+    return `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        ${path}
+      </svg>
+    `;
+  }
+
+  function installStyles() {
+    if (document.getElementById(STYLE_ID)) return;
+
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      @media (max-width: ${MOBILE_MAX_WIDTH}px) {
+        body {
+          padding-bottom: 0 !important;
+          overflow-x: hidden !important;
+        }
+
+        #app,
+        #app > .app-wrapper {
+          padding-bottom: 0 !important;
+        }
+
+        #app > .app-wrapper > aside,
+        #app aside {
+          display: none !important;
+        }
+
+        #${NAV_ID} {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 9999;
+          display: block;
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+          background: #29a2a7;
+          box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.18);
+          font-family: ${APP_FONT_FAMILY};
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        #${NAV_ID} nav {
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        #${NAV_ID} ul {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          align-items: center;
+          min-height: 64px;
+          margin: 0;
+          padding: 6px 0;
+          list-style: none;
+        }
+
+        #${NAV_ID} li {
+          min-width: 0;
+        }
+
+        #${NAV_ID} button {
+          width: 100%;
+          min-width: 0;
+          height: 52px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+          border: 0;
+          background: transparent;
+          color: rgba(255, 255, 255, 0.78);
+          font-family: inherit;
+          font-size: 11px;
+          font-weight: 520;
+          letter-spacing: 0;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        #${NAV_ID} button svg {
+          width: 21px;
+          height: 21px;
+          flex: 0 0 auto;
+        }
+
+        #${NAV_ID} button span {
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-family: inherit;
+          font-size: 11px;
+          line-height: 14px;
+          font-weight: 520;
+          letter-spacing: 0;
+        }
+
+        #${NAV_ID} button::before {
+          content: '';
+          width: 8px;
+          height: 3px;
+          border-radius: 999px;
+          background: #fff;
+          opacity: 0;
+          transform: translateY(-2px);
+          transition: opacity 160ms ease, transform 160ms ease;
+        }
+
+        #${NAV_ID} button.is-active {
+          color: #fff;
+        }
+
+        #${NAV_ID} button.is-active::before {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        #${NAV_ID} button:active {
+          transform: scale(0.96);
+        }
+
+        .conversation-details-wrap .conversation-footer {
+          padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+        }
+
+        .conversation-details-wrap .conversation-footer .left-wrap button {
+          font-size: 12px !important;
+        }
+
+        .conversation-details-wrap header .bottom-left-labels,
+        .conversation-details-wrap header .bottom-right-actions > div > div > button {
+          display: none !important;
+        }
+
+        main .w-2\\/3 {
+          width: 100% !important;
+        }
+
+        main .w-1\\/3 {
+          width: 100% !important;
+        }
+
+        main .tabs-container > div,
+        .modal-mask form .tabs-container > div {
+          flex-wrap: wrap !important;
+          gap: 8px !important;
+        }
+
+        .modal-mask form {
+          padding: 16px !important;
+        }
+      }
+
+      @media (min-width: 768px) {
+        #${NAV_ID} {
+          display: none !important;
+        }
+
+        body,
+        #app,
+        #app > .app-wrapper {
+          padding-bottom: 0 !important;
+        }
+
+        .conversation-details-wrap .conversation-footer {
+          padding-bottom: 0 !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function buildNav() {
+    let nav = document.getElementById(NAV_ID);
+    if (nav) return nav;
+
+    nav = document.createElement('div');
+    nav.id = NAV_ID;
+    nav.setAttribute('role', 'navigation');
+    nav.setAttribute('aria-label', 'Navegação principal mobile');
+
+    nav.innerHTML = `
+      <nav>
+        <ul>
+          ${navItems.map(item => `
+            <li>
+              <button type="button" data-route="${item.route}" aria-label="${item.label}">
+                ${svg(item.icon)}
+                <span>${item.label}</span>
+              </button>
+            </li>
+          `).join('')}
+        </ul>
+      </nav>
+    `;
+
+    nav.addEventListener('click', event => {
+      const button = event.target.closest('button[data-route]');
+      if (!button) return;
+
+      const accountId = getAccountId();
+      if (!accountId) return;
+
+      window.location.assign(`${window.location.origin}/app/accounts/${accountId}/${button.dataset.route}`);
+    });
+
+    document.body.appendChild(nav);
+    return nav;
+  }
+
+  function updateActiveItem() {
+    const nav = document.getElementById(NAV_ID);
+    if (!nav) return;
+
+    const path = window.location.pathname;
+
+    nav.querySelectorAll('button[data-route]').forEach(button => {
+      const item = navItems.find(entry => entry.route === button.dataset.route);
+      const active = item?.match(path);
+
+      button.classList.toggle('is-active', Boolean(active));
+      button.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+  }
+
+  function compactBackButton() {
+    if (!isMobile()) return;
+
+    const candidates = document.querySelectorAll('.conversation-details-wrap button');
+    const backButton = Array.from(candidates).find(button => {
+      const label = `${button.getAttribute('aria-label') || ''} ${button.textContent || ''}`.toLowerCase();
+      return label.includes('back') || label.includes('voltar') || label.includes('anterior');
+    });
+
+    if (!backButton || backButton.dataset.megaBackButton === 'true') return;
+
+    backButton.dataset.megaBackButton = 'true';
+    backButton.innerHTML = svg('<path d="M15 18l-6-6 6-6"/>');
+    Object.assign(backButton.style, {
+      width: '40px',
+      height: '40px',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '0',
+      border: '0',
+      borderRadius: '999px',
+      background: 'transparent',
+    });
+  }
+
+  function compactAIButton() {
+    if (!isMobile()) return;
+
+    document.querySelectorAll('.conversation-footer button').forEach(button => {
+      const text = button.textContent.trim().toLowerCase();
+
+      if (text === 'ia' || text === 'ai' || text.includes('inteligência artificial') || text.includes('artificial intelligence')) {
+        button.textContent = 'IA';
+      }
+    });
+  }
+
+  function applyMobileEnhancements() {
+    installStyles();
+    buildNav();
+    updateActiveItem();
+    compactBackButton();
+    compactAIButton();
+  }
+
+  function scheduleApply() {
+    window.requestAnimationFrame(applyMobileEnhancements);
+  }
+
+  applyMobileEnhancements();
+
+  window.addEventListener('resize', scheduleApply);
+  window.addEventListener('popstate', scheduleApply);
+
+  const observer = new MutationObserver(scheduleApply);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+})();
+</script>
