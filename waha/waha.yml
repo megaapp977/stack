@@ -2,7 +2,16 @@ version: "3.7"
 
 services:
   waha:
-    image: devlikeapro/waha-plus:gows-2026.1.4
+    restart: always
+    image: devlikeapro/waha-plus:gows-2026.3.4
+    command: node ./dist/main.js
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:3000/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      
     networks:
       - waha
     environment:
