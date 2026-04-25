@@ -1,47 +1,47 @@
-# 🧭 Mega Dashboard Scripts — Creator Guide and Safe Patterns
+# 🧭 Mega Dashboard Scripts — Guía del Creador y Patrones Seguros
 
-This guide is the canonical reference to create Dashboard Scripts for Mega with:
+Esta guía es la referencia oficial para crear Dashboard Scripts en Mega con:
 
-- Safe DOM hooks.
-- Idempotent behavior.
-- Low-fragility runtime strategies.
-- Clear guidance on when to use Dashboard Script vs Dashboard App.
+- Anchors de DOM seguros.
+- Comportamiento idempotente.
+- Estrategias de ejecución de baja fragilidad.
+- Criterios claros para decidir entre Dashboard Script y Dashboard App.
 
-It also complements the reusable AI skill stored in `skills/skills.md`.
+También complementa la skill reutilizable de IA disponible en `skills/skills.md`.
 
 ---
 
-## 🌐 Languages
+## 🌐 Idiomas
 
 - English: `README.md`
-- Portuguese (Brazil): `README-PT-BR.md`
-- Spanish: `README-ES.md`
+- Português (Brasil): `README-PT-BR.md`
+- Español: `README-ES.md`
 
 ---
 
-## 🔐 Accessing Dashboard Scripts
+## 🔐 Acceso a Dashboard Scripts
 
-To add a script, log in to the Mega Super Admin panel:
+Para agregar un script, entra al panel Super Admin de Mega:
 
-- Visit (replace `your-domain.com`):
+- Visita (reemplaza `tu-dominio.com`):
 
   ```text
-   https://your-domain.com/super_admin/app_config?config=internal
-   ```
+  https://tu-dominio.com/super_admin/app_config?config=internal
+  ```
 
-- Find **Dashboard Scripts**.
-- Paste your script.
-- Click **Save** and reload the dashboard.
+- Busca **Dashboard Scripts**.
+- Pega tu script.
+- Haz clic en **Guardar** y recarga el dashboard.
 
 ---
 
-## 🧠 AI Skill Location
+## 🧠 Ubicación de la Skill de IA
 
-The skill spec for AI agents is available at:
+La especificación de la skill para agentes de IA está en:
 
 - `skills/skills.md`
 
-Use this skill when the request is about:
+Usa esta skill cuando la solicitud incluya:
 
 - `crear dashboard script`
 - `script para dashboard`
@@ -51,127 +51,127 @@ Use this skill when the request is about:
 
 ---
 
-## 🏗️ Codebase Facts You Must Respect
+## 🏗️ Hechos del Codebase que Debes Respetar
 
-### Injection pipeline
+### Pipeline de inyección
 
-- Dashboard scripts are assembled in `DashboardController#set_dashboard_scripts` from:
-  - Active DB records (`DashboardScript.active.ordered.pluck(:content)`).
-  - Global config (`DASHBOARD_SCRIPTS`).
-- Final content is injected in `app/views/layouts/vueapp.html.erb` via `@dashboard_scripts.html_safe`.
-- Scripts are skipped on sensitive paths by `DashboardController#sensitive_path?`.
+- Los scripts de dashboard se ensamblan en `DashboardController#set_dashboard_scripts` desde:
+  - Registros activos en BD (`DashboardScript.active.ordered.pluck(:content)`).
+  - Configuración global (`DASHBOARD_SCRIPTS`).
+- El contenido final se inyecta en `app/views/layouts/vueapp.html.erb` mediante `@dashboard_scripts.html_safe`.
+- Los scripts se omiten en rutas sensibles mediante `DashboardController#sensitive_path?`.
 
-### Scope mode: global or single-account
+### Modo de alcance: global o cuenta única
 
-- Global mode:
-  - Keep script active in Super Admin or use `DASHBOARD_SCRIPTS`.
-  - Behavior runs for all accounts on dashboard routes.
-- Single-account mode:
-  - Injection is still global, so add runtime account guard in the script.
-  - Read account from URL (`/app/accounts/:id/...`) and exit early if it does not match.
-  - For strict per-account integrations, prefer `DashboardApp` records.
+- Modo global:
+  - Mantén el script activo en Super Admin o usa `DASHBOARD_SCRIPTS`.
+  - El comportamiento corre para todas las cuentas en rutas de dashboard.
+- Modo cuenta única:
+  - La inyección sigue siendo global, así que debes aplicar guard de cuenta en runtime dentro del script.
+  - Lee la cuenta desde la URL (`/app/accounts/:id/...`) y corta la ejecución si no coincide.
+  - Para integraciones estrictas por cuenta, prefiere `DashboardApp`.
 
-### Dashboard Script model rules
+### Reglas del modelo Dashboard Script
 
-- Model: `app/models/dashboard_script.rb`.
-- Required fields: `name`, `content`.
-- `content` max length: `Limits::DASHBOARD_SCRIPT_CONTENT_MAX_LENGTH`.
-- Only scripts with `active: true` are loaded.
+- Modelo: `app/models/dashboard_script.rb`.
+- Campos requeridos: `name`, `content`.
+- Largo máximo de `content`: `Limits::DASHBOARD_SCRIPT_CONTENT_MAX_LENGTH`.
+- Solo se cargan scripts con `active: true`.
 
-### Super Admin editor and preview behavior
+### Comportamiento del editor y preview en Super Admin
 
-- Editor view: `app/views/super_admin/dashboard_scripts/show.html.erb`.
-- New form: `app/views/super_admin/dashboard_scripts/new.html.erb`.
-- Preview runs in iframe URL `/app/accounts/1/dashboard` with desktop/mobile toggles.
-- Combined scripts add `data-name` on the first `<script` tag when payload is built.
+- Editor principal: `app/views/super_admin/dashboard_scripts/show.html.erb`.
+- Formulario nuevo: `app/views/super_admin/dashboard_scripts/new.html.erb`.
+- El preview usa iframe con URL `/app/accounts/1/dashboard` y soporta desktop/mobile.
+- Los scripts combinados agregan `data-name` automáticamente en la primera etiqueta `<script` del payload.
 
-### Alternative architecture when script is not ideal
+### Arquitectura alternativa cuando script no es ideal
 
-- `DashboardApp` model: `app/models/dashboard_app.rb`.
-- Content schema expects array items like `{ type: "frame", url: "https://..." }`.
-- Frontend bridge in `DashboardApp/Frame.vue` posts `appContext` (conversation/contact/agent).
-- Use Dashboard App for larger framed third-party modules.
-
----
-
-## 🧭 Decision Matrix: Script vs App
-
-Use **Dashboard Script** when:
-
-- You need lightweight DOM customization.
-- Scope is small/local (labels, markers, hide/show one control).
-- You can implement idempotently with stable selectors.
-
-Use **Dashboard App** when:
-
-- You need a full external UI/module.
-- You want stronger isolation from dashboard DOM changes.
-- You need structured conversation/contact/agent context in frame bridge.
-- You integrate a third-party product with independent release cycle.
+- Modelo `DashboardApp`: `app/models/dashboard_app.rb`.
+- El schema de contenido requiere items como `{ type: "frame", url: "https://..." }`.
+- El puente frontend en `DashboardApp/Frame.vue` publica `appContext` (conversation/contact/agent).
+- Usa Dashboard App para módulos externos grandes embebidos.
 
 ---
 
-## ✅ Required Workflow
+## 🧭 Matriz de Decisión: Script vs App
 
-### 1) Clarify target behavior
+Usa **Dashboard Script** cuando:
 
-Capture:
+- Necesitas personalización ligera de DOM.
+- El alcance es pequeño/local (texto de botón, marcadores visuales, ocultar un control).
+- Puedes implementar con idempotencia y selectores estables.
 
-- Which route/page should run.
-- Trigger action or UI state.
-- Desktop, mobile, or both.
-- Scope mode (global or single-account).
+Usa **Dashboard App** cuando:
 
-### 2) Map stable anchors first
-
-Selector priority:
-
-1. Stable ids or data attributes.
-2. Short class selectors with clear intent.
-3. Structural selectors only as last resort.
-
-Avoid long full-DOM chains whenever possible.
-
-### 3) Build idempotent script
-
-- Add global init guard key.
-- Use `<script data-name="feature-name">`.
-- Mark processed nodes with `dataset` flags.
-- Keep side effects local.
-- Add account guard for single-account mode.
-
-### 4) Handle dynamic rendering safely
-
-- Use `MutationObserver` only on required subtree.
-- Disconnect observer when feasible.
-- If interval fallback is needed, use low frequency plus stop conditions.
-
-### 5) Add safety guards
-
-- Check required elements before mutation.
-- Gate mobile-only behavior by viewport.
-- Avoid overriding critical actions unless explicitly requested.
-- Avoid remote script injection unless requirement is explicit and trusted.
-
-### 6) Validate with dashboard preview
-
-- Validate in desktop and mobile preview.
-- Confirm no duplicate UI on re-render.
-- Confirm no console errors.
-
-### 7) Deliver complete output
-
-Provide:
-
-- Final script snippet.
-- Selector rationale.
-- Runtime strategy (observer/guards).
-- Known risks and fallback plan.
-- Recommendation if Dashboard App is better.
+- Necesitas un módulo/UI externo completo.
+- Necesitas mayor aislamiento frente a cambios del DOM del dashboard.
+- Necesitas contexto estructurado (conversation/contact/agent) en integración embebida.
+- Integras un tercero con ciclo de releases independiente.
 
 ---
 
-## 🧱 Implementation Template (Preferred Baseline)
+## ✅ Flujo Obligatorio
+
+### 1) Aclarar el comportamiento objetivo
+
+Captura:
+
+- En qué ruta/página debe correr.
+- Qué acción o estado de UI lo dispara.
+- Si aplica para desktop, mobile o ambos.
+- Modo de alcance (global o cuenta única).
+
+### 2) Mapear anchors estables primero
+
+Prioridad de selectores:
+
+1. IDs semánticos o atributos de datos estables.
+2. Clases cortas con intención clara.
+3. Selectores estructurales solo como último recurso.
+
+Evita cadenas largas y frágiles de DOM.
+
+### 3) Construir script idempotente
+
+- Agrega una llave global para inicializar una sola vez.
+- Usa `<script data-name="feature-name">`.
+- Marca nodos procesados con flags en `dataset`.
+- Mantén efectos colaterales locales.
+- Si es cuenta única, agrega guard por URL antes de mutar.
+
+### 4) Manejar render dinámico de forma segura
+
+- Usa `MutationObserver` solo en el subtree necesario.
+- Desconecta el observer cuando sea posible.
+- Si necesitas fallback por intervalo, usa baja frecuencia y condiciones de corte.
+
+### 5) Agregar guardas de seguridad
+
+- Verifica elementos requeridos antes de mutar.
+- Limita comportamiento mobile-only por viewport.
+- Evita sobrescribir acciones críticas si no fue solicitado explícitamente.
+- Evita inyectar scripts remotos salvo requisito explícito y de confianza.
+
+### 6) Validar con preview del dashboard
+
+- Verifica en preview desktop y mobile.
+- Valida que no exista inserción duplicada en re-render.
+- Valida que no existan errores en consola.
+
+### 7) Entregar salida completa
+
+Incluye:
+
+- Snippet final del script.
+- Razón de selección de selectores.
+- Estrategia de runtime (observer/guards).
+- Riesgos conocidos y plan de fallback.
+- Recomendación de Dashboard App si conviene más.
+
+---
+
+## 🧱 Plantilla de Implementación (Baseline Preferido)
 
 ```html
 <script data-name="feature-name">
@@ -180,7 +180,7 @@ Provide:
     if (window[SCRIPT_KEY]) return;
     window[SCRIPT_KEY] = true;
 
-    const TARGET_ACCOUNT_ID = null; // Example: 1 for single-account mode, null for global mode
+    const TARGET_ACCOUNT_ID = null; // Ejemplo: 1 para cuenta única, null para global
 
     function getAccountIdFromPath() {
       const match = window.location.pathname.match(/\/app\/accounts\/(\d+)/);
@@ -202,7 +202,7 @@ Provide:
       if (target.dataset.featureApplied === 'true') return;
 
       target.dataset.featureApplied = 'true';
-      // Apply your scoped DOM change here.
+      // Aplica aquí el cambio de DOM de forma local.
     }
 
     function bootstrap() {
@@ -217,11 +217,11 @@ Provide:
         subtree: true,
       });
 
-      // Optional guard to avoid permanent observers when not needed.
+      // Guarda opcional para evitar observers permanentes cuando no hagan falta.
       setTimeout(() => observer.disconnect(), 20000);
 
       window.addEventListener('resize', () => {
-        // Keep lightweight; only run if feature depends on viewport.
+        // Mantener liviano; ejecutar solo si la feature depende del viewport.
         if (isMobile()) applyFeature();
       });
     }
@@ -237,21 +237,21 @@ Provide:
 
 ---
 
-## 🎯 Reference Example: Sidebar Item with Embedded App
+## 🎯 Ejemplo de Referencia: Item en Sidebar con App Embebida
 
-Use this production-ready example to add a custom sidebar item that opens an embedded iframe panel inside Mega.
+Usa este ejemplo listo para producción para agregar un item en la sidebar que abre un iframe embebido dentro de Mega.
 
-### Configuration (`CFG` block)
+### Configuración (bloque `CFG`)
 
 ```js
 const CFG = {
-  LINK_TEXT: 'My Application',
+  LINK_TEXT: 'Mi Aplicación',
   LINK_ICON: '🧭',
   IFRAME_URL: 'https://www.google.com',
-  TARGET_ACCOUNT_ID: null, // Set a number for single-account mode
+  TARGET_ACCOUNT_ID: null, // Define un número para modo cuenta única
   POSITION: {
     mode: 'afterLabel', // 'start' | 'end' | 'index' | 'afterLabel' | 'beforeLabel'
-    label: 'Conversations',
+    label: 'Conversaciones',
     index: 0,
   },
   PADDING: 0,
@@ -260,17 +260,17 @@ const CFG = {
 };
 ```
 
-### Positioning modes
+### Modos de posición
 
-| `mode` | Description | Example |
+| `mode` | Descripción | Ejemplo |
 | --- | --- | --- |
-| `start` | Place at top of sidebar. | `{ mode: 'start' }` |
-| `end` | Place at bottom (default). | `{ mode: 'end' }` |
-| `index` | Place at exact index (0-based). | `{ mode: 'index', index: 3 }` |
-| `afterLabel` | Insert after a visible menu label. | `{ mode: 'afterLabel', label: 'Conversations' }` |
-| `beforeLabel` | Insert before a visible menu label. | `{ mode: 'beforeLabel', label: 'Campaigns' }` |
+| `start` | Coloca el item al inicio de la sidebar. | `{ mode: 'start' }` |
+| `end` | Coloca el item al final (por defecto). | `{ mode: 'end' }` |
+| `index` | Coloca en un índice exacto (base 0). | `{ mode: 'index', index: 3 }` |
+| `afterLabel` | Inserta después de un item por texto visible. | `{ mode: 'afterLabel', label: 'Conversaciones' }` |
+| `beforeLabel` | Inserta antes de un item por texto visible. | `{ mode: 'beforeLabel', label: 'Campañas' }` |
 
-### Full JavaScript code
+### Código JavaScript completo
 
 ```html
 <script data-name="sidebar-embed-app">
@@ -532,33 +532,33 @@ const CFG = {
 
 ---
 
-## ✅ Output Quality Checklist
+## ✅ Checklist de Calidad de Salida
 
-Before finalizing any script:
+Antes de finalizar cualquier script:
 
-- Script is wrapped in `<script>` and has `data-name`.
-- Initialization is idempotent (global key + node guards).
-- No unbounded hot loops.
-- Selector strategy is as stable as possible.
-- Mobile-only logic is properly gated.
-- Scope mode is explicit (global or single-account).
-- Behavior is minimally invasive and understandable.
-- If scope is complex, include Dashboard App recommendation.
+- El script está envuelto en `<script>` y tiene `data-name`.
+- La inicialización es idempotente (llave global + guardas por nodo).
+- No hay hot loops sin límite.
+- La estrategia de selectores es lo más estable posible.
+- La lógica mobile-only está correctamente condicionada.
+- El modo de alcance es explícito (global o cuenta única).
+- El comportamiento es mínimamente invasivo y entendible.
+- Si el caso es complejo, incluye recomendación de Dashboard App.
 
 ---
 
-## 📌 Notes
+## 📌 Notas
 
-- Embedded apps must allow iframe embedding.
-- Avoid `X-Frame-Options: DENY` and `X-Frame-Options: SAMEORIGIN` for the target app.
-- Add CSP if needed:
+- Las apps embebidas deben permitir uso en iframe.
+- Evita `X-Frame-Options: DENY` y `X-Frame-Options: SAMEORIGIN` en la app objetivo.
+- Agrega CSP si es necesario:
 
   ```http
-  Content-Security-Policy: frame-ancestors https://your-mega-domain.com;
+  Content-Security-Policy: frame-ancestors https://tu-dominio-mega.com;
   ```
 
 ---
 
-**Author:**
-Mega Dashboard Script Guide (v2.0)
-Maintained by **@nestordavalos**
+**Autor:**
+Guía de Dashboard Scripts de Mega (v2.0)
+Mantenido por **@nestordavalos**
