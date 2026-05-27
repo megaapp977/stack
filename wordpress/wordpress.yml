@@ -1,0 +1,172 @@
+version: "3.7"
+
+services:
+  wordpress:
+    image: wordpress:latest
+
+    volumes:
+      - wordpress_data:/var/www/html
+      - wordpress_php:/usr/local/etc/php
+
+    networks:
+      - mi-red
+
+    environment:
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_PORT: ${WORDPRESS_DB_PORT}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+
+      WP_REDIS_HOST: redis
+      WP_REDIS_PORT: 6379
+      WP_REDIS_DATABASE: 1
+
+      WP_LOCALE: es_ES
+
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      placement:
+        constraints:
+          - node.role == manager
+
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: stop-first
+
+      rollback_config:
+        parallelism: 1
+        failure_action: pause
+        order: stop-first
+
+      labels:
+        - traefik.enable=true
+
+        # =========================
+        # WordPress principal
+        # =========================
+        - traefik.http.routers.wordpress.rule=Host(`${WORDPRESS_DOMAIN}`)
+        - traefik.http.routers.wordpress.entrypoints=websecure
+        - traefik.http.routers.wordpress.tls=true
+        - traefik.http.routers.wordpress.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.wordpress.service=wordpress
+        - traefik.http.routers.wordpress.middlewares=wordpress-sec-headers
+
+        - traefik.http.services.wordpress.loadbalancer.server.port=80
+        - traefik.http.services.wordpress.loadbalancer.passHostHeader=true
+
+        # =========================
+        # Security headers
+        # =========================
+        - traefik.http.middlewares.wordpress-sec-headers.headers.browserXssFilter=true
+        - traefik.http.middlewares.wordpress-sec-headers.headers.contentTypeNosniff=true
+        - traefik.http.middlewares.wordpress-sec-headers.headers.frameDeny=true
+        - traefik.http.middlewares.wordpress-sec-headers.headers.referrerPolicy=no-referrer-when-downgrade
+        - traefik.http.middlewares.wordpress-sec-headers.headers.forceSTSHeader=true
+        - traefik.http.middlewares.wordpress-sec-headers.headers.stsSeconds=31536000
+        - traefik.http.middlewares.wordpress-sec-headers.headers.stsIncludeSubdomains=true
+        - traefik.http.middlewares.wordpress-sec-headers.headers.stsPreload=true
+
+        # =========================
+        # Bloqueo de xmlrpc.php
+        # =========================
+        - traefik.http.middlewares.wordpress-xmlrpc-redirect.redirectregex.regex=^https?://${WORDPRESS_DOMAIN}/xmlrpc\.php.*$$
+        - traefik.http.middlewares.wordpress-xmlrpc-redirect.redirectregex.replacement=https://${WORDPRESS_DOMAIN}/
+        - traefik.http.middlewares.wordpress-xmlrpc-redirect.redirectregex.permanent=true
+
+        - traefik.http.routers.wordpress-xmlrpc.rule=Host(`${WORDPRESS_DOMAIN}`) && Path(`/xmlrpc.php`)
+        - traefik.http.routers.wordpress-xmlrpc.entrypoints=websecure
+        - traefik.http.routers.wordpress-xmlrpc.tls=true
+        - traefik.http.routers.wordpress-xmlrpc.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.wordpress-xmlrpc.service=wordpress
+        - traefik.http.routers.wordpress-xmlrpc.middlewares=wordpress-xmlrpc-redirect
+
+        # =========================
+        # Rate limit para wp-json
+        # =========================
+        - traefik.http.middlewares.wordpress-wpjson-ratelimit.ratelimit.average=10
+        - traefik.http.middlewares.wordpress-wpjson-ratelimit.ratelimit.burst=20
+
+        - traefik.http.routers.wordpress-wpjson.rule=Host(`${WORDPRESS_DOMAIN}`) && PathPrefix(`/wp-json`)
+        - traefik.http.routers.wordpress-wpjson.entrypoints=websecure
+        - traefik.http.routers.wordpress-wpjson.tls=true
+        - traefik.http.routers.wordpress-wpjson.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.wordpress-wpjson.service=wordpress
+        - traefik.http.routers.wordpress-wpjson.middlewares=wordpress-sec-headers,wordpress-wpjson-ratelimit
+
+        # =========================
+        # Rate limit para login
+        # =========================
+        - traefik.http.middlewares.wordpress-login-ratelimit.ratelimit.average=5
+        - traefik.http.middlewares.wordpress-login-ratelimit.ratelimit.burst=10
+
+        - traefik.http.routers.wordpress-login.rule=Host(`${WORDPRESS_DOMAIN}`) && Path(`/wp-login.php`)
+        - traefik.http.routers.wordpress-login.entrypoints=websecure
+        - traefik.http.routers.wordpress-login.tls=true
+        - traefik.http.routers.wordpress-login.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.wordpress-login.service=wordpress
+        - traefik.http.routers.wordpress-login.middlewares=wordpress-sec-headers,wordpress-login-ratelimit
+
+  redis:
+    image: redis:7-alpine
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --port
+      - "6379"
+      - --maxmemory
+      - "1gb"
+      - --maxmemory-policy
+      - allkeys-lru
+      - --save
+      - "900"
+      - "1"
+      - --save
+      - "300"
+      - "10"
+      - --save
+      - "60"
+      - "10000"
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - mi-red
+
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      placement:
+        constraints:
+          - node.role == manager
+
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2048M
+
+volumes:
+  wordpress_data:
+    external: true
+    name: wordpress_data
+
+  wordpress_php:
+    external: true
+    name: wordpress_php
+
+  redis_data:
+    external: true
+    name: wordpress_redis_data
+
+networks:
+  mi-red:
+    external: true
+    name: mi-red
