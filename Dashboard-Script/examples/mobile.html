@@ -5,6 +5,11 @@
   const STYLE_ID = 'mega-mobile-bottom-nav-style';
   const APP_FONT_FAMILY = "'Inter', -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Tahoma, Arial, sans-serif";
 
+  // Fallback color, used only when the Chatwoot brand color can't be read.
+  // Can be overridden at runtime by setting window.MEGA_MOBILE_NAV_COLOR
+  // before this script runs.
+  const PRIMARY_COLOR = '#29a2a7';
+
   const navItems = [
     {
       label: 'Conversas',
@@ -46,6 +51,40 @@
     return window.location.pathname.match(/\/app\/accounts\/(\d+)/)?.[1];
   }
 
+  function isUsableColor(value) {
+    if (!value) return false;
+    const v = String(value).trim().toLowerCase();
+    if (!v || v === 'transparent' || v === 'inherit' || v === 'initial' || v === 'unset' || v === 'none') {
+      return false;
+    }
+    return /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/.test(v) || v.startsWith('rgb') || v.startsWith('hsl');
+  }
+
+  // Reads the brand color configured in the Chatwoot super admin.
+  // Chatwoot serializes the install config into the page as
+  // window.globalConfig / window.chatwootConfig, so we pick it up from there
+  // and fall back to PRIMARY_COLOR when it isn't exposed.
+  function resolveBrandColor() {
+    // 1. Explicit runtime override (optional).
+    if (isUsableColor(window.MEGA_MOBILE_NAV_COLOR)) {
+      return String(window.MEGA_MOBILE_NAV_COLOR).trim();
+    }
+
+    // 2. Config injected by Chatwoot (super admin -> Brand Color).
+    const sources = [window.globalConfig, window.chatwootConfig].filter(Boolean);
+    const keys = ['BRAND_COLOR', 'brandColor', 'brand_color', 'WIDGET_COLOR', 'widgetColor'];
+    for (const src of sources) {
+      for (const key of keys) {
+        if (isUsableColor(src[key])) return String(src[key]).trim();
+      }
+    }
+
+    // 3. Fallback.
+    return PRIMARY_COLOR;
+  }
+
+  const BRAND_COLOR = resolveBrandColor();
+
   function svg(path) {
     return `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -84,7 +123,7 @@
           z-index: 9999;
           display: block;
           padding-bottom: env(safe-area-inset-bottom, 0px);
-          background: #29a2a7;
+          background: ${BRAND_COLOR};
           box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.18);
           font-family: ${APP_FONT_FAMILY};
           -webkit-font-smoothing: antialiased;
@@ -224,6 +263,28 @@
     document.head.appendChild(style);
   }
 
+  // Navigates using Chatwoot's SPA router (vue-router) instead of reloading the
+  // whole app. vue-router listens to the `popstate` event, so we change the URL
+  // with pushState and dispatch the event to let it sync the route.
+  function navigateTo(route) {
+    const accountId = getAccountId();
+    if (!accountId) return;
+
+    const targetPath = `/app/accounts/${accountId}/${route}`;
+
+    // Already on this route.
+    if (window.location.pathname === targetPath) return;
+
+    try {
+      window.history.pushState({}, '', targetPath);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      updateActiveItem();
+    } catch (error) {
+      // Fallback: full page navigation (reloads the app).
+      window.location.assign(`${window.location.origin}${targetPath}`);
+    }
+  }
+
   function buildNav() {
     let nav = document.getElementById(NAV_ID);
     if (nav) return nav;
@@ -252,10 +313,8 @@
       const button = event.target.closest('button[data-route]');
       if (!button) return;
 
-      const accountId = getAccountId();
-      if (!accountId) return;
-
-      window.location.assign(`${window.location.origin}/app/accounts/${accountId}/${button.dataset.route}`);
+      event.preventDefault();
+      navigateTo(button.dataset.route);
     });
 
     document.body.appendChild(nav);
