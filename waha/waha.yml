@@ -3,7 +3,7 @@ version: "3.7"
 services:
   waha:
     restart: always
-    image: devlikeapro/waha:latest
+    image: bergpinheiro/waha:gows-2026.6.2
     command: node ./dist/main.js
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:3000/ping"]
