@@ -4,7 +4,7 @@
 
 **Version:** Enterprise
 **Based on:** Chatwoot (Open Source) + Mega Exclusive Features
-**Last Updated:** April 25, 2026
+**Last Updated:** July 3, 2026
 
 ---
 
@@ -32,9 +32,11 @@
 Connect with your customers through the world's most popular messaging channel.
 
 - **WhatsApp Cloud API** - Official Meta integration with all enterprise features
+- **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, preserving native Cloud API sending and receiving relayed webhooks
 - **WhatsApp Evolution** *(Mega)* - Direct connection without official API, ideal for personal accounts
 - **WhatsApp WAHA** *(Mega)* - Alternative provider with full multimedia message support
 - **WhatsApp Uazapi** *(Mega)* - Low-cost solution for multiple lines
+- **Connection health alerts** *(Mega)* - Token and session issues appear in inbox lists, the primary sidebar, and inbox settings with a shortcut to session configuration
 - **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
 - **Per-server capacity** *(Mega)* - Define limits by server to distribute operational load
 - **BSUID support** *(Mega)* - Reliable contact identification and delivery even when traditional `wa_id` is missing
@@ -78,6 +80,7 @@ With over 2 billion active users, Instagram is essential for visual brands. 90% 
 **Supported interaction types:**
 
 - **Direct Messages (DMs)** - Respond to private inquiries from your followers
+- **Mega Hub for Instagram** *(Mega)* - Connect Instagram through shared Hub apps when the mode is enabled while preserving native inbox and sending behavior
 - **Story Replies** - Engage with those who react to your stories
 - **Story Replies with Content** - See images and videos attached when replying to your stories
 - **Story Mentions** - Get alerts when you're mentioned
@@ -121,6 +124,7 @@ With over 1.3 billion active users, Messenger is the preferred channel for custo
 **Main features:**
 
 - **Connect in minutes** - Link your Facebook page with a couple of clicks, no technical setup required
+- **Mega Hub for Messenger** *(Mega)* - Use shared Hub apps as a configurable alternative without changing native sending behavior
 - **Multiple pages** - Manage all your Facebook pages from a single platform
 - **Read receipts** - Know when the customer read your message
 - **Delivery confirmations** - Verify that your messages arrived correctly
@@ -173,8 +177,10 @@ Many customers prefer email for formal inquiries, documentation, or follow-ups. 
 
 - **Unified inbox** - All emails appear as conversations alongside WhatsApp, social media, and more
 - **Rich replies** - Send emails with formatting, images, and attachments
+- **Resizable inline images** - Insert images in the email body and adjust their displayed size visually
 - **Custom signatures** - Configure professional signatures per agent or inbox
 - **Any provider** - Connect Gmail, Outlook, your own server, or any email
+- **Guided setup** - Detect Gmail or Outlook hosting from your domain to suggest the right integration
 - **Complete history** - Entire email thread visible in one conversation
 - **Quoted replies** - Include original email in your responses for context
 
@@ -214,6 +220,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 - **Dark mode** - Adapts to visitor preferences
 - **Integrated Help Center** - Show help articles directly in the widget
 - **Predefined messages** - Start conversations with context
+- **Inline images in replies** - Send screenshots or visual resources inside the message body and adjust their size
 - **Allowed domains** - Restrict widget to authorized domains for added security
 - **Show agent name** - Configure per inbox whether the agent's name is shown to visitors
 - **Layering/background fixes** - Better visual rendering between launcher and portal, including dark mode scenarios
@@ -369,7 +376,8 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 - Duration and timestamps for each call
 - Identification of inbound vs outbound calls
 - Full history visible in customer conversation
-- Call recordings storage
+- Optional Twilio-native call recording with explicit storage-cost acceptance
+- Downloadable recordings in the conversation and call reports
 
 **Agent Features:**
 
@@ -405,7 +413,7 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 **Outbound Calls (Business-Initiated):**
 
 - **Click-to-call** - Start calls from the conversation view
-- **Permission system** - Request and track call permissions from contacts
+- **Permission system** - Request and track call permissions inside the 24-hour customer service window
 - **Call permission status** - Know which contacts have granted permission
 - **Ringback tone** - Audio feedback while connecting
 
@@ -427,6 +435,7 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 
 - WhatsApp Cloud API inbox
 - Business phone number configured with Meta
+- Open customer service window or approved template to reopen the conversation before requesting permission
 - Modern browser with WebRTC support
 
 ---
@@ -441,6 +450,8 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 - **Label filters with AND logic** - Filter by multiple labels that must all match
 - **Custom views** - Save frequent filters as quick views
 - **Powerful search** - Find conversations by content, contact, or metadata
+- **Sidebar quick filters** - Navigate directly to Unread, Mentions, Participating, Groups, and Unattended from the sidebar
+- **Reactive unread badges** - Mentions, Participating, Groups, and Unread show live counters without page reloads
 
 ### Message Search in Conversation
 
@@ -464,6 +475,7 @@ Find specific messages within a conversation:
 
 - **Priority levels** - Urgent, High, Medium, Low
 - **Smart sorting** - By recent activity, wait time, priority
+- **Unread-first sorting** - Prioritize conversations with unread messages directly from the sort selector
 - **Visual indicators** - Quickly identify critical conversations
 
 ### Team Collaboration
@@ -472,6 +484,7 @@ Find specific messages within a conversation:
 - **Team assignment** - Route to specific departments
 - **Mentions (@)** - Notify colleagues in conversations
 - **Private notes** - Communicate internally without customer seeing
+- **Private-note mention counters** - Internal mentions raise the Mentions sidebar badge in realtime
 
 ### Conversation Participants
 
@@ -494,6 +507,7 @@ Quick templates with shortcuts for faster responses:
 - **Variable substitution** - Dynamic placeholders for contact info
 - **Attachments support** - Include images, documents, and files with responses
 - **Multi-file attachments** - Attach multiple files to a single canned response
+- **Canned attachments in new conversations** - Reuse canned response files even when starting a brand new conversation
 - **Rich content** - Format text with markdown support
 
 ### Voice Recorder
@@ -505,6 +519,7 @@ Quick templates with shortcuts for faster responses:
 ### Other Productivity Tools
 
 - **Multimedia attachments** - Images, videos, documents
+- **PFX attachment support** - Upload `.pfx` certificates with proper type recognition and iconography
 - **Emojis and GIFs** - More personal communication
 - **Reply-to** - Respond to specific messages
 - **Draft messages** - Automatically saves drafts as you type, restored when returning to the conversation
@@ -592,20 +607,28 @@ Keep your team connected and productive. Instead of using external tools like Sl
 **Room Management (Settings):**
 
 - **Create rooms** - Administrators can create rooms with name and description
+- **Public and private channels** - Define visibility and audience for each team workflow
+- **Categories** - Group channels by topic, team, or department
 - **Add users** - Multi-select team members from your account
 - **Edit rooms** - Update name, description, and members
 - **Delete rooms** - Remove rooms with safety confirmation
 - **Room avatars** - Optional custom images for each room
 - **Location** - Accessible from Settings > Chat Rooms
 
+> **Note:** Chat Rooms settings manage channels (public and private) only. Direct messages (DMs) are personal conversations managed from the chat sidebar and do not appear, nor can they be edited/deleted, in Settings.
+
 **Permissions & Visibility:**
 
-- **Administrators** - See ALL account rooms in the sidebar, can create/edit/delete any room, can participate in all rooms
+- **Administrators** - See ALL account rooms in the sidebar, can create/edit/delete any channel, can participate in all rooms
 - **Agents & Custom Roles** - Only see rooms where they are members in the sidebar, can only participate in their assigned rooms, cannot create/edit/delete rooms
 
 **Chat Interface:**
 
 - **Sidebar location** - Conversations > Rooms
+- **Integrated search** - Find channels, direct messages, and messages inside rooms
+- **Quick filters** - All, channels, direct messages, drafts, and archived
+- **Visual sections** - Drafts, favorites, direct messages, channels, and archived
+- **Quick creation** - Create channels, categories, and direct messages from the list
 - **Room view** - Header with room name + message list + send input
 - **Clean design** - 100% Tailwind CSS, modern and responsive
 
@@ -614,7 +637,12 @@ Keep your team connected and productive. Instead of using external tools like Sl
 - **Text messages** - Simple text communication
 - **Multimedia** - Images, videos, audio files, documents
 - **Reply** - Respond to specific messages (quotes the original)
-- **Private notes** - Messages visible only to agents
+- **Reply threads** - Open a side panel per message, reply inside the thread, and optionally publish the reply back to the channel
+- **Reactions** - Quickly respond to messages with emoji
+- **Pinned messages** - Keep important information visible in the room
+- **Polls** - Create multiple-option votes from the composer
+- **Drafts** - Recover unsent text per user and room
+- **Typing status** - See when other members are typing
 - **Audio recording** - Integrated audio recorder for voice notes
 
 **Smart Message Layout:**
@@ -630,6 +658,7 @@ Keep your team connected and productive. Instead of using external tools like Sl
 
 - **WebSocket integration** - Using Action Cable for instant delivery
 - **Live updates** - Messages appear immediately without refreshing
+- **Room events** - Updates, deletions, read state, unread state, reactions, polls, and typing
 - **Smart broadcasting** - Admins receive events from all rooms, regular users only from their rooms
 - **Event tracking** - Message created and updated events
 
@@ -711,6 +740,7 @@ Beyond the standard Typebot integration, MEGA extends its capabilities with spec
 - **Team assignment via MEGA_CMD** - Use `MEGA_CMD:assign_team:team_name` to route the conversation to the appropriate team from within the bot flow
 - **List placeholders** - Inject dynamic lists of agents or teams as Typebot variables to build custom selection menus
 - **Media-only first message handling** - Correctly opens a new conversation when the first interaction is media-only
+- **Ignored WhatsApp reactions** - Reactions do not start the flow or get sent to Typebot as messages
 - **Location compatibility** - Forwards coordinates as map links for consistent bot flow handling
 - **Stable default delay** - More predictable behavior when no explicit delay is configured in the bot
 - **No extra code** - Everything is configured directly in the Typebot flow, without modifying the MEGA bot
@@ -725,8 +755,10 @@ Create and configure AI assistants tailored to your business needs:
 
 - **Multiple assistants** - Create different assistants for different purposes
 - **Custom configuration** - Set temperature, model, and behavior parameters
+- **Per-feature models** - Configure separate models for Assistant, Copilot, suggestions, and FAQ generation from documents and PDFs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
+- **Assistant overview** - Monitor handled conversations, auto-resolution, handoff, estimated time saved, reopen rate, conversation depth, knowledge coverage, and AI-generated period summaries
 - **Image comprehension** - Assistant can analyze images sent in conversations
 - **Multimodal support** - Process text and images simultaneously for contextual responses
 - **Ignore groups** - Configure assistant to not respond in group conversations
@@ -739,6 +771,7 @@ Upload documents to train your AI assistant:
 - **Document upload** - Add PDFs, text files, and more (up to 10MB)
 - **Automatic processing** - Documents are processed and indexed
 - **Auto-sync fields** - Track sync status and last sync timestamp to keep knowledge sources aligned
+- **Staggered auto-sync** - Refresh web sources by plan with distributed execution to avoid load spikes
 - **Related responses** - See which responses use each document
 - **Bulk management** - Add and remove documents easily
 
@@ -764,9 +797,11 @@ Create custom tools for your AI assistant:
 
 Connect MCP (Model Context Protocol) servers to expand your assistant's capabilities:
 
-- **Standard protocol** - Compatible with the MCP standard for integration with external tools
+- **Native account MCP** - Create account-level MCP servers with dedicated endpoints
+- **Secure and flexible access** - Supports OAuth authentication and static token access
+- **Daily-use catalog** - Publishes tools ready for everyday account operations
+- **Help Center over MCP** - Query, search, and retrieve articles and categories from connected agents
 - **Assistant assignment** - Link MCP servers to specific assistants
-- **Flexible configuration** - Define URL and connection parameters
 - **Centralized management** - Manage all your MCP servers from settings
 
 **Captain Auto-Resolve Mode:**
@@ -797,12 +832,15 @@ Real-time AI assistance for your agents:
 - **Priority updates** - AI recommends priority changes
 - **Private notes** - AI can add internal notes
 
-**Audio Transcription (Whisper):**
+**Audio Transcription:**
 
 Automatically transcribe audio messages to text:
 
 - **Automatic transcription** - Convert voice notes into readable text
-- **Whisper model** - Uses OpenAI Whisper for high-accuracy transcription
+- **Call recording controls** - Enable or disable call recording transcription by provider (WhatsApp Cloud and WaVoIP)
+- **Call diarization** - Splits call recordings by speaker turn using the contact name and assigned agent name
+- **Manual transcription** - Queues transcription from the context menu when an audio message still has no text
+- **OpenAI models** - Uses GPT-4o Mini Transcribe by default for voice notes, with Whisper available as an account override; for call recordings, normalizes audio and combines GPT-4o diarization with GPT-4o Transcribe for better fidelity
 - **Multi-language** - Support for multiple languages
 - **In-conversation context** - Agents can quickly read audio content
 
@@ -843,6 +881,7 @@ Automatically transcribe audio messages to text:
 ### Companies *(Enterprise)*
 
 - **Group contacts** - Organize contacts by company
+- **Contact company selector** - Assign, clear, or create a company directly from the contact form
 - **Auto domain** - Association by email domain
 - **Unified view** - History of all company conversations
 - **Automatic favicon** - The system automatically downloads the company's domain favicon to display as its avatar; works with any website that has a configured favicon
@@ -857,6 +896,7 @@ Automatically transcribe audio messages to text:
 - **CSV Upload** - Import contacts massively
 - **Field mapping** - Associate columns with attributes
 - **Auto validation** - Detect errors before importing
+- **Controlled access** - Import and export available to administrators and contact managers
 
 ### Contact Blocking
 
@@ -1037,6 +1077,7 @@ The system includes multiple protections to maintain send quality:
 - **Multiple portals** - Create knowledge bases per product/brand
 - **Custom domain** - Host on your own domain
 - **Configurable design** - Colors, logo, header text
+- **Selectable layouts** - Choose between a classic landing page or documentation-style sidebar navigation
 - **Multi-language** - Articles in multiple languages
 - **GuideJar embeds** - Insert interactive GuideJar guides in Help Center content
 
@@ -1045,6 +1086,8 @@ The system includes multiple protections to maintain send quality:
 - **Categories** - Group articles by topic
 - **Subfolders** - Hierarchical organization
 - **Articles** - Rich content with markdown
+- **Create from category view** - Start new articles directly from each category screen
+- **Image resizing** - Resize images inside the editor for cleaner article layouts
 - **Slash menu in editor** - Insert blocks and commands quickly by typing /
 - **Native tables in editor** - Create and edit tables directly in the article editor
 - **Markdown tables** - Correct rendering for table blocks inside help articles
@@ -1063,6 +1106,12 @@ The system includes multiple protections to maintain send quality:
 - **Meta descriptions** - Optimize for search engines
 - **Friendly URLs** - Customizable slugs
 - **Integrated widget** - Connect portal with live chat
+
+### AI Content Generation *(Enterprise)*
+
+- **PDF-to-FAQ drafts** - Upload PDF documents to generate FAQ drafts with AI
+- **Additional context** - Provide optional instructions to guide the generated content
+- **Assisted publishing** - Review and publish only the generated entries you want to keep
 
 ### Insert Articles in Conversations
 
@@ -1088,6 +1137,7 @@ The system includes multiple protections to maintain send quality:
 - **Resolution time** - Average and distribution
 - **First response** - Initial response time
 - **Trends** - Temporal evolution
+- **Bar drilldown** - Open each chart bar to review the conversations or messages behind the metric, with bucket navigation and result counts
 
 ### Agent Reports
 
@@ -1167,12 +1217,14 @@ Complete voice channel analytics:
 - **Granular permissions** - Access control by functionality
 - **Custom profile** - Avatar, name, signature
 - **Availability status** - Online, Busy, Offline
+- **Guided agent offboarding** - Before deleting an agent, choose whether to unassign or bulk reassign their conversations
 
 ### Teams
 
 - **Departments** - Sales, Support, Billing, etc.
 - **Auto assignment** - Round-robin within team
 - **Visibility restriction** - Members see only their conversations
+- **Visual identification** - Configure an emoji or colored icon per team so agents can recognize teams in lists and assignment pickers
 
 ### Inboxes & Members
 
@@ -1259,6 +1311,7 @@ Connect MEGA with any external system through automatic notifications:
 - **Subscription normalization** - Consistent validation/normalization of webhook events and aliases
 - **Attachment-enriched payloads** - Includes attachment `content_type` and extension in webhook events
 - **Agent Bot update event** - Dispatches webhook when a bot-managed conversation is updated
+- **`inbox_updated` event** - Notifies inbox lifecycle changes, including channel disconnects
 - **Subscription aliases** - Assign descriptive names to each webhook subscription for easier management
 - **Global webhook secret** *(Enterprise)* - Configure a security signature at installation level to verify the authenticity of all outgoing webhook events; payloads are signed with HMAC-SHA256 using the configured secret
 
@@ -1417,7 +1470,8 @@ Customize email communications with your branding:
 - **First response** - Maximum time to respond
 - **Next response** - Time between responses
 - **Resolution** - Total service time
-- **Business hours** - Calculation in work hours
+- **Business hours** - Backend-computed deadlines that respect inbox working hours
+- **Blocked contacts** - Conversations with blocked contacts are excluded from SLA assignment, processing, reports, and indicators until unblocked
 - **Alerts and notifications** - Warning before breach
 - **SLA reports** - Compliance and trends
 
@@ -1493,6 +1547,7 @@ Fully customize your platform's appearance:
 - **Brand name** - Change name shown throughout platform
 - **Installation name** - Name for specific instance
 - **Primary color** - Define your corporate main color
+- **PWA icon background** - Configure the installable app icon background without rebuilding the image
 - **Brand URL** - Your company link
 - **Widget URL** - Link in chat widget
 - **Terms and privacy** - Custom URLs for legal pages
@@ -1528,6 +1583,12 @@ Create roles tailored to your organization with granular permission control:
 ---
 
 ## ⭐ Mega Exclusive Features
+
+### 🧭 Guided Onboarding
+
+- **Dedicated initial setup** - Complete account details through a purpose-built administrative flow
+- **Normalized website URL** - Store the address with its protocol for downstream integrations and automation
+- **Guided Instagram connection** - Resume inbox setup after authorizing Instagram from onboarding
 
 ### 📅 Scheduled Messages
 
@@ -1603,7 +1664,7 @@ Robust, high-availability solution for demanding operations requiring maximum st
 
 - Texts, images, videos, documents
 - Audio and voice notes
-- Stickers and reactions
+- Stickers and reactions, including API-token reaction sending
 - Complete group support
 
 **Advanced features:**
@@ -1611,6 +1672,8 @@ Robust, high-availability solution for demanding operations requiring maximum st
 - Presence status (typing, online)
 - Read receipts
 - Edited and deleted messages
+- Passkey authorization during WhatsApp linking through the WAHA browser extension flow, with a proactive notice when the extension is not installed and manual code confirmation when WhatsApp requests it
+- On-demand global and per-conversation sync for recent messages, with account-level concurrency protection and optional dedicated processing for high-volume installations
 
 **Ideal for:**
 
@@ -1636,6 +1699,7 @@ Economic and scalable solution for high-volume operations.
 - Texts, images, videos
 - Audio and voice notes
 - Documents
+- On-demand global and per-conversation sync for recent messages, with historical media recovery
 
 **Chat filter configuration:**
 
@@ -1694,6 +1758,7 @@ WaVoIP enables voice calls through WhatsApp for providers that don't use Meta's 
 - **Complete controls** - Mute, hang up, accept, reject calls
 - **Real-time duration** - Timer visible during call
 - **Quality indicator** - Monitor connection quality live
+- **Persistent device sessions** - Preserve per-inbox authentication and status to reduce manual reconnects
 - **Auto recording** - Automatic call recording with download option
 - **Recording storage** - Recordings saved and attached to conversations
 
@@ -1729,6 +1794,7 @@ Complete context of each customer regardless of how they contacted you:
 - **360° view** - All contact history in one place
 - **All channels** - WhatsApp, email, social media, all together
 - **Immediate context** - Understand the customer before responding
+- **WhatsApp replies** - Quoted replies can reference messages from previous conversations when history is enabled
 
 ### Privacy Controls
 
@@ -1767,8 +1833,14 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Funnels with customizable stages** - Create multiple funnels and set a default stage per funnel
 - **Board and list views** - Switch between visual pipeline and operational list depending on team workflow
 - **Advanced inbox/channel/activity filters** - Segment opportunities by origin and recent movement
+- **Label-based filtering** - Filter by conversation labels in board and list views, including stage metrics
 - **Per-user column visibility** - Show or hide columns and persist preferences locally
 - **360 item workspace** - Includes checklist, notes, attachments, assigned agents, offers, and custom attributes
+- **Relationship search** - Find linked conversations with remote search while managing item relationships
+- **Account default currency** - The board baseline currency is defined at account settings level (`default_currency`)
+- **Custom offer currency override** - In manual product/service offers, users can choose currency per offer
+- **No currency on items without offers** - If an item has no offers, value is shown as a placeholder and is excluded from monetary totals
+- **Labels from the item card** - Add or remove labels directly from the item card
 - **Native contact and conversation relationships** - Keep sales context linked to the real customer chat thread
 - **Stage-based automations** - Trigger actions when entering or moving stages, including quick messages and operational rules
 - **Real-time synchronization** - Stage and item updates propagate instantly to chat list and contact panel
@@ -1827,6 +1899,7 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 - **Custom splash screen** - Animated loading screen with your brand logo and colors when launching the app
 - **Quick shortcuts** - Access Conversations or Notifications directly from the app icon's context menu
 - **Dynamic icon** - The app icon is automatically generated from your configured logo, in all required sizes (48px to 512px)
+- **Configurable icon background** - Use a custom color for the installable icon while keeping white as the default
 - **Monochrome badge** - Optimized badge icon with monochrome silhouette for system notifications
 
 **Advanced Push Notifications:**

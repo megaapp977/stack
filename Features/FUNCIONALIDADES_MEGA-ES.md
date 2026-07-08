@@ -3,8 +3,8 @@
 ## Tu Centro de Comando para la Atención al Cliente del Futuro
 
 **Versión:** Enterprise
-**Basado en:** Chatwoot (Open Source) + Funcionalidades Exclusivas Mega
-**Última Actualización:** 25 de abril de 2026
+**Basado en:** Funcionalidades Exclusivas Mega
+**Última Actualización:** 3 de julio de 2026
 
 ---
 
@@ -32,6 +32,7 @@
 Conecta con tus clientes a través del canal de mensajería más popular del mundo.
 
 - **WhatsApp Cloud API** - Integración oficial de Meta con todas las funcionalidades empresariales
+- **Mega Hub para WhatsApp** *(Mega)* - Conexión opcional con apps compartidas desde Super Admin, manteniendo el envío nativo por Cloud API y recibiendo webhooks reenviados
 - **WhatsApp Evolution** *(Mega)* - Conexión directa sin API oficial, ideal para cuentas personales
 - **WhatsApp WAHA** *(Mega)* - Proveedor alternativo con soporte completo de mensajes multimedia
 - **WhatsApp Uazapi** *(Mega)* - Solución de bajo costo para múltiples líneas
@@ -70,6 +71,8 @@ Control completo de los grupos de WhatsApp directamente desde MEGA:
 ### Instagram Direct
 
 Conecta con tu audiencia de Instagram y convierte seguidores en clientes desde el lugar donde ya interactúan con tu marca.
+
+- **Mega Hub para Instagram** *(Mega)* - Conecta Instagram mediante apps compartidas del Hub cuando el modo está activo, conservando la bandeja y el envío nativos
 
 **¿Por qué Instagram?**
 
@@ -121,6 +124,7 @@ Con más de 1.3 mil millones de usuarios activos, Messenger es el canal preferid
 **Funcionalidades principales:**
 
 - **Conexión en minutos** - Vincula tu página de Facebook con un par de clics, sin configuración técnica
+- **Mega Hub para Messenger** *(Mega)* - Usa apps compartidas del Hub como alternativa configurable sin cambiar el flujo nativo de envío
 - **Múltiples páginas** - Gestiona todas tus páginas de Facebook desde una sola plataforma
 - **Confirmaciones de lectura** - Sabe cuándo el cliente leyó tu mensaje
 - **Confirmaciones de entrega** - Verifica que tus mensajes llegaron correctamente
@@ -405,7 +409,7 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 **Llamadas Salientes (Business-Initiated):**
 
 - **Click-to-call** - Inicia llamadas desde la vista de conversación
-- **Sistema de permisos** - Solicita y rastrea permisos de llamada de contactos
+- **Sistema de permisos** - Solicita y rastrea permisos de llamada dentro de la ventana de atención de 24 horas
 - **Estado de permisos** - Sabe qué contactos han otorgado permiso
 - **Tono de ringback** - Audio de feedback mientras se conecta
 
@@ -427,6 +431,7 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 
 - Inbox de WhatsApp Cloud API
 - Número de teléfono empresarial configurado con Meta
+- Ventana de atención abierta o plantilla aprobada para reabrir la conversación antes de solicitar permiso
 - Navegador moderno con soporte WebRTC
 
 ---
@@ -441,6 +446,8 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 - **Filtros de etiquetas con lógica AND** - Filtra por múltiples etiquetas que deben cumplirse todas
 - **Vistas personalizadas** - Guarda filtros frecuentes como vistas rápidas
 - **Búsqueda potente** - Encuentra conversaciones por contenido, contacto o metadatos
+- **Filtros rápidos en sidebar** - Navega directo a No Leídas, Menciones, Participando, Grupos y No atendidas desde la barra lateral
+- **Contadores reactivos de no leídos** - Menciones, Participando, Grupos y No Leídas muestran badges actualizados en tiempo real sin recargar
 
 ### Búsqueda de Mensajes en Conversación
 
@@ -464,6 +471,7 @@ Encuentra mensajes específicos dentro de una conversación:
 
 - **Niveles de prioridad** - Urgente, Alta, Media, Baja
 - **Ordenamiento inteligente** - Por actividad reciente, tiempo de espera, prioridad
+- **Orden por no leídas** - Prioriza conversaciones con mensajes sin leer desde el selector de orden
 - **Indicadores visuales** - Identifica rápidamente conversaciones críticas
 
 ### Colaboración en Equipo
@@ -472,6 +480,7 @@ Encuentra mensajes específicos dentro de una conversación:
 - **Asignación de equipos** - Deriva a departamentos específicos
 - **Menciones (@)** - Notifica a compañeros en conversaciones
 - **Notas privadas** - Comunícate internamente sin que el cliente vea
+- **Menciones en nota privada con contador** - Las menciones internas elevan el contador del filtro Menciones en el sidebar
 
 ### Participantes de Conversación
 
@@ -494,6 +503,7 @@ Plantillas rápidas con atajos para respuestas más ágiles:
 - **Sustitución de variables** - Placeholders dinámicos para info del contacto
 - **Soporte de adjuntos** - Incluye imágenes, documentos y archivos con respuestas
 - **Múltiples adjuntos** - Adjunta múltiples archivos a una sola respuesta predefinida
+- **Adjuntos también en nueva conversación** - Reutiliza archivos de respuestas predefinidas incluso al iniciar conversaciones nuevas
 - **Contenido enriquecido** - Formatea texto con soporte markdown
 
 ### Grabador de Voz
@@ -505,6 +515,7 @@ Plantillas rápidas con atajos para respuestas más ágiles:
 ### Otras Herramientas de Productividad
 
 - **Adjuntos multimedia** - Imágenes, videos, documentos
+- **Soporte para archivos PFX** - Adjunta certificados `.pfx` con reconocimiento visual y de tipo adecuado
 - **Emojis y GIFs** - Comunicación más cercana
 - **Respuesta citada (Reply-to)** - Responde a mensajes específicos
 - **Borradores de mensajes** - Guarda automáticamente borradores mientras escribes, se restauran al volver a la conversación
@@ -598,9 +609,11 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 - **Avatares de sala** - Imágenes personalizadas opcionales para cada sala
 - **Ubicación** - Accesible desde Settings > Chat Rooms
 
+> **Nota:** Los ajustes de Salas de chat gestionan únicamente canales (públicos y privados). Los mensajes directos (DM) son conversaciones personales que se gestionan desde la barra lateral de chat y no aparecen ni pueden editarse/eliminarse en Settings.
+
 **Permisos y Visibilidad:**
 
-- **Administradores** - Ven TODAS las salas de la cuenta en el sidebar, pueden crear/editar/eliminar cualquier sala, pueden participar en todas las salas
+- **Administradores** - Ven TODAS las salas de la cuenta en el sidebar, pueden crear/editar/eliminar cualquier canal, pueden participar en todas las salas
 - **Agentes y Roles Personalizados** - Solo ven las salas donde son miembros en el sidebar, solo pueden participar en sus salas asignadas, no pueden crear/editar/eliminar salas
 
 **Interfaz de Chat:**
@@ -725,8 +738,10 @@ Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
 
 - **Múltiples asistentes** - Crea diferentes asistentes para diferentes propósitos
 - **Configuración personalizada** - Ajusta temperatura, modelo y parámetros de comportamiento
+- **Modelos por función** - Configura modelos separados para Assistant, Copilot, sugerencias, generación de FAQs desde documentos y PDFs
 - **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
 - **Asignación a inbox** - Vincula asistentes a canales específicos
+- **Resumen del asistente** - Monitorea conversaciones atendidas, resolución automática, transferencias, horas ahorradas, reaperturas, profundidad de conversación, cobertura de conocimiento y resúmenes de periodo generados con IA
 - **Comprensión de imágenes** - El asistente puede analizar imágenes enviadas en las conversaciones
 - **Soporte multimodal** - Procesa texto e imágenes simultáneamente para respuestas contextuales
 - **Ignorar grupos** - Configura el asistente para no responder en conversaciones grupales
@@ -739,6 +754,7 @@ Sube documentos para entrenar tu asistente de IA:
 - **Carga de documentos** - Añade PDFs, archivos de texto y más (hasta 10MB)
 - **Procesamiento automático** - Los documentos se procesan e indexan automáticamente
 - **Campos de auto-sincronización** - Guarda estado y fecha de sincronización para mantener fuentes documentales alineadas
+- **Auto-sincronización escalonada** - Actualiza fuentes web según el plan con ejecución distribuida para evitar picos de carga
 - **Respuestas relacionadas** - Ve qué respuestas usan cada documento
 - **Gestión masiva** - Añade y elimina documentos fácilmente
 
@@ -764,9 +780,11 @@ Crea herramientas personalizadas para tu asistente de IA:
 
 Conecta servidores MCP (Model Context Protocol) para ampliar las capacidades de tu asistente:
 
-- **Protocolo estándar** - Compatible con el estándar MCP para integración con herramientas externas
+- **MCP nativo por cuenta** - Crea servidores MCP propios por cuenta con endpoint dedicado
+- **Acceso seguro y flexible** - Compatible con autenticación OAuth y token estático
+- **Catálogo de uso cotidiano** - Publica herramientas listas para operaciones diarias de la cuenta
+- **Help Center por MCP** - Consulta, busca y obtiene artículos y categorías desde agentes conectados
 - **Asignación a asistentes** - Vincula servidores MCP a asistentes específicos
-- **Configuración flexible** - Define URL y parámetros de conexión
 - **Gestión centralizada** - Administra todos tus servidores MCP desde la configuración
 
 **Captain Auto-Resolve Mode:**
@@ -798,12 +816,15 @@ Asistencia de IA en tiempo real para tus agentes:
 - **Actualizaciones de prioridad** - La IA recomienda cambios de prioridad
 - **Notas privadas** - La IA puede añadir notas internas
 
-**Transcripción de Audio (Whisper):**
+**Transcripción de Audio:**
 
 Transcribe automáticamente mensajes de audio a texto:
 
 - **Transcripción automática** - Convierte notas de voz en texto legible
-- **Modelo Whisper** - Usa OpenAI Whisper para transcripción de alta precisión
+- **Control de grabaciones de llamadas** - Activa o desactiva la transcripción de grabaciones por proveedor (WhatsApp Cloud y WaVoIP)
+- **Diarización de llamadas** - Separa las grabaciones por turno usando el nombre del contacto y del agente asignado
+- **Transcripción manual** - Permite encolar la transcripción desde el menú contextual cuando un audio aún no tiene texto
+- **Modelos OpenAI** - Usa GPT-4o Mini Transcribe por defecto para notas de voz, con Whisper disponible como override por cuenta; para grabaciones de llamadas normaliza el audio y combina GPT-4o diarizado con GPT-4o Transcribe para mejorar fidelidad
 - **Multi-idioma** - Soporte para múltiples idiomas
 - **Contexto en conversaciones** - Los agentes pueden leer el contenido de los audios rápidamente
 
@@ -858,6 +879,7 @@ Transcribe automáticamente mensajes de audio a texto:
 - **CSV Upload** - Importa contactos masivamente
 - **Mapeo de campos** - Asocia columnas con atributos
 - **Validación automática** - Detecta errores antes de importar
+- **Acceso controlado** - Importación y exportación disponibles para administradores y responsables de contactos
 
 ### Bloqueo de Contactos
 
@@ -1069,6 +1091,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Múltiples portales** - Crea bases de conocimiento por producto/marca
 - **Dominio personalizado** - Aloja en tu propio dominio
 - **Diseño configurable** - Colores, logo, texto de cabecera
+- **Layouts seleccionables** - Elige entre una portada clásica o una navegación tipo documentación con barra lateral
 - **Multi-idioma** - Artículos en múltiples idiomas
 - **Embeds GuideJar** - Inserta guías interactivas de GuideJar dentro del contenido del Help Center
 
@@ -1077,6 +1100,8 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Categorías** - Agrupa artículos por tema
 - **Subcarpetas** - Organización jerárquica
 - **Artículos** - Contenido rico con markdown
+- **Crear desde categoría** - Inicia artículos nuevos directamente desde la vista de cada categoría
+- **Redimensionado de imágenes** - Ajusta imágenes dentro del editor para mejorar la maquetación de artículos
 - **Menú slash en editor** - Inserta bloques y comandos rápidamente escribiendo /
 - **Tablas nativas en editor** - Crea y edita tablas directamente en el editor de artículos
 - **Tablas Markdown** - Renderizado correcto de tablas en artículos del portal
@@ -1095,6 +1120,12 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Meta descripciones** - Optimiza para buscadores
 - **URLs amigables** - Slugs personalizables
 - **Widget integrado** - Conecta portal con chat en vivo
+
+### Generación de Contenido con IA *(Enterprise)*
+
+- **FAQs desde PDF** - Sube documentos PDF para generar borradores de preguntas frecuentes con IA
+- **Contexto adicional** - Añade instrucciones opcionales para orientar la generación del contenido
+- **Publicación asistida** - Revisa y publica solo las entradas generadas que quieras conservar
 
 ### Insertar Artículos en Conversaciones
 
@@ -1120,6 +1151,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Tiempo de resolución** - Promedio y distribución
 - **Primera respuesta** - Tiempo de respuesta inicial
 - **Tendencias** - Evolución temporal
+- **Drilldown de barras** - Abre cada barra del gráfico para revisar conversaciones o mensajes que componen la métrica, con navegación entre buckets y conteos del resultado
 
 ### Reportes de Agentes
 
@@ -1199,12 +1231,14 @@ Analíticas completas del canal de voz:
 - **Permisos granulares** - Control de acceso por funcionalidad
 - **Perfil personalizado** - Avatar, nombre, firma
 - **Estado de disponibilidad** - Online, Busy, Offline
+- **Salida guiada de agentes** - Antes de eliminar un agente puedes dejar sus conversaciones sin asignar o reasignarlas en lote
 
 ### Equipos
 
 - **Departamentos** - Ventas, Soporte, Facturación, etc.
 - **Asignación automática** - Round-robin dentro del equipo
 - **Restricción de visibilidad** - Miembros ven solo sus conversaciones
+- **Identificación visual** - Configura un emoji o icono con color por equipo para reconocerlo en listas y selectores de asignación
 
 ### Inboxes y Miembros
 
@@ -1291,6 +1325,7 @@ Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
 - **Normalización de suscripciones** - Validación consistente de eventos y aliases de suscripción
 - **Payload enriquecido de adjuntos** - Incluye `content_type` y extensión de archivos en eventos webhook
 - **Evento de actualización de Agent Bot** - Dispara webhook cuando se actualiza una conversación gestionada por bot
+- **Evento `inbox_updated`** - Notifica cambios relevantes de la bandeja, incluyendo desconexiones del canal
 - **Alias de suscripción** - Asigna nombres descriptivos a cada suscripción de webhook para facilitar la gestión
 - **Secreto global de webhook** *(Enterprise)* - Configura una firma de seguridad a nivel de instalación para verificar la autenticidad de todos los eventos webhook; los payloads se firman con HMAC-SHA256 usando el secreto configurado
 
@@ -1526,6 +1561,12 @@ Crea roles a la medida de tu organización con control granular de permisos:
 
 ## ⭐ Funcionalidades Exclusivas Mega
 
+### 🧭 Onboarding Guiado
+
+- **Configuración inicial dedicada** - Completa los datos de la cuenta mediante un flujo administrativo específico
+- **Sitio web normalizado** - Guarda la dirección con protocolo para integraciones y automatizaciones posteriores
+- **Conexión guiada de Instagram** - Retoma la configuración de la bandeja después de autorizar Instagram desde onboarding
+
 ### 📅 Mensajes Programados
 
 Programa el envío automático de mensajes en tus conversaciones:
@@ -1603,7 +1644,7 @@ Solución robusta y de alta disponibilidad para operaciones exigentes que requie
 
 - Textos, imágenes, videos, documentos
 - Audio y notas de voz
-- Stickers y reacciones
+- Stickers y reacciones, incluido envío de reacciones con token de API
 - Soporte completo de grupos
 
 **Funciones avanzadas:**
@@ -1611,6 +1652,7 @@ Solución robusta y de alta disponibilidad para operaciones exigentes que requie
 - Estado de presencia (escribiendo, en línea)
 - Confirmaciones de lectura
 - Mensajes editados y eliminados
+- Sincronización global y por conversación bajo demanda de mensajes recientes, con protección de concurrencia por cuenta y procesamiento dedicado opcional para instalaciones de alto volumen
 
 **Ideal para:**
 
@@ -1636,6 +1678,7 @@ Solución económica y escalable para operaciones de alto volumen.
 - Textos, imágenes, videos
 - Audio y notas de voz
 - Documentos
+- Sincronización global y por conversación bajo demanda de mensajes recientes, con recuperación de multimedia histórica
 
 **Configuración de filtros de chat:**
 
@@ -1694,6 +1737,7 @@ WaVoIP permite llamadas de voz a través de WhatsApp para proveedores que no usa
 - **Controles completos** - Silenciar, colgar, aceptar, rechazar llamadas
 - **Duración en tiempo real** - Cronómetro visible durante la llamada
 - **Indicador de calidad** - Monitorea la calidad de conexión en vivo
+- **Sesión persistente del dispositivo** - Conserva autenticación y estado por bandeja para simplificar reconexiones
 - **Grabación automática** - Grabación automática con opción de descarga
 - **Almacenamiento de grabaciones** - Grabaciones guardadas y adjuntadas a conversaciones
 
@@ -1767,8 +1811,14 @@ Gestiona oportunidades comerciales en un pipeline visual conectado al historial 
 - **Embudos con etapas personalizables** - Crea múltiples embudos y define una etapa predeterminada por embudo
 - **Vista tablero y vista lista** - Alterna entre pipeline visual y listado operativo según el flujo del equipo
 - **Filtros avanzados por inbox/canal/actividad** - Segmenta oportunidades por origen y movimiento reciente
+- **Filtros por etiquetas** - Filtra por etiquetas de conversación en tablero y lista, con impacto en métricas por etapa
 - **Columnas configurables por usuario** - Muestra u oculta columnas y conserva preferencias localmente
 - **Ficha 360 del ítem** - Incluye checklist, notas, adjuntos, agentes asignados, ofertas y atributos personalizados
+- **Búsqueda en relaciones del ítem** - Encuentra conversaciones vinculadas con búsqueda remota al gestionar relaciones
+- **Moneda predeterminada por cuenta** - La moneda base del tablero se define desde configuración de cuenta (`default_currency`)
+- **Moneda por oferta custom (override)** - En ofertas manuales de tipo producto/servicio el usuario puede elegir moneda por oferta
+- **Sin moneda en ítems sin ofertas** - Si un ítem no tiene ofertas, el valor se muestra como placeholder y no contamina totales monetarios
+- **Gestión de etiquetas desde el ítem** - Añade o quita etiquetas directamente desde la tarjeta del item
 - **Relaciones nativas con contacto y conversación** - Mantén el contexto comercial conectado con el chat real del cliente
 - **Automatizaciones por etapa** - Dispara acciones al entrar o mover etapas, incluyendo mensajes rápidos y reglas operativas
 - **Sincronización en tiempo real** - Cambios de etapa y datos del ítem se reflejan al instante en lista de chats y panel del contacto
