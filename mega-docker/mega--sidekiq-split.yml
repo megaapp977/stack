@@ -4,10 +4,12 @@
 #
 # bundle exec rails db:chatwoot_prepare
 #
-# Sidekiq dividido en 3 workers:
+# Sidekiq dividido en 5 workers:
 #   Worker 1 (critical): critical, high, default
-#   Worker 2 (medium):   medium, mailers, action_mailbox_routing, scheduled_messages
-#   Worker 3 (low):      low, scheduled_jobs, deferred, purgable, housekeeping,
+#   Worker 2 (events):   events
+#   Worker 3 (whatsapp): whatsapp_history_sync
+#   Worker 4 (medium):   medium, mailers, action_mailbox_routing, scheduled_messages
+#   Worker 5 (low):      low, scheduled_jobs, deferred, purgable, housekeeping,
 #                         async_database_migration, bulk_reindex_low,
 #                         active_storage_analysis, active_storage_purge,
 #                         action_mailbox_incineration
@@ -65,6 +67,8 @@ x-variables:
   WEB_CONCURRENCY: 2
   RACK_TIMEOUT_SERVICE_TIMEOUT: 0
   ENABLE_RACK_ATTACK: "false"
+  EVENT_DISPATCHER_IN_MAIN_SIDEKIQ: "false"
+  WHATSAPP_HISTORY_SYNC_IN_MAIN_SIDEKIQ: "false"
   TZ: UTC
   ENABLE_PUSH_RELAY_SERVER: "true"
   WEBHOOKS_TRIGGER_TIMEOUT: 40
@@ -139,8 +143,8 @@ services:
   # SIDEKIQ WORKER 1 – CRITICAL
   # Colas: critical, high, default
   # Procesa: mensajes en tiempo real, enrutamiento de
-  # conversaciones, webhooks entrantes, asignaciones y todo
-  # lo que requiere respuesta inmediata.
+  # conversaciones, webhooks entrantes y asignaciones.
+  # EventDispatcherJob queda aislado en el worker events.
   ##############################################################
   mega_sidekiq_critical:
     image: sendingtk/chatwoot:v4.19.0
@@ -166,7 +170,69 @@ services:
           memory: 2048M
 
   ##############################################################
-  # SIDEKIQ WORKER 2 – MEDIUM
+  # SIDEKIQ WORKER 2 – EVENTS
+  # Colas: events
+  # Procesa: EventDispatcherJob (webhooks salientes,
+  # automations, notifications, reporting y campañas) fuera de
+  # critical para no bloquear el realtime del UI.
+  ##############################################################
+  mega_sidekiq_events:
+    image: sendingtk/chatwoot:v4.19.0
+    command: bundle exec sidekiq -q events -c 10
+    restart: always
+    networks:
+      - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
+    environment:
+      <<: *default_env
+      SIDEKIQ_CONCURRENCY: 10
+      SIDEKIQ_EVENTS_CONCURRENCY: 10
+      RAILS_MAX_THREADS: 10
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+  ##############################################################
+  # SIDEKIQ WORKER 3 – WHATSAPP HISTORY
+  # Colas: whatsapp_history_sync
+  # Procesa: importaciones históricas pesadas de WhatsApp y
+  # descargas de media histórica, con baja concurrencia para no
+  # saturar DB/Redis durante sincronizaciones grandes.
+  ##############################################################
+  mega_sidekiq_whatsapp_history:
+    image: sendingtk/chatwoot:v4.19.0
+    command: bundle exec sidekiq -q whatsapp_history_sync -c 2
+    restart: always
+    networks:
+      - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
+    environment:
+      <<: *default_env
+      SIDEKIQ_CONCURRENCY: 2
+      SIDEKIQ_WHATSAPP_HISTORY_CONCURRENCY: 2
+      RAILS_MAX_THREADS: 2
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+  ##############################################################
+  # SIDEKIQ WORKER 4 – MEDIUM
   # Colas: medium, mailers, action_mailbox_routing, scheduled_messages
   # Procesa: envío de emails, routing de action_mailbox,
   # mensajes programados y tareas de prioridad media.
@@ -195,7 +261,7 @@ services:
           memory: 1024M
 
   ##############################################################
-  # SIDEKIQ WORKER 3 – LOW
+  # SIDEKIQ WORKER 5 – LOW
   # Colas: low, scheduled_jobs, deferred, purgable, housekeeping,
   #        async_database_migration, bulk_reindex_low,
   #        active_storage_analysis, active_storage_purge,
