@@ -1,12 +1,13 @@
 version: "3.7"
 
 ## ───────────────────────────────────────────────────────────────
-## Chatwoot – Docker Swarm con Sidekiq dividido en 3 workers
+## Chatwoot – Docker Swarm con Sidekiq dividido en 4 workers
 ## ───────────────────────────────────────────────────────────────
 ## Estrategia de colas:
 ##   Worker 1 (critical): critical, high, default
-##   Worker 2 (medium):   medium, mailers, action_mailbox_routing, scheduled_messages
-##   Worker 3 (low):      low, scheduled_jobs, deferred, purgable, housekeeping,
+##   Worker 2 (events):   events
+##   Worker 3 (medium):   medium, mailers, action_mailbox_routing, scheduled_messages
+##   Worker 4 (low):      low, scheduled_jobs, deferred, purgable, housekeeping,
 ##                         async_database_migration, bulk_reindex_low,
 ##                         active_storage_analysis, active_storage_purge,
 ##                         action_mailbox_incineration
@@ -70,6 +71,7 @@ services:
       - RACK_TIMEOUT_SERVICE_TIMEOUT=0
       - WEB_CONCURRENCY=2
       - ENABLE_RACK_ATTACK=false
+      - EVENT_DISPATCHER_IN_MAIN_SIDEKIQ=false
 
     ## ⚡ Outras configurações
       - NODE_ENV=production
@@ -112,7 +114,8 @@ services:
 
 ## --------------------------- SIDEKIQ WORKER 1 – CRITICAL --------------------------- ##
 ## Procesa: mensajes en tiempo real, enrutamiento de conversaciones,
-## webhooks entrantes, asignaciones, y todo lo que requiere respuesta inmediata.
+## webhooks entrantes y asignaciones. EventDispatcherJob queda aislado
+## en el worker events para no bloquear el realtime del UI.
 ## Colas: critical, high, default
 ## ------------------------------------------------------------------------------- ##
 
@@ -171,6 +174,7 @@ services:
       - RACK_TIMEOUT_SERVICE_TIMEOUT=0
       - RAILS_MAX_THREADS=15
       - ENABLE_RACK_ATTACK=false
+      - EVENT_DISPATCHER_IN_MAIN_SIDEKIQ=false
 
     ## ⚡ Outras configurações
       - NODE_ENV=production
@@ -200,7 +204,100 @@ services:
           cpus: "1"
           memory: 1024M
 
-## --------------------------- SIDEKIQ WORKER 2 – MEDIUM --------------------------- ##
+## --------------------------- SIDEKIQ WORKER 2 – EVENTS --------------------------- ##
+## Procesa: EventDispatcherJob (webhooks salientes, automations,
+## notifications, reporting y campañas) fuera de critical para proteger
+## el realtime del UI.
+## Colas: events
+## ------------------------------------------------------------------------------- ##
+
+  chatwoot_sidekiq_events:
+    image: sendingtk/chatwoot:v4.19.0 ## Versão do Chatwoot
+    command: bundle exec sidekiq -q events -c 10
+
+    volumes:
+      - chatwoot_storage:/app/storage ## Arquivos de conversa
+
+    networks:
+      - mired ## Nome da rede interna
+
+    environment:
+    ## 🏢 Nome da Empresa
+      - INSTALLATION_NAME=mega
+
+    ## 🔐 Secret key
+      - SECRET_KEY_BASE=ca68dcd674b1e9e460671be221c30f30
+
+    ## 💬 Url Chatwoot
+      - FRONTEND_URL=https://mega.dominio.com
+      - FORCE_SSL=true
+
+    ## 🌍 Idioma/Localização padrão
+      - DEFAULT_LOCALE=pt_BR
+      - TZ=America/Sao_Paulo
+
+    ## 🧑‍💻 Dados do Redis
+      - REDIS_URL=redis://chatwoot_redis:6379
+
+    ## 🗄️ Dados do Postgres
+      - POSTGRES_HOST=pgvector
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=password ## Senha do postgres
+      - POSTGRES_DATABASE=chatwoot
+
+    ## 🏠 Armazenamento
+      - ACTIVE_STORAGE_SERVICE=local ## use s3_compatible para MinIO
+
+    ## 📧 Dados do SMTP
+      - MAILER_SENDER_EMAIL=soporte@ejemplo.com <soporte@ejemplo.com> ## Email remitente
+      - SMTP_DOMAIN=ejemplo.com ## Dominio del email
+      - SMTP_ADDRESS=smtp.ejemplo.net ## Host SMTP
+      - SMTP_PORT=465 ## Puerto SMTP
+      - SMTP_SSL=true ## true si usas 465 (SSL) | false si usas 587 (STARTTLS)
+      - SMTP_USERNAME=soporte@ejemplo.com ## Usuario SMTP
+      - SMTP_PASSWORD=MyS3gur0P@ssw0rd! ## Contraseña ficticia SMTP
+      - SMTP_AUTHENTICATION=login ## Tipo de autenticación
+      - SMTP_ENABLE_STARTTLS_AUTO=true ## Se usa cuando el puerto es 587
+      - SMTP_OPENSSL_VERIFY_MODE=peer ## Verificación de certificado SSL
+      - MAILER_INBOUND_EMAIL_DOMAIN=soporte@ejemplo.com ## Dominio para inbound
+
+    ## ⚙️ Melhorias
+      - SIDEKIQ_CONCURRENCY=10
+      - SIDEKIQ_EVENTS_CONCURRENCY=10
+      - RACK_TIMEOUT_SERVICE_TIMEOUT=0
+      - RAILS_MAX_THREADS=10
+      - ENABLE_RACK_ATTACK=false
+      - EVENT_DISPATCHER_IN_MAIN_SIDEKIQ=false
+
+    ## ⚡ Outras configurações
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - INSTALLATION_ENV=docker
+      - RAILS_LOG_TO_STDOUT=true
+      - USE_INBOX_AVATAR_FOR_BOT=true
+      - ENABLE_ACCOUNT_SIGNUP=false
+      - WEBHOOKS_TRIGGER_TIMEOUT=40
+      - EVOLUTION_API_URL=https://api.evolution.example.com
+      - EVOLUTION_ADMIN_TOKEN=exampletoken1234567890
+      - EVOLUTION_PUBLIC_S3=false
+      - WAHA_API_URL=https://waha.example.com
+      - WAHA_ADMIN_TOKEN=exampletoken1234567890
+      - UAZAPI_API_URL=https://demo.uazapi.com
+      - UAZAPI_ADMIN_TOKEN=exampletoken1234567890
+      - SSO=false
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+## --------------------------- SIDEKIQ WORKER 3 – MEDIUM --------------------------- ##
 ## Procesa: envío de emails, routing de action_mailbox,
 ## mensajes programados y tareas de prioridad media.
 ## Colas: medium, mailers, action_mailbox_routing, scheduled_messages
@@ -290,7 +387,7 @@ services:
           cpus: "0.5"
           memory: 768M
 
-## --------------------------- SIDEKIQ WORKER 3 – LOW --------------------------- ##
+## --------------------------- SIDEKIQ WORKER 4 – LOW --------------------------- ##
 ## Procesa: tareas programadas, limpieza, migraciones async,
 ## reindexación, análisis/purga de active_storage, incineración de mailbox.
 ## Estas tareas toleran mayor latencia.
