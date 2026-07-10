@@ -81,10 +81,11 @@ x-variables:
   UAZAPI_ADMIN_TOKEN: exampletoken1234567890
   # SSO activation login
   SSO: "false"
-
+x-image:
+  &mega_image sendingtk/chatwoot:v4.19.1
 services:
   mega_app:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     entrypoint: docker/entrypoints/rails.sh
     restart: always
@@ -147,7 +148,7 @@ services:
   # EventDispatcherJob queda aislado en el worker events.
   ##############################################################
   mega_sidekiq_critical:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec sidekiq -q critical -q high -q default -c 15
     restart: always
     networks:
@@ -177,7 +178,7 @@ services:
   # critical para no bloquear el realtime del UI.
   ##############################################################
   mega_sidekiq_events:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec sidekiq -q events -c 10
     restart: always
     networks:
@@ -208,7 +209,7 @@ services:
   # saturar DB/Redis durante sincronizaciones grandes.
   ##############################################################
   mega_sidekiq_whatsapp_history:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec sidekiq -q whatsapp_history_sync -c 2
     restart: always
     networks:
@@ -238,7 +239,7 @@ services:
   # mensajes programados y tareas de prioridad media.
   ##############################################################
   mega_sidekiq_medium:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec sidekiq -q medium -q mailers -q action_mailbox_routing -q scheduled_messages -c 10
     restart: always
     networks:
@@ -271,7 +272,7 @@ services:
   # de mailbox. Toleran mayor latencia.
   ##############################################################
   mega_sidekiq_low:
-    image: sendingtk/chatwoot:v4.19.0
+    image: *mega_image
     command: bundle exec sidekiq -q low -q scheduled_jobs -q deferred -q purgable -q housekeeping -q async_database_migration -q bulk_reindex_low -q active_storage_analysis -q active_storage_purge -q action_mailbox_incineration -c 10
     restart: always
     networks:
