@@ -20,6 +20,8 @@ services:
       - WHATSAPP_API_SCHEMA=https
       - WAHA_BASE_URL=https://waha.example.com
       - TZ=America/Sao_Paulo
+      #Normalização de números do Brasil
+      -  WAHA_BR_PHONE_NORMALIZE=true
 
       ## Nome customizado do DEVICE.
       - WAHA_CLIENT_DEVICE_NAME=Waha API #Nome do Dispositivo exibido na lista de Dispositivos Vinculados.
