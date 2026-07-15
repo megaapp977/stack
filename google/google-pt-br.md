@@ -6,6 +6,20 @@ Documentação consolidada das opções Google no MEGA: Gmail/Google Workspace, 
 
 Os aplicativos menos seguros do Google Workspace não são mais uma opção para esta integração. Para que o MEGA leia e gerencie e-mails do Gmail ou Google Workspace, crie um aplicativo OAuth no Google Cloud.
 
+### APIs a ativar conforme o uso
+
+Abra **APIs & Services > Library**, localize o serviço e selecione **Enable**. Ative apenas o que se aplica:
+
+| Função do MEGA | API a ativar | Necessária? |
+|---|---|---|
+| Sincronização do Google Calendar | **Google Calendar API** | Sim |
+| Anexos em bucket GCS | **Cloud Storage API** | Sim |
+| Gmail/Google Workspace por IMAP e SMTP com OAuth | Nenhuma API REST adicional | Não ative Gmail API somente para este fluxo |
+| Login com Google | Nenhuma API REST adicional | Não requer API adicional |
+| Chamadas REST futuras ao Gmail | **Gmail API** | Somente se o MEGA passar a chamar endpoints Gmail API |
+
+O MEGA usa OAuth XOAUTH2 com `imap.gmail.com` e `smtp.gmail.com` para e-mail. Portanto, precisa do escopo `https://mail.google.com/`, mas não de Gmail API. As APIs são ativadas em **Library**; as permissões concedidas pelo usuário são declaradas separadamente em **Google Auth Platform > Data Access**.
+
 1. No [Google API Console](https://console.developers.google.com/), crie ou selecione o projeto e registre o aplicativo OAuth.
 2. Para o aplicativo do canal de e-mail, adicione `https://<url-da-sua-instancia>/google/callback` como URL de redirecionamento autorizada.
 3. Copie o ID e o segredo do cliente para o MEGA:
@@ -121,6 +135,8 @@ Este guia usa uma VM do Compute Engine para o MEGA. Para uma implantação cloud
 Depois configure o domínio, o e-mail e as demais variáveis de ambiente da instalação Linux VM.
 
 ## Armazenar anexos no Google Cloud Storage
+
+Antes de criar ou usar o bucket, ative **Cloud Storage API** em **APIs & Services > Library**.
 
 Ative o GCS como serviço de armazenamento:
 

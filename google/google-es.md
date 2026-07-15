@@ -6,6 +6,20 @@ Documentación consolidada de las opciones de Google en MEGA: Gmail/Google Works
 
 Las aplicaciones menos seguras de Google Workspace dejaron de ser una opción para esta integración. Para que MEGA lea y gestione correo de Gmail o Google Workspace, cree una aplicación OAuth en Google Cloud.
 
+### APIs que se deben habilitar según el uso
+
+Abra **APIs & Services > Library**, busque el servicio y seleccione **Enable**. Habilite solo lo que corresponda:
+
+| Función de MEGA | API que se habilita | ¿Es necesaria? |
+|---|---|---|
+| Sincronización de Google Calendar | **Google Calendar API** | Sí |
+| Adjuntos en bucket GCS | **Cloud Storage API** | Sí |
+| Gmail/Google Workspace por IMAP y SMTP con OAuth | Ninguna API REST adicional | No habilitar Gmail API solo para este flujo |
+| Inicio de sesión con Google | Ninguna API REST adicional | No requiere API adicional |
+| Gmail mediante llamadas REST futuras | **Gmail API** | Solo si MEGA empieza a llamar a endpoints Gmail API |
+
+MEGA utiliza OAuth XOAUTH2 con `imap.gmail.com` y `smtp.gmail.com` para el correo; por ello necesita el scope `https://mail.google.com/`, pero no Gmail API. Las APIs se habilitan en **Library**; los permisos que el usuario acepta se declaran por separado en **Google Auth Platform > Data Access**.
+
 1. En la [consola de Google API](https://console.developers.google.com/), cree o seleccione el proyecto y registre la aplicación OAuth.
 2. Al registrar la aplicación para el canal de correo, agregue la URL de redirección `https://<url-de-tu-instancia>/google/callback`.
 3. Copie el ID y el secreto de cliente a la configuración de MEGA:
@@ -121,6 +135,8 @@ Esta guía instala MEGA en una única VM de Compute Engine. Para un despliegue c
 Luego configure dominio, correo y el resto de variables del entorno de la instalación Linux VM.
 
 ## Almacenamiento de adjuntos en Google Cloud Storage
+
+Antes de crear o usar el bucket, habilite **Cloud Storage API** en **APIs & Services > Library**.
 
 Active GCS como servicio de almacenamiento:
 

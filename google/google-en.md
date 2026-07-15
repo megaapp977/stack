@@ -6,6 +6,20 @@ Consolidated documentation for MEGA's Google options: Gmail/Google Workspace, OA
 
 Less-secure Google Workspace apps are no longer an option for this integration. To let MEGA read and manage Gmail or Google Workspace mail, create an OAuth app in Google Cloud.
 
+### APIs to enable for each use
+
+Open **APIs & Services > Library**, find the service, and select **Enable**. Enable only the services that apply:
+
+| MEGA function | API to enable | Required? |
+|---|---|---|
+| Google Calendar synchronization | **Google Calendar API** | Yes |
+| Attachments in a GCS bucket | **Cloud Storage API** | Yes |
+| Gmail/Google Workspace over OAuth IMAP and SMTP | No extra REST API | Do not enable Gmail API for this flow alone |
+| Google sign-in | No extra REST API | No additional API is required |
+| Future Gmail REST calls | **Gmail API** | Only if MEGA starts calling Gmail API endpoints |
+
+MEGA uses OAuth XOAUTH2 with `imap.gmail.com` and `smtp.gmail.com` for mail. It therefore needs the `https://mail.google.com/` scope, but not Gmail API. APIs are enabled in **Library**; permissions a user grants are separately declared in **Google Auth Platform > Data Access**.
+
 1. In the [Google API Console](https://console.developers.google.com/), create or select the project and register the OAuth app.
 2. For the email-channel app, add `https://<your-instance-url>/google/callback` as an authorized redirect URL.
 3. Copy the client ID and secret to MEGA:
@@ -121,6 +135,8 @@ This guide uses one Compute Engine VM for MEGA. For cloud-native deployment, use
 Then set the domain, email, and other environment variables for the Linux VM installation.
 
 ## Store attachments in Google Cloud Storage
+
+Before creating or using the bucket, enable **Cloud Storage API** in **APIs & Services > Library**.
 
 Enable GCS as the storage service:
 
