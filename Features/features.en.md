@@ -4,9 +4,13 @@
 
 **Version:** Enterprise
 **Based on:** Chatwoot (Open Source) + Mega Exclusive Features
-**Last Updated:** July 3, 2026
+**Last Updated:** July 15, 2026
 
 ---
+
+### Verified APIs ready for Postman
+
+Swagger/OpenAPI 3.1 maintains automated parity with supported routes and generates a Postman collection separated by account token, platform app token, and public routes.
 
 ## 📋 Table of Contents
 
@@ -32,7 +36,7 @@
 Connect with your customers through the world's most popular messaging channel.
 
 - **WhatsApp Cloud API** - Official Meta integration with all enterprise features
-- **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, preserving native Cloud API sending and receiving relayed webhooks
+- **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, using dedicated Hub credentials and relayed webhooks
 - **WhatsApp Evolution** *(Mega)* - Direct connection without official API, ideal for personal accounts
 - **WhatsApp WAHA** *(Mega)* - Alternative provider with full multimedia message support
 - **WhatsApp Uazapi** *(Mega)* - Low-cost solution for multiple lines
@@ -80,7 +84,7 @@ With over 2 billion active users, Instagram is essential for visual brands. 90% 
 **Supported interaction types:**
 
 - **Direct Messages (DMs)** - Respond to private inquiries from your followers
-- **Mega Hub for Instagram** *(Mega)* - Connect Instagram through shared Hub apps when the mode is enabled while preserving native inbox and sending behavior
+- **Mega Hub for Instagram** *(Mega)* - Connect Instagram through shared Hub apps using dedicated credentials configured in Mega Hub
 - **Story Replies** - Engage with those who react to your stories
 - **Story Replies with Content** - See images and videos attached when replying to your stories
 - **Story Mentions** - Get alerts when you're mentioned
@@ -124,7 +128,7 @@ With over 1.3 billion active users, Messenger is the preferred channel for custo
 **Main features:**
 
 - **Connect in minutes** - Link your Facebook page with a couple of clicks, no technical setup required
-- **Mega Hub for Messenger** *(Mega)* - Use shared Hub apps as a configurable alternative without changing native sending behavior
+- **Mega Hub for Messenger** *(Mega)* - Use shared Hub apps as a configurable alternative with dedicated Hub credentials
 - **Multiple pages** - Manage all your Facebook pages from a single platform
 - **Read receipts** - Know when the customer read your message
 - **Delivery confirmations** - Verify that your messages arrived correctly
@@ -223,6 +227,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 - **Inline images in replies** - Send screenshots or visual resources inside the message body and adjust their size
 - **Allowed domains** - Restrict widget to authorized domains for added security
 - **Show agent name** - Configure per inbox whether the agent's name is shown to visitors
+- **Reply auto-assignment control** - Disable per inbox whether unassigned conversations are assigned to the agent when they send a message
 - **Layering/background fixes** - Better visual rendering between launcher and portal, including dark mode scenarios
 
 **Benefits for your business:**
@@ -610,9 +615,14 @@ Keep your team connected and productive. Instead of using external tools like Sl
 - **Public and private channels** - Define visibility and audience for each team workflow
 - **Categories** - Group channels by topic, team, or department
 - **Add users** - Multi-select team members from your account
-- **Edit rooms** - Update name, description, and members
+- **Edit rooms** - Update name, description, and members from the header overflow menu
 - **Delete rooms** - Remove rooms with safety confirmation
 - **Room avatars** - Optional custom images for each room
+- **Audio and video calls** - WebRTC communication between members in DMs, groups, and channels, with call tones and in-progress, missed, and completed call history
+- **Selective call availability** - Calls require the independent `chat_room_calls` account feature, which is disabled by default and can be enabled only for selected accounts; Chat Rooms messaging remains available without it
+- **Administrator-managed ICE connectivity** - Super Admin > Call ICE configures STUN/TURN and their credentials without a restart; `MEGA_CALL_*` environment variables remain compatible when no saved values exist
+- **Per-account premium connectivity** - `chat_room_calls` uses Google STUN for normal P2P calls; the premium `premium_call_connectivity` feature switches that account to Call ICE and enables TURN fallback when the global configuration is complete
+- **Native call experience** - Audio retains the compact WhatsApp/Twilio-style widget; video uses a bounded large workspace or floating in-app window, with simultaneous camera and screen publication, a presentation stage, participant rail, avatar fallbacks, and initiator-authorized mute for controlled small groups
 - **Location** - Accessible from Settings > Chat Rooms
 
 > **Note:** Chat Rooms settings manage channels (public and private) only. Direct messages (DMs) are personal conversations managed from the chat sidebar and do not appear, nor can they be edited/deleted, in Settings.
@@ -728,6 +738,7 @@ Execute multiple actions with a single click:
 - **Human handover** - Smooth transfer to real agents
 - **Smart handover** - If a human replies in a pending bot conversation, ownership is transferred automatically
 - **Bots per inbox** - Configure specific bots per channel
+- **Inbox-scoped manual assignment** - The agent selector only offers active Agent Bots configured on the conversation inbox
 - **Typing indicator** - Bots can toggle the "typing..." indicator for a more natural experience
 - **Advanced webhook options** *(Enterprise)* - Configure custom timeout for bot requests, automatic retries on failure, and granular error handling; improves reliability for integrations with slow or unstable external systems
 - **Per-channel webhook signatures** - Sign outgoing events for Agent Bots and API Channel inboxes to validate authenticity end-to-end
@@ -773,6 +784,8 @@ Upload documents to train your AI assistant:
 - **Auto-sync fields** - Track sync status and last sync timestamp to keep knowledge sources aligned
 - **Staggered auto-sync** - Refresh web sources by plan with distributed execution to avoid load spikes
 - **Related responses** - See which responses use each document
+- **Document details** - Review crawled content, source metadata, and generated FAQ
+  counts
 - **Bulk management** - Add and remove documents easily
 
 **Captain Scenarios:**
@@ -808,7 +821,7 @@ Connect MCP (Model Context Protocol) servers to expand your assistant's capabili
 
 Configure how Captain handles automatic conversation resolution:
 
-- **Evaluated mode** - Captain analyzes context and autonomously decides whether to resolve or keep the conversation open
+- **Evaluated mode** - Captain analyzes context, including conversation status and speaker roles, and autonomously decides whether to resolve or keep the conversation open; pending handoffs and promised follow-ups remain open
 - **Legacy mode** - Original behavior: automatically resolves pending conversations based on the timer
 - **Disabled mode** - Captain does not automatically resolve conversations
 - **Per account** - Configurable at account level in the Captain settings
@@ -895,6 +908,8 @@ Automatically transcribe audio messages to text:
 
 - **CSV Upload** - Import contacts massively
 - **Field mapping** - Associate columns with attributes
+- **Intercom history import** - Administrators can import contacts, conversations, and historical messages from Intercom in the background
+- **Import monitoring** - Review progress, skipped records, errors, and downloadable skip logs
 - **Auto validation** - Detect errors before importing
 - **Controlled access** - Import and export available to administrators and contact managers
 
@@ -1216,6 +1231,7 @@ Complete voice channel analytics:
 - **Roles** - Administrator, Agent
 - **Granular permissions** - Access control by functionality
 - **Custom profile** - Avatar, name, signature
+- **Named browser sessions** - Agents can label active sessions to recognize workstations, browser profiles, or testing contexts
 - **Availability status** - Online, Busy, Offline
 - **Guided agent offboarding** - Before deleting an agent, choose whether to unassign or bulk reassign their conversations
 
@@ -1315,6 +1331,29 @@ Connect MEGA with any external system through automatic notifications:
 - **Subscription aliases** - Assign descriptive names to each webhook subscription for easier management
 - **Global webhook secret** *(Enterprise)* - Configure a security signature at installation level to verify the authenticity of all outgoing webhook events; payloads are signed with HMAC-SHA256 using the configured secret
 
+### Google Calendar *(Mega)*
+
+- **Personal event reminders** - The event creator receives an in-app and browser push reminder, can snooze it with preset intervals, and can reopen the shared event dialog. New events automatically include the creator email and, when created from a conversation, the contact email as deduplicated guests.
+
+Connect Google Calendar as an account-level productivity integration instead of an inbox/channel:
+
+- **Account-level OAuth** - Administrators connect the account calendar from Settings -> Integrations -> Google Calendar
+- **Configuration-gated availability** - The `/calendar` workspace, composer icon, and conversation-panel events appear only after Google is configured globally and the account is connected with a selected calendar; enabling the account feature alone does not expose them
+- **Calendar selection** - Import all accessible calendars by default or limit inbound import to one; MEGA keeps a concrete outbound destination and defaults new setup to bidirectional sync
+- **Minimal event creation** - Use a Google Calendar-inspired two-column editor with selectable time zones, removable guest chips, writable destination selection, and Google Meet creation/copy/access without stacked cards
+- **Internal event layer** - MEGA stores calendar events internally and tracks Google provider IDs separately
+- **MEGA calendar workspace** - Agents manage day, week, month, and list views from `/calendar`; the month view limits visible events per day and offers `+N more` or a context menu for actions without hiding events. Events support colors and permanent deletion is restricted to administrators
+- **Google-like event form** - Manual events support timezone, location, guests, reminders, recurrence, Google Meet, and vertical MEGA context with channel icons in conversation search
+- **Searchable MEGA links** - Agents search and select contact, conversation, and Kanban item while creating or editing events without typing internal IDs
+- **Module controls** - Enable sync for internal calendar, Kanban, conversations, and reminders from one place
+- **Sync on save** - When outbound sync is enabled, MEGA creates or updates the event in the selected Google calendar while preserving internal status
+- **Automatic Google polling** - Every five minutes MEGA imports only events changed since each calendar's last successful poll; `/calendar` reads local data and offers manual sync as a fallback
+- **Connection health** - View connected identity, reconnect when needed, and disconnect without removing internal events
+- **Kanban scheduling bridge** - Scheduled/deadline Kanban items can create internal events and sync them to the selected calendar
+- **Conversation scheduling and sharing** - Agents use the same Google-enabled event form from the conversation reply composer with contact and conversation prefilled, and the “Create and send” button shares the schedule, location, details, and generated Google Meet link
+- **Conversation follow-up** - The panel shows linked events with a pulsing green (<50%), yellow (50–90%), or red (≥90%) dot based on Start-to-End progress, fades expired entries, and reopens the shared editor
+- **Google import and legacy backfill** - Administrators can pull Google events into MEGA and backfill legacy Kanban event IDs into the global calendar model
+
 ### Meta Template Builder *(Mega)*
 
 Create and manage your WhatsApp templates directly from MEGA, without needing to access Meta Business Manager:
@@ -1360,6 +1399,7 @@ Embed custom applications within the conversation view:
 - **Multiple apps** - Add several apps to the same inbox
 - **Secure** - Apps run in sandboxed iframes
 - **Real-time data** - Apps receive live conversation updates
+- **Administrator management** - Account-wide apps can be created, updated, and deleted only by administrators; authenticated agents retain read access
 - **Dashboard scripts (Super Admin)** *(Mega)* - Publish global dashboard customizations without modifying core code
 - **Safe preview and per-script toggle** *(Mega)* - Validate changes safely and enable/disable scripts independently
 
@@ -1672,7 +1712,7 @@ Robust, high-availability solution for demanding operations requiring maximum st
 - Presence status (typing, online)
 - Read receipts
 - Edited and deleted messages
-- Passkey authorization during WhatsApp linking through the WAHA browser extension flow, with a proactive notice when the extension is not installed and manual code confirmation when WhatsApp requests it
+- Passkey authorization during WhatsApp linking through the WAHA browser extension flow, with dedicated session states, a proactive notice when the extension is not installed, and manual code confirmation when WhatsApp requests it
 - On-demand global and per-conversation sync for recent messages, with account-level concurrency protection and optional dedicated processing for high-volume installations
 
 **Ideal for:**
@@ -1842,8 +1882,17 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **No currency on items without offers** - If an item has no offers, value is shown as a placeholder and is excluded from monetary totals
 - **Labels from the item card** - Add or remove labels directly from the item card
 - **Native contact and conversation relationships** - Keep sales context linked to the real customer chat thread
+- **Google Calendar event bridge** - Scheduled or deadline-based items can create MEGA calendar events when account-level Kanban sync is enabled
 - **Stage-based automations** - Trigger actions when entering or moving stages, including quick messages and operational rules
 - **Real-time synchronization** - Stage and item updates propagate instantly to chat list and contact panel
+- **Authorized panels** - The conversation panel Kanban block and sidebar entry are hidden when the user has no visible items and no accessible funnels to add deals
+- **Realtime Kanban access** - Adding or removing funnel agents refreshes the sidebar, funnel list and visible items without a reload
+- **Multiple linked conversations** - A single Kanban item can relate to several conversations; the first remains the primary link and additional conversations appear in the relationships tab, with the picker limited to the funnel inboxes and channel icons shown
+- **History without broken links** - If a linked conversation is deleted, the Kanban item is kept as history and the link is cleared
+- **Role- and permission-based Kanban access** - Administrators manage every funnel and item; agents and roles with `kanban_view` work only with the board and authorized items; funnels containing authorized items can be opened read-only, while `kanban_manage` manages and edits assigned funnels only, without creating, duplicating, deleting, setting the default, or changing visibility
+- **Controlled item visibility** - The creator can always view an item; with a valid linked conversation, its assignee can view it only when also selected on the funnel, and manually assigned item agents can view it; a stale link is visible only to the administrator and creator, and unassigned items follow the funnel's `everyone` or `assigned_only` mode
+- **Inbox-eligible agents** - Only agents with access to at least one inbox configured on the funnel can be selected or assigned from both the board and the contact/conversation panel; new assignments are blocked when that access is lost
+- **Protected configuration and automations** - Global configuration is read-only for Kanban actors; its changes and global automations are administrator-only. `kanban_manage` administers only the funnels assigned to that user
 
 ---
 
@@ -1868,6 +1917,7 @@ Annual statistics and insights for your account:
 - **2FA/MFA** - Two-factor authentication
 - **SAML/SSO** - Enterprise Single Sign-On
 - **API Tokens** - Secure programmatic access
+- **Suspended account support** - Suspended users see the policy notice with a direct contact support action
 
 ### Privacy
 
