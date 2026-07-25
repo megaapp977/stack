@@ -32143,7 +32143,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/kanban_items",
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/kanban_items?contact_id=1",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -32154,7 +32154,13 @@
                     ":account_id",
                     "kanban_items"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "contact_id",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ],
                   "variable": [
                     {
                       "key": "account_id",
@@ -32162,7 +32168,7 @@
                     }
                   ]
                 },
-                "description": "Returns only Kanban items authorized for the caller. With a valid linked conversation, both its assignee and manually assigned item agents can view the item even when they differ; a stale link is visible only to administrators and the creator. Unassigned items follow the funnel's `unassigned_visibility` mode."
+                "description": "Returns only Kanban items authorized for the caller. With a valid linked conversation, both its assignee and manually assigned item agents can view the item even when they differ; a stale link is visible only to administrators and the creator. Unassigned items follow the funnel's `unassigned_visibility` mode. When `contact_id` is provided, returns only open items linked to any conversation of that account-owned contact from funnels with `settings.contact_panel_contact_wide_items` enabled."
               },
               "response": []
             },
@@ -41310,6 +41316,648 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"name\": \"Sample Sla Policy\",\n  \"description\": \"Created from the API documentation example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Task Types",
+          "item": [
+            {
+              "name": "List task types",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/activity_types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "activity_types"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    }
+                  ]
+                },
+                "description": "Lists all task types for the account, including inactive types, ordered by name."
+              },
+              "response": []
+            },
+            {
+              "name": "Create a task type",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/activity_types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "activity_types"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    }
+                  ]
+                },
+                "description": "Creates a task type. Administrator access is required.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"activity_type\": {\n    \"name\": \"Follow-up call\",\n    \"color\": \"12\",\n    \"active\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete a task type",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/activity_types/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "activity_types",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Deletes an unused task type. Types referenced by tasks cannot be deleted. Administrator access is required."
+              },
+              "response": []
+            },
+            {
+              "name": "Update a task type",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/activity_types/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "activity_types",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Updates a task type. Send name and color; active is optional. Administrator access is required.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"activity_type\": {\n    \"name\": \"Follow-up call\",\n    \"color\": \"12\",\n    \"active\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Replace a task type",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/activity_types/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "activity_types",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Updates a task type. Administrator access is required.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"activity_type\": {\n    \"name\": \"Follow-up call\",\n    \"color\": \"12\",\n    \"active\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Tasks",
+          "item": [
+            {
+              "name": "List tasks",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks?activity_type_id=7&assignee_id=15&contact_id=123&ends_at=2026-07-31T23:59:59Z&kanban_item_id=12&scheduled_date=sample&scheduled_from=1&scheduled_to=1&starts_at=2026-07-01T00:00:00Z&status=open",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks"
+                  ],
+                  "query": [
+                    {
+                      "key": "activity_type_id",
+                      "value": "7",
+                      "disabled": true
+                    },
+                    {
+                      "key": "assignee_id",
+                      "value": "15",
+                      "disabled": true
+                    },
+                    {
+                      "key": "contact_id",
+                      "value": "123",
+                      "disabled": true
+                    },
+                    {
+                      "key": "ends_at",
+                      "value": "2026-07-31T23:59:59Z",
+                      "disabled": true
+                    },
+                    {
+                      "key": "kanban_item_id",
+                      "value": "12",
+                      "disabled": true
+                    },
+                    {
+                      "key": "scheduled_date",
+                      "value": "sample",
+                      "disabled": true
+                    },
+                    {
+                      "key": "scheduled_from",
+                      "value": "1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "scheduled_to",
+                      "value": "1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "starts_at",
+                      "value": "2026-07-01T00:00:00Z",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "open",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    }
+                  ]
+                },
+                "description": "Lists account tasks ordered by start time. Account administrators and custom roles with `task_view_all` can read all\naccount tasks. Standard agents and custom roles with `task_manage` only receive tasks assigned to them or created by\nthem. Users with `task_reports_view` can read all tasks for report drilldowns. The Tasks feature and its account\nintegration must both be enabled.\n\n`overdue` is a computed display status for pending or in-progress tasks whose deadline has passed. The `pending` and\n`in_progress` filters return only work that is not overdue; use `overdue` for expired work. The date range is applied\nonly when both `starts_at` and `ends_at` are supplied. Report drilldowns may instead filter the effective scheduled\ndate (`ends_at`, falling back to `starts_at`) with `scheduled_from` and `scheduled_to` Unix timestamps.\n"
+              },
+              "response": []
+            },
+            {
+              "name": "Create a task",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    }
+                  ]
+                },
+                "description": "Creates a task and automatically includes the authenticated user as a participant. Standard agents, account\nadministrators, and custom roles with `task_manage` can create tasks.\n\nWhen available, the request may link an existing Kanban item or create one in a selected funnel and stage. Google\nCalendar synchronization requires an active outbound calendar connection. Recurrence can end on a date or after up\nto 100 occurrences.\n",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_task\": {\n    \"title\": \"Follow up with customer\",\n    \"starts_at\": \"2026-07-21T13:00:00Z\",\n    \"activity_type_id\": 7,\n    \"description\": \"Review the proposal and agree on next steps.\",\n    \"outcome_summary\": \"Customer accepted the proposal.\",\n    \"ends_at\": \"2026-07-21T14:00:00Z\",\n    \"status\": \"pending\",\n    \"priority\": \"low\",\n    \"assignee_id\": 15,\n    \"participant_ids\": [\n      15,\n      19\n    ],\n    \"guest_emails\": [\n      \"customer@example.com\"\n    ],\n    \"contact_id\": 123\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get task reports",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks/reports?since=1783915200&until=1784606399",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks",
+                    "reports"
+                  ],
+                  "query": [
+                    {
+                      "key": "since",
+                      "value": "1783915200",
+                      "disabled": false
+                    },
+                    {
+                      "key": "until",
+                      "value": "1784606399",
+                      "disabled": false
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    }
+                  ]
+                },
+                "description": "Returns task reporting data for account administrators and custom roles with the dedicated `task_reports_view`\npermission. Generic report permissions do not grant access to task reports. The Tasks feature and its account\nintegration must both be enabled. The selected range is applied to the scheduled task date (`ends_at`, falling back\nto `starts_at`).\n"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete a task",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Permanently deletes a task. Only account administrators can perform this action."
+              },
+              "response": []
+            },
+            {
+              "name": "Get task details",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Returns the complete task, including recurrence, participants, customer context, Kanban link, and Google Calendar\nstate. Standard agents and custom roles with `task_manage` can read tasks assigned to them or created by them;\nadministrators and custom roles with `task_view_all` can read any account task.\n"
+              },
+              "response": []
+            },
+            {
+              "name": "Update a task",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Updates a task and its linked workflows. Send the editable fields inside `account_task`.\n\nCompleting or cancelling a task requires `outcome_summary`. Setting a closed task back to `pending` reopens it.\nChanges to the deadline, assignee, or status reset its due-date notification. Recurring occurrences and synchronized\ncalendar events are adjusted by the task services. Administrators can update any task. Standard agents and custom\nroles with `task_manage` can only update tasks assigned to them or created by them; `task_view_all` is read-only.\n",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_task\": {\n    \"title\": \"Follow up with customer\",\n    \"starts_at\": \"2026-07-21T13:00:00Z\",\n    \"activity_type_id\": 7,\n    \"description\": \"Review the proposal and agree on next steps.\",\n    \"outcome_summary\": \"Customer accepted the proposal.\",\n    \"ends_at\": \"2026-07-21T14:00:00Z\",\n    \"status\": \"pending\",\n    \"priority\": \"low\",\n    \"assignee_id\": 15,\n    \"participant_ids\": [\n      15,\n      19\n    ],\n    \"guest_emails\": [\n      \"customer@example.com\"\n    ],\n    \"contact_id\": 123\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Replace a task",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "api_access_token",
+                    "value": "{{accountApiAccessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/accounts/:account_id/account_tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "account_tasks",
+                    ":id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "account_id",
+                      "value": "{{account_id}}"
+                    },
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Replaces the editable task data and its linked workflows.\n\nCompleting or cancelling a task requires `outcome_summary`. Setting a closed task back to `pending` reopens it.\nChanges to the deadline, assignee, or status reset its due-date notification. Administrators can replace any task.\nStandard agents and custom roles with `task_manage` can only replace tasks assigned to them or created by them;\n`task_view_all` is read-only.\n",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_task\": {\n    \"title\": \"Follow up with customer\",\n    \"starts_at\": \"2026-07-21T13:00:00Z\",\n    \"activity_type_id\": 7,\n    \"description\": \"Review the proposal and agree on next steps.\",\n    \"outcome_summary\": \"Customer accepted the proposal.\",\n    \"ends_at\": \"2026-07-21T14:00:00Z\",\n    \"status\": \"pending\",\n    \"priority\": \"low\",\n    \"assignee_id\": 15,\n    \"participant_ids\": [\n      15,\n      19\n    ],\n    \"guest_emails\": [\n      \"customer@example.com\"\n    ],\n    \"contact_id\": 123\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
