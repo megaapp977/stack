@@ -4,7 +4,7 @@
 
 **Versão:** Enterprise
 **Baseado em:** Funcionalidades Exclusivas Mega
-**Última Atualização:** 15 de julho de 2026
+**Última Atualização:** 25 de julho de 2026
 
 ---
 
@@ -32,7 +32,7 @@
 Conecte-se com seus clientes através do canal de mensagens mais popular do mundo.
 
 - **WhatsApp Cloud API** - Integração oficial do Meta com todas as funcionalidades empresariais
-- **Mega Hub para WhatsApp** *(Mega)* - Conexão opcional com apps compartilhados pelo Super Admin, mantendo o envio nativo pela Cloud API e recebendo webhooks reenviados
+- **Mega Hub para WhatsApp** *(Mega)* - Conexão opcional com apps compartilhados pelo Super Admin, usando credenciais dedicadas do Hub e webhooks reenviados
 - **WhatsApp Evolution** *(Mega)* - Conexão direta sem API oficial, ideal para contas pessoais
 - **WhatsApp WAHA** *(Mega)* - Provedor alternativo com suporte completo a mensagens multimídia
 - **WhatsApp Uazapi** *(Mega)* - Solução de baixo custo para múltiplas linhas
@@ -74,7 +74,7 @@ Controle completo dos grupos de WhatsApp diretamente da MEGA:
 
 Conecte-se com seu público do Instagram e converta seguidores em clientes no lugar onde eles já interagem com sua marca.
 
-- **Mega Hub para Instagram** *(Mega)* - Conecte Instagram por apps compartilhados do Hub quando o modo estiver ativo, preservando a caixa e o envio nativos
+- **Mega Hub para Instagram** *(Mega)* - Conecte Instagram por apps compartilhados do Hub usando credenciais dedicadas configuradas no Mega Hub
 
 **Por que Instagram?**
 
@@ -126,7 +126,7 @@ Com mais de 1,3 bilhão de usuários ativos, o Messenger é o canal preferido pa
 **Funcionalidades principais:**
 
 - **Conexão em minutos** - Vincule sua página do Facebook com alguns cliques, sem configuração técnica
-- **Mega Hub para Messenger** *(Mega)* - Use apps compartilhados do Hub como alternativa configurável sem alterar o envio nativo
+- **Mega Hub para Messenger** *(Mega)* - Use apps compartilhados do Hub como alternativa configurável com credenciais dedicadas do Hub
 - **Múltiplas páginas** - Gerencie todas as suas páginas do Facebook em uma só plataforma
 - **Confirmações de leitura** - Saiba quando o cliente leu sua mensagem
 - **Confirmações de entrega** - Verifique que suas mensagens chegaram corretamente
@@ -181,6 +181,7 @@ Muitos clientes preferem email para consultas formais, documentação ou acompan
 - **Respostas ricas** - Envie emails com formatação, imagens e anexos
 - **Assinaturas personalizadas** - Configure assinaturas profissionais por agente ou caixa de entrada
 - **Qualquer provedor** - Conecte Gmail, Outlook, seu servidor próprio ou qualquer email
+- **Verificação de conexão do Gmail** - Teste IMAP e SMTP em tempo real, consulte a atividade recente e reconecte a conta nas configurações da caixa de entrada
 - **Histórico completo** - Toda a sequência de emails visível em uma só conversa
 - **Resposta citada** - Responda citando partes específicas do email original
 - **Editor rico** - Formatação completa, listas, negrito, itálico, links
@@ -397,6 +398,8 @@ Alguns clientes preferem falar por telefone, especialmente para assuntos urgente
 
 Faça e receba chamadas de voz pelo WhatsApp usando a Cloud API do Meta com tecnologia WebRTC.
 
+> **Disponibilidade:** As chamadas não estão disponíveis para números do WhatsApp Cloud conectados por coexistência com o WhatsApp Business App. Elas continuam no aplicativo WhatsApp Business e não são exibidas na MEGA.
+
 **Por que Chamadas WhatsApp?**
 
 Muitos clientes preferem comunicação por voz para questões complexas. As Chamadas WhatsApp permitem que seus agentes gerenciem chamadas de voz diretamente na plataforma, usando o mesmo número do WhatsApp usado para mensagens.
@@ -411,10 +414,11 @@ Muitos clientes preferem comunicação por voz para questões complexas. As Cham
 
 **Chamadas de Saída (Business-Initiated):**
 
-- **Click-to-call** - Inicie chamadas da visualização de conversa
+- **Click-to-call** - Inicie chamadas pela conversa ou pelo perfil de um contato, inclusive quando ele ainda não tiver uma conversa
 - **Sistema de permissões** - Solicite e rastreie permissões de chamada dentro da janela de atendimento de 24 horas
-- **Status de permissão** - Saiba quais contatos concederam permissão
+- **Status de permissão** - Diferencie visualmente entre sem permissão, permissão temporária de 7 dias e permanente; confirme o status e a disponibilidade para iniciar uma chamada com o WhatsApp e registre cada alteração, inclusive o vencimento temporário, na atividade da conversa
 - **Tom de ringback** - Feedback de áudio durante conexão
+- **Uma chamada por agente** - Impede iniciar uma segunda chamada enquanto o agente já tem uma ativa, inclusive em outra aba
 
 **Funcionalidades durante a chamada:**
 
@@ -639,9 +643,14 @@ Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas c
 
 - **Criar salas** - Administradores podem criar salas com nome e descrição
 - **Adicionar usuários** - Seleção múltipla de membros da equipe de sua conta
-- **Editar salas** - Atualizar nome, descrição e membros
+- **Editar salas** - Atualizar nome, descrição e membros pelo menu de três pontos do cabeçalho
 - **Excluir salas** - Remover salas com confirmação de segurança
 - **Avatares de sala** - Imagens personalizadas opcionais para cada sala
+- **Chamadas de áudio e vídeo** - Comunicação WebRTC entre membros em DMs, grupos e canais, com tons e histórico de chamadas em andamento, perdidas e concluídas
+- **Disponibilidade seletiva de chamadas** - As chamadas exigem a feature de conta independente `chat_room_calls`, desabilitada por padrão e habilitável apenas para contas selecionadas; as mensagens das salas continuam disponíveis sem ela
+- **Conectividade ICE administrável** - Super Admin > Call ICE permite configurar STUN/TURN e suas credenciais sem reiniciar; as variáveis de ambiente `MEGA_CALL_*` continuam compatíveis quando não há valores salvos
+- **Conectividade premium por conta** - `chat_room_calls` usa Google STUN para chamadas P2P normais; a feature premium `premium_call_connectivity` muda essa conta para Call ICE e habilita TURN como fallback quando a configuração global está completa
+- **Experiência nativa de chamadas** - O áudio mantém o widget compacto do WhatsApp/Twilio; o vídeo usa um espaço amplo limitado ou uma janela flutuante dentro do Mega, com câmera e tela simultâneas, palco de apresentação, trilho de participantes, avatares e mute autorizado pelo iniciador para pequenos grupos controlados
 - **Localização** - Acessível em Settings > Chat Rooms
 
 > **Nota:** As configurações de Salas de chat gerenciam apenas canais (públicos e privados). Mensagens diretas (DMs) são conversas pessoais gerenciadas a partir da barra lateral de chat e não aparecem nem podem ser editadas/excluídas em Settings.
@@ -747,6 +756,7 @@ Execute múltiplas ações com um só clique:
 - **Handover para humanos** - Transferência suave para agentes reais
 - **Handover inteligente** - Se um humano responder em conversa pendente do bot, a transferência ocorre automaticamente
 - **Bots por caixa de entrada** - Configure bots específicos por canal
+- **Atribuição manual restrita por inbox** - O seletor de agente oferece apenas Agent Bots ativos configurados no inbox da conversa
 - **Indicador de digitação** - Os bots podem ativar e desativar o indicador "digitando..." para uma experiência mais natural
 - **Opções avançadas de webhook** *(Enterprise)* - Configure timeout personalizado para requisições do bot, novas tentativas automáticas em caso de falha e tratamento granular de erros; melhora a confiabilidade das integrações com sistemas externos lentos ou instáveis
 - **Assinaturas de webhook por canal** - Permite assinar eventos de saída de Agent Bots e canais API para validar autenticidade ponta a ponta
@@ -819,6 +829,7 @@ Conecte servidores MCP para ampliar as capacidades do seu assistente:
 - **MCP nativo por conta** - Crie servidores MCP por conta com endpoint dedicado
 - **Acesso seguro e flexível** - Compatível com autenticação OAuth e token estático
 - **Catálogo de uso cotidiano** - Publica ferramentas prontas para operações diárias da conta
+- **Cobertura operacional ampliada** - Inclui agendamento, tarefas, campanhas, SLA, calendário, relatórios, notificações e chat interno; não expõe importação nem exportação de dados
 - **Help Center via MCP** - Consulte, busque e obtenha artigos e categorias a partir de agentes conectados
 - **Atribuição a assistentes** - Vincule servidores MCP a assistentes específicos
 - **Gestão centralizada** - Administre todos seus servidores MCP nas configurações
@@ -1196,6 +1207,7 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Filtros** - Por agente, inbox, equipe, data
 - **Notas de revisão** *(Enterprise)* - Adicione notas internas às respostas CSAT para acompanhamento de qualidade
 - **CSAT via Templates WhatsApp** *(Mega)* - Envie pesquisas CSAT usando templates oficiais do WhatsApp em vez da mensagem clássica no chat; requer aprovação da Meta; o sistema cria e gerencia automaticamente o template com versionamento; configurável por inbox com alternância entre modo clássico e modo template
+- **Visibilidade do feedback para agentes** *(Mega)* - Permite ocultar por inbox os comentários escritos de CSAT dos agentes mantendo as avaliações visíveis; os administradores conservam acesso completo e o padrão mantém a visibilidade atual
 
 ### Relatórios Resumidos
 
@@ -1274,6 +1286,7 @@ Analytics completos do canal de voz:
 - **Funções** - Administrador, Agente
 - **Permissões granulares** - Controle de acesso por funcionalidade
 - **Perfil personalizado** - Avatar, nome, assinatura
+- **Controle de sessões do navegador** - As abas do mesmo perfil compartilham uma sessão no servidor; o logout a remove e o limite configurado bloqueia apenas perfis de navegador realmente novos
 - **Status de disponibilidade** - Online, Ocupado, Offline
 - **Desligamento guiado de agentes** - Antes de remover um agente, escolha entre deixar as conversas sem atribuição ou reatribuir em lote
 
@@ -1395,6 +1408,58 @@ Conecte a MEGA com qualquer sistema externo através de notificações automáti
 - **Evento `inbox_updated`** - Notifica mudanças relevantes da inbox, incluindo desconexões do canal
 - **Aliases de inscrição** - Atribua nomes descritivos a cada inscrição de webhook para facilitar o gerenciamento
 - **Segredo global de webhook** *(Enterprise)* - Configure uma assinatura de segurança no nível da instalação para verificar a autenticidade de todos os eventos webhook; os payloads são assinados com HMAC-SHA256 usando o segredo configurado
+
+### Tarefas *(Mega)*
+
+Planeje e acompanhe o trabalho interno em um calendário compartilhado da conta:
+
+- **Ativação controlada** - Superadministradores habilitam o recurso da conta e administradores conectam Tarefas em Configurações -> Integrações
+- **Tipos personalizados** - Administradores definem categorias reutilizáveis e cores semânticas para o trabalho da equipe
+- **Paleta consistente** - Os tipos usam a mesma paleta visual de 22 cores do Google Agenda e mantêm a cor escolhida no calendário, detalhes e listas, sem que o status a substitua
+- **Permissões por escopo** - Administradores controlam todas as tarefas; roles personalizadas podem receber separadamente gestão das próprias/atribuídas, leitura global e relatórios; agentes padrão só veem e gerenciam tarefas criadas por eles ou atribuídas a eles
+- **Calendário mensal compartilhado** - Administradores, agentes e roles personalizadas autorizadas criam tarefas com data em `/activities`; editar, concluir, cancelar ou reabrir tarefas de terceiros permanece exclusivo do administrador, e somente ele pode excluí-las
+- **Experiência mobile** - Em telas pequenas, os filtros se reorganizam sem comprimir o calendário mensal; formulários e detalhes mantêm as ações visíveis sem cobrir o conteúdo
+- **Leitura antes de editar** - Ao abrir uma tarefa, seus detalhes são exibidos; concluir e cancelar ficam no cabeçalho com resumo obrigatório, enquanto editar e, somente para administradores, excluir com confirmação ficam no rodapé
+- **Responsabilidade clara** - Atribua uma tarefa a um agente da conta ou deixe-a sem responsável
+- **Histórico resiliente** - Excluir contato, conversa, item Kanban ou responsável preserva seus rótulos históricos, limpa referências ativas e resincroniza a projeção Google sem duplicar a cascata de exclusão
+- **Estados operacionais** - Gerencie tarefas pendentes, em andamento, concluídas ou canceladas; vencimentos são detectados automaticamente após o prazo
+- **Encerramento documentado** - Concluir ou cancelar exige um resumo do resultado para registrar o que ocorreu e os próximos passos
+- **Aviso ao responsável** - Ao atingir o prazo, somente o agente responsável recebe um popup e uma notificação para abrir, concluir, cancelar ou editar a tarefa; ele pode marcar o aviso como visto ou adiá-lo para reaparecer automaticamente, e tarefas sem responsável não geram aviso
+- **Tarefas recorrentes** - Repita tarefas por dia, semana, mês ou ano, com intervalo, dias semanais e término por data ou até 100 repetições
+- **Contexto conectado** - Vincule opcionalmente contato e conversa, ou crie um item em um funil e etapa sem exigir cliente
+- **Criação a partir de conversas** - O ReplyBox mostra uma ação ao lado do calendário quando Tarefas está habilitada e conectada; abre o formulário com contato, conversa, responsável atual e qualquer item Kanban relacionado preenchidos
+- **Acompanhamento por contato** - O ContactPanel inclui um acordeão próprio de Tarefas no formato do calendário, identifica cada conversa vinculada pelo número visível estável e mantém tarefas pendentes, em andamento e vencidas do contato visíveis em novas conversas
+- **Kanban condicionado** - O vínculo e a criação de itens Kanban aparecem somente quando `kanban_board` está habilitado na conta
+- **Tarefas dentro do item** - Quando Tarefas está habilitada e conectada, o detalhe Kanban separa o histórico técnico de uma aba operacional para criar, consultar e abrir tarefas vinculadas ao item
+- **Rastreabilidade no Kanban** - O histórico do item registra quando uma tarefa vinculada é criada, atualizada, iniciada, concluída, cancelada, reaberta, vinculada, desvinculada ou excluída, incluindo status e responsável
+- **Participantes e prioridade** - Defina prioridade, responsável, participantes da conta e convidados externos
+- **Google Agenda opcional** - Sincronize início, fim e participantes em um único evento, preservando a tarefa local em caso de falha
+- **Relatórios de tarefas** - Administradores e roles personalizadas com a permissão específica de relatórios de tarefas acompanham data, responsável, tipo e status; a permissão geral de relatórios não concede esse acesso
+- **API para desenvolvedores** - Use os CRUDs de Tarefas e Tipos de tarefa com escopo de conta pelo Swagger/OpenAPI ou pela coleção Postman gerada, incluindo filtros e campos de workflows vinculados
+
+### Google Agenda *(Mega)*
+
+- **Lembretes pessoais** - O criador recebe aviso no MEGA e por push do navegador, pode adiá-lo e reabrir o evento; criador e contato da conversa são preenchidos como convidados sem duplicação.
+
+Conecte o Google Agenda como integracao de produtividade no nivel da conta, nao como inbox/canal:
+
+- **OAuth por conta** - Administradores conectam o calendario em Configuracoes -> Integracoes -> Google Agenda
+- **Disponibilidade condicionada** - O espaço `/calendar`, o ícone do compositor e os eventos do painel da conversa só aparecem quando o Google está configurado globalmente e a conta está conectada com um calendário selecionado; ativar apenas o feature da conta não os exibe
+- **Criacao minimalista** - Use um editor de duas colunas inspirado no Google Agenda com fusos selecionaveis, convidados removiveis, Google Meet e contexto MEGA vertical com canais visiveis na busca de conversas
+- **Selecao de calendario** - Importe por padrao todos os calendarios acessiveis ou limite a entrada a um; o MEGA preserva um destino de saida concreto e novas configuracoes iniciam com sync bidirecional
+- **Camada interna de eventos** - O MEGA salva eventos internos e rastreia IDs externos do Google separadamente
+- **Calendario operacional do MEGA** - Agentes gerenciam visoes de dia, semana, mes e lista em `/calendar`
+- **Exclusao permanente sincronizada** - Administradores removem primeiro o evento vinculado do Google e somente depois o registro local; se o Google falhar, o MEGA preserva o evento
+- **Formulario completo de evento** - Eventos manuais suportam fuso horario, local, convidados, lembretes, recorrencia simples, disponibilidade, visibilidade e Google Meet
+- **Vinculos MEGA buscaveis** - Ao criar ou editar eventos, agentes buscam e selecionam contato, conversa e item Kanban sem digitar IDs internos
+- **Controles por modulo** - Habilite sincronizacao para calendario interno, Kanban, conversas e lembretes em um so lugar
+- **Sync ao salvar** - Quando a sincronizacao de saida esta habilitada, o MEGA cria ou atualiza o evento no calendario Google selecionado preservando o estado interno
+- **Polling automatico do Google** - A cada cinco minutos o MEGA importa somente eventos alterados desde o ultimo poll bem-sucedido de cada calendario; eventos excluidos no Google removem a entrada local vinculada e `/calendar` mantem sync manual como fallback
+- **Estado da conexao** - Veja a identidade conectada, reconecte quando necessario e desconecte sem apagar eventos internos
+- **Ponte com Kanban** - Itens com data programada ou deadline podem criar eventos internos e sincronizar com o calendario selecionado
+- **Agenda e envio em conversas** - Os agentes usam no compositor o mesmo formulário com recursos do Google, contato e conversa preenchidos, e o botão “Criar e enviar” compartilha horário, local, detalhes e link do Google Meet gerado
+- **Acompanhamento em conversas** - O painel mostra eventos vinculados com ponto pulsante verde (<50%), amarelo (50–90%) ou vermelho (≥90%) conforme o avanço de Início a Fim, deixa vencidos opacos e reabre o editor compartilhado
+- **Importacao e backfill** - Administradores podem importar eventos do Google e migrar IDs legados do Kanban para o modelo global de calendario
 
 ### Construtor de Templates Meta *(Mega)*
 
@@ -1574,7 +1639,7 @@ Integração completa com WooCommerce:
 ### SLA (Acordos de Nível de Serviço)
 
 - **Políticas configuráveis** - Defina tempos alvo
-- **Primeira resposta** - Tempo máximo para responder
+- **Primeira resposta** - Tempo máximo para responder; seu relógio ativo termina após a primeira resposta do agente e os descumprimentos permanecem nos relatórios de SLA
 - **Próxima resposta** - Tempo entre respostas
 - **Resolução** - Tempo total de atendimento
 - **Horário comercial** - Cálculo em horas úteis
@@ -1667,7 +1732,8 @@ Personalize completamente a aparência da sua plataforma:
 
 - **Logo personalizado** - Seu logo em vez do Chatwoot
 - **Logo modo escuro** - Logo específico para dark mode
-- **Logo thumbnail** - Versão reduzida para favicon e ícones
+- **Logo thumbnail** - Versão reduzida para o favicon
+- **Ícone de notificações e PWA** - Imagem quadrada independente para alertas do sistema e o ícone instalável; usa `/favicon-badge-16x16.png` por padrão e o logo thumbnail como fallback
 - **Nome da marca** - Mude o nome exibido em toda a plataforma
 - **Nome da instalação** - Nome para a instância específica
 - **Cor primária** - Defina sua cor corporativa principal
@@ -1728,11 +1794,11 @@ Programe o envio automático de mensagens nas suas conversas:
 
 ### 🔒 Placeholder de Mensagem Excluída
 
-Configure por inbox se as mensagens excluídas mostram um placeholder ou desaparecem completamente:
+Configure por inbox se os agentes veem o texto original junto ao aviso de exclusão:
 
-- **Placeholder visível** - Mostra "Esta mensagem foi excluída" em vez de remover completamente
+- **Retenção para agentes** - Pode mostrar o texto original abaixo de "Esta mensagem foi excluída" dentro do dashboard
 - **Configurável por inbox** - Cada canal pode ter sua própria configuração
-- **Transparência** - Mantém o contexto da conversa indicando que houve uma mensagem excluída
+- **Proteção do contato** - A API pública e os eventos em tempo real destinados ao contato entregam apenas o aviso de exclusão
 
 ### Provedores de WhatsApp Alternativos
 
@@ -1795,6 +1861,7 @@ Solução robusta e de alta disponibilidade para operações exigentes que reque
 - Status de presença (digitando, online)
 - Confirmações de leitura
 - Mensagens editadas e excluídas
+- Autorização com passkey por meio de estados de sessão dedicados da WAHA e extensão de navegador
 - Sincronização global e por conversa sob demanda de mensagens recentes, com proteção de concorrência por conta e processamento dedicado opcional para instalações de alto volume
 
 **Ideal para:**
@@ -1952,19 +2019,33 @@ Edite e exclua mensagens do WhatsApp após o envio:
 Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto omnichannel das conversas:
 
 - **Funis com etapas personalizáveis** - Crie múltiplos funis e defina uma etapa padrão por funil
+- **Alertas Kanban** - Notifica membros das equipes selecionadas e agentes atribuídos por automações de etapa, e o agente responsável quando uma tarefa de checklist chega à data limite; alertas dispensados reaparecem após o intervalo configurado no funil apenas enquanto essa tarefa permanecer pendente. Agrupa alertas em um banner não bloqueante e não envia email
 - **Visão em quadro e em lista** - Alterne entre pipeline visual e lista operacional conforme o fluxo da equipe
 - **Filtros avançados por inbox/canal/atividade** - Segmente oportunidades por origem e movimentação recente
 - **Filtros por etiquetas** - Filtre por etiquetas de conversa em quadro/lista e reflita nas métricas por etapa
 - **Colunas configuráveis por usuário** - Mostre ou oculte colunas e mantenha preferências salvas localmente
 - **Ficha 360 do item** - Inclui checklist, notas, anexos, agentes atribuídos, ofertas e atributos personalizados
+- **Notas longas legíveis** - Abra o texto formatado completo e os anexos em uma visualização com rolagem, com edição direta quando tiver permissão
 - **Busca nas relações do item** - Encontre conversas vinculadas com busca remota ao gerenciar relações do item
 - **Moeda padrão por conta** - A moeda base do quadro é definida nas configurações da conta (`default_currency`)
 - **Override de moeda por oferta custom** - Em ofertas manuais do tipo produto/serviço, o usuário pode escolher a moeda por oferta
 - **Sem moeda em itens sem ofertas** - Se o item não tem ofertas, o valor aparece como placeholder e não entra em totais monetários
 - **Gestão de etiquetas no card** - Adicione ou remova etiquetas diretamente no card do item
 - **Relacionamentos nativos com contato e conversa** - Mantenha o contexto comercial ligado ao chat real do cliente
+- **Ponte com Google Agenda** - Itens com data programada ou deadline podem criar eventos de calendario do MEGA quando a sincronizacao de Kanban esta habilitada no nivel da conta
 - **Automações por etapa** - Dispare ações ao entrar ou mover etapas, incluindo mensagens rápidas e regras operacionais
+- **Acompanhamentos sem resposta** - Envie texto ou multimídia carregada após a espera configurada somente se o contato não respondeu, com autocompletar de variáveis do ReplyBox para dados do contato e da conversa; inboxes configurados do WhatsApp Cloud também permitem templates aprovados e mantêm a restrição de 24 horas para mensagens livres
 - **Sincronização em tempo real** - Mudanças de etapa e dados do item refletem instantaneamente na lista de chats e no painel do contato
+- **Negócios abertos do contato** - Cada funil pode habilitar na Configuração Avançada a exibição de seus itens Kanban abertos em todas as conversas do contato atual; a opção é desativada por padrão, preserva as regras de visibilidade e identifica as conversas relacionadas
+- **Painéis autorizados** - O bloco Kanban do painel de conversa e a entrada do sidebar ficam ocultos quando o usuário não tem itens visíveis nem funis disponíveis para adicionar negócios
+- **Acesso Kanban em tempo real** - Ao adicionar ou remover agentes do funil, o sidebar, a lista de funis e os itens visíveis atualizam sem recarregar
+- **Múltiplas conversas vinculadas** - Um mesmo item Kanban pode se relacionar com várias conversas; a primeira permanece como vínculo principal e as adicionais aparecem na aba de relacionamentos, com seletor limitado aos inboxes do funil e ícones de canal
+- **Histórico sem vínculo quebrado** - Se uma conversa vinculada for excluída, o item Kanban permanece como histórico e o vínculo é limpo
+- **Acesso Kanban por função e permissão** - Administradores gerenciam todos os funis e itens; agentes e funções com `kanban_view` trabalham somente no quadro e nos itens autorizados; funis que contêm itens autorizados podem ser abertos em modo leitura e `kanban_manage` permite gerenciar e editar apenas os funis atribuídos, sem criar, duplicar, excluir, definir o padrão ou alterar a visibilidade
+- **Autoatribuição administrativa** - O administrador pode se atribuir e se remover de qualquer item mesmo sem constar entre os agentes ou inboxes do funil; os demais usuários mantêm as regras normais de elegibilidade
+- **Visibilidade controlada dos itens** - O criador sempre pode ver seu item; com uma conversa vinculada válida, o responsável só pode vê-lo se também estiver selecionado no funil, e os agentes atribuídos manualmente ao item podem vê-lo; um vínculo stale fica visível somente para administrador e criador, e itens sem atribuição respeitam o modo `everyone` ou `assigned_only` do funil
+- **Agentes flexíveis por funil** - Sem inboxes selecionadas, qualquer agente da conta pode ser adicionado e atribuído pelo funil; com inboxes configuradas, os agentes devem ter acesso a pelo menos uma e novas atribuições são bloqueadas se esse acesso for perdido
+- **Configuração e automações protegidas** - A configuração global é somente leitura para os atores Kanban; suas alterações e as automações globais são exclusivas de administradores. `kanban_manage` administra apenas os funis atribuídos ao usuário
 
 ---
 
@@ -2005,12 +2086,13 @@ MEGA funciona como um **Progressive Web App** completo: instale em qualquer disp
 - **Tela cheia** - Executa em modo standalone, sem a barra de endereços do navegador
 - **Splash screen personalizada** - Tela de carregamento animada com o logo e cores da sua marca ao iniciar o app
 - **Atalhos rápidos** - Acesse diretamente Conversas ou Notificações pelo menu contextual do ícone do app
-- **Ícone dinâmico** - O ícone do app é gerado automaticamente a partir do seu logo configurado, em todos os tamanhos necessários (48px a 512px)
+- **Ícone dinâmico** - O ícone do app é gerado a partir do ícone de notificações configurado, com fallback para o logo thumbnail, em todos os tamanhos necessários (48px a 512px)
 - **Badge monocromático** - Ícone badge otimizado com silhueta monocromática para notificações do sistema
 
 **Notificações Push Avançadas:**
 
 - **Notificações push nativas** - Receba alertas instantâneos mesmo com o app fechado, diretamente no sistema operacional
+- **Indicador na aba** - Se uma mensagem chega com a aba oculta ou sem foco, o favicon muda para o ícone de notificações e volta ao normal quando o usuário retorna
 - **Resposta rápida inline** - Responda mensagens diretamente pela notificação sem abrir o app
 - **Marcar como lido** - Marque notificações como lidas pela própria notificação com um toque
 - **Empilhamento de mensagens** - Mensagens da mesma conversa são empilhadas em uma única notificação (estilo WhatsApp) mostrando até 10 mensagens
@@ -2045,6 +2127,11 @@ MEGA funciona como um **Progressive Web App** completo: instale em qualquer disp
 ---
 
 ## 📞 Suporte e Recursos
+
+### Contratos da API
+
+- Swagger/OpenAPI 3.1 detecta rotas sem documentação e operações obsoletas ou duplicadas.
+- O build gera uma coleção Postman v2.1 importável, separada por token da conta, token do aplicativo da plataforma e rotas públicas.
 
 - **Central de Ajuda** - Documentação completa e guias passo a passo
 - **Comunidade ativa** - Conecte-se com outros usuários

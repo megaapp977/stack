@@ -3,8 +3,8 @@
 ## Your Command Center for the Future of Customer Service
 
 **Version:** Enterprise
-**Based on:** Chatwoot (Open Source) + Mega Exclusive Features
-**Last Updated:** July 15, 2026
+**Based on:** Mega Exclusive Features
+**Last Updated:** July 25, 2026
 
 ---
 
@@ -41,10 +41,12 @@ Connect with your customers through the world's most popular messaging channel.
 - **WhatsApp WAHA** *(Mega)* - Alternative provider with full multimedia message support
 - **WhatsApp Uazapi** *(Mega)* - Low-cost solution for multiple lines
 - **Connection health alerts** *(Mega)* - Token and session issues appear in inbox lists, the primary sidebar, and inbox settings with a shortcut to session configuration
+- **Manual WhatsApp reconnection** *(Mega)* - Eligible embedded-signup inboxes can be reconnected to your own Meta app through a guided flow that preserves the inbox and its customer-service history
+- **Embedded-signup reconfiguration** *(Mega)* - Administrators can refresh the credentials and WhatsApp Business configuration of a Cloud inbox connected through embedded signup when the unified embedded-signup flow is enabled for the account
 - **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
 - **Per-server capacity** *(Mega)* - Define limits by server to distribute operational load
 - **BSUID support** *(Mega)* - Reliable contact identification and delivery even when traditional `wa_id` is missing
-- **Template Messages** - Send messages outside the 24-hour window with approved templates
+- **Template Messages** - Send messages outside the 24-hour window with approved templates; automations locally block free-form sends in that state and prompt users to use a template
 - **Contact Sync** - Keep your database automatically updated
 - **Group Support** - Manage WhatsApp group conversations directly
 
@@ -185,6 +187,7 @@ Many customers prefer email for formal inquiries, documentation, or follow-ups. 
 - **Custom signatures** - Configure professional signatures per agent or inbox
 - **Any provider** - Connect Gmail, Outlook, your own server, or any email
 - **Guided setup** - Detect Gmail or Outlook hosting from your domain to suggest the right integration
+- **Gmail connection check** - Verify IMAP and SMTP live, review recent email activity, and reconnect the account from inbox settings
 - **Complete history** - Entire email thread visible in one conversation
 - **Quoted replies** - Include original email in your responses for context
 
@@ -220,7 +223,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 **Advanced features:**
 
 - **User identification** - Recognize logged-in users on your site
-- **Email transcript** - Customers can request conversation history
+- **Email transcript** - Customers can request conversation history; repeat requests are temporarily disabled after a successful send
 - **Dark mode** - Adapts to visitor preferences
 - **Integrated Help Center** - Show help articles directly in the widget
 - **Predefined messages** - Start conversations with context
@@ -403,6 +406,8 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 
 Make and receive voice calls through WhatsApp using Meta's Cloud API with WebRTC technology.
 
+> **Availability:** Calls are not available for WhatsApp Cloud numbers connected through WhatsApp Business App coexistence. They continue in the WhatsApp Business app and are not shown in MEGA.
+
 **Why WhatsApp Calls?**
 
 Many customers prefer voice communication for complex issues. WhatsApp Calls let your agents handle voice calls directly within the platform, using the same WhatsApp number used for messaging.
@@ -411,20 +416,23 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 
 - **Real-time notifications** - Agents receive instant call alerts
 - **Accept/Reject from browser** - Handle calls without any external app
-- **Smart agent assignment** - Calls routed to available agents
+- **Smart agent assignment** - Calls routed to available inbox members; administrators who enabled call notifications are used only as a fallback
 - **Auto-reject when unavailable** - Configurable behavior when no agents online
 - **Caller identification** - See contact info before answering
 
 **Outbound Calls (Business-Initiated):**
 
-- **Click-to-call** - Start calls from the conversation view
+- **Click-to-call** - Start calls from a conversation or a contact profile, including contacts without an existing conversation
 - **Permission system** - Request and track call permissions inside the 24-hour customer service window
-- **Call permission status** - Know which contacts have granted permission
+- **One call per agent** - Prevents starting a second call while the agent already has an active one, including from another tab
+- **Call-permission templates** - Use approved permission-request templates from the ReplyBox, set one default per inbox, and show the sent request in the conversation timeline
+- **Call permission status** - Visually distinguish no permission, 7-day temporary permission, and permanent permission; confirm the status and ability to start a call with WhatsApp and record every change, including temporary expiry, in the conversation activity
 - **Ringback tone** - Audio feedback while connecting
 
 **Call Features:**
 
 - **WebRTC native** - High-quality audio without external SDKs
+- **Protected assignment** - From call acceptance until it ends, the conversation's assignee and team cannot change; reassignment remains available while it is only ringing
 - **Mute/Unmute** - Toggle microphone during calls
 - **Call duration** - Real-time timer visible during call
 - **VoIP optimization** - Audio optimized for voice calls
@@ -769,7 +777,8 @@ Create and configure AI assistants tailored to your business needs:
 - **Per-feature models** - Configure separate models for Assistant, Copilot, suggestions, and FAQ generation from documents and PDFs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
-- **Assistant overview** - Monitor handled conversations, auto-resolution, handoff, estimated time saved, reopen rate, conversation depth, knowledge coverage, and AI-generated period summaries
+- **Assistant overview** - Monitor handled conversations, auto-resolution, handoff, estimated time saved, reopen rate, conversation depth, knowledge coverage, and AI-generated period summaries in the account language; metrics load with a visual loading state and stay consistent when switching periods
+- **Generation details** - Open the “Generated by Captain” indicator on an assistant reply or handoff reason note to inspect its tool and scenario steps, knowledge-base sources, and reasoning; model and credit usage are limited to super administrators
 - **Image comprehension** - Assistant can analyze images sent in conversations
 - **Multimodal support** - Process text and images simultaneously for contextual responses
 - **Ignore groups** - Configure assistant to not respond in group conversations
@@ -813,6 +822,7 @@ Connect MCP (Model Context Protocol) servers to expand your assistant's capabili
 - **Native account MCP** - Create account-level MCP servers with dedicated endpoints
 - **Secure and flexible access** - Supports OAuth authentication and static token access
 - **Daily-use catalog** - Publishes tools ready for everyday account operations
+- **Expanded operational coverage** - Includes scheduling, tasks, campaigns, SLA, calendar, reports, notifications, and internal chat; does not expose data import or export
 - **Help Center over MCP** - Query, search, and retrieve articles and categories from connected agents
 - **Assistant assignment** - Link MCP servers to specific assistants
 - **Centralized management** - Manage all your MCP servers from settings
@@ -1094,6 +1104,7 @@ The system includes multiple protections to maintain send quality:
 - **Configurable design** - Colors, logo, header text
 - **Selectable layouts** - Choose between a classic landing page or documentation-style sidebar navigation
 - **Multi-language** - Articles in multiple languages
+- **Recommended content per locale** - Select and order up to 3 featured categories and 6 articles for each locale; popular content remains the fallback when none is configured
 - **GuideJar embeds** - Insert interactive GuideJar guides in Help Center content
 
 ### Content Organization
@@ -1115,6 +1126,7 @@ The system includes multiple protections to maintain send quality:
 - **Published** - Visible to users
 - **Archived** - Hidden but preserved
 - **Draft per language** - Each translation of an article can be in draft state independently; publish only the languages that are ready without affecting others
+- **Unpublished edits** - Edits to a published article are staged until reviewed and explicitly published; they can be compared with the live version or discarded
 
 ### SEO & Access
 
@@ -1209,6 +1221,7 @@ Complete voice channel analytics:
 - **Filters** - By agent, inbox, team, date
 - **Review notes** *(Enterprise)* - Add internal notes to CSAT responses for quality tracking
 - **CSAT via WhatsApp Templates** *(Mega)* - Send CSAT surveys using official WhatsApp templates instead of the classic in-chat message; requires Meta approval; the system automatically creates and manages the template with versioning; configurable per inbox with toggle between classic and template mode
+- **Agent feedback visibility** *(Mega)* - Optionally hide written CSAT comments from agents per inbox while keeping ratings visible; administrators retain complete access and the default preserves existing visibility
 
 ### Summary Reports
 
@@ -1232,6 +1245,7 @@ Complete voice channel analytics:
 - **Granular permissions** - Access control by functionality
 - **Custom profile** - Avatar, name, signature
 - **Named browser sessions** - Agents can label active sessions to recognize workstations, browser profiles, or testing contexts
+- **Reliable browser session control** - Tabs in one browser profile share a logical session; signing out removes it, while another browser, profile, or private window uses a separate slot. Login is interrupted only when a new browser reaches the configured limit
 - **Availability status** - Online, Busy, Offline
 - **Guided agent offboarding** - Before deleting an agent, choose whether to unassign or bulk reassign their conversations
 
@@ -1331,6 +1345,34 @@ Connect MEGA with any external system through automatic notifications:
 - **Subscription aliases** - Assign descriptive names to each webhook subscription for easier management
 - **Global webhook secret** *(Enterprise)* - Configure a security signature at installation level to verify the authenticity of all outgoing webhook events; payloads are signed with HMAC-SHA256 using the configured secret
 
+### Tasks *(Mega)*
+
+Plan and track internal work from a shared account calendar:
+
+- **Controlled activation** - Super administrators enable the account feature and account administrators connect Tasks from Settings -> Integrations
+- **Custom task types** - Administrators define reusable categories and semantic colors for the team's work
+- **Consistent palette** - Task types use the same 22-color visual palette as Google Calendar and retain the selected color in calendars, details, and lists without status replacing it
+- **Scoped permissions** - Administrators control every task; custom roles can independently receive own/assigned task management, global read access, and task reporting; standard agents only see and manage tasks they created or are assigned to
+- **Shared monthly calendar** - Administrators, agents, and authorized custom roles create dated tasks from `/activities`; editing, completing, cancelling, or reopening somebody else's task remains administrator-only, and only administrators can delete
+- **Mobile experience** - On small screens, filters reorganize without compressing the monthly calendar; forms and details keep actions visible without covering content
+- **Read before editing** - Opening a task shows its details; complete and cancel actions sit in the header with a required summary, while edit and administrator-only confirmed deletion remain in the footer
+- **Clear ownership** - Assign a task to an account agent or leave it unassigned
+- **Resilient history** - Deleting a linked contact, conversation, Kanban item, or assignee preserves their historical labels, clears live references, and resynchronizes the Google projection without duplicating the deletion cascade
+- **Operational states** - Manage pending, in-progress, completed, and cancelled tasks; overdue work is detected automatically after its deadline
+- **Documented closure** - Completing or cancelling requires an outcome summary so the result and next steps remain recorded
+- **Assignee deadline alert** - At the deadline, only the assigned agent receives a popup and notification to open, complete, cancel, or edit the task; they can mark it as seen or snooze it to reappear automatically, and unassigned tasks generate no alert
+- **Recurring tasks** - Repeat tasks daily, weekly, monthly, or yearly with an interval, selected weekdays, and an end date or up to 100 repetitions
+- **Connected context** - Optionally link a contact and conversation, or create an item in a funnel and stage without requiring a customer
+- **Creation from conversations** - ReplyBox shows an action beside the calendar when Tasks is enabled and connected; it opens the form with the contact, conversation, current assignee, and any related Kanban item prefilled
+- **Contact-wide tracking** - ContactPanel includes a dedicated Tasks accordion in the calendar format, identifies each linked conversation by its stable visible number, and keeps the contact's pending, in-progress, and overdue work visible across new conversations
+- **Feature-gated Kanban** - Kanban item linking and creation appear only when `kanban_board` is enabled for the account
+- **Tasks inside the item** - When Tasks is enabled and connected, Kanban details separate technical history from an operational tab used to create, review, and open tasks linked to the item
+- **Kanban traceability** - Item history records when a linked task is created, updated, started, completed, cancelled, reopened, linked, unlinked, or deleted, including its status and assignee
+- **Participants and priority** - Set priority, responsible agent, account participants, and external guests
+- **Optional Google Calendar** - Synchronize exact start, end, and attendees in one event while preserving local work on provider failures
+- **Task reports** - Administrators and custom roles with the dedicated task-report permission review tasks by date, responsible agent, type, and status; generic report access does not grant this permission
+- **Developer API** - Use the account-scoped Tasks and Task Types CRUD APIs from Swagger/OpenAPI or the generated Postman collection, including filters and linked-workflow fields
+
 ### Google Calendar *(Mega)*
 
 - **Personal event reminders** - The event creator receives an in-app and browser push reminder, can snooze it with preset intervals, and can reopen the shared event dialog. New events automatically include the creator email and, when created from a conversation, the contact email as deduplicated guests.
@@ -1338,16 +1380,17 @@ Connect MEGA with any external system through automatic notifications:
 Connect Google Calendar as an account-level productivity integration instead of an inbox/channel:
 
 - **Account-level OAuth** - Administrators connect the account calendar from Settings -> Integrations -> Google Calendar
-- **Configuration-gated availability** - The `/calendar` workspace, composer icon, and conversation-panel events appear only after Google is configured globally and the account is connected with a selected calendar; enabling the account feature alone does not expose them
+- **Custom-role access** - Administrators can grant an assigned agent the “Access Calendar” permission for Calendar, ReplyBox, and ContactPanel
+- **Configuration-gated availability** - The `/calendar` workspace, composer icon, and conversation-panel events appear only when the account is connected with a selected calendar; Kanban sync controls require the same account configuration
 - **Calendar selection** - Import all accessible calendars by default or limit inbound import to one; MEGA keeps a concrete outbound destination and defaults new setup to bidirectional sync
 - **Minimal event creation** - Use a Google Calendar-inspired two-column editor with selectable time zones, removable guest chips, writable destination selection, and Google Meet creation/copy/access without stacked cards
 - **Internal event layer** - MEGA stores calendar events internally and tracks Google provider IDs separately
-- **MEGA calendar workspace** - Agents manage day, week, month, and list views from `/calendar`; the month view limits visible events per day and offers `+N more` or a context menu for actions without hiding events. Events support colors and permanent deletion is restricted to administrators
-- **Google-like event form** - Manual events support timezone, location, guests, reminders, recurrence, Google Meet, and vertical MEGA context with channel icons in conversation search
+- **MEGA calendar workspace** - Agents manage day, week, month, and list views from `/calendar`; the month view limits visible events per day and offers `+N more` or a context menu for actions without hiding events. Events support colors, and administrator-only permanent deletion also removes the linked Google event
+- **Google-like event form** - Manual events support timezone, location, guests, reminders, recurrence, Google Meet, and installation-branded context with channel icons in conversation search
 - **Searchable MEGA links** - Agents search and select contact, conversation, and Kanban item while creating or editing events without typing internal IDs
 - **Module controls** - Enable sync for internal calendar, Kanban, conversations, and reminders from one place
 - **Sync on save** - When outbound sync is enabled, MEGA creates or updates the event in the selected Google calendar while preserving internal status
-- **Automatic Google polling** - Every five minutes MEGA imports only events changed since each calendar's last successful poll; `/calendar` reads local data and offers manual sync as a fallback
+- **Automatic Google polling** - Every five minutes MEGA imports only events changed since each calendar's last successful poll; deleted Google events remove their mapped local entries, and `/calendar` offers manual sync as a fallback
 - **Connection health** - View connected identity, reconnect when needed, and disconnect without removing internal events
 - **Kanban scheduling bridge** - Scheduled/deadline Kanban items can create internal events and sync them to the selected calendar
 - **Conversation scheduling and sharing** - Agents use the same Google-enabled event form from the conversation reply composer with contact and conversation prefilled, and the “Create and send” button shares the schedule, location, details, and generated Google Meet link
@@ -1507,7 +1550,7 @@ Customize email communications with your branding:
 ### SLA (Service Level Agreements)
 
 - **Configurable policies** - Define target times
-- **First response** - Maximum time to respond
+- **First response** - Maximum time to respond; its live clock ends after the first agent reply while missed results remain in SLA reports
 - **Next response** - Time between responses
 - **Resolution** - Total service time
 - **Business hours** - Backend-computed deadlines that respect inbox working hours
@@ -1520,6 +1563,7 @@ Customize email communications with your branding:
 - **Complete record** - Every action is logged
 - **Who, what, when** - Full traceability
 - **Compliance** - For regulatory requirements
+- **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, and Contact destruction audits by account, showing timestamps, object snapshots, actor/IP when recorded, and the explicit limitation that missing Message audits cannot prove a message-deletion count
 
 ### SAML/SSO
 
@@ -1583,7 +1627,8 @@ Fully customize your platform's appearance:
 
 - **Custom logo** - Your logo instead of Chatwoot's
 - **Dark mode logo** - Specific logo for dark mode
-- **Thumbnail logo** - Reduced version for favicon and icons
+- **Thumbnail logo** - Reduced version for the favicon
+- **Notification and PWA icon** - Independent square image for system alerts and the installable app icon; defaults to `/favicon-badge-16x16.png` with the thumbnail logo as fallback
 - **Brand name** - Change name shown throughout platform
 - **Installation name** - Name for specific instance
 - **Primary color** - Define your corporate main color
@@ -1645,11 +1690,11 @@ Schedule automatic message delivery in your conversations:
 
 ### 🔒 Deleted Message Placeholder
 
-Configure per inbox whether deleted messages show a placeholder or disappear completely:
+Configure per inbox whether agents see the original text alongside the deletion notice:
 
-- **Visible placeholder** - Shows "This message was deleted" instead of removing completely
+- **Agent retention** - Can show the original text below "This message was deleted" inside the dashboard
 - **Per-inbox configuration** - Each channel can have its own setting
-- **Transparency** - Maintains conversation context by indicating a message was deleted
+- **Contact protection** - The public API and contact-facing realtime events deliver only the deletion notice
 
 ### Alternative WhatsApp Providers
 
@@ -1876,6 +1921,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Label-based filtering** - Filter by conversation labels in board and list views, including stage metrics
 - **Per-user column visibility** - Show or hide columns and persist preferences locally
 - **360 item workspace** - Includes checklist, notes, attachments, assigned agents, offers, and custom attributes
+- **Readable long notes** - Open full formatted text and attachments in a scrollable detail view, with direct editing when permitted
 - **Relationship search** - Find linked conversations with remote search while managing item relationships
 - **Account default currency** - The board baseline currency is defined at account settings level (`default_currency`)
 - **Custom offer currency override** - In manual product/service offers, users can choose currency per offer
@@ -1884,14 +1930,21 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Native contact and conversation relationships** - Keep sales context linked to the real customer chat thread
 - **Google Calendar event bridge** - Scheduled or deadline-based items can create MEGA calendar events when account-level Kanban sync is enabled
 - **Stage-based automations** - Trigger actions when entering or moving stages, including quick messages and operational rules
+- **No-response stage follow-ups** - After a configured wait, send text or uploaded multimedia to the item's primary conversation only when the contact has not replied. The message editor autocompletes ReplyBox variables for contact, conversation, inbox, agent, and custom-attribute data. For configured WhatsApp Cloud inboxes, approved templates are also available and free-form sends remain blocked outside the 24-hour window
+- **Group-free entry** - Each entry stage can exclude WhatsApp group conversations so no item is created and its automatic flows do not start
+- **Automatic template delivery** - Automatic stage templates are sent once per item by default, preventing duplicate customer messages when an item re-enters a stage. The editor suggests variables such as `{{contact.name}}` when typing `{{` and resolves them when sent; a template can explicitly opt in to resend on every re-entry; manual quick messages remain unrestricted
+- **Kanban alerts** - Notify selected team members and assigned agents from stage automation, and the assigned agent when a checklist task reaches its due date; dismissed alerts reappear after the funnel-configured interval only while that task remains pending. Alerts are grouped in a non-blocking banner and do not send email
 - **Real-time synchronization** - Stage and item updates propagate instantly to chat list and contact panel
+- **Contact-wide open deals** - Each funnel can opt in from Advanced Configuration to show its open Kanban items across every conversation of the current contact; the option is disabled by default, keeps existing visibility rules, and identifies related conversations
 - **Authorized panels** - The conversation panel Kanban block and sidebar entry are hidden when the user has no visible items and no accessible funnels to add deals
+- **Kanban details from conversations** - A card displays one channel icon for each linked inbox type: it opens that channel's only conversation directly or a selector limited to that channel when several exist, without reloading the board; on mobile, item details show business information first and open the item profile in a side panel. The drawer contact panel hides previous conversations to preserve the item context
 - **Realtime Kanban access** - Adding or removing funnel agents refreshes the sidebar, funnel list and visible items without a reload
 - **Multiple linked conversations** - A single Kanban item can relate to several conversations; the first remains the primary link and additional conversations appear in the relationships tab, with the picker limited to the funnel inboxes and channel icons shown
 - **History without broken links** - If a linked conversation is deleted, the Kanban item is kept as history and the link is cleared
 - **Role- and permission-based Kanban access** - Administrators manage every funnel and item; agents and roles with `kanban_view` work only with the board and authorized items; funnels containing authorized items can be opened read-only, while `kanban_manage` manages and edits assigned funnels only, without creating, duplicating, deleting, setting the default, or changing visibility
-- **Controlled item visibility** - The creator can always view an item; with a valid linked conversation, its assignee can view it only when also selected on the funnel, and manually assigned item agents can view it; a stale link is visible only to the administrator and creator, and unassigned items follow the funnel's `everyone` or `assigned_only` mode
-- **Inbox-eligible agents** - Only agents with access to at least one inbox configured on the funnel can be selected or assigned from both the board and the contact/conversation panel; new assignments are blocked when that access is lost
+- **Administrator self-assignment** - Administrators can assign or remove themselves from any item even when absent from the funnel agents or inboxes; every other user keeps the normal eligibility rules
+- **Controlled item visibility** - The creator can always view an item; with a valid linked conversation, its assignee can view it only when also selected on the funnel, and manually assigned item agents can view it; a stale link is visible only to the administrator and creator. The funnel's `everyone` mode lets every funnel agent view every item, while `assigned_only` restricts visibility to authorized agents.
+- **Flexible funnel agents** - With no inboxes selected, any account agent can be added to and assigned from the funnel; with configured inboxes, manual assignments require access to at least one. Moving an item automatically adds its assignees to the destination funnel without changing inbox permissions
 - **Protected configuration and automations** - Global configuration is read-only for Kanban actors; its changes and global automations are administrator-only. `kanban_manage` administers only the funnels assigned to that user
 
 ---
@@ -1948,13 +2001,14 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 - **Full screen** - Runs in standalone mode, without the browser address bar
 - **Custom splash screen** - Animated loading screen with your brand logo and colors when launching the app
 - **Quick shortcuts** - Access Conversations or Notifications directly from the app icon's context menu
-- **Dynamic icon** - The app icon is automatically generated from your configured logo, in all required sizes (48px to 512px)
+- **Dynamic icon** - The app icon is generated from the configured notification icon, falling back to the thumbnail logo, in all required sizes (48px to 512px)
 - **Configurable icon background** - Use a custom color for the installable icon while keeping white as the default
 - **Monochrome badge** - Optimized badge icon with monochrome silhouette for system notifications
 
 **Advanced Push Notifications:**
 
 - **Native push notifications** - Receive instant alerts even with the app closed, directly in the operating system
+- **Browser tab indicator** - If a message arrives while the tab is hidden or unfocused, the favicon switches to the notification icon and returns to normal when the user comes back
 - **Inline quick reply** - Reply to messages directly from the notification without opening the app
 - **Mark as read** - Mark notifications as read from the notification itself with a single tap
 - **Message stacking** - Messages from the same conversation stack into a single notification (WhatsApp-style) showing up to 10 messages

@@ -1,7 +1,7 @@
 # MEGA - Detalhe Tecnico de Funcionalidades (PT-BR)
 
 Versao: Enterprise
-Ultima atualizacao: 15 de julho de 2026
+Ultima atualizacao: 25 de julho de 2026
 Idioma: Portugues (Brasil)
 
 ## 1. Objetivo
@@ -23,9 +23,11 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 
 ### 3.1 Canais de mensagens e voz
 
-- WhatsApp Cloud API: canal oficial com templates e eventos de entrega.
+- WhatsApp Cloud API: canal oficial com templates e eventos de entrega; fora da janela de atendimento de 24 horas, o serviço rejeita localmente mensagens livres de automações sem parâmetros de template antes de contatar o provedor.
 - Mega Hub para Meta: modo opcional no Super Admin para conectar WhatsApp, Messenger e Instagram usando apps compartilhados do Hub; o bloco de credenciais do Hub é configurado em Super Admin → Mega Hub, e as caixas criadas continuam enviando pelos serviços nativos e recebem eventos reenviados por webhook.
 - Saúde da conexão do WhatsApp Cloud: falhas de token manual são exibidas sem bloquear o processamento de webhooks recebidos, enquanto o cadastro integrado mantém o fluxo de reautorização.
+- Caixas do WhatsApp Cloud com cadastro integrado podem usar uma migração manual guiada e controlada por feature flag para um aplicativo Meta próprio; o fluxo valida as credenciais de WABA, número e token antes de atualizar a conexão, enquanto o alerta de reautorização permanece visível quando necessário.
+- No Cloud, `whatsapp_embedded_signup_inbox_creation` é o controle único para criar caixas por cadastro integrado, reconfigurá-las proativamente e reautorizá-las. Instalações próprias mantêm `whatsapp_reconfigure` para reconfiguração proativa; o endpoint exige administrador e preserva a recuperação quando a reautorização é necessária.
 - WhatsApp Evolution, WAHA e Uazapi: provedores alternativos com suporte multimidia e grupos.
 - Estado de conexão por provedor: WAHA, Evolution e Uazapi usam suas próprias APIs e webhooks; a validação de assinatura da Meta fica reservada ao WhatsApp Cloud.
 - Vinculação WAHA com passkey: detecção proativa da extensão via `WAHA_PASSKEY_CHROME_EXTENSION_ID`, estados `PASSKEY_REQUIRED` e `PASSKEY_CONFIRMATION_REQUIRED` dentro de `session.status`, challenge por `/auth/passkey/challenge`, fluxo temporário por token para asserção, assinatura com extensão de navegador em `web.whatsapp.com` e confirmação manual por código; os GET sem dados pendentes retornam `422`.
@@ -35,15 +37,19 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 - Notificame: variante oficial orientada a operacao LATAM.
 - Instagram, Facebook, TikTok, Telegram, X, SMS e Email como inboxes.
 - Processamento de email IMAP com timeout dedicado para evitar jobs travados nas caixas de entrada.
+- Diagnóstico de conexão para caixas do Gmail com autenticação IMAP/SMTP XOAUTH2 em tempo real, categorias de erro seguras, datas de atividade recente de entrada/saída e reconexão OAuth exclusiva para administradores.
 - Inferencia do provedor de email a partir dos registros MX do dominio de cadastro para sugerir integracoes Gmail ou Outlook durante o onboarding.
 - Upload de anexos com reconhecimento explicito de arquivos `.pfx` junto aos formatos comuns de midia e documentos.
 - API Channel: gateway generico para plataformas proprietarias via API/webhooks.
-- Voz Twilio e chamadas WhatsApp Cloud: fluxo WebRTC com timeline unificada; os relatorios Twilio normalizam dados a partir do modelo Call, as gravacoes nativas opcionais exigem aceite do custo de storage e as gravacoes aparecem nas conversas e no relatorio de chamadas.
+- Voz Twilio e chamadas WhatsApp Cloud: fluxo WebRTC com linha do tempo unificada; chamadas Cloud feitas de perfis sem conversa resolvem ou criam com segurança o tópico do contato, respeitando a continuidade do inbox e a visibilidade do agente. A permissão de chamada pode usar um modelo aprovado selecionado no ReplyBox ou configurado como padrão do inbox, conserva o WAMID para correlacionar a resposta e registra a mensagem enviada na conversa sem reenviá-la ao provedor. As consultas ao Meta são a fonte de verdade: normalizam e persistem os estados sem permissão, temporário e permanente, e respeitam a ação `start_call` antes de iniciar uma chamada; cada alteração é registrada como atividade, com a data de vencimento recebida para permissões temporárias. Cliente e servidor impedem uma segunda chamada ativa por agente, inclusive entre abas. Os candidatos do inbox são determinados pelas regras padrão de atribuição —capacidade, equipe e overflow— e quem já está em chamada é excluído; um administrador online que ativou notificações entra apenas como fallback quando não resta um agente elegível. Enquanto uma chamada Cloud está sendo aceita, conectada ou ativa, a interface e o modelo rejeitam alterações de agente e equipe; uma chamada que apenas toca continua podendo ser reatribuída e a alteração volta a estar disponível após o encerramento. Os controles, as solicitações de permissão, o início e os webhooks de chamadas são desativados para canais Cloud marcados como coexistência com o WhatsApp Business App, porque as chamadas continuam no aplicativo WhatsApp Business. Os relatórios Twilio normalizam dados a partir do modelo Call, as gravações nativas opcionais exigem aceite do custo de storage e as gravações aparecem nas conversas e no relatório de chamadas.
 - Controle de transcricao de audio: GPT-4o Mini Transcribe por padrao para notas de voz com Whisper disponivel como override por conta; as gravacoes mantem flags por conta para habilitacao geral e comportamento por provedor (WhatsApp Cloud e WaVoIP), normalizacao de audio, diarizacao por turno, transcricao fiel com GPT-4o Transcribe, rotulos baseados no nome do contato/agente atribuido e reprocessamento manual pelo menu contextual de mensagens de audio sem texto.
 - WaVoIP com persistencia de sessao por inbox e reaproveitamento de credenciais conforme o papel do usuario.
 
 ### 3.2 Nucleo de conversas
 
+- As solicitacoes de transcricao por email no widget desabilitam o botao durante o envio e por 15 segundos apos um envio bem-sucedido, evitando solicitacoes repetidas e mantendo a nova tentativa imediata apos uma falha.
+- A visibilidade do feedback CSAT e armazenada por inbox em `csat_config.hide_feedback_from_agents`. Os serializadores de mensagens do dashboard e o Action Cable removem apenas `feedback_message` para usuarios da conta que nao sao administradores, enquanto as avaliacoes, os dados persistidos e os payloads de administradores e clientes permanecem inalterados.
+- As mensagens excluidas podem reter o texto original para agentes por meio de `inboxes.show_deleted_message_placeholder`; a API publica e os broadcasts do Action Cable destinados ao contato substituem `content` e `processed_message_content` pelo aviso de exclusao e omitem `content_attributes.original_content` e `translations` sem alterar o registro persistido.
 - Modelo de status: open, pending, resolved, snoozed.
 - Modelo de prioridade: tratamento de urgencia por conversa.
 - Participantes: colaboracao multiagente na mesma thread.
@@ -55,7 +61,7 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 - Assignment V2: distribuicao inteligente com capacidade e regras.
 - Os inboxes expoem `auto_assign_on_agent_reply` para manter conversas nao atribuidas sem responsavel quando um agente envia uma mensagem de saida.
 - Equipes: `icon` e `icon_color` sao persistidos em `teams`, expostos pela API/model JSON e incluidos nos payloads realtime para listas e seletores de atribuicao.
-- SLA Enterprise: `AppliedSla` expoe prazos FRT/NRT/RT calculados no backend; quando a politica usa horario comercial, `Sla::BusinessHoursService` consome a configuracao de working hours do inbox e a resposta JSON entrega `sla_*_due_at` ao dashboard. Conversas com contato bloqueado rejeitam nova atribuicao de SLA, sao excluidas de processamento/relatorios e limpam `sla_policy_id`, `applied_sla` e `sla_events` dos payloads enquanto seguirem bloqueadas.
+- SLA Enterprise: `AppliedSla` expoe prazos FRT/NRT/RT calculados no backend; quando a politica usa horario comercial, `Sla::BusinessHoursService` consome a configuracao de working hours do inbox e a resposta JSON entrega `sla_*_due_at` ao dashboard. O relogio FRT ativo termina apos a primeira resposta do agente, inclusive quando ela chega atrasada, enquanto os descumprimentos registrados permanecem disponiveis no historico e nos relatorios de SLA. Conversas com contato bloqueado rejeitam nova atribuicao de SLA, sao excluidas de processamento/relatorios e limpam `sla_policy_id`, `applied_sla` e `sla_events` dos payloads enquanto seguirem bloqueadas.
 - Drilldown de relatorios V2: `/api/v2/accounts/:account_id/reports/drilldown` retorna as conversas, mensagens ou eventos que compoem uma barra do grafico; `V2::Reports::DrilldownBuilder` valida metrica, bucket, permissao de administrador, paginacao, filtros por conta/inbox/agente/equipe/etiqueta, horario comercial e serializacao da ultima mensagem, com rate limit dedicado no Rack::Attack.
 - Respostas prontas com anexos reutilizaveis tambem nos fluxos de nova conversa.
 - Editor de resposta com upload de imagens inline em Email e Widget Web, redimensionamento por ProseMirror e renderizacao segura de `cw_image_width`/`cw_image_height`.
@@ -111,8 +117,9 @@ Bots:
 
 - Provedores suportados: OpenAI, Anthropic, Google, Azure OpenAI, Bedrock, DeepSeek.
 - Assistants: configuracao por inbox com instrucoes e contexto.
-- Visao geral do assistente: endpoints Enterprise de estatisticas, drilldown e resumo cacheado baseados em `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder` e `Captain::OverviewSummaryService`; o tempo economizado estimado e derivado das respostas publicas do assistente usando uma suposicao fixa de 2 minutos de esforco do agente por resposta.
+- Visao geral do assistente: endpoints Enterprise de estatisticas, drilldown e resumo cacheado baseados em `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder` e `Captain::OverviewSummaryService`; o cliente reutiliza as estatisticas carregadas para o resumo, cancela solicitacoes de estatisticas substituidas, tenta novamente uma vez uma falha transitoria e mostra esqueletos de metricas durante o carregamento. Os resumos usam o idioma da conta; o tempo economizado estimado e derivado das respostas publicas do assistente usando uma suposicao fixa de 2 minutos de esforco do agente por resposta.
 - Roteamento de modelos Captain por feature (`assistant`, `copilot`, `document_faq_generation`, `pdf_faq_generation`, `audio_transcription`, etc.) com override por conta e fallback para configuracao global.
+- Detalhes da geração: `GET /api/v1/accounts/:account_id/captain/agent_sessions/:message_id` no Enterprise autoriza a conversa da mensagem, hidrata citações e títulos de cenários e alimenta o popover da mensagem Captain. As sessões são armazenadas por mensagem; uma sessão de transferência é associada à sua nota privada não vazia. O modelo e os créditos são exibidos apenas para superadministradores ou em desenvolvimento.
 - Captain Documents: upload, indexacao e auto-sincronizacao por plano com jitter, fila purgable, limites configuraveis por conta e globais e uma vista de detalhes com conteudo rastreado, metadados da fonte e quantidade de FAQs geradas.
 - Captain Scenarios: regras de ativacao e prioridade.
 - Captain Custom Tools: integracoes HTTP com GET, POST, PUT, PATCH e DELETE.
@@ -120,7 +127,7 @@ Bots:
 - OAuth MCP: metadata .well-known, register, authorize, token, refresh token e PKCE.
 - Autenticacao dupla: Bearer OAuth ou Api-Access-Token estatico.
 - Catalogo MCP curado para uso cotidiano: ferramentas com nomes estaveis por dominio (conversations, contacts, inboxes, help center, reports, kanban e outros).
-- Tools MCP publicadas: base (account_context, account_actions_list, account_action_call) + catalogo curado; inclui leitura/busca de Help Center com `help_center_articles_list`, `help_center_articles_search`, `help_center_articles_get` e `help_center_categories_list`; dinamicas explicitas via allowed_tools.
+- Tools MCP publicadas: base (account_context, account_actions_list, account_action_call) + catalogo curado; inclui agendamento de mensagens, tarefas, modelos, campanhas, SLA, politicas, calendario, relatorios, Captain, notificacoes, chat interno e o ciclo completo do Help Center; nao publica tools de importacao nem exportacao de dados; dinamicas explicitas via allowed_tools.
 - Auto-resolve mode: evaluated, legacy ou disabled por conta. O modo avaliado envia ao avaliador o status da conversa e o conteúdo rotulado das mensagens não privadas; transferências e acompanhamentos pendentes permanecem abertas.
 
 ### 3.6 CRM e gestao de contatos
@@ -145,7 +152,9 @@ Bots:
 ### 3.8 Help Center
 
 - Artigos multi-idioma com estado por idioma.
+- Edições de titulo e conteúdo de artigos publicados são mantidas em colunas de rascunho, com fluxos de revisão, publicação e descarte que preservam a versão visível até a publicação.
 - Layouts de portal selecionaveis: landing classica ou documentacao com sidebar.
+- Conteúdo recomendado por localidade é persistido em `portal.config.popular_content`, com listas ordenadas limitadas a 3 categorias e 6 artigos; registros excluídos e artigos não publicados são omitidos, preservando o fallback por popularidade.
 - Editor com menu slash e suporte nativo a tabelas.
 - Criacao de artigos diretamente da visualizacao da categoria.
 - Redimensionamento de imagens dentro do editor de artigos.
@@ -161,6 +170,7 @@ Bots:
 - Filtros por etiquetas de conversa em board/list e nas estatisticas por etapa.
 - Gestao de etiquetas direto no card do item com endpoint de API por item.
 - Workspace 360 do item: checklist, notas, anexos, ofertas, agentes e atributos.
+- Notas longas do Kanban usam um diálogo de detalhes com Markdown renderizado, rolagem limitada ao viewport, quebra forçada para texto sem separadores, anexos e uma ação de edição direta condicionada às permissões.
 - Busca remota de conversas/contatos nos seletores de relacoes do item.
 - Moeda base configuravel por conta via `accounts.update` (`settings.default_currency`).
 - Ofertas custom monetarias com moeda por oferta (`item_details.offers[].currency`) e override sobre a moeda padrao da conta.
@@ -168,20 +178,29 @@ Bots:
 - Relacao nativa com contato e conversa.
 - A sincronizacao do Google Agenda no nivel da conta pode converter itens com data programada/deadline em `CalendarEvent` sem sobrescrever campos Google legacy em `item_details`.
 - Os lembretes são avaliados a cada minuto, criam uma única `Notification` idempotente com ator `CalendarEvent` para `created_by_user_id` e reutilizam ActionCable direcionado, Web Push e snooze; emails de convidados nunca definem o destinatário interno.
-- Os controles de calendario do item Kanban leem `CalendarEvent`/`ExternalCalendarEvent`, exibem link do Google quando existe e mantem IDs Google legados apenas como fallback.
+- Os controles de calendario do item Kanban so sao montados quando a conta tem `GoogleCalendarIntegration.connected?` e um `CalendarConnection#calendar_id`; entao leem `CalendarEvent`/`ExternalCalendarEvent`, exibem link do Google quando existe e mantem IDs Google legados apenas como fallback.
 - Automacoes por etapa e mensagens rapidas.
+- Regras temporizadas `send_message` capturam o ID da conversa principal e o ID da última mensagem recebida quando são agendadas. `StageTimeAutomationJob` revalida a entrada na etapa e a regra, enquanto `KanbanItems::StageFollowUpService` bloqueia o item, cancela após uma nova resposta do contato e desduplica com uma chave de item/regra/entrada nos atributos da mensagem. Texto e multimídia persistida no funil usam `Messages::MessageBuilder`; o editor Woot compartilhado expõe as variáveis Liquid do ReplyBox e o concern `Liquidable` da mensagem as resolve com a conversa de destino. Templates aprovados são exibidos e aceitos apenas para inboxes configurados `whatsapp_cloud`, preservando seus `template_params` por inbox e a restrição existente de 24 horas.
+- As etapas de entrada persistem `ignore_group_conversations`; quando ativado, `AutoCreateItemJob` não cria itens para conversas cujo `contact_inbox.source_id` termina em `@g.us`, sem alterar etapas legadas baseadas em condições.
+- A entrega automática de modelos da etapa é identificada por `kanban_item_id` e pelo ID estável do modelo nos atributos de conteúdo da mensagem de saída. O editor de modelos habilita o seletor padrão de variáveis ao digitar `{{`; `Liquidable` resolve valores como `{{contact.name}}` ao criar a mensagem de saída. Modelos existentes enviam uma vez por item por padrão; `resend_on_entry` habilita o envio em cada entrada que atender às condições, enquanto mensagens rápidas manuais não consultam esse histórico.
+- As regras de etapa `notify_team` resolvem membros das equipes selecionadas e agentes atualmente atribuídos ao item na execução, excluem o usuário que realizou a movimentação, desduplicam usuários e criam notificações em tempo real `kanban_stage_automation` por usuário. Um banner não bloqueante do Kanban mostra um alerta diretamente ou agrupa vários em uma lista expansível com descarte individual ou em massa; o envio por email fica intencionalmente excluído.
+- Uma tarefa pendente de checklist com data limite agenda um alerta interno para seu agente atribuído. O job verifica se tarefa, responsável e data continuam atuais antes da entrega, bloqueia o item Kanban para evitar alertas concorrentes duplicados e só recria um alerta dispensado após o intervalo configurado no funil enquanto a tarefa permanecer pendente.
 - Sincronizacao em tempo real com lista de chats e painel de contato.
+- `GET /kanban_items?contact_id=<id>` preserva o scope autoritativo da policy Kanban, resolve o vínculo por todos os display IDs de conversas relacionadas e filtra itens abertos antes da paginação somente para funis com `settings.contact_panel_contact_wide_items` habilitado. A opção é falsa por padrão; o ContactPanel combina o resultado expandido com `currentChat.kanban_items` e o atualiza com eventos Kanban.
 - O painel de contato/conversa reutiliza os candidatos de agentes do funil e persiste atribuicoes/remocoes pelos endpoints de itens Kanban.
+- O quadro abre a conversa vinculada pelo ícone de canal sem reinicializar os dados do quadro. No mobile, o detalhe do item separa o conteúdo comercial do perfil/acordeoes e reutiliza os diálogos de status, movimento e agentes do ContactPanel.
 - O bloco Kanban do painel de contato/conversa fica oculto quando o usuario nao tem itens visiveis nem funis disponiveis para criar itens.
 - A entrada Kanban do sidebar principal fica oculta para usuarios nao administradores quando eles nao tem funis ativos acessiveis.
 - Mudancas nos agentes do funil emitem um evento em tempo real para atualizar sidebar, funis e itens visiveis sem recarregar.
 - Um item Kanban pode vincular varias conversas: `conversation_display_id` mantem a conversa principal por compatibilidade e `item_details.conversation_ids` guarda o conjunto completo; visibilidade, filtros, realtime da lista de chats e o bloco Kanban do ContactPanel consideram qualquer conversa vinculada. O seletor de relacionamentos fica limitado aos inboxes do funil e mostra icone de canal/nome do inbox.
+- Ao abrir uma conversa pelo drawer do Kanban, `ConversationSidebar` repassa `hidePreviousConversations` ao `ContactPanel` para ocultar o acordeão de conversas anteriores; o painel padrão de conversa mantém esse acordeão. O cartão deduplica as conversas serializadas por `inbox.channel_type` e, quando ausente, por `inbox_id`, para exibir um ícone por canal e filtra o seletor para o canal do ícone clicado.
 - Se uma conversa vinculada for excluida, o item Kanban permanece como historico e a relacao quebrada e limpa.
 - Escopo de acesso consistente na API, cache e eventos em tempo real: administradores veem todos os funis e itens; `agent` e a permissao de funcao personalizada `kanban_view` recebem somente os recursos autorizados.
+- O administrador atual pode se atribuir a qualquer item, individualmente ou em massa, e se remover individualmente, mesmo sem pertencer a `settings.agents` ou aos inboxes do funil; essa exceção não permite atribuir outros usuários inelegíveis.
 - A permissao de funcao personalizada `kanban_manage` inclui o quadro e o gerenciador; funis que contêm itens autorizados ficam expostos em modo leitura, e somente os atribuidos por `settings.agents` podem ter conteudo e estrutura editados. Nao permite criar, duplicar, excluir, definir o padrao ou alterar `unassigned_visibility`.
 - Os itens mantem `created_by_id`, para que o criador sempre preserve a visibilidade. Com uma conversa vinculada valida, o responsavel atual so pode ve-lo se tambem estiver selecionado no funil, e qualquer agente atribuido manualmente ao item pode ve-lo; um vinculo stale fica visivel somente para administrador e criador.
-- `unassigned_visibility` aceita `everyone` (valor legado/padrao) e `assigned_only`; define a visibilidade de itens sem atribuicao direta ou de conversas vinculadas sem responsavel.
-- Os candidatos em `settings.agents` devem ter acesso a pelo menos uma inbox de `settings.inboxes`; a uniao e recalculada ao alterar inboxes e bloqueia novas atribuicoes invalidas.
+- `unassigned_visibility` aceita `everyone` (valor legado/padrao) e `assigned_only`; `everyone` concede a todos os agentes do funil visibilidade sobre todos os seus itens, inclusive os atribuídos, enquanto `assigned_only` preserva o escopo dos agentes autorizados.
+- Quando `settings.inboxes` está vazio, qualquer agente da conta pode ser adicionado a `settings.agents` e atribuído a um item. Com inboxes configuradas, novas atribuições manuais exigem acesso a pelo menos uma delas; ao mover um item, seus agentes atribuídos são incluídos automaticamente no funil de destino sem alterar suas permissões de inbox.
 - A configuracao global permite leitura a `agent`, `kanban_view`, `kanban_manage` e administradores; criar, editar ou excluir exige administrador. Os endpoints de automacoes globais sao exclusivos de administrador; `kanban_manage` modifica apenas funis atribuidos.
 
 ### 3.10 Integracoes e extensibilidade
@@ -191,11 +210,33 @@ Bots:
 - Dashboard Apps para extensoes embutidas via iFrame por contexto; usuarios autenticados da conta podem le-los, mas somente administradores podem cria-los, atualiza-los ou exclui-los.
 - Dashboard Scripts (Super Admin) para customizacao global sem alterar core.
 - Platform Apps para integracoes externas de alto nivel via API.
-- Integracoes de negocio: Slack, Linear, Shopify, WooCommerce, Notion, CRM e Google Agenda.
+- Integracoes de negocio: Slack, Linear, Shopify, WooCommerce, Notion, CRM, Google Agenda e Tarefas.
+- Tarefas é protegida pelo recurso de conta `activities` e por um `Integrations::Hook` de conta habilitado; o mesmo par controla visibilidade da integração, acesso à API, rota e item do sidebar.
+- A autorização usa três permissões de role personalizada: `task_manage` cria tarefas e gerencia somente as atribuídas ao usuário ou criadas por ele, `task_view_all` adiciona leitura global sem edição e `task_reports_view` habilita relatórios e seus detalhamentos somente leitura. Agentes padrão recebem implicitamente o escopo próprio/atribuído; administradores mantêm acesso total e exclusão exclusiva.
+- `AccountTask` é a fonte de verdade para tipo, prioridade, responsável, participantes, convidados, contato/conversa e vínculos únicos com Kanban e `CalendarEvent`; persiste pendente/em andamento/concluída/cancelada e deriva vencida por `ends_at`; todos os IDs são resolvidos na conta atual.
+- `ActivityType#color` armazena um dos 22 identificadores da paleta visual compartilhada com o Google Agenda. Uma migração converte as seis cores legadas e a UI reutiliza um único mapa de classes; o status adiciona decoração sem substituir o fundo do tipo.
+- `outcome_summary` registra o resultado do encerramento e é obrigatório na UI e no modelo para `completed` e `cancelled`; ao reabrir, ele é preservado como histórico editável.
+- `AccountTasks::TriggerDueNotificationsJob` roda a cada minuto e cria uma única notificação `account_task_due` em `ends_at`, exclusivamente para `assignee_id` e somente enquanto a tarefa estiver pendente/em andamento e Tarefas disponível. O responsável pode marcá-la como vista ou adiá-la via `snoozed_until`; o reativador global volta a publicá-la automaticamente. Reagendar, reatribuir ou encerrar remove o aviso anterior para recalculá-lo.
+- Raízes recorrentes persistem tipo, intervalo, dias e limite por data ou quantidade. `AccountTasks::RecurrenceService` materializa até 100 tarefas filhas independentes, herda responsável/contexto/participantes/Kanban/Google, atualiza ocorrências abertas e preserva as encerradas.
+- Referências opcionais da tarefa e da projeção `CalendarEvent` usam `ON DELETE SET NULL`. A tarefa guarda snapshots de criador, responsável, contato, conversa e item Kanban; ao excluir relações, limpa IDs ativos, resincroniza Google e mantém rótulos históricos legíveis. A cascata do contato tem um único proprietário por nível (`ContactInbox` → conversa → mensagem), evitando jobs duplicados.
+- Excluir um `AccountUser` limpa de forma síncrona atribuições, participações e avisos de vencimento somente nessa conta; após o commit, resincroniza os eventos Google afetados para remover o antigo convidado. Excluir uma tarefa preserva o item Kanban gerenciado, remove seu metadado de propriedade e tenta novamente uma falha ao cancelar no Google.
+- `/account_tasks` coordena transacionalmente a tarefa e um único item Kanban livre ou ligado ao cliente. A edição atualiza ou move o mesmo item; desvincular não o exclui.
+- A UI carrega e mostra Kanban somente quando a conta possui `kanban_board`; a API ignora novos vínculos Kanban enquanto o recurso está desabilitado e preserva qualquer vínculo anterior oculto ao editar a tarefa.
+- Ao selecionar uma conversa, o editor carrega seus itens Kanban visíveis. Vincular um item existente não o modifica e ele pode ser compartilhado por várias tarefas; “Criar novo” mantém o fluxo gerenciado por funil/etapa.
+- O ReplyBox oferece criação rápida somente quando o recurso e o hook de Tarefas estão habilitados. Tipos, agentes, funis e capacidades Google são carregados sob demanda antes de abrir `TaskDialog` com contato e conversa atuais; o diálogo resolve automaticamente os itens Kanban relacionados.
+- O ContactPanel mostra um acordeão específico de Tarefas com o padrão visual do calendário e consulta `/account_tasks?contact_id=...&status=open`; cada cartão mostra o `display_id` estável da conversa vinculada e o filtro inclui estados persistidos pendente/em andamento, mantendo vencimentos derivados e acompanhamento ao trocar a conversa do contato.
+- `/activities` usa uma projeção `CalendarEvent` para sincronização externa opcional com início/fim exatos e participantes sem duplicação; falhas externas ficam visíveis sem reverter dados locais válidos.
+- No mobile, `/activities` reorganiza filtros e navegação, mas preserva a área mensal do desktop com rolagem horizontal para não comprimir suas células. `TaskDialog` limita a área rolável com `dvh`, empilha o cabeçalho e mantém o rodapé fora do conteúdo rolável.
+- `TaskDialog` abre registros existentes no modo leitura, entra explicitamente na edição e solicita `outcome_summary` em um diálogo secundário ao concluir/cancelar. A exclusão exige confirmação, aparece somente para administradores e `AccountTaskPolicy#destroy?` aplica a mesma restrição na API.
+- O detalhe do item Kanban mostra a aba operacional de Tarefas somente com recurso e hook habilitados; consulta `/account_tasks?kanban_item_id=...`, mantém o histórico do item em uma aba separada e preenche contato, conversa e item ao criar.
+- `AccountTasks::KanbanHistoryService` adiciona eventos `account_task_changed` ao histórico JSONB limitado do item dentro da transação local; registra o ciclo de vida e alterações de vínculo sem duplicá-los como mensagens da conversa.
+- O contrato CRUD completo de Tarefas e Tipos de tarefa com escopo de conta é mantido nas fontes modulares de `swagger/`, nos documentos Swagger resolvidos e por audiência, em `docs/openapi.yml` e na coleção Postman gerada. Ele documenta filtros, relacionamentos enriquecidos, recorrência, condições de Kanban/Google, permissões e respostas de validação.
+- Relatórios adiciona uma rota visível somente com recurso e hook ativos e `GET /account_tasks/reports?since=&until=`, autorizado apenas para administradores e `task_reports_view`. `AccountTasks::ReportsService` filtra por `COALESCE(ends_at, starts_at)`, gera a série diária de concluídas e agrega total, pendentes, em andamento, concluídas, vencidas e canceladas por responsável e tipo. Cada tarefa pertence a uma única categoria de status. Gráficos e linhas abrem um drawer que consulta `GET /account_tasks` pela data programada efetiva, responsável ou tipo; em seguida reutiliza `TaskDialog` no modo leitura. Métricas de tempo decorrido permanecem ocultas porque a tarefa ainda não persiste um timestamp de conclusão.
+- Os controles Google só aparecem com o recurso habilitado, integração conectada, conexão ativa de saída, módulo `calendar` habilitado e agenda gravável disponível. Destino e convidados externos aparecem somente após ativar “Sincronizar”.
 - Google Agenda usa APIs OAuth/config com escopo de conta, `CalendarConnection` selecionado, `CalendarEvent` interno e mapeamento de provedor em `ExternalCalendarEvent`; `settings.import_all_calendars` controla o escopo de entrada separado do `calendar_id` concreto de saida.
-- A rota operacional `/app/accounts/:accountId/calendar` le `calendar_events` locais para dia, semana, mes, lista, criar, editar, cancelar, sync ao salvar e sync manual de fallback. `CalendarSync::PollConnectionsJob` roda a cada cinco minutos e importa mudancas Google com `last_polled_at` por calendario salvo em `CalendarConnection.settings`; recorrencias sao expandidas entre um ano atras e cinco anos a frente.
-- A navegação, a rota operacional, a ação do compositor e a seção do painel da conversa exigem o feature da conta, credenciais OAuth globais completas e `GoogleCalendarIntegration.connected?` com `CalendarConnection#calendar_id`; os payloads iniciais expõem apenas booleanos de disponibilidade e configuração.
-- A visao mensal limita cada celula a dois eventos visiveis para reservar espaco ao controle `+N mais`; o clique direito abre as acoes do evento e cada linha continua abrindo o editor. A cor fica em `metadata.color_id` e a exclusao permanente exige administrador.
+- A rota operacional `/app/accounts/:accountId/calendar` le `calendar_events` locais para dia, semana, mes, lista, criar, editar, cancelar, sync ao salvar e sync manual de fallback. `CalendarSync::PollConnectionsJob` roda a cada cinco minutos e importa mudancas Google com `last_polled_at` por calendario salvo em `CalendarConnection.settings`; eventos excluidos no Google removem suas projecoes locais vinculadas, e recorrencias sao expandidas entre um ano atras e cinco anos a frente.
+- A navegação, a rota operacional, a ação do compositor e a seção do painel da conversa exigem o recurso da conta e `GoogleCalendarIntegration.connected?` com `CalendarConnection#calendar_id`; usuários com função personalizada também precisam de `calendar_manage`, e a configuração da integração continua exclusiva para administradores.
+- A visao mensal limita cada celula a dois eventos visiveis para reservar espaco ao controle `+N mais`; o clique direito abre as acoes do evento e cada linha continua abrindo o editor. A cor fica em `metadata.color_id`; a exclusao permanente exige administrador e remove primeiro o evento vinculado do Google antes de apagar o registro local.
 - As respostas de `calendar_events` incluem resumos leves de contato, conversa e item Kanban para seletores buscaveis; payloads de edicao enviam `null` para desvincular relacoes.
 - O seletor de relacionamentos do calendario busca itens Kanban em toda a conta, sem herdar o funil ativo, e aceita IDs de itens (incluindo o formato `#ID`).
 - As tarefas do checklist possuem configuracao propria de sincronizacao com o Google Agenda e calendario de destino; cada tarefa sincronizada e salva como um evento independente vinculado por `checklist_item_id`.
@@ -203,9 +244,9 @@ Bots:
 - O compositor de conversas carrega a conexao da conta e os calendarios gravaveis antes de abrir o `CalendarEventDialog` compartilhado; a acao explicita “Criar e enviar” formata o resultado `saved` com campos localizados e o envia uma unica vez por `createPendingMessageAndSend`, usando `metadata.google_meet_url` sem tentar criar o evento novamente se a mensagem falhar.
 - O painel do contato filtra `calendar_events` por `conversation_display_id`, recalcula a cada 30 segundos o avanço Início–Fim para um ponto pulsante verde (<50%), amarelo (50–90%) ou vermelho (≥90%), deixa vencidos opacos, reutiliza `CalendarEventDialog` e consome atualizações de eventos salvos.
 - `GoogleCalendar::EventMapperService` mapeia metadata do evento para campos Google de local, convidados, lembretes, recorrencia simples, disponibilidade, visibilidade, permissoes de convidados e Google Meet.
-- O editor responsivo usa linhas com icones, seletor de fusos IANA e chips removiveis; a lateral coloca o contexto MEGA vertical abaixo das permissoes dos convidados, com buscas flutuantes e o icone do canal em cada resultado de conversa; persiste destino e URL Meet.
+- O editor responsivo usa linhas com icones, seletor de fusos IANA e chips removiveis; a lateral coloca o contexto com a marca da instalação abaixo das permissoes dos convidados, com buscas flutuantes e o icone do canal em cada resultado de conversa; persiste destino e URL Meet.
 - Google Agenda suporta importacao manual de entrada via `google_calendar_integration/import_events` e backfill Kanban legado via `google_calendar_integration/backfill_kanban`; triggers do Flow Builder ficam diferidos.
-- Assets PWA gerados dinamicamente a partir da configuracao global, com fundo de icone configuravel e cache invalidado por logo, cor e timestamp do blob.
+- Assets de notificações e PWA gerados dinamicamente a partir de `NOTIFICATION_ICON` (padrão `/favicon-badge-16x16.png`), com fallback para `LOGO_THUMBNAIL`, fundo configurável e cache invalidado por asset, cor e timestamp do blob; o favicon mantém `LOGO_THUMBNAIL`, muda para `NOTIFICATION_ICON` em mensagens recebidas com a aba oculta ou sem foco e é restaurado no retorno.
 
 ### 3.11 Cadastro e onboarding
 
@@ -216,8 +257,9 @@ Bots:
 
 ### 3.12 Seguranca e conformidade
 
-- 2FA/MFA, SAML/SSO, funcoes personalizadas e logs de auditoria.
+- 2FA/MFA, SAML/SSO, funcoes personalizadas e logs de auditoria. O relatório de evidências de exclusão do Super Admin consulta apenas linhas retidas de `audits`: a destruição de Inbox usa sua associação com Account, enquanto as de Conversation e Contact usam a captura de `account_id` em `audited_changes`; ele nunca une registros vivos excluídos nem infere exclusões de Message.
 - Os registros de sessao de usuario suportam uma etiqueta `custom_name` editavel pelo agente; a metadata de IP permanece interna e nao e exposta nos payloads de sessoes do dashboard.
+- A autenticação web envia um ID persistente e validado de 128 bits por perfil do navegador como client ID do token. As abas reutilizam um único `UserSession`, a reautenticação rotaciona a mesma vaga e um logout bem-sucedido remove token e linha. Novos perfis recebem o seletor bloqueante apenas ao atingir `MAX_USER_SESSIONS`; clientes móveis mantêm IDs gerados e expulsão silenciosa.
 - O estado de dashboard para conta suspensa mantem o widget de suporte visivel e expoe uma acao explicita para contatar o suporte.
 - Protecao de licenca Mega em fluxos de deploy.
 - Observabilidade de release para rastreabilidade por versao.
