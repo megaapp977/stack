@@ -4,7 +4,7 @@
 
 **Versión:** Enterprise
 **Basado en:** Funcionalidades Exclusivas Mega
-**Última Actualización:** 25 de julio de 2026
+**Última Actualización:** 31 de julio de 2026
 
 ---
 
@@ -41,11 +41,13 @@ Conecta con tus clientes a través del canal de mensajería más popular del mun
 - **WhatsApp WAHA** *(Mega)* - Proveedor alternativo con soporte completo de mensajes multimedia
 - **WhatsApp Uazapi** *(Mega)* - Solución de bajo costo para múltiples líneas
 - **Alertas de salud de conexión** *(Mega)* - Los problemas de token y sesión aparecen en listas de bandejas, barra lateral principal y configuración de la bandeja con acceso directo a configuración de sesión
+- **Resiliencia de salud del número** *(Mega)* - La salud del número de Cloud API sigue disponible cuando no se pueden actualizar los datos de la cuenta empresarial vinculada
 - **Reconexión manual de WhatsApp** *(Mega)* - Las bandejas elegibles del registro integrado se pueden reconectar a tu propia aplicación de Meta mediante un flujo guiado que conserva la bandeja y su historial de atención
 - **Reconfiguración del registro integrado** *(Mega)* - Los administradores pueden actualizar las credenciales y la configuración de WhatsApp Business de una bandeja Cloud conectada por registro integrado cuando el flujo unificado de registro integrado está habilitado para la cuenta
 - **Arquitectura multi-servidor** *(Mega)* - Configura varios servidores por proveedor con resolución automática de credenciales
 - **Capacidad por servidor** *(Mega)* - Define límites por servidor para distribuir carga operativa
 - **Soporte BSUID** *(Mega)* - Identificación robusta del contacto y envío confiable incluso sin `wa_id` tradicional
+- **Mensajes no soportados por proveedor** *(Mega)* - Distingue contenido no compatible de mensajes no disponibles por coexistencia; solo estos últimos indican revisar WhatsApp Business
 - **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas; las automatizaciones bloquean localmente el texto libre en ese estado y muestran una indicación para usar una plantilla
 - **Sincronización de contactos** - Mantén tu base de datos actualizada automáticamente
 - **Soporte de grupos** - Gestiona conversaciones de grupos de WhatsApp directamente
@@ -209,7 +211,7 @@ Los visitantes de tu web quieren respuestas inmediatas. Un chat en vivo aumenta 
 
 - **Formulario pre-chat** - Recolecta nombre, email y teléfono antes de iniciar
 - **Campos personalizados** - Añade los campos que necesites para tu negocio
-- **Validación automática** - Asegura que los datos ingresados son correctos
+- **Validación automática** - Asegura que los datos ingresados son correctos; las casillas obligatorias deben estar marcadas antes de enviar
 - **Modo offline** - Recibe mensajes incluso cuando no hay agentes disponibles
 
 **Personalización visual completa:**
@@ -296,6 +298,7 @@ Si tienes un sistema propio de mensajería, una app móvil con chat, o necesitas
 - **Integración personalizada** - Conecta cualquier fuente de mensajes
 - **Webhooks entrantes** - Recibe mensajes de sistemas externos
 - **API de respuesta** - Envía respuestas de vuelta a tu sistema
+- **Envío universal para integraciones** *(Mega)* - Con una sola petición autenticada identifica al destinatario por teléfono, email, contacto o ID del proveedor, prepara automáticamente contacto y conversación, y envía texto, multimedia o plantillas de WhatsApp por cualquier bandeja compatible. Las plantillas multimedia de WhatsApp Cloud pueden cargar su archivo en la misma petición y su contenido renderizado queda visible en la conversación. Las claves de idempotencia hacen seguros los reintentos.
 - **Sin límites** - Adapta la plataforma a cualquier canal imaginable
 
 **Casos de uso:**
@@ -466,6 +469,10 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 - **Filtros rápidos en sidebar** - Navega directo a No Leídas, Menciones, Participando, Grupos y No atendidas desde la barra lateral
 - **Contadores reactivos de no leídos** - Menciones, Participando, Grupos y No Leídas muestran badges actualizados en tiempo real sin recargar
 
+### Integraciones con atributos personalizados
+
+Las integraciones pueden actualizar solo las claves enviadas de los atributos personalizados de una conversación o reemplazarlos por completo. También pueden eliminar claves específicas sin alterar el resto de la información.
+
 ### Búsqueda de Mensajes en Conversación
 
 Encuentra mensajes específicos dentro de una conversación:
@@ -619,7 +626,7 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 **Gestión de Salas (Settings):**
 
-- **Crear salas** - Los administradores pueden crear salas con nombre y descripción
+- **Crear salas** - Los administradores pueden crear salas con nombre y descripción; el nombre conserva las mayúsculas ingresadas y sigue siendo único en la cuenta sin distinguir mayúsculas de minúsculas
 - **Canales públicos y privados** - Define visibilidad y audiencia según el flujo del equipo
 - **Categorías** - Agrupa canales por tema, equipo o departamento
 - **Agregar usuarios** - Selección múltiple de miembros del equipo de tu cuenta
@@ -703,6 +710,8 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 Configura flujos automáticos basados en eventos y condiciones:
 
+- **Reglas con espera** - Ejecuta acciones entre 10 minutos y 30 días después, mientras la conversación siga en un estado seleccionado, el cliente no responda o no responda un miembro del equipo. Una respuesta, cambio de estado o condición incumplida cancela la ejecución pendiente.
+
 **Eventos disponibles:**
 
 - Conversación creada
@@ -746,6 +755,8 @@ Ejecuta múltiples acciones con un solo clic:
 - **Handover a humanos** - Transferencia fluida a agentes reales
 - **Handover inteligente** - Si un humano responde en conversación pendiente del bot, se transfiere automáticamente
 - **Bots por inbox** - Configura bots específicos por canal
+- **Propiedad explícita del bot** - Las conversaciones gestionadas por un Agent Bot conectado quedan pendientes y asignadas al bot; una apertura, handover humano o desconexión del bot libera esa propiedad sin reemplazar asignaciones humanas explícitas
+- **Toma de control desde el panel** - Mientras un Agent Bot gestiona una conversación pendiente, el compositor queda en nota privada y muestra una acción para tomar el control, reabrir la conversación y asignarla al agente actual
 - **Asignación manual restringida por inbox** - El selector de agente solo ofrece Agent Bots activos configurados en el inbox de la conversación
 - **Indicador de escritura** - Los bots pueden activar y desactivar el indicador "escribiendo..." para una experiencia más natural
 - **Opciones avanzadas de webhook** *(Enterprise)* - Configura timeout personalizado para peticiones del bot, reintentos automáticos ante fallos, y manejo de errores granular; mejora la fiabilidad de integraciones con sistemas externos lentos o inestables
@@ -775,6 +786,7 @@ Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
 - **Múltiples asistentes** - Crea diferentes asistentes para diferentes propósitos
 - **Configuración personalizada** - Ajusta temperatura, modelo y parámetros de comportamiento
 - **Modelos por función** - Configura modelos separados para Assistant, Copilot, sugerencias, generación de FAQs desde documentos y PDFs
+- **Sugerencias de FAQ desde conversaciones** - Las conversaciones resueltas con respuestas reutilizables de agentes humanos se agrupan en sugerencias de FAQ revisables; los agentes solo revisan sugerencias y conversaciones fuente a las que tienen acceso, y pueden editar, aprobar o descartar sugerencias abiertas para publicar FAQ confiables
 - **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
 - **Asignación a inbox** - Vincula asistentes a canales específicos
 - **Resumen del asistente** - Monitorea conversaciones atendidas, resolución automática, transferencias, tiempo ahorrado estimado, reaperturas, profundidad de conversación, cobertura de conocimiento y resúmenes de periodo generados con IA en el idioma de la cuenta; las métricas muestran carga visual y se mantienen consistentes al cambiar de periodo
@@ -821,6 +833,9 @@ Conecta servidores MCP (Model Context Protocol) para ampliar las capacidades de 
 
 - **MCP nativo por cuenta** - Crea servidores MCP propios por cuenta con endpoint dedicado
 - **Acceso seguro y flexible** - Compatible con autenticación OAuth y token estático
+- **Archivos para cualquier proveedor de IA** - ChatGPT descubre su selector nativo; Claude y otros clientes pueden usar URL temporal HTTPS, base64, multipart o signed ID sin exigir una URL pública permanente
+- **Carga directa autenticada** - Los clientes MCP JSON pueden solicitar destinos firmados mediante la API sin depender de CSRF del navegador
+- **Outbound universal por MCP** - Inicia texto, multimedia o plantillas para teléfono, email, contacto o identificador del proveedor; admite archivos directos también en cabeceras multimedia de plantillas y rechaza referencias inválidas antes del envío
 - **Catálogo de uso cotidiano** - Publica herramientas listas para operaciones diarias de la cuenta
 - **Cobertura operativa ampliada** - Incluye programación, tareas, campañas, SLA, calendario, reportes, notificaciones y chat interno; no expone importación ni exportación de datos
 - **Help Center por MCP** - Consulta, busca y obtiene artículos y categorías desde agentes conectados
@@ -899,6 +914,7 @@ Transcribe automáticamente mensajes de audio a texto:
 
 - **Organización flexible** - Categoriza contactos y conversaciones
 - **Etiquetas de conversación** - Clasifica por tema o estado
+- **Búsqueda rápida al asignar** - Filtra etiquetas de forma difusa desde el menú contextual de una conversación, con las ya asignadas primero
 - **Etiquetas de contacto** - Segmenta tu base de clientes
 - **Colores personalizados** - Identificación visual rápida
 
@@ -921,6 +937,7 @@ Transcribe automáticamente mensajes de audio a texto:
 - **Mapeo de campos** - Asocia columnas con atributos
 - **Importación histórica de Intercom** - Los administradores pueden importar contactos, conversaciones y mensajes históricos de Intercom en segundo plano
 - **Monitoreo de importación** - Revisa el progreso, registros omitidos, errores y descarga los registros de omisiones
+- **Reintento de importación detenida** - Reintenta una importación de Intercom detenida tras 15 minutos sin perder su progreso
 - **Validación automática** - Detecta errores antes de importar
 - **Acceso controlado** - Importación y exportación disponibles para administradores y responsables de contactos
 
@@ -1147,6 +1164,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Crear desde categoría** - Inicia artículos nuevos directamente desde la vista de cada categoría
 - **Redimensionado de imágenes** - Ajusta imágenes dentro del editor para mejorar la maquetación de artículos
 - **Menú slash en editor** - Inserta bloques y comandos rápidamente escribiendo /
+- **Videos desde el menú slash** - Inserta enlaces de video compatibles (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar y MP4) con vista previa dentro del editor y del artículo publicado
 - **Tablas nativas en editor** - Crea y edita tablas directamente en el editor de artículos
 - **Tablas Markdown** - Renderizado correcto de tablas en artículos del portal
 - **Posicionamiento** - Ordena artículos manualmente
@@ -1276,10 +1294,12 @@ Analíticas completas del canal de voz:
 - **Roles** - Administrador, Agente
 - **Permisos granulares** - Control de acceso por funcionalidad
 - **Perfil personalizado** - Avatar, nombre, firma
+- **Avatar específico por cuenta** - Un usuario compartido mantiene un solo selector mientras cada cuenta guarda y muestra su propia foto de perfil
 - **Sesiones de navegador nombradas** - Los agentes pueden etiquetar sesiones activas para reconocer equipos, perfiles de navegador o contextos de prueba
 - **Control fiable de sesiones del navegador** - Las pestañas de un perfil comparten una sesión lógica; cerrar sesión la elimina, mientras otro navegador, perfil o ventana privada usa un espacio diferente. El login solo se interrumpe cuando un navegador nuevo alcanza el límite configurado
 - **Estado de disponibilidad** - Online, Busy, Offline
 - **Salida guiada de agentes** - Antes de eliminar un agente puedes dejar sus conversaciones sin asignar o reasignarlas en lote
+- **Invitaciones protegidas** - Las invitaciones de nuevos agentes respetan el límite diario de correos de la cuenta, sin bloquear la incorporación de usuarios existentes
 
 ### Equipos
 
@@ -1379,13 +1399,15 @@ Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
 
 ### Tareas *(Mega)*
 
-Planifica y controla el trabajo interno desde un calendario compartido de la cuenta:
+Planifica y controla el trabajo interno desde vistas compartidas de calendario y lista:
 
 - **Activación controlada** - Los superadministradores habilitan el feature de la cuenta y los administradores conectan Tareas desde Configuración -> Integraciones
 - **Tipos personalizados** - Los administradores definen categorías reutilizables y colores semánticos para el trabajo del equipo
 - **Paleta coherente** - Los tipos usan los mismos 22 colores visuales de Google Calendar y conservan el color elegido en el calendario, los detalles y los listados, sin que el estado lo reemplace
 - **Permisos por alcance** - Los administradores controlan todas las tareas; un rol personalizado puede recibir gestión de tareas propias/asignadas, lectura global e informes como permisos independientes; los agentes estándar solo ven y gestionan las tareas que crearon o tienen asignadas
-- **Calendario mensual compartido** - Administradores, agentes y roles personalizados autorizados crean tareas con fecha desde `/activities`; editar, completar, cancelar y reabrir tareas ajenas continúa reservado al administrador, y solo este puede eliminarlas
+- **Vistas calendario y lista** - Alterna entre el calendario mensual y una lista operativa persistente con tarea, tipo, responsable, fechas, prioridad y estado; ambas abren el mismo detalle
+- **Filtros operativos** - Busca por título, filtra por responsable —incluido sin responsable—, tipo y hoy, semana o próximos 30 días; un único selector de estado comienza en Todas las tareas y permite pendientes, en curso, vencidas, completadas o canceladas; ordena y agrupa la lista por estado, responsable o vencimiento
+- **Tareas de varios días** - Una tarea se muestra en cada día del calendario que intersecta su programación, incluso si comenzó antes del mes visible
 - **Experiencia móvil** - En pantallas pequeñas, los filtros se reorganizan sin comprimir el calendario mensual; los formularios y detalles mantienen acciones visibles sin tapar el contenido
 - **Lectura antes de editar** - Al abrir una tarea se muestra su detalle; concluir y cancelar están en el encabezado con resumen obligatorio, mientras editar y, solo para administradores, eliminar con confirmación quedan en el pie
 - **Responsabilidad clara** - Asigna una tarea a un agente de la cuenta o déjala sin responsable
@@ -1403,7 +1425,7 @@ Planifica y controla el trabajo interno desde un calendario compartido de la cue
 - **Participantes y prioridad** - Define prioridad, responsable, participantes de la cuenta e invitados externos
 - **Google Calendar opcional** - Sincroniza inicio, fin y asistentes en un único evento, mostrando cualquier fallo sin perder la tarea local
 - **Informes de tareas** - Los administradores y roles personalizados con el permiso específico de informes consultan tareas por fecha, responsable, tipo y estado; el permiso general de informes no lo habilita
-- **API para desarrolladores** - Usa los CRUD de Tareas y Tipos de tarea con alcance de cuenta desde Swagger/OpenAPI o la colección Postman generada, incluidos filtros y campos de workflows vinculados
+- **API para desarrolladores** - Usa los CRUD de Tareas y Tipos de tarea con alcance de cuenta desde Swagger/OpenAPI o la colección Postman generada, incluidos búsqueda, intersección de rango, ordenamiento, paginación opcional y campos de workflows vinculados
 
 ### Google Calendar *(Mega)*
 
@@ -1540,6 +1562,7 @@ Personaliza las comunicaciones por email con tu marca:
 - **Variables Liquid** - Contenido dinámico con sustitución de variables
 - **Plantillas de instalación** - Plantillas predeterminadas para toda la instalación
 - **Tipos de plantilla** - Soporte para diferentes tipos de email (notificaciones, transcripciones, etc.)
+- **Layouts de respuesta con marca** - Los administradores pueden configurar un HTML Liquid de respaldo por cuenta y una sobrescritura por bandeja de Email; debe incluir `{{ content_for_layout }}` y admite hasta 262.144 caracteres.
 
 ---
 
@@ -1551,6 +1574,7 @@ Personaliza las comunicaciones por email con tu marca:
 - **Primera respuesta** - Tiempo máximo para responder; su reloj activo termina después de la primera respuesta del agente y los incumplimientos permanecen en los reportes SLA
 - **Siguiente respuesta** - Tiempo entre respuestas
 - **Resolución** - Tiempo total de atención
+- **Incumplimientos congelados** - Al resolver una conversación, la duración del incumplimiento queda registrada y deja de aumentar
 - **Horarios de negocio** - Deadlines calculados en backend respetando horas hábiles del inbox
 - **Contactos bloqueados** - Conversaciones con contactos bloqueados quedan fuera de asignación, procesamiento, reportes e indicadores de SLA hasta desbloquearse
 - **Alertas y notificaciones** - Aviso antes de incumplir
@@ -1880,7 +1904,7 @@ Contexto completo de cada cliente sin importar por dónde te contactó:
 - **Vista 360°** - Todo el historial del contacto en un lugar
 - **Todos los canales** - WhatsApp, email, redes sociales, todo junto
 - **Contexto inmediato** - Entiende al cliente antes de responder
-- **Respuestas de WhatsApp** - Las respuestas citadas pueden referenciar mensajes de conversaciones anteriores cuando el historial está activo
+- **Respuestas de WhatsApp** - Las respuestas citadas pueden referenciar mensajes de conversaciones anteriores cuando el historial está activo y conservan el contexto en coexistencia entre identificadores WAMID de teléfono y BSUID
 
 ### Controles de Privacidad
 
@@ -1925,9 +1949,11 @@ Gestiona oportunidades comerciales en un pipeline visual conectado al historial 
 - **Notas extensas legibles** - Abre el texto completo con formato y adjuntos en una vista desplazable, con edición directa cuando tengas permiso
 - **Búsqueda en relaciones del ítem** - Encuentra conversaciones vinculadas con búsqueda remota al gestionar relaciones
 - **Moneda predeterminada por cuenta** - La moneda base del tablero se define desde configuración de cuenta (`default_currency`)
+- **Moneda consistente en todo Kanban** - Tarjetas, detalle, ofertas, actividades e historial respetan la prioridad oferta → ítem → cuenta → idioma; cada lado de un cambio histórico conserva su propia moneda
+- **Totales por moneda en cada etapa** - El encabezado separa PYG, USD, EUR y cualquier otra moneda sin convertirlas ni sumarlas entre sí; el tooltip incluye todas las ofertas filtradas, aunque todavía no estén cargadas por paginación
 - **Moneda por oferta custom (override)** - En ofertas manuales de tipo producto/servicio el usuario puede elegir moneda por oferta
 - **Sin moneda en ítems sin ofertas** - Si un ítem no tiene ofertas, el valor se muestra como placeholder y no contamina totales monetarios
-- **Gestión de etiquetas desde el ítem** - Añade o quita etiquetas directamente desde la tarjeta del item
+- **Etiquetas al crear y desde el ítem** - Selecciona etiquetas existentes al crear un ítem, o añádelas y quítalas directamente desde su tarjeta
 - **Relaciones nativas con contacto y conversación** - Mantén el contexto comercial conectado con el chat real del cliente
 - **Puente con Google Calendar** - Ítems con fecha programada o deadline pueden crear eventos de calendario de MEGA cuando la sincronización Kanban está habilitada a nivel de cuenta
 - **Automatizaciones por etapa** - Dispara acciones al entrar o mover etapas, incluyendo mensajes rápidos y reglas operativas
@@ -1941,11 +1967,12 @@ Gestiona oportunidades comerciales en un pipeline visual conectado al historial 
 - **Detalle Kanban desde conversación** - Los iconos de canal de una tarjeta muestran cada tipo de inbox vinculado: abren directamente su única conversación o un selector limitado a ese canal si tiene varias, sin recargar el tablero; en móvil, el detalle muestra primero la información comercial y abre el perfil del ítem desde un panel lateral. El panel de contacto del drawer oculta las conversaciones anteriores para mantener el contexto del ítem
 - **Acceso Kanban en tiempo real** - Al agregar o remover agentes del funnel, el sidebar, la lista de funnels y los ítems visibles se actualizan sin recargar
 - **Múltiples conversaciones vinculadas** - Un mismo ítem Kanban puede relacionarse con varias conversaciones; la primera queda como vínculo principal y las adicionales se muestran en la pestaña de relaciones, con selector limitado a los inboxes del funnel e íconos de canal
+- **Una oportunidad abierta por contacto y funnel** - La creación automática reutiliza el ítem abierto del contacto y vincula allí sus nuevas conversaciones de Instagram, WhatsApp u otros inboxes habilitados; cada funnel se evalúa por separado y una oportunidad ganada o perdida permite iniciar otra
 - **Histórico sin relación rota** - Si se elimina una conversación vinculada, el ítem Kanban se conserva como histórico y se limpia el vínculo
-- **Acceso por rol y permiso Kanban** - Los administradores administran todos los embudos e ítems; agentes y roles con `kanban_view` trabajan solo en el tablero y los ítems autorizados; los embudos que contienen ítems autorizados se pueden abrir en modo lectura y `kanban_manage` permite gestionar y editar únicamente los embudos asignados, sin crear, duplicar, eliminar, definir el predeterminado ni cambiar la visibilidad
+- **Acceso por rol y permiso Kanban** - Los administradores administran todos los embudos e ítems; agentes y roles con `kanban_view` trabajan los ítems autorizados; `kanban_manage` además crea y edita los embudos asignados, sin eliminar, definir el predeterminado ni cambiar la visibilidad
 - **Autoasignación administrativa** - El administrador puede asignarse y removerse de cualquier ítem aunque no figure entre los agentes o inboxes del embudo; los demás usuarios conservan las reglas normales de elegibilidad
 - **Visibilidad controlada de ítems** - El creador siempre puede ver su ítem; con una conversación vinculada válida el responsable solo lo ve si también está seleccionado en el funnel, y los agentes asignados manualmente al ítem lo ven; un vínculo stale queda solo para administrador y creador. El modo del embudo `everyone` permite a todos sus agentes ver todos los ítems, mientras `assigned_only` restringe la vista a los agentes autorizados.
-- **Agentes flexibles por embudo** - Sin inboxes seleccionados, cualquier agente de la cuenta puede agregarse y asignarse desde el embudo; con inboxes configurados, las asignaciones manuales requieren acceso a por lo menos uno. Al mover un ítem, sus responsables se agregan automáticamente al embudo destino sin cambiar sus permisos de inbox
+- **Agentes flexibles por embudo** - Cualquier miembro de la cuenta con acceso Kanban puede agregarse al embudo, con o sin inboxes seleccionados; un rol personalizado requiere `kanban_view` o `kanban_manage`. Con inboxes configurados, las asignaciones manuales de ítems requieren acceso a por lo menos uno. Al mover un ítem, sus responsables se agregan automáticamente al embudo destino sin cambiar sus permisos de inbox
 - **Configuración y automatizaciones protegidas** - La configuración global es de solo lectura para los actores Kanban; sus cambios y las automatizaciones globales son exclusivos de administradores. `kanban_manage` administra únicamente los funnels que tiene asignados
 
 ---
@@ -1971,7 +1998,7 @@ Estadísticas e insights anuales para tu cuenta:
 - **2FA/MFA** - Autenticación de dos factores
 - **SAML/SSO** - Single Sign-On empresarial
 - **Tokens de API** - Acceso programático seguro
-- **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política con una acción directa para contactar soporte
+- **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política con una acción directa para contactar soporte; los administradores en Cloud también pueden abrir facturación para regularizar el pago y restaurar el acceso. Los superadministradores registran una categoría y un motivo por cada suspensión, y pueden consultar o corregir la última entrada desde los detalles de la cuenta.
 
 ### Privacidad
 

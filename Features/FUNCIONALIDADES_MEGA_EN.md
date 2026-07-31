@@ -4,7 +4,7 @@
 
 **Version:** Enterprise
 **Based on:** Mega Exclusive Features
-**Last Updated:** July 25, 2026
+**Last Updated:** July 31, 2026
 
 ---
 
@@ -39,6 +39,7 @@ Connect with your customers through the world's most popular messaging channel.
 - **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
 - **Per-server capacity** *(Mega)* - Define limits by server to distribute operational load
 - **BSUID support** *(Mega)* - Reliable contact identification and delivery even when traditional `wa_id` is missing
+- **Provider-aware unsupported messages** *(Mega)* - Distinguishes unsupported content from coexistence-unavailable messages; only the latter instructs agents to check WhatsApp Business
 - **Template Messages** - Send messages outside the 24-hour window with approved templates
 - **Contact Sync** - Keep your database automatically updated
 - **Group Support** - Manage WhatsApp group conversations directly
@@ -201,7 +202,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 
 - **Pre-chat form** - Collect name, email, and phone before starting
 - **Custom fields** - Add the fields you need for your business
-- **Automatic validation** - Ensure entered data is correct
+- **Automatic validation** - Ensure entered data is correct; required checkboxes must be selected before submission
 - **Offline mode** - Receive messages even when no agents are available
 
 **Full visual customization:**
@@ -286,6 +287,7 @@ If you have your own messaging system, a mobile app with chat, or need to connec
 - **Custom integration** - Connect any message source
 - **Incoming webhooks** - Receive messages from external systems
 - **Response API** - Send responses back to your system
+- **Universal send API for integrations** *(Mega)* - One authenticated request identifies the recipient by phone, email, contact, or provider ID, automatically prepares the contact and conversation, and sends text, media, or WhatsApp templates through any compatible inbox. WhatsApp Cloud media templates can upload their file in the same request, and rendered template content remains visible in the conversation. Idempotency keys make retries safe.
 - **No limits** - Adapt the platform to any imaginable channel
 
 **Use cases:**
@@ -452,6 +454,10 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 - **Powerful search** - Find conversations by content, contact, or metadata
 - **Sidebar quick filters** - Navigate directly to Unread, Mentions, Participating, Groups, and Unattended from the sidebar
 - **Reactive unread badges** - Mentions, Participating, Groups, and Unread show live counters without page reloads
+
+### Custom attribute integrations
+
+Integrations can update only the supplied conversation custom-attribute keys or replace them entirely. They can also remove specific keys without changing the remaining information.
 
 ### Message Search in Conversation
 
@@ -678,6 +684,8 @@ Keep your team connected and productive. Instead of using external tools like Sl
 
 Configure automatic flows based on events and conditions:
 
+- **Wait-based rules** - Run actions after 10 minutes to 30 days while a conversation remains in a selected status, a customer has not replied, or a teammate has not replied. A reply, status change, or condition mismatch cancels the pending run.
+
 **Available events:**
 
 - Conversation created
@@ -748,6 +756,7 @@ Create and configure AI assistants tailored to your business needs:
 
 - **Multiple assistants** - Create different assistants for different purposes
 - **Custom configuration** - Set temperature, model, and behavior parameters
+- **Conversation FAQ review** - Review suggestions and their permitted source conversations; open suggestions can be edited, approved into trusted FAQs, or dismissed
 - **Per-feature models** - Configure separate models for Assistant, Copilot, suggestions, and FAQ generation from documents and PDFs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
@@ -792,6 +801,9 @@ Connect MCP (Model Context Protocol) servers to expand your assistant's capabili
 
 - **Native account MCP** - Create account-level MCP servers with dedicated endpoints
 - **Secure and flexible access** - Supports OAuth authentication and static token access
+- **Files from any AI provider** - ChatGPT discovers its native picker; Claude and other clients can use a temporary HTTPS URL, base64, multipart, or a signed ID without requiring a permanent public URL
+- **Authenticated direct uploads** - JSON MCP clients can request signed upload targets through the API without browser CSRF
+- **Universal outbound over MCP** - Start text, media, or templates for phone, email, contact, or provider identity; direct files also work in template media headers, and invalid media references are rejected before delivery
 - **Daily-use catalog** - Publishes tools ready for everyday account operations
 - **Expanded operational coverage** - Includes scheduling, tasks, campaigns, SLA, calendar, reports, notifications, and internal chat; does not expose data import or export
 - **Help Center over MCP** - Query, search, and retrieve articles and categories from connected agents
@@ -869,6 +881,7 @@ Automatically transcribe audio messages to text:
 
 - **Flexible organization** - Categorize contacts and conversations
 - **Conversation labels** - Classify by topic or status
+- **Quick search when assigning** - Fuzzy-filter labels from a conversation's context menu, with assigned labels shown first
 - **Contact labels** - Segment your customer base
 - **Custom colors** - Quick visual identification
 
@@ -1082,6 +1095,7 @@ The system includes multiple protections to maintain send quality:
 - **Create from category view** - Start new articles directly from each category screen
 - **Image resizing** - Resize images inside the editor for cleaner article layouts
 - **Slash menu in editor** - Insert blocks and commands quickly by typing /
+- **Videos from the slash menu** - Embed supported video links (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar, and MP4) with a preview in both the editor and published article
 - **Native tables in editor** - Create and edit tables directly in the article editor
 - **Markdown tables** - Correct rendering for table blocks inside help articles
 - **Positioning** - Order articles manually
@@ -1210,6 +1224,7 @@ Complete voice channel analytics:
 - **Roles** - Administrator, Agent
 - **Granular permissions** - Access control by functionality
 - **Custom profile** - Avatar, name, signature
+- **Account-specific avatar** - A shared user keeps one avatar selector while each account stores and displays its own profile picture
 - **Browser session control** - Tabs in the same browser profile share one server session; logout removes it and the configured limit blocks only genuinely new browser profiles
 - **Availability status** - Online, Busy, Offline
 - **Guided agent offboarding** - Before deleting an agent, choose whether to unassign or bulk reassign their conversations
@@ -1312,13 +1327,15 @@ Connect MEGA with any external system through automatic notifications:
 
 ### Tasks *(Mega)*
 
-Plan and track internal work from a shared account calendar:
+Plan and track internal work from shared calendar and list views:
 
 - **Controlled activation** - Super administrators enable the account feature and account administrators connect Tasks from Settings -> Integrations
 - **Custom task types** - Administrators define reusable categories and semantic colors for the team's work
 - **Consistent palette** - Task types use the same 22-color visual palette as Google Calendar and retain the selected color in calendars, details, and lists without status replacing it
 - **Scoped permissions** - Administrators control every task; custom roles can independently receive own/assigned task management, global read access, and task reporting; standard agents only see and manage tasks they created or are assigned to
-- **Shared monthly calendar** - Administrators, agents, and authorized custom roles create dated tasks from `/activities`; editing, completing, cancelling, or reopening somebody else's task remains administrator-only, and only administrators can delete
+- **Calendar and list views** - Switch between the monthly calendar and a persistent operational list with task, type, assignee, dates, priority, and status; both open the same detail
+- **Operational filters** - Search by title; filter by assignee —including unassigned—, type, and today, this week, or the next 30 days; one status selector starts at All tasks and offers pending, in-progress, overdue, completed, or cancelled work; sort and group the list by status, assignee, or due date
+- **Multi-day tasks** - A task appears on every calendar day intersected by its schedule, including when it began before the visible month
 - **Mobile experience** - On small screens, filters reorganize without compressing the monthly calendar; forms and details keep actions visible without covering content
 - **Read before editing** - Opening a task shows its details; complete and cancel actions sit in the header with a required summary, while edit and administrator-only confirmed deletion remain in the footer
 - **Clear ownership** - Assign a task to an account agent or leave it unassigned
@@ -1336,7 +1353,7 @@ Plan and track internal work from a shared account calendar:
 - **Participants and priority** - Set priority, responsible agent, account participants, and external guests
 - **Optional Google Calendar** - Synchronize exact start, end, and attendees in one event while preserving local work on provider failures
 - **Task reports** - Administrators and custom roles with the dedicated task-report permission review tasks by date, responsible agent, type, and status; generic report access does not grant this permission
-- **Developer API** - Use the account-scoped Tasks and Task Types CRUD APIs from Swagger/OpenAPI or the generated Postman collection, including filters and linked-workflow fields
+- **Developer API** - Use the account-scoped Tasks and Task Types CRUD APIs from Swagger/OpenAPI or the generated Postman collection, including search, interval intersection, sorting, opt-in pagination, and linked-workflow fields
 
 ### Google Calendar *(Mega)*
 
@@ -1506,6 +1523,7 @@ Customize email communications with your branding:
 - **Liquid variables** - Dynamic content with variable substitution
 - **Installation templates** - Default templates for the entire installation
 - **Template types** - Support for different email types (notifications, transcripts, etc.)
+- **Branded reply layouts** - Administrators can configure a Liquid HTML fallback per account and an override per Email inbox; layouts must include `{{ content_for_layout }}` and support up to 262,144 characters.
 
 ---
 
@@ -1885,6 +1903,8 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Readable long notes** - Open full formatted text and attachments in a scrollable detail view, with direct editing when permitted
 - **Relationship search** - Find linked conversations with remote search while managing item relationships
 - **Account default currency** - The board baseline currency is defined at account settings level (`default_currency`)
+- **Consistent currency across Kanban** - Cards, details, offers, activities, and history follow offer → item → account → locale precedence; each side of a historical change keeps its own currency
+- **Per-currency stage totals** - Stage headers keep PYG, USD, EUR, and every other currency separate without conversion or cross-currency addition; the tooltip covers all filtered offers even when pagination has not loaded every card
 - **Custom offer currency override** - In manual product/service offers, users can choose currency per offer
 - **No currency on items without offers** - If an item has no offers, value is shown as a placeholder and is excluded from monetary totals
 - **Labels from the item card** - Add or remove labels directly from the item card
@@ -1897,6 +1917,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Authorized panels** - The conversation panel Kanban block and sidebar entry are hidden when the user has no visible items and no accessible funnels to add deals
 - **Realtime Kanban access** - Adding or removing funnel agents refreshes the sidebar, funnel list and visible items without a reload
 - **Multiple linked conversations** - A single Kanban item can relate to several conversations; the first remains the primary link and additional conversations appear in the relationships tab, with the picker limited to the funnel inboxes and channel icons shown
+- **One open opportunity per contact and funnel** - Automatic creation reuses the contact's open item and links new Instagram, WhatsApp, or other enabled-inbox conversations to it; each funnel is evaluated separately, and a won or lost opportunity allows a new one
 - **History without broken links** - If a linked conversation is deleted, the Kanban item is kept as history and the link is cleared
 - **Role- and permission-based Kanban access** - Administrators manage every funnel and item; agents and roles with `kanban_view` work only with the board and authorized items; funnels containing authorized items can be opened read-only, while `kanban_manage` manages and edits assigned funnels only, without creating, duplicating, deleting, setting the default, or changing visibility
 - **Administrator self-assignment** - Administrators can assign or remove themselves from any item even when absent from the funnel agents or inboxes; every other user keeps the normal eligibility rules
@@ -1927,6 +1948,7 @@ Annual statistics and insights for your account:
 - **2FA/MFA** - Two-factor authentication
 - **SAML/SSO** - Enterprise Single Sign-On
 - **API Tokens** - Secure programmatic access
+- **Suspended account support** - Suspended users see the policy notice and contact support action; Cloud administrators can open billing to settle payment and restore access
 
 ### Privacy
 
