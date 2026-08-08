@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hands-on class to configure and operate Captain in MEGA." />
+    <title>Captain · Hands-on class | MEGA</title>
+    <style>
+      :root {
+        --brand: #29a2a7;
+        --brand-deep: #0c4d52;
+        --brand-pale: #dbf0f0;
+        --bg: #f8fafb;
+        --surface: #ffffff;
+        --soft: #f0f3f4;
+        --line: #dfe5e6;
+        --text: #172024;
+        --muted: #5d6a70;
+        --good: #087d72;
+        --warn: #9a6400;
+        --bad: #bc3151;
+        --code: #102326;
+        --shadow: 0 18px 52px rgba(14, 48, 52, 0.12);
+        --radius: 22px;
+      }
+      html[data-theme='dark'] {
+        --bg: #0b1012;
+        --surface: #151a1c;
+        --soft: #1e2527;
+        --line: #303a3d;
+        --text: #eef4f4;
+        --muted: #afbbbe;
+        --brand-deep: #6ee1d5;
+        --brand-pale: rgba(41, 162, 167, 0.16);
+        --good: #55d3c1;
+        --warn: #ffd05a;
+        --bad: #ff9caf;
+        --shadow: 0 18px 52px rgba(0, 0, 0, 0.4);
+      }
+      * { box-sizing: border-box; }
+      html { background: var(--bg); }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.52 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      button { font: inherit; }
+      button:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 58%, transparent); outline-offset: 3px; }
+      code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .topbar {
+        position: fixed;
+        z-index: 20;
+        inset: 0 0 auto;
+        display: flex;
+        height: 68px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 91%, transparent);
+        backdrop-filter: blur(14px);
+      }
+      .topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -0.03em; }
+      .brand-mark { width: 28px; height: 28px; border-radius: 9px; background: linear-gradient(135deg, var(--brand), #87d6d2); box-shadow: inset 0 1px rgba(255,255,255,.35); }
+      .topbar .brand small { color: var(--muted); font-weight: 600; letter-spacing: 0; }
+      .actions, .footer { display: flex; align-items: center; gap: 9px; }
+      .icon, .nav, .segment {
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        transition: transform .16s ease, border-color .16s ease, background .16s ease;
+      }
+      .icon { display: grid; width: 38px; height: 38px; place-items: center; font-size: 17px; }
+      .icon:hover, .nav:hover, .segment:hover { border-color: var(--brand); transform: translateY(-1px); }
+      .deck { display: grid; height: 100vh; place-items: center; padding: 92px 28px 96px; }
+      .slide {
+        display: none;
+        width: min(1180px, 100%);
+        height: min(700px, calc(100vh - 188px));
+        overflow: auto;
+        padding: clamp(28px, 4.8vw, 60px);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        animation: appear .24s ease;
+      }
+      .slide.active { display: block; }
+      .slide.compact { padding-block: clamp(24px, 3.2vw, 42px); }
+      .slide.compact h2 { font-size: clamp(29px, 3.6vw, 44px); }
+      .slide.compact .card { padding: 16px; }
+      .slide.compact .field-list { gap: 6px; }
+      .slide.compact .field { padding: 8px 10px; }
+      .slide.compact .code { margin: 10px 0; padding: 13px; }
+      .slide.compact .callout { padding: 10px 13px; font-size: 14px; }
+      @keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 { max-width: 820px; margin-bottom: 20px; font-size: clamp(40px, 6.8vw, 78px); line-height: .98; letter-spacing: -.065em; }
+      h2 { margin-bottom: 12px; font-size: clamp(29px, 4vw, 48px); line-height: 1.06; letter-spacing: -.045em; }
+      h3 { margin-bottom: 7px; font-size: 16px; letter-spacing: -.015em; }
+      .eyebrow { margin-bottom: 12px; color: var(--brand); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      .lead { max-width: 760px; color: var(--muted); font-size: clamp(17px, 2vw, 21px); }
+      .hero { position: relative; overflow: hidden; border: 0; color: white; background: linear-gradient(135deg, #0c3236, #176e72 56%, #29a2a7); }
+      .hero::after { position: absolute; top: -270px; right: -180px; width: 560px; height: 560px; border: 70px solid rgba(255,255,255,.08); border-radius: 50%; content: ''; }
+      .hero .eyebrow, .hero .lead { color: rgba(255,255,255,.77); }
+      .hero-inner { position: relative; z-index: 1; display: grid; height: 100%; align-content: space-between; }
+      .pills { display: flex; flex-wrap: wrap; gap: 9px; }
+      .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .hero .pill { border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.09); color: rgba(255,255,255,.9); }
+      .grid { display: grid; gap: 16px; }
+      .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .card { padding: 19px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+      .card.soft { background: var(--soft); }
+      .card.brand { border-color: transparent; background: var(--brand-pale); }
+      .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+      .number { display: grid; width: 28px; height: 28px; place-items: center; margin-bottom: 12px; border-radius: 9px; background: var(--brand); color: white; font-size: 13px; font-weight: 800; }
+      .list { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
+      .list li + li { margin-top: 6px; }
+      .list strong { color: var(--text); }
+      .flow { display: flex; align-items: stretch; gap: 9px; margin: 24px 0; }
+      .flow-step { flex: 1; min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--soft); font-size: 13px; font-weight: 750; text-align: center; }
+      .arrow { align-self: center; color: var(--brand); font-size: 24px; }
+      .callout { display: flex; gap: 11px; padding: 13px 15px; border-radius: 14px; background: var(--brand-pale); }
+      .callout b { color: var(--brand-deep); }
+      .warning { background: color-mix(in srgb, #ffc53d 17%, var(--surface)); }
+      .danger { background: color-mix(in srgb, #e54666 12%, var(--surface)); }
+      .good { background: color-mix(in srgb, #0f8f82 12%, var(--surface)); }
+      .code { margin: 14px 0; padding: 16px; overflow: auto; border-radius: 14px; background: var(--code); color: #ddf8f5; font: 12.5px/1.58 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; }
+      .code .comment { color: #8eb8b5; } .code .key { color: #83d9d1; } .code .string { color: #ffd77d; } .code .safe { color: #a7ebc9; }
+      .comparison { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; }
+      .comparison > div { padding: 19px; }
+      .comparison > div + div { border-left: 1px solid var(--line); background: var(--soft); }
+      .field-list { display: grid; gap: 8px; margin: 14px 0 0; }
+      .field { display: grid; grid-template-columns: minmax(120px, .55fr) 1.45fr; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--soft); font-size: 13px; }
+      .field b { color: var(--brand-deep); }
+      .field span { color: var(--muted); overflow-wrap: anywhere; }
+      .trace { display: grid; gap: 8px; margin: 14px 0; }
+      .trace-step { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; padding: 9px 11px; border: 1px solid var(--line); border-radius: 11px; background: var(--soft); font-size: 13px; }
+      .trace-step i { display: grid; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: var(--brand); color: white; font-size: 11px; font-style: normal; font-weight: 800; }
+      .tag { padding: 3px 7px; border-radius: 999px; background: var(--brand-pale); color: var(--brand-deep); font-size: 11px; font-weight: 800; }
+      .checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 18px; margin: 18px 0 0; padding: 0; list-style: none; }
+      .checklist li { position: relative; padding-left: 24px; color: var(--muted); }
+      .checklist li::before { position: absolute; left: 0; color: var(--good); content: '✓'; font-weight: 900; }
+      .segmented { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 12px; }
+      .segment { padding: 8px 11px; font-size: 13px; font-weight: 750; }
+      .segment[aria-pressed='true'] { border-color: var(--brand); background: var(--brand); color: white; }
+      .lab-result { min-height: 230px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); }
+      .lab-result h3 { color: var(--brand-deep); }
+      .speaker-note { margin-top: 14px; color: var(--muted); font-size: 13px; }
+      .speaker-note b { color: var(--brand-deep); }
+      .footer { position: fixed; z-index: 20; inset: auto 0 0; justify-content: center; height: 76px; padding: 0 28px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(14px); }
+      .nav { min-width: 105px; height: 40px; padding: 0 14px; font-weight: 750; }
+      .nav.primary { border-color: var(--brand); background: var(--brand); color: white; }
+      .counter { min-width: 82px; color: var(--muted); font-size: 13px; text-align: center; }
+      .progress { position: fixed; z-index: 30; inset: 67px auto auto 0; height: 3px; background: var(--brand); transition: width .22s ease; }
+      .menu { position: fixed; z-index: 40; inset: 0; display: none; padding: 84px 24px 24px; background: rgba(7, 16, 18, .56); backdrop-filter: blur(7px); }
+      .menu.open { display: grid; place-items: start center; }
+      .menu-panel { width: min(730px, 100%); max-height: calc(100vh - 108px); overflow: auto; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+      .menu-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 18px; }
+      .menu-item { padding: 11px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); cursor: pointer; text-align: left; }
+      .menu-item:hover { border-color: var(--brand); background: var(--brand-pale); }
+      .menu-close { float: right; }
+      .mt { margin-top: 16px; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      kbd { padding: 2px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; background: var(--soft); font: 11px ui-monospace, monospace; }
+      @media (max-width: 760px) {
+        body { overflow: auto; }
+        .topbar { padding: 0 15px; } .topbar .brand small { display: none; }
+        .deck { height: auto; min-height: 100vh; padding: 82px 12px 88px; place-items: start center; }
+        .slide { height: auto; min-height: calc(100vh - 170px); padding: 27px 21px; border-radius: 18px; }
+        .two, .three, .comparison, .checklist, .menu-list { grid-template-columns: 1fr; }
+        .comparison > div + div { border-top: 1px solid var(--line); border-left: 0; }
+        .flow { flex-direction: column; } .arrow { align-self: center; transform: rotate(90deg); }
+        .field { grid-template-columns: 1fr; gap: 3px; }
+        .trace-step { grid-template-columns: 25px 1fr; } .trace-step .tag { justify-self: start; }
+        .footer { gap: 7px; padding: 0 11px; } .nav { min-width: 0; } .nav span { display: none; }
+      }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+      @media print {
+        @page { size: 13.333in 7.5in; margin: 0; }
+        body { overflow: visible; } .topbar, .footer, .progress, .menu { display: none !important; }
+        .deck { display: block; height: auto; padding: 0; }
+        .slide, .slide.active { display: block; width: 100%; height: 100vh; min-height: 0; margin: 0; overflow: hidden; padding: .45in .6in; border: 0; border-radius: 0; box-shadow: none; animation: none; break-after: page; }
+        .slide:last-child { break-after: auto; }
+        .hero { border-top: .12in solid #29a2a7; background: #fff !important; color: #172024 !important; }
+        .hero::after { display: none; }
+        .hero .eyebrow, .hero .lead { color: #5d6a70 !important; }
+        .hero .pill { border-color: #dfe5e6; background: #f0f3f4; color: #172024; }
+        .lab-result { min-height: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>MEGA <small>/ Captain · clase práctica</small></div>
+      <div class="actions">
+        <button class="icon" id="menuButton" aria-label="Open agenda" aria-controls="menu" aria-expanded="false">☰</button>
+        <button class="icon" id="themeButton" aria-label="Change theme" aria-pressed="false">◐</button>
+      </div>
+    </header>
+    <div class="progress" id="progress"></div>
+    <main class="deck">
+      <section class="slide hero active" data-title="Bienvenida" tabindex="0">
+        <div class="hero-inner"><div><p class="eyebrow">Operational training</p><h1>Captain,<br />from intent to action<br />with control.</h1><p class="lead">A hands-on class to configure assistants, scenarios, HTTP tools, and MCP with verifiable limits.</p></div><div class="pills"><span class="pill">23 slides · 21 topics</span><span class="pill">~65 min total</span><span class="pill">Administration and operations</span></div></div>
+      </section>
+
+      <section class="slide" data-title="Objectives and agenda" tabindex="0">
+        <p class="eyebrow">01 · punto de partida</p><h2>By the end, you will be able to configure, test, and operate a controlled case.</h2><p class="lead">The class moves from the assistant and its knowledge to an external action with evidence and a safe human fallback.</p>
+        <div class="grid three"><div class="card"><div class="number">1</div><h3>Fundamentals</h3><p>Prerequisites, assistant, sources, inbox, and behavior.</p></div><div class="card"><div class="number">2</div><h3>Actions</h3><p>Scenarios, built-ins, Custom HTTP Tools, and external MCP.</p></div><div class="card"><div class="number">3</div><h3>Operations</h3><p>Lab, Playground, diagnosis, metrics, and launch.</p></div></div>
+        <p class="speaker-note"><b>Suggested duration:</b> 20 min of fundamentals · 25 min of examples · 10 min lab · 10 min pilot and questions.</p>
+      </section>
+
+      <section class="slide" data-title="What Captain is" tabindex="0">
+        <p class="eyebrow">02 · modelo mental</p><h2>Captain converses, consults knowledge, and proposes only configured actions.</h2>
+        <div class="flow"><div class="flow-step">Message</div><div class="arrow">→</div><div class="flow-step">Assistant + rules</div><div class="arrow">→</div><div class="flow-step">Scenario<br />if it matches</div><div class="arrow">→</div><div class="flow-step">Response, tool, or handoff</div></div>
+        <div class="grid two"><div class="card brand"><h3>Correct design</h3><ul class="list"><li>Knowledge reviewed before automation.</li><li>Small tools with explicit purpose.</li><li>Handoff when data, permission, or certainty is missing.</li></ul></div><div class="card warning"><h3>Don’t assume</h3><ul class="list"><li>That a tool authorizes an action by itself.</li><li>That the assistant can invent an integration.</li><li>That scenarios resolve ambiguity via persisted priority.</li></ul></div></div>
+      </section>
+
+      <section class="slide" data-title="Prerequisites" tabindex="0">
+        <p class="eyebrow">03 · antes de configurar</p><h2>Enable the capability and prepare a human support path.</h2>
+        <div class="grid two"><div class="card"><h3>Account and permissions</h3><ul class="list"><li>Captain and the provider/model must be available for the account.</li><li>For external MCP, enable <code>captain_mcp</code>.</li><li>Creating/editing assistants, scenarios, Custom Tools, and MCP requires an administrator.</li><li>Agents can query the assistant and use Playground without managing those configurations.</li></ul></div><div class="card"><h3>Operations</h3><ul class="list"><li>Define objective, content owner, and escalation criteria.</li><li>Prepare the pilot inbox, but do not assign the assistant yet.</li><li>Ask the instance admin to confirm the account mode <code>disabled</code> for auto-resolve.</li><li>Prepare normal, edge, and handoff cases to test.</li></ul></div></div>
+        <div class="callout danger"><span>⚠</span><span><b>Bot exclusivity:</b> Captain does not respond or schedule automatic resolutions in inboxes with Agent Bot or Dialogflow active.</span></div>
+      </section>
+
+      <section class="slide" data-title="UI map and order" tabindex="0">
+        <p class="eyebrow">04 · dónde vive cada decisión</p><h2>Configure in the same order in which you want the system to operate.</h2>
+        <div class="grid three"><div class="card soft"><h3>Account / Settings</h3><p>Features, model, and remote MCP servers.</p></div><div class="card brand"><h3>Captain / Assistant</h3><p>Overview, FAQs, Documents, Scenarios, Playground, and Inboxes.</p></div><div class="card soft"><h3>Assistant / Settings</h3><p>Identity, scope, guidelines, guardrails, tools, and attached MCP.</p></div></div>
+        <div class="flow"><div class="flow-step">Assistant + knowledge</div><div class="arrow">→</div><div class="flow-step">Limits</div><div class="arrow">→</div><div class="flow-step">Tools/MCP</div><div class="arrow">→</div><div class="flow-step">Scenarios</div><div class="arrow">→</div><div class="flow-step">Playground</div><div class="arrow">→</div><div class="flow-step">Assign pilot inbox</div></div>
+      </section>
+
+      <section class="slide" data-title="Assistant: base fields" tabindex="0">
+        <p class="eyebrow">05 · configuración completa</p><h2>An assistant starts with a concrete identity, not a list of tools.</h2>
+        <div class="grid two"><div class="card"><h3>Safe example of Assistant Basic Settings</h3><div class="field-list"><div class="field"><b>Name</b><span>Acme Support</span></div><div class="field"><b>Product name</b><span>Acme Cloud</span></div><div class="field"><b>Description</b><span>Handles basic usage and published plans; does not confirm refunds or commercial exceptions.</span></div></div></div><div class="card brand"><h3>Features: enable based on evidence</h3><div class="field-list"><div class="field"><b>Conversation FAQs</b><span>✓ if the team will review suggestions.</span></div><div class="field"><b>Memories</b><span>✕ at first, until a usage policy is defined.</span></div><div class="field"><b>Citations</b><span>✓ only with reviewed public sources.</span></div><div class="field"><b>Contact attributes</b><span>✕ unless required and approved attributes are needed.</span></div></div></div></div>
+        <p class="speaker-note"><b>Also available:</b> ignore WhatsApp groups and concrete targets/identifiers; use them to reduce scope, never to hide a configuration failure.</p>
+      </section>
+
+      <section class="slide" data-title="Assistant: scope and messages" tabindex="0">
+        <p class="eyebrow">06 · configuración operativa</p><h2>Complete the scope and messages before assigning the first inbox.</h2>
+        <div class="grid two"><div class="card"><h3>Scope example</h3><div class="field-list"><div class="field"><b>Ignore groups</b><span>✓ if the pilot will not handle WhatsApp groups.</span></div><div class="field"><b>Ignored targets</b><span>Only real numbers or identifiers that must be excluded; empty in this pilot.</span></div><div class="field"><b>Legacy instructions</b><span>Not applicable in V2: use guidelines, guardrails, and scenarios.</span></div></div></div><div class="card brand"><h3>Messages sugeridos</h3><div class="field-list"><div class="field"><b>Handoff message</b><span>“I’ll hand the conversation over so a person can continue with you.”</span></div><div class="field"><b>Resolution message</b><span>“It looks like your request has been resolved. You can contact us again if you need help.”</span></div></div></div></div>
+        <div class="callout warning"><span>!</span><span>The handoff message must not promise a team, owner, or response time. The resolution message is only used when auto-resolve behavior is enabled.</span></div>
+      </section>
+
+      <section class="slide" data-title="Knowledge and inbox" tabindex="0">
+        <p class="eyebrow">07 · contexto y alcance</p><h2>Reliable knowledge comes before action.</h2>
+        <div class="grid three"><div class="card"><h3>FAQs</h3><p>Approve only reusable responses; review suggestions before publishing.</p></div><div class="card"><h3>Documents</h3><p>Public URL or relevant PDF. A PDF has a maximum size of 10 MB and is processed/indexed.</p></div><div class="card"><h3>Inboxes</h3><p>Select a pilot channel with no conflicting bots and assign it only after Playground.</p></div></div>
+        <div class="callout"><span>🔎</span><span><b>Citations:</b> use public URLs suitable for the client. Do not cite URLs with credentials, signed parameters, PDFs, or private destinations.</span></div>
+      </section>
+
+      <section class="slide" data-title="Guidelines, guardrails, and closure" tabindex="0">
+        <p class="eyebrow">08 · comportamiento seguro</p><h2>Separate style, prohibitions, and automatic resolution.</h2>
+        <div class="comparison"><div><h3>Response guidelines</h3><p>How to respond: language, tone, structure, clarification questions, and when to offer human help.</p><p class="pill">“Respond in English, in short steps.”</p></div><div><h3>Guardrails</h3><p>What not to do: promises, sensitive PII, regulated decisions, or actions without confirmation.</p><p class="pill">“Do not request or repeat card details.”</p></div></div>
+        <div class="grid three mt"><div class="card soft"><h3>Disabled</h3><p>No automatic resolution. Recommended for launch.</p></div><div class="card soft"><h3>Evaluated</h3><p>With <code>captain_tasks</code>: resolve if complete; hand off if incomplete.</p></div><div class="card soft"><h3>Legacy</h3><p>Close after inactivity; use only if the team knows that behavior.</p></div></div>
+        <p class="speaker-note"><b>Account configuration:</b> there is no selector in the current Captain UI. The instance administrator must verify <code>captain_auto_resolve_mode</code>; without an explicit value, the fallback depends on <code>captain_tasks</code>.</p>
+      </section>
+
+      <section class="slide" data-title="Scenarios: diseño" tabindex="0">
+        <p class="eyebrow">09 · especializar sin solapar</p><h2>A scenario is a specialized agent for a precise intent.</h2>
+        <div class="grid two"><div class="card"><h3>Visible fields</h3><ol class="list"><li><b>Title:</b> the intent, not the solution.</li><li><b>Description:</b> entry signals and exclusions.</li><li><b>Instruction:</b> short and verifiable steps.</li><li><b>Tool links:</b> are inserted from the selector inside the editor.</li></ol></div><div class="card warning"><h3>Real activation</h3><p>A new scenario is created enabled by default and the current UI does not provide a toggle.</p><p>There is no persisted priority: make scenarios mutually exclusive and configure them before assigning the inbox.</p></div></div>
+        <div class="callout"><span>✓</span><span>There is no separate <code>Tools</code> field in the UI: the system infers tools from <code>tool://</code> links in the instruction and rejects unconfigured references.</span></div>
+      </section>
+
+      <section class="slide" data-title="Simple scenario without tools" tabindex="0">
+        <p class="eyebrow">10 · primer caso copiable</p><h2>A scenario can also respond without running any tool.</h2>
+        <div class="grid two"><div class="card brand"><h3>Exact fields</h3><div class="field-list"><div class="field"><b>Title</b><span>Business hours</span></div><div class="field"><b>Description</b><span>Questions about hours, channels, and coverage; does not manage cases.</span></div><div class="field"><b>Instruction</b><span>Example text without inserting <code>tool://</code> links.</span></div></div><p class="speaker-note"><b>Al crear:</b> is enabled. Do this before assigning the pilot inbox.</p></div><pre class="code"><span class="key">Instruction</span>
+Si la persona pregunta por horarios, canales o cobertura:
+1. Responde solo con conocimiento aprobado.
+2. No ejecutes acciones ni prometas seguimiento.
+3. Si el pedido está fuera de este alcance,
+   vuelve al assistant principal.</pre></div>
+        <div class="callout good"><span>✓</span><span><b>Expected outcome:</b> there is no tool chain. The scenario gives a limited response and the main assistant resumes out-of-scope intentions.</span></div>
+      </section>
+
+      <section class="slide" data-title="Tools integradas" tabindex="0">
+        <p class="eyebrow">11 · catálogo nativo</p><h2>Use small actions and describe when they should happen.</h2>
+        <div class="grid three"><div class="card"><h3>Internal context</h3><p><code>add_contact_note</code><br /><code>add_private_note</code><br /><code>add_label_to_conversation</code><br /><code>update_priority</code></p></div><div class="card"><h3>Resolve with evidence</h3><p><code>faq_lookup</code> busca FAQ semánticamente.<br /><code>resolve_conversation</code> cierra solo un caso atendido.</p></div><div class="card"><h3>Escalate</h3><p><code>handoff</code> transfiere a una persona con motivo claro.</p></div></div>
+        <div class="callout danger"><span>↗</span><span><b>Handoff does not automatically assign</b> a team, priority, or response time. Use it when the person requests/accepts it, unless a guideline or guardrail requires escalation.</span></div>
+      </section>
+
+      <section class="slide compact" data-title="Custom HTTP Tool: exact example" tabindex="0">
+        <p class="eyebrow">12 · integración por cuenta</p><h2>Define a small, safe, and verifiable contract before using it in a scenario.</h2>
+        <div class="grid two"><div class="card"><h3>Fictional Custom Tool</h3><div class="field-list"><div class="field"><b>Title / ID</b><span>Check order status · <code>custom_consultar_estado_pedido</code> expected without collision.</span></div><div class="field"><b>Description</b><span>Query the published status of an order by <code>order_id</code>; read-only.</span></div><div class="field"><b>HTTP method</b><span>GET</span></div><div class="field"><b>Endpoint URL</b><span><code>https://api.ejemplo.test/v1/orders/{{ order_id }}</code></span></div><div class="field"><b>Auth</b><span>Bearer · valor ficticio <code>demo-no-usar</code></span></div><div class="field"><b>Parameter</b><span><code>order_id</code> · string · required · identificador público.</span></div></div></div><div class="card soft"><h3>Minimal response to the model</h3><pre class="code"><span class="key">Response template</span>
+Status: {{ response.status }}
+Estimated date: {{ response.estimated_date }}
+<span class="comment"># Do not return address, phone, or payment data.</span></pre><p><b>Test:</b> is disabled because the URL contains <code>{{ ... }}</code>.</p><p class="speaker-note"><b>Privacy:</b> each call adds account/assistant headers and, if present, conversation, contact, email, and phone. Authorize the endpoint as a receiver of personal data.</p></div></div>
+        <div class="callout danger"><span>⚠</span><span>Keep ideally 10 or fewer to make selection easier; the maximum is 15 per account. Persistence requires public HTTPS; no localhost, IP, <code>.local</code>, or the app itself. Store secrets only in Auth and use the ID inserted by the selector. A mutation requires its own confirmation.</span></div>
+      </section>
+
+      <section class="slide" data-title="External MCP: exact example" tabindex="0">
+        <p class="eyebrow">13 · integración por assistant</p><h2>Connect, discover, and filter the tools of the remote server before assigning it.</h2>
+        <div class="grid two"><div class="card"><h3>Create fictional MCP server</h3><div class="field-list"><div class="field"><b>Name</b><span>Inventory Demo</span></div><div class="field"><b>Description</b><span>Check product availability; read-only.</span></div><div class="field"><b>URL</b><span><code>https://mcp.ejemplo.test/mcp</code></span></div><div class="field"><b>Transport / RPC</b><span><code>streamable_http</code> · Empty RPC endpoint.</span></div><div class="field"><b>Auth type</b><span>Bearer · fictional token</span></div><div class="field"><b>Enabled</b><span>✓</span></div></div></div><div class="card brand"><h3>Attach to the assistant</h3><ol class="list"><li>Selecciona <b>Inventory Demo</b>.</li><li>After <b>Connect</b>, choose only <code>stock_lookup</code>.</li><li>Expected ID without collision: <code>mcp_inventario_demo_stock_lookup</code>.</li><li>Insert the tool from the scenario selector; do not write the memory ID.</li><li>Server + association enabled and state <b>connected</b>.</li></ol><p class="speaker-note">Prompts/resources appear as a catalog: <b>only tools are executed</b>. Transports: auto, Streamable HTTP, SSE, and HTTP.</p></div></div>
+        <div class="callout"><span>↻</span><span><b>Import Configuration</b> accepts remote JSON and rejects <code>stdio</code>. For immediate changes, use Connect/Refresh; the job checks every 10 minutes and effective renewal may take about 20 minutes more in queue.</span></div>
+      </section>
+
+      <section class="slide" data-title="Complex case: prerequisites" tabindex="0">
+        <p class="eyebrow">14 · construir de afuera hacia adentro</p><h2>The configuration order determines which tools the scenario can use.</h2>
+        <div class="trace"><div class="trace-step"><i>1</i><span>Create/enable <code>custom_consultar_estado_pedido</code> with read-only permissions.</span><span class="tag">Cuenta</span></div><div class="trace-step"><i>2</i><span>Conectar Inventory Demo, adjuntarlo al assistant y filtrar <code>stock_lookup</code>.</span><span class="tag">Assistant</span></div><div class="trace-step"><i>3</i><span>Verify that the required built-ins are configured and available.</span><span class="tag">Catálogo</span></div><div class="trace-step"><i>4</i><span>Create the scenario —it remains enabled—, test it, and only then assign the inbox.</span><span class="tag">Escenario</span></div></div>
+        <div class="comparison"><div><h3>Allowed</h3><p>Order status, stock, private note, priority, and handoff: all defined with concrete identifiers.</p></div><div><h3>Blocked / fallback</h3><p>If <code>order_id</code> is missing, a tool fails, or the delay is not confirmed: do not mutate; ask for the data or offer a handoff and execute it only if accepted.</p></div></div>
+      </section>
+
+      <section class="slide" data-title="Complex case: instruction" tabindex="0">
+        <p class="eyebrow">15 · escenario copiable</p><h2>Order with possible delay: query, record, and escalate conditionally.</h2>
+        <pre class="code"><span class="key">Title</span>: Order with possible delay
+<span class="key">Description</span>: Check status and stock when an order may be delayed.
+
+<span class="key">Instruction</span>
+If a person asks about an order with possible delay:
+1. Ask for order_id if missing. If it is not provided, go to the fallback in step 7.
+2. Use [Check status](<span class="string">tool://custom_consultar_estado_pedido</span>).
+   If it fails or does not confirm the status, go to the fallback in step 7.
+3. Only if the status requires replenishment, use
+   [Check stock](<span class="string">tool://mcp_inventario_demo_stock_lookup</span>).
+   If it is unavailable or fails, go to the fallback in step 7.
+4. Only with confirmed delay, record the result with
+   [Add private note](<span class="string">tool://add_private_note</span>).
+5. Only if the delay is confirmed, use
+   [Update priority](<span class="string">tool://update_priority</span>) to high.
+6. Explain only confirmed results.
+7. Fallback: offer human help. If accepted, use
+   [Transfer to a human](<span class="string">tool://handoff</span>); if not, end without more tools.
+8. If the intent is not an order, return to the main assistant.</pre>
+        <p class="speaker-note"><b>Nota:</b> the IDs are the expected ones in a demo account without collisions. Insert each reference from the editor selector. The runtime supports up to 128 tools; a scenario allows assigning up to 127.</p>
+      </section>
+
+      <section class="slide" data-title="Complex case: expected trace" tabindex="0">
+        <p class="eyebrow">16 · cómo demostrarlo</p><h2>The trace shows that configuration does not replace authorization.</h2>
+        <div class="trace"><div class="trace-step"><i>1</i><span>Customer: “What’s going on with the order <code>ORD-DEMO-1042</code>?”</span><span class="tag">Entrada</span></div><div class="trace-step"><i>2</i><span>Custom Tool GET returns <b>delayed</b>; the endpoint was already authorized for metadata.</span><span class="tag">Lectura</span></div><div class="trace-step"><i>3</i><span>MCP <code>stock_lookup</code> confirms replenishment is available.</span><span class="tag">MCP</span></div><div class="trace-step"><i>4</i><span>In the pilot inbox: private note and high priority only with confirmed delay.</span><span class="tag">Interno</span></div><div class="trace-step"><i>5</i><span>The person accepts human help → handoff with reason. Without acceptance, do not transfer.</span><span class="tag">Humano</span></div></div>
+        <div class="callout good"><span>✓</span><span><b>Two tests:</b> Playground shows routing and traces, but it does not have a real conversation; private note, priority, and human handoff are validated in the pilot inbox. In V2 there is no direct <code>@</code> selector in Playground.</span></div>
+      </section>
+
+      <section class="slide" data-title="External MCP vs native" tabindex="0">
+        <p class="eyebrow">17 · two different directions</p><h2>Distinguish who consumes MCP and which authentication applies.</h2>
+        <div class="comparison"><div><h3>Captain consumes external MCP</h3><p>A remote HTTP(S) server is configured with auth none/Bearer/API key, connected, and tools are filtered by assistant.</p><p class="pill">Ejemplo: Inventory Demo</p></div><div><h3>AI client consumes native MCP</h3><p>A client connects to the account endpoint <code>/mcp/:account_id/:slug</code> with OAuth or an API access token and the allowed catalog.</p><p class="pill">Does not publish import/export</p></div></div>
+        <div class="callout"><span>🔐</span><span>A Captain run toward native MCP includes a signed, one-time proof tied to the account, assistant, server, endpoint, tool, and arguments. Minimal privilege is still necessary.</span></div>
+      </section>
+
+      <section class="slide" data-title="Routing lab" tabindex="0">
+        <p class="eyebrow">18 · demostración local</p><h2>Choose an example message and verify the decision before the real Playground.</h2>
+        <div class="segmented" role="group" aria-label="Lab cases"><button type="button" class="segment" data-lab="hours" aria-pressed="true">Hours inquiry</button><button type="button" class="segment" data-lab="delay" aria-pressed="false">Delayed order</button><button type="button" class="segment" data-lab="outside" aria-pressed="false">Out of scope</button></div>
+        <div class="lab-result" id="labResult" aria-live="polite" aria-atomic="true"></div>
+        <p class="speaker-note"><b>Dynamic:</b> read the output, ask the group to identify what is allowed, and then reproduce the same case in Playground.</p>
+      </section>
+
+      <section class="slide" data-title="Playground and pilot" tabindex="0">
+        <p class="eyebrow">19 · validate before exposing</p><h2>Playground validates decisions; the pilot inbox validates the operational context.</h2>
+        <div class="grid two"><div class="card"><h3>In Playground</h3><ol class="list"><li>Question covered by FAQ/document.</li><li>Simple scenario without tools.</li><li>Routing of the complex case and external tools.</li><li>Missing data and disconnected tool.</li><li>Tool traces and handoffs between agents in V2.</li></ol></div><div class="card"><h3>In the pilot inbox</h3><ol class="list"><li>Account mode <code>disabled</code> confirmed.</li><li>Now assign a channel, schedule, and owner.</li><li>Validate notes, priority, and human handoff.</li><li>Measure reopenings and unresolved queries.</li><li>Scale only with stable evidence.</li></ol></div></div>
+        <div class="callout warning"><span>◌</span><span>Playground uses the real configuration, but it does not create a conversation: tools tied to the conversation do not produce their final effects there. Validate them in the pilot inbox.</span></div>
+      </section>
+
+      <section class="slide" data-title="Troubleshooting" tabindex="0">
+        <p class="eyebrow">20 · diagnose without guessing</p><h2>Fix the configuration that limits the flow; do not add instructions to hide the problem.</h2>
+        <div class="grid two"><div class="card"><h3>Custom Tool test disabled</h3><p><b>Cause:</b> URL with <code>{{ ... }}</code> or request template.</p><p><b>Action:</b> with POST/PUT/PATCH, first clear the Request template; then use a safe static GET URL, or create a temporary tool. The test runs a real call.</p></div><div class="card"><h3>MCP tool does not appear</h3><p><b>Cause:</b> server disconnected/disabled or tool not selected in the association.</p><p><b>Action:</b> Connect/Refresh, verify state <code>connected</code>, enabled, and include/exclude filter.</p></div><div class="card"><h3>Wrong scenario</h3><p><b>Cause:</b> overlapping descriptions or signals.</p><p><b>Action:</b> narrow the intent and add exclusions; there is no persisted priority to fix it.</p></div><div class="card"><h3>Insecure endpoint or network error</h3><p><b>Cause:</b> Unsafe HTTP for Custom Tool, private/local host, or DNS to private IP.</p><p><b>Action:</b> use public HTTPS and review timeout/response; do not try to bypass SSRF protections.</p></div></div>
+      </section>
+
+      <section class="slide" data-title="Monitoring and launch" tabindex="0">
+        <p class="eyebrow">21 · operate with evidence</p><h2>The first launch is a controlled experiment, not the end of the design.</h2>
+        <div class="grid three"><div class="card"><h3>Overview</h3><p>Handled, automatic resolution, handoffs, reopenings, coverage, and estimated time saved.</p></div><div class="card"><h3>Generation details</h3><p>Inspect scenarios, tools, and Captain response/note sources to audit decisions.</p></div><div class="card"><h3>Weekly routine</h3><p>Correct FAQs, remove useless tools, review errors, and repeat the same Playground cases.</p></div></div>
+        <ul class="checklist"><li>Assistant, sources, and pilot inbox reviewed.</li><li>No Agent Bot/Dialogflow in the inbox.</li><li>Guidelines, guardrails, and auto-resolve defined.</li><li>Scenarios no solapados; salida segura clara.</li><li>Custom/MCP with minimum privilege and no real secrets.</li><li>Maximum 128 in runtime, 127 per scenario, and 15 Custom Tools.</li><li>Normal, edge, and handoff cases approved.</li><li>Owner, monitoring, and rollback defined.</li></ul>
+      </section>
+
+      <section class="slide hero" data-title="Closing" tabindex="0">
+        <div class="hero-inner"><div><p class="eyebrow">Closing</p><h1>Start narrow.<br />Measure. Learn.<br />Scale carefully.</h1><p class="lead">Captain works best with reliable knowledge, explicit decisions, and small-scope tools.</p></div><div class="pills"><span class="pill">Next step: pilot assistant</span><span class="pill">Then: simple scenario</span><span class="pill">After: a read integration</span></div></div>
+      </section>
+    </main>
+    <nav class="footer" aria-label="Presentation navigation"><button class="nav" id="prev" aria-label="Previous slide">← <span>Anterior</span></button><span class="counter" id="counter" aria-live="polite">1 / 23</span><button class="nav primary" id="next" aria-label="Next slide"><span>Siguiente</span> →</button></nav>
+    <p class="sr-only" id="announcement" aria-live="polite"></p>
+    <aside class="menu" id="menu" aria-label="Agenda" role="dialog" aria-modal="true" aria-hidden="true"><div class="menu-panel"><button class="icon menu-close" id="closeMenu" aria-label="Cerrar agenda">×</button><p class="eyebrow">Navegación</p><h2>Class agenda</h2><div class="menu-list" id="menuList"></div><p class="speaker-note">Shortcuts: <kbd>←</kbd> <kbd>→</kbd> <kbd>Space</kbd> · <kbd>Inicio</kbd> <kbd>Fin</kbd> · <kbd>M</kbd> agenda · <kbd>T</kbd> tema · <kbd>↑</kbd> <kbd>↓</kbd> scroll long content.</p></div></aside>
+    <script>
+      (() => {
+        const slides = [...document.querySelectorAll('.slide')];
+        const counter = document.querySelector('#counter');
+        const progress = document.querySelector('#progress');
+        const announcement = document.querySelector('#announcement');
+        const menu = document.querySelector('#menu');
+        const menuList = document.querySelector('#menuList');
+        const menuButton = document.querySelector('#menuButton');
+        const themeButton = document.querySelector('#themeButton');
+        const deck = document.querySelector('.deck');
+        const topbar = document.querySelector('.topbar');
+        const footer = document.querySelector('.footer');
+        let index = 0;
+
+        const labs = {
+          hours: {
+            title: 'Query: “What are your business hours?”',
+            route: 'Escenario esperado: Business hours.',
+            chain: 'Allowed tools: none. Respond only with approved knowledge.',
+            safety: 'Authorization: no action requested or allowed; just respond.',
+            assertion: 'Playground: scenario response; zero tool calls; if intent changes, return to the main assistant.'
+          },
+          delay: {
+            title: 'Query: “My order ORD-DEMO-1042 seems delayed.”',
+            route: 'Escenario esperado: Order with possible delay; los escenarios nuevos quedan habilitados.',
+            chain: 'Allowed chain: custom_consultar_estado_pedido → mcp_inventario_demo_stock_lookup only if replenishment exists → add_private_note → update_priority only with confirmed delay.',
+            safety: 'Check: ask for order_id if missing; do not transfer without acceptance or claim unconfirmed data.',
+            assertion: 'Playground: validates routing and failures; test note, priority, and human handoff in the pilot inbox.'
+          },
+          outside: {
+            title: 'Query: “Can you issue me an exceptional refund?”',
+            route: 'Expected scenario: none of the examples; it stays or returns to the main assistant.',
+            chain: 'Allowed tools: none to confirm the refund.',
+            safety: 'Authorization: do not confirm the exception; run handoff only after explicit acceptance.',
+            assertion: 'Playground: must not call an order tool or say the refund was approved.'
+          }
+        };
+
+        let storedTheme;
+        try { storedTheme = sessionStorage.getItem('captain-training-theme'); } catch {}
+        if (storedTheme) document.documentElement.dataset.theme = storedTheme;
+
+        function updateThemeState() {
+          const dark = document.documentElement.dataset.theme === 'dark';
+          themeButton.setAttribute('aria-pressed', String(dark));
+          themeButton.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+        }
+
+        function show(next, syncHistory = true) {
+          index = Math.max(0, Math.min(slides.length - 1, next));
+          slides.forEach((slide, itemIndex) => slide.classList.toggle('active', itemIndex === index));
+          const active = slides[index];
+          active.scrollTop = 0;
+          window.scrollTo(0, 0);
+          counter.textContent = `${index + 1} / ${slides.length}`;
+          announcement.textContent = `Slide ${index + 1} de ${slides.length}: ${active.dataset.title}`;
+          progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+          if (syncHistory && location.hash !== `#${index + 1}`) history.pushState(null, '', `#${index + 1}`);
+        }
+
+        function openMenu() {
+          menu.classList.add('open');
+          menu.setAttribute('aria-hidden', 'false');
+          menuButton.setAttribute('aria-expanded', 'true');
+          [deck, topbar, footer].forEach(element => { element.inert = true; });
+          document.querySelector('#closeMenu').focus();
+        }
+
+        function closeMenu() {
+          menu.classList.remove('open');
+          menu.setAttribute('aria-hidden', 'true');
+          menuButton.setAttribute('aria-expanded', 'false');
+          [deck, topbar, footer].forEach(element => { element.inert = false; });
+          menuButton.focus();
+        }
+
+        function renderLab(name) {
+          const lab = labs[name];
+          const result = document.querySelector('#labResult');
+          result.innerHTML = `<h3>${lab.title}</h3><div class="trace"><div class="trace-step"><i>1</i><span>${lab.route}</span><span class="tag">Routing</span></div><div class="trace-step"><i>2</i><span>${lab.chain}</span><span class="tag">Tools</span></div><div class="trace-step"><i>3</i><span>${lab.safety}</span><span class="tag">Seguridad</span></div><div class="trace-step"><i>4</i><span>${lab.assertion}</span><span class="tag">Prueba</span></div></div>`;
+          document.querySelectorAll('[data-lab]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lab === name)));
+          announcement.textContent = `Lab updated: ${lab.title}`;
+        }
+
+        updateThemeState();
+        slides.forEach((slide, itemIndex) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-item';
+          button.textContent = `${String(itemIndex + 1).padStart(2, '0')} · ${slide.dataset.title}`;
+          button.addEventListener('click', () => { show(itemIndex); closeMenu(); });
+          menuList.append(button);
+        });
+        document.querySelector('#next').addEventListener('click', () => show(index + 1));
+        document.querySelector('#prev').addEventListener('click', () => show(index - 1));
+        menuButton.addEventListener('click', openMenu);
+        document.querySelector('#closeMenu').addEventListener('click', closeMenu);
+        menu.addEventListener('click', event => { if (event.target === menu) closeMenu(); });
+        themeButton.addEventListener('click', () => {
+          const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = theme;
+          try { sessionStorage.setItem('captain-training-theme', theme); } catch {}
+          updateThemeState();
+        });
+        document.querySelectorAll('[data-lab]').forEach(button => button.addEventListener('click', () => renderLab(button.dataset.lab)));
+        document.addEventListener('keydown', event => {
+          if (event.key === 'Escape' && menu.classList.contains('open')) return closeMenu();
+          if (event.key === 'Tab' && menu.classList.contains('open')) {
+            const focusable = [...menu.querySelectorAll('button:not([disabled])')];
+            const first = focusable[0];
+            const last = focusable.at(-1);
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            return;
+          }
+          if (event.key === 'm' || event.key === 'M') return menu.classList.contains('open') ? closeMenu() : openMenu();
+          if (event.key === 't' || event.key === 'T') return themeButton.click();
+          const interactiveTarget = event.target instanceof Element && event.target.closest('button, a, input, textarea, select, [contenteditable="true"]');
+          if (interactiveTarget) return;
+          if (menu.classList.contains('open')) return;
+          if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) { event.preventDefault(); show(index + 1); }
+          if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+          if (event.key === 'Home') { event.preventDefault(); show(0); }
+          if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
+        });
+        function syncFromLocation() {
+          const hash = Number(location.hash.slice(1));
+          const valid = Number.isInteger(hash) && hash >= 1 && hash <= slides.length;
+          show(valid ? hash - 1 : 0, false);
+          const canonicalHash = `#${index + 1}`;
+          if (location.hash !== canonicalHash) history.replaceState(null, '', canonicalHash);
+        }
+        window.addEventListener('hashchange', syncFromLocation);
+        window.addEventListener('popstate', syncFromLocation);
+        const hash = Number(location.hash.slice(1));
+        show(Number.isInteger(hash) && hash > 0 ? hash - 1 : 0, false);
+        history.replaceState(null, '', `#${index + 1}`);
+        renderLab('hours');
+      })();
+    </script>
+  </body>
+</html>
