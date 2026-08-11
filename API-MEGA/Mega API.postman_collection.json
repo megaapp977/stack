@@ -16224,6 +16224,42 @@
           "response": []
         },
         {
+          "name": "List WhatsApp message templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/inboxes/{{id}}/message_templates?name=sample",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "inboxes",
+                "{{id}}",
+                "message_templates"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "sample",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List the cached message templates available for a native or Twilio WhatsApp inbox"
+          },
+          "response": []
+        },
+        {
           "name": "Create recreate evolution instance",
           "request": {
             "method": "POST",
@@ -26030,7 +26066,7 @@
               ],
               "query": []
             },
-            "description": "Creates a new scheduled message within an existing conversation",
+            "description": "Creates a new scheduled message within an existing conversation. The conversation is taken from the URL, so the request body must be wrapped in `scheduled_message` and must not provide `contact_id`.\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"scheduled_message\": {\n    \"content\": \"Hello, this is a scheduled message from the conversation\",\n    \"scheduled_at\": \"2026-02-06T15:00:00Z\",\n    \"inbox_id\": 5,\n    \"title\": \"Automatic follow-up\",\n    \"attachments\": [\n      \"Sample text\"\n    ],\n    \"template_params\": {\n      \"source\": \"api\",\n      \"segment\": \"enterprise\"\n    },\n    \"recurrence_type\": \"none\",\n    \"recurrence_interval\": 1,\n    \"recurrence_days\": [\n      1\n    ],\n    \"recurrence_end_type\": \"never\",\n    \"recurrence_end_date\": \"2026-05-20\",\n    \"recurrence_max_occurrences\": 1\n  }\n}",
@@ -26223,6 +26259,120 @@
           "response": []
         },
         {
+          "name": "Reschedule a failed conversation scheduled message",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/conversations/{{conversation_id}}/scheduled_messages/{{id}}/reschedule",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "conversations",
+                "{{conversation_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "reschedule"
+              ],
+              "query": []
+            },
+            "description": "Returns a failed conversation message to `pending` at a future time. The payload must be wrapped in `scheduled_message`; attachments are retained.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduled_message\": {\n    \"scheduled_at\": \"2026-08-04T14:00:00Z\",\n    \"content\": \"We could not deliver the earlier reminder. Please contact us when convenient.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Schedule a new copy of a sent conversation message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/conversations/{{conversation_id}}/scheduled_messages/{{id}}/resend",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "conversations",
+                "{{conversation_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "resend"
+              ],
+              "query": []
+            },
+            "description": "Creates a new independent, non-recurring pending copy at a future time. It retains the original inbox, recipient, template parameters, and attachments unless editable fields are supplied. The source message must be sent and belong to the conversation in the URL.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduled_message\": {\n    \"scheduled_at\": \"2026-08-04T14:00:00Z\",\n    \"content\": \"Reminder: your package expires today.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retry a failed conversation scheduled message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/conversations/{{conversation_id}}/scheduled_messages/{{id}}/retry",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "conversations",
+                "{{conversation_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "retry"
+              ],
+              "query": []
+            },
+            "description": "Returns a failed message to `pending`, clears its delivery error, and queues it immediately. The message must belong to the conversation in the URL."
+          },
+          "response": []
+        },
+        {
           "name": "List All Scheduled Messages",
           "request": {
             "method": "GET",
@@ -26274,10 +26424,10 @@
               ],
               "query": []
             },
-            "description": "Creates a new scheduled message at the account level.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
+            "description": "Creates a new scheduled message at the account level, without requiring a conversation.\n\n`contact_id` and `inbox_id` are required. `conversation_id` is optional and only associates the new message with an existing conversation; it is not needed to schedule delivery to the contact.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"content\": \"Good morning! Don't forget to check your tasks for today.\",\n  \"title\": \"Daily Task Reminder\",\n  \"scheduled_at\": \"2026-02-07T09:00:00Z\",\n  \"inbox_id\": 5,\n  \"conversation_id\": 456,\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_end_type\": \"never\"\n}",
+              "raw": "{\n  \"content\": \"Good morning! Don't forget to check your tasks for today.\",\n  \"title\": \"Daily Task Reminder\",\n  \"scheduled_at\": \"2026-02-07T09:00:00Z\",\n  \"inbox_id\": 5,\n  \"contact_id\": 456,\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_end_type\": \"never\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -26311,7 +26461,7 @@
               ],
               "query": []
             },
-            "description": "Creates a new scheduled message at the account level.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
+            "description": "Creates a new scheduled message at the account level, without requiring a conversation.\n\n`contact_id` and `inbox_id` are required. `conversation_id` is optional and only associates the new message with an existing conversation; it is not needed to schedule delivery to the contact.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Hello, thank you for your purchase!\",\n  \"scheduled_at\": \"2026-02-10T14:00:00Z\",\n  \"inbox_id\": 5,\n  \"contact_id\": 123\n}",
@@ -26348,7 +26498,7 @@
               ],
               "query": []
             },
-            "description": "Creates a new scheduled message at the account level.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
+            "description": "Creates a new scheduled message at the account level, without requiring a conversation.\n\n`contact_id` and `inbox_id` are required. `conversation_id` is optional and only associates the new message with an existing conversation; it is not needed to schedule delivery to the contact.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Your weekly report is ready to review\",\n  \"title\": \"Weekly Report\",\n  \"scheduled_at\": \"2026-02-10T10:00:00Z\",\n  \"inbox_id\": 5,\n  \"contact_id\": 789,\n  \"recurrence_type\": \"weekly\",\n  \"recurrence_interval\": 1,\n  \"recurrence_days\": [\n    1,\n    3,\n    5\n  ],\n  \"recurrence_end_type\": \"after_occurrences\",\n  \"recurrence_max_occurrences\": 12\n}",
@@ -26385,7 +26535,7 @@
               ],
               "query": []
             },
-            "description": "Creates a new scheduled message at the account level.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
+            "description": "Creates a new scheduled message at the account level, without requiring a conversation.\n\n`contact_id` and `inbox_id` are required. `conversation_id` is optional and only associates the new message with an existing conversation; it is not needed to schedule delivery to the contact.\n\n## Features\n- Schedule messages for future delivery\n- Attach up to 15 files\n- Use WhatsApp templates\n- Set up recurring messages (daily, weekly, monthly, yearly)\n\n## Recurrence Options\nMessages can be set to recur automatically:\n- **Daily**: Send every N days\n- **Weekly**: Send on specific days of the week\n- **Monthly**: Send every N months\n- **Yearly**: Send every N years\n\nYou can limit recurrence by:\n- Setting an end date\n- Limiting the number of occurrences\n- Setting it to never end\n",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Hi {{1}}, your appointment is confirmed for {{2}}\",\n  \"scheduled_at\": \"2026-02-08T15:30:00Z\",\n  \"inbox_id\": 8,\n  \"contact_id\": 555,\n  \"template_params\": {\n    \"name\": \"appointment_reminder\",\n    \"category\": \"UTILITY\",\n    \"language\": \"en\",\n    \"namespace\": \"your_namespace\",\n    \"processed_params\": {\n      \"body\": [\n        \"John\",\n        \"February 10th at 3:00 PM\"\n      ]\n    }\n  }\n}",
@@ -26484,7 +26634,7 @@
             "description": "Updates an existing scheduled message. Only messages with `pending` status can be updated.\n\nThe `status` field cannot be modified manually - it's updated automatically when the message is sent or fails.\n",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"content\": \"Hello {{customer_name}}, your order #{{order_id}} will arrive tomorrow\",\n  \"scheduled_at\": \"2026-02-06T15:00:00Z\",\n  \"inbox_id\": 5,\n  \"title\": \"Customer follow-up\",\n  \"contact_id\": 456,\n  \"conversation_id\": 123,\n  \"attachments\": [\n    \"Sample text\"\n  ],\n  \"template_params\": {\n    \"name\": \"appointment_reminder\",\n    \"category\": \"UTILITY\",\n    \"language\": \"en\",\n    \"namespace\": \"your_namespace\",\n    \"processed_params\": {\n      \"header\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"body\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"buttons\": [\n        {\n          \"source\": \"api\",\n          \"segment\": \"enterprise\"\n        }\n      ]\n    }\n  },\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_days\": [\n    1,\n    3,\n    5\n  ],\n  \"recurrence_end_type\": \"never\"\n}",
+              "raw": "{\n  \"content\": \"Hello {{customer_name}}, your order #{{order_id}} will arrive tomorrow\",\n  \"scheduled_at\": \"2026-02-06T15:00:00Z\",\n  \"inbox_id\": 5,\n  \"contact_id\": 456,\n  \"title\": \"Customer follow-up\",\n  \"conversation_id\": 123,\n  \"attachments\": [\n    \"Sample text\"\n  ],\n  \"template_params\": {\n    \"name\": \"appointment_reminder\",\n    \"category\": \"UTILITY\",\n    \"language\": \"en\",\n    \"namespace\": \"your_namespace\",\n    \"processed_params\": {\n      \"header\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"body\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"buttons\": [\n        {\n          \"source\": \"api\",\n          \"segment\": \"enterprise\"\n        }\n      ]\n    }\n  },\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_days\": [\n    1,\n    3,\n    5\n  ],\n  \"recurrence_end_type\": \"never\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -26522,7 +26672,7 @@
             "description": "Updates an existing scheduled message. Only messages with `pending` status can be updated.\n\nThe `status` field cannot be modified manually - it's updated automatically when the message is sent or fails.\n",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"content\": \"Hello {{customer_name}}, your order #{{order_id}} will arrive tomorrow\",\n  \"scheduled_at\": \"2026-02-06T15:00:00Z\",\n  \"inbox_id\": 5,\n  \"title\": \"Customer follow-up\",\n  \"contact_id\": 456,\n  \"conversation_id\": 123,\n  \"attachments\": [\n    \"Sample text\"\n  ],\n  \"template_params\": {\n    \"name\": \"appointment_reminder\",\n    \"category\": \"UTILITY\",\n    \"language\": \"en\",\n    \"namespace\": \"your_namespace\",\n    \"processed_params\": {\n      \"header\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"body\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"buttons\": [\n        {\n          \"source\": \"api\",\n          \"segment\": \"enterprise\"\n        }\n      ]\n    }\n  },\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_days\": [\n    1,\n    3,\n    5\n  ],\n  \"recurrence_end_type\": \"never\"\n}",
+              "raw": "{\n  \"content\": \"Hello {{customer_name}}, your order #{{order_id}} will arrive tomorrow\",\n  \"scheduled_at\": \"2026-02-06T15:00:00Z\",\n  \"inbox_id\": 5,\n  \"contact_id\": 456,\n  \"title\": \"Customer follow-up\",\n  \"conversation_id\": 123,\n  \"attachments\": [\n    \"Sample text\"\n  ],\n  \"template_params\": {\n    \"name\": \"appointment_reminder\",\n    \"category\": \"UTILITY\",\n    \"language\": \"en\",\n    \"namespace\": \"your_namespace\",\n    \"processed_params\": {\n      \"header\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"body\": {\n        \"source\": \"api\",\n        \"segment\": \"enterprise\"\n      },\n      \"buttons\": [\n        {\n          \"source\": \"api\",\n          \"segment\": \"enterprise\"\n        }\n      ]\n    }\n  },\n  \"recurrence_type\": \"daily\",\n  \"recurrence_interval\": 1,\n  \"recurrence_days\": [\n    1,\n    3,\n    5\n  ],\n  \"recurrence_end_type\": \"never\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -26562,6 +26712,151 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Sample Cancel\",\n  \"description\": \"Created from the API documentation example\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reschedule a failed scheduled message",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/scheduled_messages/{{id}}/reschedule",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "reschedule"
+              ],
+              "query": []
+            },
+            "description": "Returns a failed message to `pending` at a future time. Omitted editable fields retain their existing values; attachments are retained. Only messages with status `failed` can be rescheduled.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduled_at\": \"2026-08-04T14:00:00Z\",\n  \"content\": \"We could not deliver the earlier reminder. Please contact us when convenient.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Schedule a new copy of a sent message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/scheduled_messages/{{id}}/resend",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "resend"
+              ],
+              "query": []
+            },
+            "description": "Creates a new independent, non-recurring pending message from a sent message. It retains the inbox, recipient, template parameters, and attachments unless editable fields are supplied. Only messages with status `sent` can be sent again.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduled_at\": \"2026-08-04T14:00:00Z\",\n  \"content\": \"Reminder: your package expires today.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retry a failed scheduled message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/scheduled_messages/{{id}}/retry",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "scheduled_messages",
+                "{{id}}",
+                "retry"
+              ],
+              "query": []
+            },
+            "description": "Returns a failed message to `pending`, clears its delivery error, and queues it for immediate delivery. Only messages with status `failed` can be retried."
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve a recipient and schedule an outbound message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/{{api_version}}/accounts/{{account_id}}/scheduled_outbound_messages",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "{{api_version}}",
+                "accounts",
+                "{{account_id}}",
+                "scheduled_outbound_messages"
+              ],
+              "query": []
+            },
+            "description": "Resolves or creates a contact and contact-inbox for the selected inbox, then creates a pending scheduled message.\nIt does not create a conversation until the normal delivery flow runs. Provider delivery remains asynchronous.\n\nFor `multipart/form-data`, send recipient identity using Rails bracket fields (for example, `recipient[phone_number]`), repeat `recurrence_days[]` for each day, and send `template_params` as a JSON string.\n",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inbox_id\": 12,\n  \"recipient\": {\n    \"phone_number\": \"+595981123456\",\n    \"name\": \"Juan Pérez\"\n  },\n  \"content\": \"Tu cita es mañana a las 10:00.\",\n  \"scheduled_at\": \"2026-08-04T14:00:00Z\",\n  \"title\": \"Recordatorio de cita\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
