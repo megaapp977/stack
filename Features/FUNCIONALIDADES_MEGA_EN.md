@@ -4,7 +4,7 @@
 
 **Version:** Enterprise
 **Based on:** Mega Exclusive Features
-**Last Updated:** July 31, 2026
+**Last Updated:** August 10, 2026
 
 ---
 
@@ -714,6 +714,18 @@ Configure automatic flows based on events and conditions:
 - Mute conversation
 - Redistribute to online agents
 
+### Flow Builder *(Mega - MVP)*
+
+Design conversational automations from a visual canvas with connectable blocks.
+
+- **n8n-style visual canvas** - Build flows by dragging blocks, connecting paths, and editing each step from a side inspector
+- **Initial blocks** - Trigger, message, question, condition, action, handoff, wait, webhook, and end
+- **Reused Automation actions** - The Action node uses the same selectors for labels, teams, agents, priority, email, webhook, private notes, and compatible conversation statuses
+- **Drafts and versioned publishing** - Edit without changing the published version and publish stable snapshots
+- **Validation before publishing** - Detects cycles, multiple triggers, broken connections, and incomplete blocks
+- **Initial event runtime** - Published flows can start from Automation-compatible internal events and execute messages, questions, conditions, basic actions, and handoff
+- **Ready for IVR and voice** - The same canvas can add calling and IVR nodes in a later phase
+
 ### Macros
 
 Execute multiple actions with a single click:
@@ -728,6 +740,8 @@ Execute multiple actions with a single click:
 - **Typebot integration** - Connect with Typebot conversational flows
 - **Human handover** - Smooth transfer to real agents
 - **Smart handover** - If a human replies in a pending bot conversation, ownership is transferred automatically
+- **Expiry handover** - When a Webhook session expires, the bot is released and the open conversation is offered to an eligible agent; with nobody available, it remains open and unassigned
+- **Human unassigned queue** - Conversations assigned to an Agent Bot do not appear in the Unassigned queue; it contains only conversations without a human or bot assignee
 - **Bots per inbox** - Configure specific bots per channel
 - **Inbox-scoped manual assignment** - The agent selector only offers active Agent Bots configured on the conversation inbox
 - **Typing indicator** - Bots can toggle the "typing..." indicator for a more natural experience
@@ -760,7 +774,9 @@ Create and configure AI assistants tailored to your business needs:
 - **Per-feature models** - Configure separate models for Assistant, Copilot, suggestions, and FAQ generation from documents and PDFs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
+- **External bot exclusivity** - Captain does not respond or schedule automatic resolution for inboxes with an active Agent Bot or Dialogflow
 - **Assistant overview** - Monitor handled conversations, auto-resolution, handoff, hours saved, reopen rate, conversation depth, knowledge coverage, and AI-generated period summaries
+- **Trusted citations** - Captain V2 renders only server-validated public web links, records the sources actually selected, and keeps rendered URLs out of model history; earlier sessions retain their existing source details
 - **Image comprehension** - Assistant can analyze images sent in conversations
 - **Multimodal support** - Process text and images simultaneously for contextual responses
 - **Ignore groups** - Configure assistant to not respond in group conversations
@@ -783,12 +799,15 @@ Configure specific scenarios and workflows:
 
 - **Custom instructions** - Define behavior for specific situations
 - **Tool assignment** - Assign specific tools per scenario
+- **Complete MCP creation** - AI clients connected to the account MCP can save and update built-in, custom, and MCP tool IDs; unavailable IDs are explicitly rejected
 - **Activation rules** - Define when each scenario applies
 - **Priority ordering** - Control scenario precedence
 
 **Captain Custom Tools:**
 
 Create custom tools for your AI assistant:
+
+- **Complete typed contracts** - Custom and MCP tools preserve objects, arrays, enums, and nested fields; scenarios only receive them while they are enabled and connected
 
 - **HTTP integrations** - Connect to external APIs (GET/POST/PUT/PATCH/DELETE)
 - **Authentication** - Support for Basic, Bearer, and API Key auth
@@ -800,6 +819,8 @@ Create custom tools for your AI assistant:
 Connect MCP (Model Context Protocol) servers to expand your assistant's capabilities:
 
 - **Native account MCP** - Create account-level MCP servers with dedicated endpoints
+- **Authenticated Captain execution** - Native MCP actions preserve the assistant identity with one-time signed proofs; confirmed messages remain attributed to Captain without duplicate replies or reopening the conversation
+- **Production-faithful Playground** - With Captain V2 it tests scenario handoffs and loads only their assigned tools; the legacy flow tests the base assistant. Neither allows direct message-level selection
 - **Secure and flexible access** - Supports OAuth authentication and static token access
 - **Files from any AI provider** - ChatGPT discovers its native picker; Claude and other clients can use a temporary HTTPS URL, base64, multipart, or a signed ID without requiring a permanent public URL
 - **Authenticated direct uploads** - JSON MCP clients can request signed upload targets through the API without browser CSRF
@@ -1083,6 +1104,7 @@ The system includes multiple protections to maintain send quality:
 - **Multiple portals** - Create knowledge bases per product/brand
 - **Custom domain** - Host on your own domain
 - **Configurable design** - Colors, logo, header text
+- **Analytics integrations** - Administrators can connect Google Analytics 4, Google Tag Manager, Microsoft Clarity, Hotjar, Plausible, Amplitude, and Meta Pixel; tracking scripts are published only when a valid provider ID is configured
 - **Selectable layouts** - Choose between a classic landing page or documentation-style sidebar navigation
 - **Multi-language** - Articles in multiple languages
 - **GuideJar embeds** - Insert interactive GuideJar guides in Help Center content
@@ -1095,8 +1117,10 @@ The system includes multiple protections to maintain send quality:
 - **Create from category view** - Start new articles directly from each category screen
 - **Image resizing** - Resize images inside the editor for cleaner article layouts
 - **Slash menu in editor** - Insert blocks and commands quickly by typing /
+- **Table-safe slash menu** - Inside table cells, use only inline formatting commands that Markdown preserves, with arrow-key and Ctrl+N/P navigation contained in the menu
 - **Videos from the slash menu** - Embed supported video links (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar, and MP4) with a preview in both the editor and published article
 - **Native tables in editor** - Create and edit tables directly in the article editor
+- **Dividers from the slash menu** - Insert a horizontal divider from the editor menu to separate article sections
 - **Markdown tables** - Correct rendering for table blocks inside help articles
 - **Positioning** - Order articles manually
 - **Category reordering** - Drag and drop to reorder help center categories; the order is saved automatically
@@ -1386,6 +1410,7 @@ Create and manage your WhatsApp templates directly from MEGA, without needing to
 **Template management:**
 
 - **Centralized list** - View all templates from all your WhatsApp inboxes in one place
+- **Unified cached template API** - Integrations can list cached templates for native and Twilio WhatsApp inboxes, filter by the provider's exact name, and read the last synchronization-attempt time without contacting the provider
 - **Approval status** - Monitor whether each template is approved, pending, or rejected by Meta
 - **Usage metrics** - See how many times each template was delivered and its read rate
 - **Advanced filters** - Filter by status, category, language, channel, and date range
@@ -1591,6 +1616,7 @@ Force agents to complete specific attributes before resolving conversations:
 
 - **Required fields** - Define which custom attributes must be filled
 - **Resolution validation** - Block resolution until required fields are completed
+- **Safe macros** - Resolving macros request required attributes; if dismissed, they run the remaining actions but keep the conversation open
 - **Improved data quality** - Ensure every conversation has the necessary information
 
 ### Voice Conferences
@@ -1664,16 +1690,18 @@ Schedule automatic message delivery in your conversations:
 - **Attachments** - Include images, documents, and files in scheduled messages
 - **Status tracking** - Monitor status: pending, sent, failed, cancelled
 - **Cancellation** - Cancel scheduled messages before they are sent
+- **Recovery and send again** - Retry or reschedule a failed message, or schedule an editable copy of a sent one while retaining its recipient and attachments
+- **Universal scheduling API** - Schedule a message for a phone, email, or provider identifier while automatically creating or reusing the contact
 - **Multiple per conversation** - Schedule several messages in the same conversation
 - **History** - View the history of scheduled messages and their status
 
 ### 🔒 Deleted Message Placeholder
 
-Configure per inbox whether agents see the original text alongside the deletion notice:
+Configure per inbox whether agents see the original text and attachments alongside the deletion notice:
 
-- **Agent retention** - Can show the original text below "This message was deleted" inside the dashboard
+- **Agent retention** - Can show the original text and attachments below "This message was deleted" inside the dashboard
 - **Per-inbox configuration** - Each channel can have its own setting
-- **Contact protection** - The public API and contact-facing realtime events deliver only the deletion notice
+- **Contact protection** - The public API and contact-facing realtime events deliver only the deletion notice, without attachment metadata or file URLs
 
 ### Alternative WhatsApp Providers
 

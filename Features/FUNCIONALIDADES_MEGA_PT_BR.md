@@ -1,1791 +1,1671 @@
-# 🚀 MEGA - Plataforma de Comunicação Omnichannel
+# 🚀 MEGA - Plataforma de Comunicación Omnicanal
 
-## Seu Centro de Comando para o Atendimento ao Cliente do Futuro
+## Tu Centro de Comando para la Atención al Cliente del Futuro
 
-**Versão:** Enterprise
-**Baseado em:** Funcionalidades Exclusivas Mega
-**Última Atualização:** 31 de julho de 2026
+**Versión:** Enterprise
+**Basado en:** Funcionalidades Exclusivas Mega
+**Última Actualización:** 10 de agosto de 2026
 
 ---
 
 ## 📋 Índice
 
-1. [Canais de Comunicação](#-canais-de-comunicação)
-2. [Gestão de Conversas](#-gestão-de-conversas)
-3. [Comunicação Interna da Equipe](#-comunicação-interna-da-equipe)
-4. [Automação e IA](#-automação-e-ia)
-5. [CRM e Gestão de Contatos](#-crm-e-gestão-de-contatos)
-6. [Campanhas em Massa](#-campanhas-em-massa)
-7. [Central de Ajuda (Help Center)](#-central-de-ajuda-help-center)
-8. [Relatórios e Analytics](#-relatórios-e-analytics)
-9. [Gestão de Equipes](#-gestão-de-equipes)
-10. [Integrações](#-integrações)
+1. [Canales de Comunicación](#-canales-de-comunicación)
+2. [Gestión de Conversaciones](#-gestión-de-conversaciones)
+3. [Comunicación Interna del Equipo](#-comunicación-interna-del-equipo)
+4. [Automatización e IA](#-automatización-e-ia)
+5. [CRM y Gestión de Contactos](#-crm-y-gestión-de-contactos)
+6. [Campañas Masivas](#-campañas-masivas)
+7. [Centro de Ayuda (Help Center)](#-centro-de-ayuda-help-center)
+8. [Reportes y Analíticas](#-reportes-y-analíticas)
+9. [Gestión de Equipos](#-gestión-de-equipos)
+10. [Integraciones](#-integraciones)
 11. [Funcionalidades Enterprise](#-funcionalidades-enterprise)
 12. [Funcionalidades Exclusivas Mega](#-funcionalidades-exclusivas-mega)
 
 ---
 
-## 📱 Canais de Comunicação
+## 📱 Canales de Comunicación
 
 ### WhatsApp Business
 
-Conecte-se com seus clientes através do canal de mensagens mais popular do mundo.
+Conecta con tus clientes a través del canal de mensajería más popular del mundo.
 
-- **WhatsApp Cloud API** - Integração oficial do Meta com todas as funcionalidades empresariais
-- **Mega Hub para WhatsApp** *(Mega)* - Conexão opcional com apps compartilhados pelo Super Admin, usando credenciais dedicadas do Hub e webhooks reenviados
-- **WhatsApp Evolution** *(Mega)* - Conexão direta sem API oficial, ideal para contas pessoais
-- **WhatsApp WAHA** *(Mega)* - Provedor alternativo com suporte completo a mensagens multimídia
-- **WhatsApp Uazapi** *(Mega)* - Solução de baixo custo para múltiplas linhas
-- **Arquitetura multi-servidor** *(Mega)* - Configure vários servidores por provedor com resolução automática de credenciais
-- **Capacidade por servidor** *(Mega)* - Defina limites por servidor para distribuir a carga operacional
-- **Suporte BSUID** *(Mega)* - Identificação robusta do contato e envio confiável mesmo sem `wa_id` tradicional
-- **Mensagens não suportadas por provedor** *(Mega)* - Distingue conteúdo incompatível de mensagens indisponíveis por coexistência; somente estas últimas orientam a verificar o WhatsApp Business
-- **Mensagens de template** - Envie mensagens fora da janela de 24 horas com templates aprovados
-- **Sincronização de contatos** - Mantenha sua base de dados atualizada automaticamente
-- **Suporte a grupos** - Gerencie conversas de grupos do WhatsApp diretamente
+- **WhatsApp Cloud API** - Integración oficial de Meta con todas las funcionalidades empresariales
+- **Mega Hub para WhatsApp** *(Mega)* - Conexión opcional con apps compartidas desde Super Admin, usando credenciales dedicadas del Hub y webhooks reenviados
+- **WhatsApp Evolution** *(Mega)* - Conexión directa sin API oficial, ideal para cuentas personales
+- **WhatsApp WAHA** *(Mega)* - Proveedor alternativo con soporte completo de mensajes multimedia
+- **WhatsApp Uazapi** *(Mega)* - Solución de bajo costo para múltiples líneas
+- **Arquitectura multi-servidor** *(Mega)* - Configura varios servidores por proveedor con resolución automática de credenciales
+- **Capacidad por servidor** *(Mega)* - Define límites por servidor para distribuir carga operativa
+- **Soporte BSUID** *(Mega)* - Identificación robusta del contacto y envío confiable incluso sin `wa_id` tradicional
+- **Mensajes no soportados por proveedor** *(Mega)* - Distingue contenido no compatible de mensajes no disponibles por coexistencia; solo estos últimos indican revisar WhatsApp Business
+- **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas
+- **Sincronización de contactos** - Mantén tu base de datos actualizada automáticamente
+- **Soporte de grupos** - Gestiona conversaciones de grupos de WhatsApp directamente
 
-**Rastreamento de Anúncios WhatsApp (Click-to-WhatsApp):**
+**Tracking de Anuncios WhatsApp:**
 
-Meça o ROI dos seus anúncios do Facebook/Instagram que direcionam para WhatsApp:
+Mide el ROI de tu publicidad de WhatsApp:
 
-- **Origem do lead** - Detecta automaticamente se a mensagem vem de um anúncio
-- **Dados da campanha** - Salva qual anúncio gerou cada conversa
-- **Atribuição automática** - Conecta vendas com campanhas específicas
-- **Métricas claras** - Saiba exatamente quantos leads cada anúncio gera
-- **ID de anúncio** - Rastreia o anúncio específico que gerou a conversa
-- **Contexto da mensagem** - Veja o texto do anúncio que o cliente clicou
+- **Anuncios Click-to-WhatsApp** - Detecta conversaciones originadas desde anuncios de Facebook/Instagram
+- **Captura de datos del anuncio** - Guarda automáticamente la fuente, campaña e información creativa
+- **Indicador visual** - Ve la tarjeta de información del anuncio en la conversación
+- **Atribución** - Conecta leads con campañas publicitarias específicas
 
-**Gerenciamento de Membros de Grupos:** *(Mega)*
+**Gestión de Miembros de Grupos:** *(Mega)*
 
-Controle completo dos grupos de WhatsApp diretamente da MEGA:
+Control completo de los grupos de WhatsApp directamente desde MEGA:
 
-- **Lista de membros** - Visualize todos os participantes do grupo com seu papel e status
-- **Sincronização automática** - Os membros são sincronizados automaticamente ao criar a conversa
-- **Adicionar participantes** - Adicione novos membros ao grupo pela plataforma
-- **Remover participantes** - Remova membros do grupo sem sair da MEGA
-- **Alterar papéis** - Promova ou rebaixe membros a administrador
-- **Menções no grupo** - Use @ para mencionar membros específicos nas mensagens
-- **Busca de membros** - Encontre rapidamente participantes em grupos grandes
-- **Paginação inteligente** - Carregamento eficiente para grupos com muitos membros
-- **Avatares de membros** - Visualize a foto de perfil de cada participante
-- **Sincronização em segundo plano** - Atualização periódica de nomes e fotos
-- **Suporte multi-provedor** - Funciona com Evolution, WAHA, Uazapi e Cloud API
+- **Lista de miembros** - Visualiza todos los participantes del grupo con su rol y estado
+- **Sincronización automática** - Los miembros se sincronizan automáticamente al crear la conversación
+- **Añadir participantes** - Agrega nuevos miembros al grupo desde la plataforma
+- **Eliminar participantes** - Remueve miembros del grupo sin salir de MEGA
+- **Cambiar roles** - Asciende o degrada miembros a administrador
+- **Menciones en grupo** - Usa @ para mencionar miembros específicos en mensajes
+- **Búsqueda de miembros** - Encuentra rápidamente participantes en grupos grandes
+- **Paginación inteligente** - Carga eficiente para grupos con muchos miembros
+- **Avatares de miembros** - Visualiza la foto de perfil de cada participante
+- **Sincronización en segundo plano** - Actualización periódica de nombres y fotos
+- **Soporte multi-proveedor** - Funciona con Evolution, WAHA, Uazapi y Cloud API
 
 ### Instagram Direct
 
-Conecte-se com seu público do Instagram e converta seguidores em clientes no lugar onde eles já interagem com sua marca.
+Conecta con tu audiencia de Instagram y convierte seguidores en clientes desde el lugar donde ya interactúan con tu marca.
 
-- **Mega Hub para Instagram** *(Mega)* - Conecte Instagram por apps compartilhados do Hub usando credenciais dedicadas configuradas no Mega Hub
+- **Mega Hub para Instagram** *(Mega)* - Conecta Instagram mediante apps compartidas del Hub, usando credenciales dedicadas configuradas en Mega Hub
 
-**Por que Instagram?**
+**¿Por qué Instagram?**
 
-Com mais de 2 bilhões de usuários ativos, o Instagram é essencial para marcas visuais. 90% dos usuários seguem pelo menos uma empresa, e as DMs são o canal preferido para consultas.
+Con más de 2 mil millones de usuarios activos, Instagram es esencial para marcas visuales. El 90% de los usuarios siguen al menos una empresa, y los DMs son el canal preferido para consultas.
 
-**Tipos de interações suportadas:**
+**Tipos de interacciones soportadas:**
 
-- **Mensagens diretas (DMs)** - Responda a consultas privadas de seus seguidores
-- **Respostas a Stories** - Atenda quem reage aos seus stories
-- **Respostas a Stories com conteúdo** - Veja imagens e vídeos anexados quando respondem aos seus stories
-- **Menções em Stories** - Receba alertas quando te mencionam
-- **Reações** - Visualize quando reagem às suas mensagens
+- **Mensajes directos (DMs)** - Responde a consultas privadas de tus seguidores
+- **Respuestas a Stories** - Atiende a quienes reaccionan a tus historias
+- **Respuestas a Stories con contenido** - Ve imágenes y videos adjuntos cuando responden a tus stories
+- **Menciones en Stories** - Recibe alertas cuando te mencionan
+- **Reacciones** - Visualiza cuando reaccionan a tus mensajes
 
-**Rastreamento de anúncios:**
+**Tracking de anuncios:**
 
-Uma funcionalidade poderosa para medir o ROI da sua publicidade no Instagram:
+Una funcionalidad poderosa para medir el ROI de tu publicidad en Instagram:
 
-- **Origem do lead** - Detecta automaticamente se a mensagem vem de um anúncio
-- **Dados da campanha** - Salva qual anúncio gerou cada conversa
-- **Atribuição automática** - Conecta vendas com campanhas específicas
-- **Métricas claras** - Saiba exatamente quantos leads cada anúncio gera
+- **Origen del lead** - Detecta automáticamente si el mensaje viene de un anuncio
+- **Datos de la campaña** - Guarda qué anuncio generó cada conversación
+- **Atribución automática** - Conecta ventas con campañas específicas
+- **Métricas claras** - Sabe exactamente cuántos leads genera cada anuncio
 
-**Janela de resposta estendida:**
+**Ventana de respuesta extendida:**
 
-- **7 dias para responder** - Em vez das 24 horas padrão, você tem até 7 dias para responder
-- **Ativação automática** - Aplicada sem configuração adicional
+- **7 días para responder** - En lugar de las 24 horas estándar, tienes hasta 7 días para responder
+- **Activación automática** - Se aplica sin configuración adicional
 
-**Conteúdo multimídia:**
+**Contenido multimedia:**
 
-- **Imagens e vídeos** - Envie e receba conteúdo visual
-- **Respostas rápidas** - Botões para o cliente escolher opções
-- **Catálogos de produtos** - Envie produtos diretamente no chat
-- **Sugestões de conversa** - Ajude o cliente a iniciar o papo
+- **Imágenes y videos** - Envía y recibe contenido visual
+- **Respuestas rápidas** - Botones para que el cliente elija opciones
+- **Catálogos de productos** - Envía productos directamente en el chat
+- **Sugerencias de conversación** - Ayuda al cliente a iniciar la charla
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Converta seguidores em compradores
-- Atendimento ao cliente onde seus fãs já estão
-- Meça o impacto da sua publicidade no Instagram
+- Convierte seguidores en compradores
+- Atención al cliente donde ya están tus fans
+- Mide el impacto de tu publicidad en Instagram
 
 ### Facebook Messenger
 
-Atenda seus clientes diretamente pelo app de mensagens mais usado do mundo, integrado com suas páginas do Facebook.
+Atiende a tus clientes directamente desde la app de mensajería más utilizada del mundo, integrada con tus páginas de Facebook.
 
-**Por que Facebook Messenger?**
+**¿Por qué Facebook Messenger?**
 
-Com mais de 1,3 bilhão de usuários ativos, o Messenger é o canal preferido para clientes entrarem em contato com empresas. Seus clientes podem te escrever pela sua página do Facebook, anúncios ou diretamente pelo app.
+Con más de 1.3 mil millones de usuarios activos, Messenger es el canal preferido para que los clientes contacten a las empresas. Tus clientes pueden escribirte desde tu página de Facebook, anuncios o directamente desde la app.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Conexão em minutos** - Vincule sua página do Facebook com alguns cliques, sem configuração técnica
-- **Mega Hub para Messenger** *(Mega)* - Use apps compartilhados do Hub como alternativa configurável com credenciais dedicadas do Hub
-- **Múltiplas páginas** - Gerencie todas as suas páginas do Facebook em uma só plataforma
-- **Confirmações de leitura** - Saiba quando o cliente leu sua mensagem
-- **Confirmações de entrega** - Verifique que suas mensagens chegaram corretamente
-- **Mensagens de boas-vindas** - Cumprimente automaticamente clientes de primeira vez
-- **Integração com bots** - Combine respostas automáticas com atendimento humano de forma fluida
-- **Vinculação com Instagram** - Conecte sua conta do Instagram associada para gerenciar ambos os canais
+- **Conexión en minutos** - Vincula tu página de Facebook con un par de clics, sin configuración técnica
+- **Mega Hub para Messenger** *(Mega)* - Usa apps compartidas del Hub como alternativa configurable con credenciales dedicadas del Hub
+- **Múltiples páginas** - Gestiona todas tus páginas de Facebook desde una sola plataforma
+- **Confirmaciones de lectura** - Sabe cuándo el cliente leyó tu mensaje
+- **Confirmaciones de entrega** - Verifica que tus mensajes llegaron correctamente
+- **Mensajes de bienvenida** - Saluda automáticamente a los clientes que te escriben por primera vez
+- **Integración con bots** - Combina respuestas automáticas con atención humana de forma fluida
+- **Vinculación con Instagram** - Conecta tu cuenta de Instagram asociada para gestionar ambos canales
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Responda onde seus clientes já estão
-- Histórico completo de conversas com cada cliente
-- Transição suave entre chatbots e agentes humanos
-- Métricas de desempenho por canal
+- Responde donde tus clientes ya están
+- Historial completo de conversaciones con cada cliente
+- Transición fluida entre chatbots y agentes humanos
+- Métricas de rendimiento por canal
 
 ### TikTok Business
 
-Conecte-se com o público mais jovem e dinâmico do mundo através do TikTok, a rede social de maior crescimento.
+Conecta con la audiencia más joven y dinámica del mundo a través de TikTok, la red social de mayor crecimiento.
 
-**Por que TikTok?**
+**¿Por qué TikTok?**
 
-Com mais de um bilhão de usuários ativos, o TikTok se tornou uma plataforma essencial para alcançar a Geração Z e Millennials. Agora você pode atender consultas de clientes que te contatam através de mensagens diretas.
+Con más de mil millones de usuarios activos, TikTok se ha convertido en una plataforma esencial para llegar a las generaciones Z y Millennials. Ahora puedes atender consultas de clientes que te contactan a través de mensajes directos.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Mensagens de texto** - Envie e receba mensagens com seus seguidores
-- **Imagens** - Compartilhe e receba conteúdo visual
-- **Stickers** - Visualize os stickers que seus clientes enviam
-- **Posts compartilhados** - Quando um cliente compartilha um post com você, veja diretamente na conversa
-- **Respostas a mensagens específicas** - Responda em contexto a mensagens anteriores
-- **Perfil social do contato** - Veja o perfil do TikTok do cliente diretamente nos dados de contato
-- **Mensagens não suportadas** - Indicadores claros quando conteúdo incompatível é recebido
-- **Versão de API configurável** - Flexibilidade para adaptar-se a diferentes versões da API
+- **Mensajes de texto** - Envía y recibe mensajes con tus seguidores
+- **Imágenes** - Comparte y recibe contenido visual
+- **Stickers** - Visualiza los stickers que te envían tus clientes
+- **Posts compartidos** - Cuando un cliente comparte un post contigo, lo ves directamente en la conversación
+- **Respuestas a mensajes específicos** - Responde en contexto a mensajes anteriores
+- **Perfil social del contacto** - Ve el perfil de TikTok del cliente directamente en sus datos
+- **Mensajes no soportados** - Indicadores claros cuando se recibe contenido no compatible
+- **Versión de API configurable** - Flexibilidad para adaptarse a diferentes versiones de la API
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Alcance o público mais jovem onde passam seu tempo
-- Converta interações sociais em oportunidades de venda
-- Conexão segura e oficial pela API do TikTok Business
-- Sincronização completa de mensagens em tempo real
+- Llega a la audiencia más joven donde pasan su tiempo
+- Convierte interacciones sociales en oportunidades de venta
+- Conexión segura y oficial mediante la API de TikTok Business
+- Sincronización completa de mensajes en tiempo real
 
 ### Email
 
-O email continua sendo um dos canais mais importantes para comunicação empresarial. Gerencie todos os seus emails como se fossem conversas de chat.
+El email sigue siendo uno de los canales más importantes para la comunicación empresarial. Gestiona todos tus correos como si fueran conversaciones de chat.
 
-**Por que integrar Email?**
+**¿Por qué integrar Email?**
 
-Muitos clientes preferem email para consultas formais, documentação ou acompanhamento. Com a MEGA, todos os seus emails são gerenciados junto com os demais canais.
+Muchos clientes prefieren el email para consultas formales, documentación o seguimiento. Con MEGA, todos tus emails se gestionan junto con el resto de canales.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Caixa unificada** - Todos os emails aparecem como conversas junto com WhatsApp, redes sociais e mais
-- **Respostas ricas** - Envie emails com formatação, imagens e anexos
-- **Assinaturas personalizadas** - Configure assinaturas profissionais por agente ou caixa de entrada
-- **Qualquer provedor** - Conecte Gmail, Outlook, seu servidor próprio ou qualquer email
-- **Verificação de conexão do Gmail** - Teste IMAP e SMTP em tempo real, consulte a atividade recente e reconecte a conta nas configurações da caixa de entrada
-- **Histórico completo** - Toda a sequência de emails visível em uma só conversa
-- **Resposta citada** - Responda citando partes específicas do email original
-- **Editor rico** - Formatação completa, listas, negrito, itálico, links
+- **Bandeja unificada** - Todos los correos aparecen como conversaciones junto a WhatsApp, redes sociales y más
+- **Respuestas enriquecidas** - Envía emails con formato, imágenes y adjuntos
+- **Firmas personalizadas** - Configura firmas profesionales por agente o por bandeja
+- **Cualquier proveedor** - Conecta Gmail, Outlook, tu servidor propio o cualquier email
+- **Verificación de conexión Gmail** - Comprueba IMAP y SMTP en vivo, consulta la actividad reciente y reconecta la cuenta desde la configuración de la bandeja
+- **Historial completo** - Todo el hilo de correos visible en una sola conversación
+- **Respuestas citadas** - Incluye el email original en tus respuestas para contexto
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Um só lugar para emails e mensagens instantâneas
-- Agentes não precisam alternar entre aplicativos
-- Métricas unificadas de todos os canais
+- Un solo lugar para emails y mensajería instantánea
+- Los agentes no necesitan cambiar entre aplicaciones
+- Métricas unificadas de todos los canales
 
-### Widget Web (Chat ao Vivo)
+### Widget Web (Live Chat)
 
-Ofereça atendimento instantâneo aos visitantes do seu site com um chat ao vivo elegante e totalmente personalizável.
+Ofrece atención instantánea a los visitantes de tu sitio web con un chat en vivo elegante y completamente personalizable.
 
-**Por que Chat ao Vivo?**
+**¿Por qué Live Chat?**
 
-Os visitantes do seu site querem respostas imediatas. Um chat ao vivo aumenta as conversões em até 40% e melhora a satisfação do cliente.
+Los visitantes de tu web quieren respuestas inmediatas. Un chat en vivo aumenta las conversiones hasta un 40% y mejora la satisfacción del cliente.
 
-**Configuração do formulário:**
+**Configuración del formulario:**
 
-- **Formulário pré-chat** - Colete nome, email e telefone antes de iniciar
-- **Campos personalizados** - Adicione os campos que precisa para seu negócio
-- **Validação automática** - Garanta que os dados informados estão corretos; caixas de seleção obrigatórias devem estar marcadas antes do envio
-- **Modo offline** - Receba mensagens mesmo quando não há agentes disponíveis
+- **Formulario pre-chat** - Recolecta nombre, email y teléfono antes de iniciar
+- **Campos personalizados** - Añade los campos que necesites para tu negocio
+- **Validación automática** - Asegura que los datos ingresados son correctos; las casillas obligatorias deben estar marcadas antes de enviar
+- **Modo offline** - Recibe mensajes incluso cuando no hay agentes disponibles
 
-**Personalização visual completa:**
+**Personalización visual completa:**
 
-- **Cores da sua marca** - Ajuste cores primárias e de fundo
-- **Seu logo** - Mostre sua marca no widget
-- **Posição flexível** - Canto esquerdo ou direito
-- **Ícone personalizado** - Mude o botão flutuante
-- **Mensagem de boas-vindas** - Cumprimente proativamente os visitantes
+- **Colores de tu marca** - Ajusta colores primarios y de fondo
+- **Tu logo** - Muestra tu marca en el widget
+- **Posición flexible** - Esquina izquierda o derecha
+- **Icono personalizado** - Cambia el botón flotante
+- **Mensaje de bienvenida** - Saluda proactivamente a los visitantes
 
-**Funcionalidades avançadas:**
+**Funcionalidades avanzadas:**
 
-- **Identificação de usuários** - Reconheça usuários logados no seu site
-- **Transcrição por email** - Cliente pode solicitar o histórico da conversa
-- **Modo escuro** - Se adapta às preferências do visitante
-- **Help Center integrado** - Mostre artigos de ajuda diretamente no widget
-- **Mensagens predefinidas** - Inicie conversas com contexto
-- **Domínios permitidos** - Restrinja o widget a domínios autorizados para maior segurança
-- **Mostrar nome do agente** - Configure por inbox se o nome do agente é exibido ao visitante
-- **Camadas e fundos corrigidos** - Melhor renderização entre launcher e portal, inclusive no modo escuro
+- **Identificación de usuarios** - Reconoce usuarios logueados en tu sitio
+- **Transcripción por email** - El cliente puede solicitar el historial de la conversación
+- **Modo oscuro** - Se adapta a las preferencias del visitante
+- **Help Center integrado** - Muestra artículos de ayuda directamente en el widget
+- **Mensajes predefinidos** - Inicia conversaciones con contexto
+- **Dominios permitidos** - Restringe el widget a dominios autorizados para mayor seguridad
+- **Mostrar nombre del agente** - Configura por inbox si el nombre del agente se muestra al visitante
+- **Capas y fondos corregidos** - Mejor renderizado visual entre launcher y portal, incluyendo modo oscuro
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Converta visitantes em clientes enquanto navegam
-- Reduza o abandono de carrinho
-- Ofereça suporte imediato sem o cliente sair do seu site
+- Convierte visitantes en clientes mientras navegan
+- Reduce el abandono del carrito de compras
+- Ofrece soporte inmediato sin que el cliente salga de tu web
 
 ### SMS
 
-Alcance seus clientes mesmo quando não têm internet ou apps de mensagens, com mensagens de texto tradicionais.
+Llega a tus clientes incluso cuando no tienen internet o apps de mensajería, con mensajes de texto tradicionales.
 
-**Por que SMS?**
+**¿Por qué SMS?**
 
-O SMS tem uma taxa de abertura de 98%, muito maior que qualquer outro canal. É ideal para notificações urgentes, confirmações e comunicação com clientes que não usam apps.
+El SMS tiene una tasa de apertura del 98%, mucho mayor que cualquier otro canal. Es ideal para notificaciones urgentes, confirmaciones y comunicación con clientes que no usan apps.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Envio e recebimento** - Comunicação bidirecional com seus clientes
-- **Números virtuais** - Configure múltiplas linhas telefônicas
-- **Integração com Twilio** - Provedor líder mundial de SMS
-- **Campanhas em massa** - Envie mensagens para toda sua base de contatos
+- **Envío y recepción** - Comunícate bidireccionalmente con tus clientes
+- **Números virtuales** - Configura múltiples líneas telefónicas
+- **Integración con Twilio** - Proveedor líder mundial de SMS
+- **Campañas masivas** - Envía mensajes a toda tu base de contactos
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Alcance clientes sem smartphones ou dados
-- Notificações que realmente são lidas
-- Ideal para lembretes e confirmações
+- Alcanza a clientes sin smartphones o sin datos
+- Notificaciones que realmente se leen
+- Ideal para recordatorios y confirmaciones
 
 ### Telegram
 
-Conecte-se com milhões de usuários que preferem o Telegram pela sua velocidade, segurança e funcionalidades avançadas.
+Conecta con los millones de usuarios que prefieren Telegram por su velocidad, seguridad y funcionalidades avanzadas.
 
-**Por que Telegram?**
+**¿Por qué Telegram?**
 
-O Telegram é especialmente popular entre usuários tech-savvy e em regiões como Europa Oriental, Oriente Médio e partes da América Latina. É conhecido por sua velocidade e privacidade.
+Telegram es especialmente popular entre usuarios tech-savvy y en regiones como Europa del Este, Medio Oriente y partes de Latinoamérica. Es conocido por su velocidad y privacidad.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Configuração em minutos** - Conecte seu bot do Telegram facilmente
-- **Mensagens formatadas** - Envie texto com negrito, itálico e mais
-- **Multimídia completa** - Imagens, vídeos, documentos e mais
-- **Botões interativos** - Ofereça opções de resposta rápida aos seus clientes
-- **Respostas contextuais** - Responda a mensagens específicas para maior clareza
-- **Telegram Business** - Suporte para contas empresariais do Telegram
+- **Configuración en minutos** - Conecta tu bot de Telegram fácilmente
+- **Mensajes con formato** - Envía texto con negritas, cursivas y más
+- **Multimedia completa** - Imágenes, videos, documentos y más
+- **Botones interactivos** - Ofrece opciones de respuesta rápida a tus clientes
+- **Respuestas contextuales** - Responde a mensajes específicos para mayor claridad
+- **Telegram Business** - Soporte para cuentas empresariales de Telegram
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Fotos de perfil automáticas dos contatos
-- Sem limites de tamanho para arquivos
-- Mensagens chegam instantaneamente
+- Fotos de perfil automáticas de los contactos
+- Sin límites de tamaño para archivos
+- Mensajes que llegan instantáneamente
 
-### Canal de API
+### API Channel
 
-Para empresas com necessidades únicas: integre qualquer sistema de mensagens próprio ou de terceiros.
+Para empresas con necesidades únicas: integra cualquier sistema de mensajería propio o de terceros.
 
-**Quando usar Canal de API?**
+**¿Cuándo usar API Channel?**
 
-Se você tem seu próprio sistema de mensagens, um app mobile com chat, ou precisa conectar uma plataforma que não está integrada nativamente, o Canal de API te dá total flexibilidade.
+Si tienes un sistema propio de mensajería, una app móvil con chat, o necesitas conectar una plataforma que no está integrada nativamente, API Channel te da la flexibilidad total.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Integração personalizada** - Conecte qualquer fonte de mensagens
-- **Webhooks de entrada** - Receba mensagens de sistemas externos
-- **API de resposta** - Envie respostas de volta para seu sistema
-- **API de envio universal para integrações** *(Mega)* - Uma única requisição autenticada identifica o destinatário por telefone, email, contato ou ID do provedor, prepara automaticamente o contato e a conversa e envia texto, mídia ou templates de WhatsApp por qualquer inbox compatível. Templates de mídia do WhatsApp Cloud podem carregar o arquivo na mesma requisição, e o conteúdo renderizado permanece visível na conversa. Chaves de idempotência tornam as tentativas seguras.
-- **Sem limites** - Adapte a plataforma a qualquer canal imaginável
+- **Integración personalizada** - Conecta cualquier fuente de mensajes
+- **Webhooks entrantes** - Recibe mensajes de sistemas externos
+- **API de respuesta** - Envía respuestas de vuelta a tu sistema
+- **Envío universal para integraciones** *(Mega)* - Con una sola petición autenticada identifica al destinatario por teléfono, email, contacto o ID del proveedor, prepara automáticamente contacto y conversación, y envía texto, multimedia o plantillas de WhatsApp por cualquier bandeja compatible. Las plantillas multimedia de WhatsApp Cloud pueden cargar su archivo en la misma petición y su contenido renderizado queda visible en la conversación. Las claves de idempotencia hacen seguros los reintentos.
+- **Sin límites** - Adapta la plataforma a cualquier canal imaginable
 
 **Casos de uso:**
 
-- Apps mobile com chat próprio
-- Portais de clientes
-- Sistemas legados de mensagens
-- Integrações com provedores não suportados nativamente
+- Apps móviles con chat propio
+- Portales de clientes
+- Sistemas legacy de mensajería
+- Integraciones con proveedores no soportados nativamente
 
 ### LINE
 
-Conecte-se com usuários do LINE, o app de mensagens líder no Japão, Taiwan, Tailândia e Indonésia com mais de 200 milhões de usuários ativos.
+Conecta con usuarios de LINE, la app de mensajería líder en Japón, Taiwán, Tailandia e Indonesia con más de 200 millones de usuarios activos.
 
-**Por que LINE?**
+**¿Por qué LINE?**
 
-Se seu negócio atende clientes na Ásia, LINE é imprescindível. No Japão, 90% dos usuários de smartphone usam LINE diariamente.
+Si tu negocio atiende clientes en Asia, LINE es imprescindible. En Japón, el 90% de los usuarios de smartphones usan LINE diariamente.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Configuração simples** - Conecte sua conta LINE Official em minutos
-- **Mensagens de texto** - Comunicação fluida com seus clientes
-- **Stickers e multimídia** - Envie conteúdo visual atrativo
-- **Segurança** - Credenciais protegidas com criptografia avançada
+- **Configuración sencilla** - Conecta tu cuenta LINE Official en minutos
+- **Mensajes de texto** - Comunicación fluida con tus clientes
+- **Stickers y multimedia** - Envía contenido visual atractivo
+- **Seguridad** - Credenciales protegidas con cifrado avanzado
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Acesso ao mercado asiático
-- Usuários altamente engajados
-- Ideal para e-commerce internacional
+- Acceso al mercado asiático
+- Usuarios altamente comprometidos
+- Ideal para comercio electrónico internacional
 
 ### Twitter / X
 
-Atenda consultas e gerencie a reputação da sua marca na rede social onde acontecem as conversas públicas mais importantes.
+Atiende consultas y gestiona la reputación de tu marca en la red social donde ocurren las conversaciones públicas más importantes.
 
-**Por que Twitter/X?**
+**¿Por qué Twitter/X?**
 
-Twitter é onde os clientes expressam reclamações, fazem perguntas e buscam suporte publicamente. Uma resposta rápida e profissional pode transformar uma reclamação em uma avaliação positiva.
+Twitter es donde los clientes expresan quejas, hacen preguntas y buscan soporte público. Una respuesta rápida y profesional puede convertir una queja en una reseña positiva.
 
-**Funcionalidades principais:**
+**Funcionalidades principales:**
 
-- **Mensagens diretas (DMs)** - Gerencie conversas privadas com seus clientes
-- **Menções públicas** - Opção para monitorar quando te mencionam
-- **Criação automática de contatos** - Perfis do Twitter são salvos automaticamente
-- **Conexão segura** - Autenticação oficial com a API do X
+- **Mensajes directos (DMs)** - Gestiona conversaciones privadas con tus clientes
+- **Menciones públicas** - Opción de monitorear cuando te mencionan
+- **Creación automática de contactos** - Los perfiles de Twitter se guardan automáticamente
+- **Conexión segura** - Autenticación oficial con la API de X
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Responda rapidamente a reclamações públicas
-- Converta interações em oportunidades
-- Melhore a percepção da sua marca
-- Identifique tendências e feedback de clientes
+- Responde rápidamente a quejas públicas
+- Convierte interacciones en oportunidades
+- Mejora la percepción de tu marca
+- Identifica tendencias y feedback de clientes
 
 ### Canal de Voz - Twilio *(Enterprise)*
 
-Transforme sua equipe em um call center profissional com telefonia VoIP integrada diretamente na plataforma usando Twilio Voice SDK.
+Transforma tu equipo en un centro de llamadas profesional con telefonía VoIP integrada directamente en la plataforma usando Twilio Voice SDK.
 
-**Por que adicionar chamadas à sua operação?**
+**¿Por qué agregar llamadas a tu operación?**
 
-Alguns clientes preferem falar por telefone, especialmente para assuntos urgentes ou complexos. Com o Canal de Voz, seus agentes podem receber e fazer chamadas sem sair da MEGA.
+Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urgentes o complejos. Con el Canal de Voz, tus agentes pueden recibir y hacer llamadas sin salir de MEGA.
 
 **Stack Tecnológico:**
 
-- **Twilio Voice SDK** - Provedor VoIP líder do setor
-- **WebRTC** - Chamadas pelo navegador, sem software
-- **TwiML Apps** - Tratamento personalizado de chamadas e roteamento
-- **Provisão de números** - Obtenha números em 100+ países
+- **Twilio Voice SDK** - Proveedor VoIP líder en la industria
+- **WebRTC** - Llamadas desde el navegador, sin software
+- **TwiML Apps** - Manejo personalizado de llamadas y enrutamiento
+- **Provisión de números** - Obtén números en 100+ países
 
-**Chamadas de Entrada:**
+**Llamadas Entrantes:**
 
-- **Recepção inteligente** - Chamadas criam conversas automaticamente
-- **Identificação do chamador** - Reconheça contatos existentes pelo número
-- **Novos contatos automáticos** - Se o número é novo, o contato é criado
-- **Histórico unificado** - Chamadas e mensagens na mesma timeline
-- **Gestão de filas** - Gerencie alto volume de chamadas
+- **Recepción inteligente** - Las llamadas crean conversaciones automáticamente
+- **Identificación de llamante** - Reconoce contactos existentes por su número
+- **Nuevos contactos automáticos** - Si el número es nuevo, se crea el contacto
+- **Historial unificado** - Llamadas y mensajes en el mismo timeline
+- **Gestión de colas** - Maneja alto volumen de llamadas
 
-**Chamadas de Saída:**
+**Llamadas Salientes:**
 
-- **Click-to-call** - Ligue para qualquer contato com um só clique
-- **Do perfil do contato** - Sem discar números manualmente
-- **Chamadas em conferência** - Conecte agente e cliente facilmente
-- **Personalização de Caller ID** - Mostre seu número comercial
+- **Click-to-call** - Llama a cualquier contacto con un solo clic
+- **Desde el perfil del contacto** - Sin marcar números manualmente
+- **Llamadas en conferencia** - Conecta agente y cliente fácilmente
+- **Personalización de Caller ID** - Muestra tu número de empresa
 
-**Acompanhamento completo:**
+**Seguimiento completo:**
 
-- Registro de todas as chamadas (atendidas, perdidas, ocupadas)
-- Duração e timestamps de cada chamada
-- Identificação de chamadas de entrada vs saída
-- Todo histórico visível na conversa do cliente
-- Armazenamento de gravações
+- Registro de todas las llamadas (contestadas, perdidas, ocupadas)
+- Duración y timestamps de cada llamada
+- Identificación de llamadas entrantes vs salientes
+- Todo el historial visible en la conversación del cliente
+- Almacenamiento de grabaciones
 
-**Funcionalidades do Agente:**
+**Funciones del Agente:**
 
-- **Webphone no navegador** - Atenda chamadas diretamente na MEGA
-- **Mute/Unmute** - Controle o microfone durante chamadas
-- **Função de espera** - Coloque clientes em espera quando necessário
-- **Transferir chamadas** - Roteie para outro agente ou departamento
+- **Webphone en navegador** - Contesta llamadas directamente en MEGA
+- **Mute/Unmute** - Controla el micrófono durante llamadas
+- **Función de espera** - Pon clientes en espera cuando sea necesario
+- **Transferir llamadas** - Enruta a otro agente o departamento
 
-**Benefícios para seu negócio:**
+**Beneficios para tu negocio:**
 
-- Canal adicional sem trocar de ferramenta
-- Contexto completo do cliente ao atender
-- Métricas de chamadas junto com outros canais
-- Escalável de 1 a 1000+ agentes
-- Preços pay-as-you-go com Twilio
+- Canal adicional sin cambiar de herramienta
+- Contexto completo del cliente al contestar
+- Métricas de llamadas junto con otros canales
+- Escalable de 1 a 1000+ agentes
+- Precios pago-por-uso con Twilio
 
-### Chamadas WhatsApp Cloud *(Enterprise/Mega)*
+### Llamadas WhatsApp Cloud *(Enterprise/Mega)*
 
-Faça e receba chamadas de voz pelo WhatsApp usando a Cloud API do Meta com tecnologia WebRTC.
+Realiza y recibe llamadas de voz a través de WhatsApp usando la Cloud API de Meta con tecnología WebRTC.
 
-> **Disponibilidade:** As chamadas não estão disponíveis para números do WhatsApp Cloud conectados por coexistência com o WhatsApp Business App. Elas continuam no aplicativo WhatsApp Business e não são exibidas na MEGA.
+> **Disponibilidad:** Las llamadas no están disponibles para números de WhatsApp Cloud conectados mediante coexistencia con WhatsApp Business App. Continúan en la aplicación WhatsApp Business y no se muestran en MEGA.
 
-**Por que Chamadas WhatsApp?**
+**¿Por qué Llamadas WhatsApp?**
 
-Muitos clientes preferem comunicação por voz para questões complexas. As Chamadas WhatsApp permitem que seus agentes gerenciem chamadas de voz diretamente na plataforma, usando o mesmo número do WhatsApp usado para mensagens.
+Muchos clientes prefieren la comunicación por voz para temas complejos. Las Llamadas WhatsApp permiten a tus agentes manejar llamadas de voz directamente en la plataforma, usando el mismo número de WhatsApp que para mensajes.
 
-**Chamadas de Entrada:**
+**Llamadas Entrantes:**
 
-- **Notificações em tempo real** - Agentes recebem alertas de chamada instantâneos
-- **Aceitar/Rejeitar do navegador** - Gerencie chamadas sem app externo
-- **Atribuição inteligente de agentes** - Chamadas roteadas para agentes disponíveis
-- **Auto-rejeição quando indisponível** - Comportamento configurável
-- **Identificação do chamador** - Veja informações do contato antes de atender
+- **Notificaciones en tiempo real** - Los agentes reciben alertas de llamada instantáneas
+- **Aceptar/Rechazar desde el navegador** - Maneja llamadas sin ninguna app externa
+- **Asignación inteligente de agentes** - Llamadas enrutadas a agentes disponibles
+- **Auto-rechazo cuando no hay disponibles** - Comportamiento configurable
+- **Identificación del llamante** - Ve información del contacto antes de contestar
 
-**Chamadas de Saída (Business-Initiated):**
+**Llamadas Salientes (Business-Initiated):**
 
-- **Click-to-call** - Inicie chamadas pela conversa ou pelo perfil de um contato, inclusive quando ele ainda não tiver uma conversa
-- **Sistema de permissões** - Solicite e rastreie permissões de chamada dentro da janela de atendimento de 24 horas
-- **Status de permissão** - Diferencie visualmente entre sem permissão, permissão temporária de 7 dias e permanente; confirme o status e a disponibilidade para iniciar uma chamada com o WhatsApp e registre cada alteração, inclusive o vencimento temporário, na atividade da conversa
-- **Tom de ringback** - Feedback de áudio durante conexão
-- **Uma chamada por agente** - Impede iniciar uma segunda chamada enquanto o agente já tem uma ativa, inclusive em outra aba
+- **Click-to-call** - Inicia llamadas desde la conversación o el perfil de un contacto, incluso si aún no tiene una conversación
+- **Sistema de permisos** - Solicita y rastrea permisos de llamada dentro de la ventana de atención de 24 horas
+- **Estado de permisos** - Distingue visualmente entre sin permiso, permiso temporal de 7 días y permiso permanente; confirma el estado y la disponibilidad de inicio de llamada con WhatsApp y registra cada cambio, incluida la fecha de vencimiento temporal, en la actividad de la conversación
+- **Tono de ringback** - Audio de feedback mientras se conecta
+- **Una llamada por agente** - Evita iniciar una segunda llamada mientras el agente ya tiene una activa, incluso desde otra pestaña
 
-**Funcionalidades durante a chamada:**
+**Funciones durante la llamada:**
 
-- **WebRTC nativo** - Áudio de alta qualidade sem SDKs externos
-- **Mute/Unmute** - Alterne o microfone durante chamadas
-- **Duração da chamada** - Timer em tempo real visível
-- **Otimização VoIP** - Áudio otimizado para chamadas de voz
+- **WebRTC nativo** - Audio de alta calidad sin SDKs externos
+- **Mute/Unmute** - Alterna el micrófono durante llamadas
+- **Duración de llamada** - Temporizador en tiempo real visible
+- **Optimización VoIP** - Audio optimizado para llamadas de voz
 
-**Histórico de Chamadas:**
+**Historial de Llamadas:**
 
-- **Registro completo** - Todas as chamadas registradas na conversa
-- **Metadados detalhados** - Duração, status, timestamps
-- **Indicador de direção** - Entrada vs saída claramente marcados
-- **Rastreio de status** - Atendida, perdida, rejeitada, etc.
+- **Llamadas contestadas** - Con duración y timestamp
+- **Llamadas perdidas** - Detección automática
+- **Llamadas rechazadas** - Rastrea llamadas declinadas
+- **Integración en timeline** - Todas las llamadas aparecen en el historial
 
-**Configuração:**
+**Requisitos Técnicos:**
 
-- Requer WhatsApp Cloud API inbox
-- Ativar recursos de chamadas nas configurações do inbox
-- Janela de atendimento aberta ou template aprovado para reabrir a conversa antes de solicitar permissão
-- Configurar permissões de agentes
-- Configurar auto-rejeição para agentes offline
-
-**Ideal para:**
-
-- Equipes usando WhatsApp Cloud API oficial
-- Empresas que precisam de chamadas de voz junto com chat
-- Equipes que precisam da confiabilidade da API oficial
+- Inbox de WhatsApp Cloud API
+- Número de teléfono empresarial configurado con Meta
+- Ventana de atención abierta o plantilla aprobada para reabrir la conversación antes de solicitar permiso
+- Navegador moderno con soporte WebRTC
 
 ---
 
-## 💬 Gestão de Conversas
+## 💬 Gestión de Conversaciones
 
-### Caixa de Entrada Inteligente
+### Bandeja de Entrada Inteligente
 
-- **Visão unificada** - Todas as conversas em um só lugar
-- **Filtros avançados** - Por status, caixa de entrada, agente, equipe, etiquetas
-- **Filtros multi-seleção** - Selecione múltiplas caixas de entrada ou equipes simultaneamente
-- **Filtros de etiquetas com lógica AND** - Filtre por múltiplas etiquetas que devem todas corresponder
-- **Visões personalizadas** - Salve filtros frequentes como visões rápidas
-- **Busca poderosa** - Encontre conversas por conteúdo, contato ou metadados
-- **Filtros rápidos no sidebar** - Navegue direto para Não lidas, Menções, Participando, Grupos e Não atendidas na barra lateral
-- **Badges reativos de não lidas** - Menções, Participando, Grupos e Não lidas exibem contadores em tempo real sem recarregar
+- **Vista unificada** - Todas las conversaciones en un solo lugar
+- **Filtros avanzados** - Por estado, inbox, agente, equipo, etiquetas
+- **Filtros multi-selección** - Selecciona múltiples bandejas o equipos simultáneamente
+- **Filtros de etiquetas con lógica AND** - Filtra por múltiples etiquetas que deben cumplirse todas
+- **Vistas personalizadas** - Guarda filtros frecuentes como vistas rápidas
+- **Búsqueda potente** - Encuentra conversaciones por contenido, contacto o metadatos
+- **Filtros rápidos en sidebar** - Navega directo a No Leídas, Menciones, Participando, Grupos y No atendidas desde la barra lateral
+- **Contadores reactivos de no leídos** - Menciones, Participando, Grupos y No Leídas muestran badges actualizados en tiempo real sin recargar
 
-### Integrações com atributos personalizados
+### Integraciones con atributos personalizados
 
-As integrações podem atualizar apenas as chaves enviadas dos atributos personalizados de uma conversa ou substituí-los por completo. Elas também podem remover chaves específicas sem alterar as informações restantes.
+Las integraciones pueden actualizar solo las claves enviadas de los atributos personalizados de una conversación o reemplazarlos por completo. También pueden eliminar claves específicas sin alterar el resto de la información.
 
-### Busca de Mensagens na Conversa
+### Búsqueda de Mensajes en Conversación
 
-Encontre mensagens específicas dentro de uma conversa:
+Encuentra mensajes específicos dentro de una conversación:
 
-- **Busca de texto** - Procure palavras ou frases em todas as mensagens
-- **Filtro por datas** - Restrinja a busca a um período específico
-- **Destaque de resultados** - Mensagens encontradas são destacadas visualmente
-- **Scroll automático** - Navegue instantaneamente até a mensagem encontrada
-- **Paginação de resultados** - Navegue entre múltiplas correspondências facilmente
-- **Contexto preservado** - Veja a mensagem em seu contexto original de conversa
+- **Búsqueda de texto** - Busca palabras o frases dentro de todos los mensajes
+- **Filtro por fechas** - Acota la búsqueda a un rango de fechas específico
+- **Resaltado de resultados** - Los mensajes encontrados se destacan visualmente
+- **Scroll automático** - Navega instantáneamente al mensaje encontrado
+- **Paginación de resultados** - Navega entre múltiples coincidencias fácilmente
+- **Contexto preservado** - Ve el mensaje en su contexto original de conversación
 
-### Status de Conversa
+### Estados de Conversación
 
-- **Aberta** - Conversas que precisam de atenção
-- **Pendente** - Aguardando resposta do cliente
-- **Resolvida** - Conversas finalizadas
-- **Adiada (Snooze)** - Programe reativação automática usando linguagem natural: escreva "amanhã às 3pm", "em 2 horas", "próxima segunda" ou qualquer expressão de tempo e o sistema interpreta automaticamente; seletor de data clássico também disponível
+- **Abierta** - Conversaciones que requieren atención
+- **Pendiente** - En espera de respuesta del cliente
+- **Resuelta** - Conversaciones finalizadas
+- **Pospuesta (Snooze)** - Programa reactivación automática con lenguaje natural: escribe "mañana a las 3pm", "en 2 horas", "próximo lunes" o cualquier expresión de tiempo y el sistema interpreta la fecha automáticamente; también disponible con selector de fecha clásico
 
-### Priorização
+### Priorización
 
-- **Níveis de prioridade** - Urgente, Alta, Média, Baixa
-- **Ordenação inteligente** - Por atividade recente, tempo de espera, prioridade
-- **Ordenação por não lidas** - Priorize conversas com mensagens não lidas diretamente no seletor de ordenação
-- **Indicadores visuais** - Identifique rapidamente conversas críticas
+- **Niveles de prioridad** - Urgente, Alta, Media, Baja
+- **Ordenamiento inteligente** - Por actividad reciente, tiempo de espera, prioridad
+- **Orden por no leídas** - Prioriza conversaciones con mensajes sin leer desde el selector de orden
+- **Indicadores visuales** - Identifica rápidamente conversaciones críticas
 
-### Colaboração em Equipe
+### Colaboración en Equipo
 
-- **Atribuição de agentes** - Manual ou automática
-- **Atribuição de equipes** - Encaminhe para departamentos específicos
-- **Menções (@)** - Notifique colegas nas conversas
-- **Notas privadas** - Comunique-se internamente sem o cliente ver
-- **Contador de menções em nota privada** - Menções internas atualizam o badge de Menções no sidebar em tempo real
-- **Participantes** - Múltiplos agentes em uma conversa
+- **Asignación de agentes** - Manual o automática
+- **Asignación de equipos** - Deriva a departamentos específicos
+- **Menciones (@)** - Notifica a compañeros en conversaciones
+- **Notas privadas** - Comunícate internamente sin que el cliente vea
+- **Menciones en nota privada con contador** - Las menciones internas elevan el contador del filtro Menciones en el sidebar
 
-### Participantes de Conversa *(Enterprise)*
+### Participantes de Conversación
 
-Adicione múltiplos agentes para colaborar em conversas:
+Múltiples agentes pueden colaborar en una sola conversación:
 
-**Funcionalidades:**
+- **Añadir participantes** - Incluye agentes adicionales en conversaciones
+- **Notificaciones de participantes** - Todos los participantes reciben alertas de mensajes
+- **Fijar conversaciones** - Los participantes pueden fijar conversaciones importantes
+- **Lista de participantes** - Ve todos los agentes involucrados en una conversación
+- **Remover participantes** - Quita agentes cuando ya no sean necesarios
+- **Auto-participantes** - Los agentes que interactúan se añaden automáticamente
 
-- **Adicionar participantes** - Convide agentes para ajudar na conversa
-- **Remover participantes** - Gerencie quem pode ver/interagir
-- **Notificações** - Participantes recebem atualizações
-- **Colaboração** - Todos podem responder e adicionar notas
-- **Visibilidade** - Participantes veem toda a conversa
+### Respuestas Predefinidas (Canned Responses)
 
-**Casos de uso:**
+Plantillas rápidas con atajos para respuestas más ágiles:
 
-- Escalonar para especialistas mantendo o agente original
-- Supervisores acompanhando conversas específicas
-- Trabalho em equipe para casos complexos
+- **Respuestas personales** - Visibles solo para ti
+- **Respuestas compartidas** - Disponibles para todo el equipo
+- **Activación por atajo** - Escribe / para acceder a respuestas
+- **Sustitución de variables** - Placeholders dinámicos para info del contacto
+- **Soporte de adjuntos** - Incluye imágenes, documentos y archivos con respuestas
+- **Múltiples adjuntos** - Adjunta múltiples archivos a una sola respuesta predefinida
+- **Adjuntos también en nueva conversación** - Reutiliza archivos de respuestas predefinidas incluso al iniciar conversaciones nuevas
+- **Contenido enriquecido** - Formatea texto con soporte markdown
 
-### Conversas Fixadas (Pinned)
+### Grabador de Voz
 
-Fixe conversas importantes para acesso rápido:
+- **Notas de audio** - Graba y envía mensajes de voz
+- **Grabación fácil** - Un clic para iniciar/detener
+- **Vista previa** - Escucha antes de enviar
 
-**Funcionalidades:**
+### Otras Herramientas de Productividad
 
-- **Fixar/desafixar** - Mantenha conversas importantes no topo
-- **Seção dedicada** - Lista separada de conversas fixadas
-- **Por agente** - Cada agente gerencia suas próprias fixadas
-- **Acesso rápido** - Nunca perca de vista casos importantes
+- **Adjuntos multimedia** - Imágenes, videos, documentos
+- **Soporte para archivos PFX** - Adjunta certificados `.pfx` con reconocimiento visual y de tipo adecuado
+- **Emojis y GIFs** - Comunicación más cercana
+- **Respuesta citada (Reply-to)** - Responde a mensajes específicos
+- **Borradores de mensajes** - Guarda automáticamente borradores mientras escribes, se restauran al volver a la conversación
+- **Editor de respuesta redimensionable** - Ajusta manualmente la altura del cuadro de respuesta para trabajar mejor en conversaciones largas
+- **Editar mensajes enviados** - Corrige mensajes después de enviarlos (según proveedor)
+- **Eliminar mensajes enviados** - Elimina mensajes para todos (según proveedor)
 
-**Casos de uso:**
+### Conversaciones Fijadas
 
-- VIPs que precisam de atenção constante
-- Casos em andamento de alta prioridade
-- Conversas com acompanhamento contínuo
+Mantén las conversaciones importantes en la parte superior de tu lista:
 
-### Filtros Personalizados (Pastas)
+- **Fijar conversaciones** - Fija cualquier conversación arriba
+- **Desfijar cuando quieras** - Quita el fijado cuando ya no sea necesario
+- **Fijados por agente** - Cada agente tiene su propia lista de fijados
+- **Indicador visual** - Las conversaciones fijadas están claramente marcadas
 
-Crie visões personalizadas para organizar suas conversas:
+### Filtros Personalizados (Carpetas)
 
-**Funcionalidades:**
+Guarda tus filtros de uso frecuente para acceso rápido:
 
-- **Criar pastas** - Organize conversas em grupos lógicos
-- **Filtros múltiplos** - Combine condições (status, etiquetas, agente, inbox)
-- **Multi-etiqueta consistente** - Normalização de valores em filtros com múltiplas etiquetas
-- **Salvar visões** - Acesse rapidamente filtros frequentes
-- **Acesso no sidebar** - Pastas aparecem no menu lateral
+- **Crear carpetas** - Guarda combinaciones de filtros como carpetas personalizadas
+- **Filtros de conversación** - Filtra conversaciones por cualquier criterio
+- **Filtros de contacto** - Filtra contactos por atributos
+- **Acceso rápido** - Un clic para aplicar filtros guardados
+- **Editar y eliminar** - Gestiona tus carpetas fácilmente
+- **Límites por usuario** - Cada usuario puede crear múltiples carpetas
+- **Multi-etiqueta consistente** - Normalización de valores para filtros con múltiples etiquetas
 
-**Tipos de filtros:**
+### Resolución Automática
 
-- **Por status** - Abertas, pendentes, adiadas, resolvidas
-- **Por etiqueta** - Conversas com etiquetas específicas
-- **Por agente** - Conversas de agentes específicos
-- **Por inbox** - Conversas de canais específicos
-- **Por equipe** - Conversas de equipes específicas
-- **Combinações** - Múltiplas condições com AND/OR
+- **Auto-resolve** - Cierra conversaciones inactivas automáticamente
+- **Temporizadores configurables** - Define tiempos por inbox
+- **Limpieza de conversaciones huérfanas** - Elimina automáticamente conversaciones sin contacto asociado
 
-### Respostas Prontas (Canned Responses)
+### Acciones en Lote (Bulk Actions)
 
-Templates rápidos com atalhos para respostas mais rápidas:
+Realiza operaciones masivas sobre múltiples conversaciones simultáneamente:
 
-- **Respostas pessoais** - Visíveis apenas para você
-- **Respostas compartilhadas** - Disponíveis para toda a equipe
-- **Ativação por atalho** - Digite / para acessar respostas
-- **Substituição de variáveis** - Placeholders dinâmicos para dados do contato
-- **Suporte a anexos** - Inclua imagens, documentos e arquivos nas respostas
-- **Múltiplos anexos** - Anexe vários arquivos a uma resposta pronta
-- **Anexos também em nova conversa** - Reutilize arquivos de respostas prontas mesmo ao iniciar uma nova conversa
-- **Conteúdo rico** - Formate texto com suporte a markdown
+- **Resolver en lote** - Cierra múltiples conversaciones de una vez
+- **Reabrir en lote** - Reabre conversaciones resueltas
+- **Posponer en lote** - Aplica snooze a varias conversaciones
+- **Asignar en lote** - Asigna agente o equipo a múltiples chats
+- **Etiquetar en lote** - Aplica etiquetas masivamente
+- **Atajos de teclado** - Ejecuta acciones bulk con hotkeys
 
-### Gravador de Voz
+### Acciones sobre Contactos (Bulk)
 
-- **Notas de áudio** - Grave e envie mensagens de voz
-- **Gravação fácil** - Iniciar/parar com um clique
-- **Preview** - Ouça antes de enviar
-
-### Outras Ferramentas de Produtividade
-
-- **Anexos multimídia** - Imagens, vídeos, documentos
-- **Suporte a arquivos PFX** - Envie certificados `.pfx` com reconhecimento visual e de tipo adequado
-- **Emojis e GIFs** - Comunicação mais próxima
-- **Resposta citada (Reply-to)** - Responda a mensagens específicas
-- **Rascunhos de mensagens** - Salva automaticamente rascunhos enquanto você digita, restaurados ao voltar à conversa
-- **Editor de resposta redimensionável** - Ajuste manualmente a altura da caixa de resposta para lidar melhor com conversas longas
-- **Edição de mensagens** - Corrija mensagens enviadas (canais compatíveis)
-- **Exclusão de mensagens** - Remova mensagens enviadas por engano
-
-### Resolução Automática
-
-- **Auto-resolve** - Feche conversas inativas automaticamente
-- **Temporizadores configuráveis** - Defina tempos por caixa de entrada
-- **Limpeza de conversas órfãs** - Remove automaticamente conversas sem contato associado
-
-### Ações em Lote (Bulk Actions)
-
-Realize operações em massa em múltiplas conversas simultaneamente:
-
-- **Resolver em lote** - Feche múltiplas conversas de uma vez
-- **Reabrir em lote** - Reabra conversas resolvidas
-- **Adiar em lote** - Aplique snooze em várias conversas
-- **Atribuir em lote** - Atribua agente ou equipe a múltiplos chats
-- **Etiquetar em lote** - Aplique etiquetas em massa
-- **Atalhos de teclado** - Execute ações bulk com hotkeys
-
-### Ações sobre Contatos (Bulk)
-
-- **Mesclar contatos** - Combine contatos duplicados
-- **Etiquetar contatos** - Aplique etiquetas a múltiplos contatos
-- **Excluir contatos** - Exclusão em massa com confirmação
+- **Fusionar contactos** - Combina contactos duplicados
+- **Etiquetar contactos** - Aplica etiquetas a múltiples contactos
+- **Eliminar contactos** - Borrado masivo con confirmación
 
 ### Command Bar (Barra de Comandos)
 
-Acesso rápido a qualquer ação via teclado:
+Acceso rápido a cualquier acción mediante teclado:
 
-- **Ativação rápida** - Abra com `Cmd/Ctrl + K`
-- **Busca de ações** - Encontre comandos digitando
-- **Navegação** - Vá para conversas, contatos, configurações
-- **Mudança de aparência** - Modo claro, escuro ou sistema
-- **Atribuição rápida** - Atribua agentes ou equipes
-- **Mudança de status** - Resolva, reabra, adie
-- **Ações de IA** - Acesse funções do Captain
+- **Activación rápida** - Abre con `Cmd/Ctrl + K`
+- **Búsqueda de acciones** - Encuentra comandos escribiendo
+- **Navegación** - Ir a conversaciones, contactos, configuración
+- **Cambio de apariencia** - Modo claro, oscuro o sistema
+- **Asignación rápida** - Asigna agentes o equipos
+- **Cambio de estado** - Resuelve, reabre, pospone
+- **Acciones AI** - Accede a funciones de Captain
 
-### Modo Escuro (Dark Mode)
+### Modo Oscuro (Dark Mode)
 
-- **Tema escuro** - Interface otimizada para ambientes com pouca luz
-- **Tema claro** - Interface tradicional clara
-- **Modo sistema** - Segue a preferência do sistema operacional
-- **Widget adaptável** - O widget também suporta modo escuro
+- **Tema oscuro** - Interfaz optimizada para ambientes con poca luz
+- **Tema claro** - Interfaz tradicional clara
+- **Modo sistema** - Sigue la preferencia del sistema operativo
+- **Widget adaptable** - El widget también soporta dark mode
 
 ---
 
-## 💬 Comunicação Interna da Equipe
+## 💬 Comunicación Interna del Equipo
 
 ### Salas de Chat (Chat Rooms) *(Mega)*
 
-Sistema de salas de chat internas para comunicação fluida da equipe sem sair da plataforma. Perfeito para coordenação, perguntas rápidas e discussões internas.
+Sistema de salas de chat internas para comunicación fluida del equipo sin salir de la plataforma. Perfecto para coordinación, preguntas rápidas y discusiones internas.
 
-**Por que Salas de Chat Internas?**
+**¿Por qué Salas de Chat Internas?**
 
-Mantenha sua equipe conectada e produtiva. Em vez de usar ferramentas externas como Slack ou Teams para comunicação interna, gerencie tudo em um só lugar junto com as conversas com clientes.
+Mantén a tu equipo conectado y productivo. En lugar de usar herramientas externas como Slack o Teams para comunicación interna, gestiona todo en un solo lugar junto a las conversaciones con clientes.
 
-**Funcionalidades Principais:**
+**Funcionalidades Principales:**
 
-**Gestão de Salas (Settings):**
+**Gestión de Salas (Settings):**
 
-- **Criar salas** - Administradores podem criar salas com nome e descrição
-- **Adicionar usuários** - Seleção múltipla de membros da equipe de sua conta
-- **Editar salas** - Atualizar nome, descrição e membros pelo menu de três pontos do cabeçalho
-- **Excluir salas** - Remover salas com confirmação de segurança
-- **Avatares de sala** - Imagens personalizadas opcionais para cada sala
-- **Chamadas de áudio e vídeo** - Comunicação WebRTC entre membros em DMs, grupos e canais, com tons e histórico de chamadas em andamento, perdidas e concluídas
-- **Disponibilidade seletiva de chamadas** - As chamadas exigem a feature de conta independente `chat_room_calls`, desabilitada por padrão e habilitável apenas para contas selecionadas; as mensagens das salas continuam disponíveis sem ela
-- **Conectividade ICE administrável** - Super Admin > Call ICE permite configurar STUN/TURN e suas credenciais sem reiniciar; as variáveis de ambiente `MEGA_CALL_*` continuam compatíveis quando não há valores salvos
-- **Conectividade premium por conta** - `chat_room_calls` usa Google STUN para chamadas P2P normais; a feature premium `premium_call_connectivity` muda essa conta para Call ICE e habilita TURN como fallback quando a configuração global está completa
-- **Experiência nativa de chamadas** - O áudio mantém o widget compacto do WhatsApp/Twilio; o vídeo usa um espaço amplo limitado ou uma janela flutuante dentro do Mega, com câmera e tela simultâneas, palco de apresentação, trilho de participantes, avatares e mute autorizado pelo iniciador para pequenos grupos controlados
-- **Localização** - Acessível em Settings > Chat Rooms
+- **Crear salas** - Los administradores pueden crear salas con nombre y descripción
+- **Agregar usuarios** - Selección múltiple de miembros del equipo de tu cuenta
+- **Editar salas** - Actualizar nombre, descripción y miembros desde el menú de tres puntos del encabezado
+- **Eliminar salas** - Borrar salas con confirmación de seguridad
+- **Avatares de sala** - Imágenes personalizadas opcionales para cada sala
+- **Llamadas de audio y video** - Comunicación WebRTC entre miembros en DMs, grupos y canales, con tonos e historial de llamadas en curso, perdidas y completadas
+- **Disponibilidad selectiva de llamadas** - Las llamadas requieren la feature de cuenta independiente `chat_room_calls`, deshabilitada por defecto y habilitable solo para cuentas seleccionadas; la mensajería de salas continúa disponible sin ella
+- **Conectividad ICE administrable** - Super Admin > Call ICE permite configurar STUN/TURN y sus credenciales sin reiniciar; las variables de entorno `MEGA_CALL_*` siguen siendo compatibles cuando no hay valores guardados
+- **Conectividad premium por cuenta** - `chat_room_calls` usa Google STUN para llamadas P2P normales; la feature premium `premium_call_connectivity` cambia esa cuenta a Call ICE y habilita TURN como respaldo cuando la configuración global está completa
+- **Experiencia nativa de llamadas** - El audio conserva el widget compacto de WhatsApp/Twilio; el video usa un espacio amplio acotado o una ventana flotante dentro de Mega, con cámara y pantalla simultáneas, escenario de presentación, rail de participantes, avatares y mute autorizado por el iniciador para grupos pequeños controlados
+- **Ubicación** - Accesible desde Settings > Chat Rooms
 
-> **Nota:** As configurações de Salas de chat gerenciam apenas canais (públicos e privados). Mensagens diretas (DMs) são conversas pessoais gerenciadas a partir da barra lateral de chat e não aparecem nem podem ser editadas/excluídas em Settings.
+> **Nota:** Los ajustes de Salas de chat gestionan únicamente canales (públicos y privados). Los mensajes directos (DM) son conversaciones personales que se gestionan desde la barra lateral de chat y no aparecen ni pueden editarse/eliminarse en Settings.
 
-**Permissões e Visibilidade:**
+**Permisos y Visibilidad:**
 
-- **Administradores** - Veem TODAS as salas da conta na barra lateral, podem criar/editar/excluir qualquer canal, podem participar de todas as salas
-- **Agentes e Funções Personalizadas** - Apenas veem as salas onde são membros na barra lateral, só podem participar de suas salas atribuídas, não podem criar/editar/excluir salas
+- **Administradores** - Ven TODAS las salas de la cuenta en el sidebar, pueden crear/editar/eliminar cualquier canal, pueden participar en todas las salas
+- **Agentes y Roles Personalizados** - Solo ven las salas donde son miembros en el sidebar, solo pueden participar en sus salas asignadas, no pueden crear/editar/eliminar salas
 
-**Interface de Chat:**
+**Interfaz de Chat:**
 
-- **Localização na barra lateral** - Conversas > Salas
-- **Visualização de sala** - Cabeçalho com nome da sala + lista de mensagens + campo de envio
-- **Design limpo** - 100% Tailwind CSS, moderno e responsivo
+- **Ubicación en el sidebar** - Conversations > Rooms
+- **Vista de sala** - Header con nombre de sala + lista de mensajes + input de envío
+- **Diseño limpio** - 100% Tailwind CSS, moderno y responsivo
 
-**Tipos de Mensagens:**
+**Tipos de Mensajes:**
 
-- **Mensagens de texto** - Comunicação de texto simples
-- **Multimídia** - Imagens, vídeos, arquivos de áudio, documentos
-- **Responder (Reply)** - Responder a mensagens específicas (cita a original)
-- **Notas privadas** - Mensagens visíveis apenas para agentes
-- **Gravação de áudio** - Gravador de áudio integrado para notas de voz
+- **Mensajes de texto** - Comunicación de texto simple
+- **Multimedia** - Imágenes, videos, archivos de audio, documentos
+- **Reply** - Responder a mensajes específicos (cita el original)
+- **Notas privadas** - Mensajes visibles solo para agentes
+- **Grabación de audio** - Grabador de audio integrado para notas de voz
 
-**Layout Inteligente de Mensagens:**
+**Diseño Inteligente de Mensajes:**
 
-- **Lado direito** - Suas próprias mensagens (saída)
-  - Cor de fundo diferente
-  - Seu avatar exibido
-- **Lado esquerdo** - Mensagens de outros usuários (entrada)
-  - Avatar do remetente exibido
-  - Identificação clara do remetente
+- **Lado derecho** - Tus propios mensajes (salientes)
+  - Color de fondo diferente
+  - Tu avatar mostrado
+- **Lado izquierdo** - Mensajes de otros usuarios (entrantes)
+  - Avatar del remitente mostrado
+  - Identificación clara del remitente
 
-**Notificações em Tempo Real:**
+**Notificaciones en Tiempo Real:**
 
-- **Integração WebSocket** - Usando Action Cable para entrega instantânea
-- **Atualizações ao vivo** - Mensagens aparecem imediatamente sem atualizar
-- **Transmissão inteligente** - Administradores recebem eventos de todas as salas, usuários regulares apenas de suas salas
-- **Rastreamento de eventos** - Eventos de mensagem criada e atualizada
+- **Integración WebSocket** - Usando Action Cable para entrega instantánea
+- **Actualizaciones en vivo** - Los mensajes aparecen inmediatamente sin refrescar
+- **Broadcast inteligente** - Los administradores reciben eventos de todas las salas, los usuarios regulares solo de sus salas
+- **Seguimiento de eventos** - Eventos de mensaje creado y actualizado
 
-**Segurança e Validações:**
+**Seguridad y Validaciones:**
 
-- **Acesso apenas para membros** - Apenas membros da sala podem ver e enviar mensagens
-- **Controles de administrador** - Apenas administradores podem gerenciar salas
-- **Validação de conta** - Associação à sala é validada em relação à conta
-- **Nomes únicos** - Nomes de sala devem ser únicos por conta
+- **Acceso solo para miembros** - Solo los miembros de la sala pueden ver y enviar mensajes
+- **Controles de administrador** - Solo los administradores pueden gestionar salas
+- **Validación de cuenta** - La membresía de sala se valida contra la cuenta
+- **Nombres únicos** - Los nombres de sala deben ser únicos por cuenta
 
-**Benefícios para sua equipe:**
+**Beneficios para tu equipo:**
 
-- Não precisa alternar entre ferramentas para comunicação interna
-- Discussões contextuais sem sair da visualização de clientes
-- Comunicação organizada por tópico ou departamento
-- Histórico completo de mensagens e arquivo pesquisável
-- Controle de acesso seguro baseado em permissões
+- No necesitas cambiar entre herramientas para comunicación interna
+- Discusiones contextuales sin salir de la vista de clientes
+- Comunicación organizada por tema o departamento
+- Historial completo de mensajes y archivo buscable
+- Control de acceso seguro basado en permisos
 
 ---
 
-## 🤖 Automação e IA
+## 🤖 Automatización e IA
 
-### Regras de Automação
+### Reglas de Automatización
 
-Configure fluxos automáticos baseados em eventos e condições:
+Configura flujos automáticos basados en eventos y condiciones:
 
-- **Regras com espera** - Execute ações entre 10 minutos e 30 dias depois, enquanto a conversa permanecer em um status selecionado, o cliente não responder ou ninguém da equipe responder. Uma resposta, mudança de status ou condição não atendida cancela a execução pendente.
+- **Reglas con espera** - Ejecuta acciones entre 10 minutos y 30 días después, mientras la conversación siga en un estado seleccionado, el cliente no responda o no responda un miembro del equipo. Una respuesta, cambio de estado o condición incumplida cancela la ejecución pendiente.
 
-**Eventos disponíveis:**
+**Eventos disponibles:**
 
-- Conversa criada
-- Conversa atualizada
-- Mensagem recebida
-- Mensagem criada
+- Conversación creada
+- Conversación actualizada
+- Mensaje recibido
+- Mensaje creado
 
-**Condições:**
+**Condiciones:**
 
-- Status, caixa de entrada, etiquetas, idioma
+- Estado, inbox, etiquetas, idioma
 - País, navegador, email
 - Atributos personalizados
-- Conteúdo da mensagem
-- Nota privada (mensagem interna)
+- Contenido del mensaje
+- Nota privada (mensaje interno)
 
-**Ações:**
+**Acciones:**
 
-- Enviar mensagem automática
-- Atribuir agente/equipe
-- Atribuir ao último agente que respondeu
-- Remover atribuição de agente/equipe
-- Adicionar/remover etiquetas
-- Alterar status ou prioridade
+- Enviar mensaje automático
+- Asignar agente/equipo
+- Asignar al último agente que respondió
+- Quitar asignación de agente/equipo
+- Añadir/quitar etiquetas
+- Cambiar estado o prioridad
 - Enviar webhook
-- Enviar transcrição por email
-- Silenciar conversa
-- Redistribuir para agentes online
+- Enviar transcripción por email
+- Silenciar conversación
+- Redistribuir a agentes en línea
+
+### Flow Builder *(Mega - MVP)*
+
+Diseña automatizaciones conversacionales desde un canvas visual con bloques conectables.
+
+- **Canvas visual tipo n8n** - Construye flujos arrastrando bloques, conectando rutas y editando cada paso desde un inspector lateral
+- **Bloques iniciales** - Trigger, mensaje, pregunta, condición, acción, transferencia, espera, webhook y fin
+- **Acciones reutilizadas de Automation** - El nodo Acción usa los mismos selectores para etiquetas, equipos, agentes, prioridad, email, webhook, nota privada y estados compatibles
+- **Borradores y publicación versionada** - Edita sin afectar la versión publicada y publica snapshots estables
+- **Validación antes de publicar** - Detecta ciclos, múltiples disparadores, conexiones rotas y bloques incompletos
+- **Runtime inicial de eventos** - Los flows publicados pueden iniciar desde eventos internos compatibles con Automation y ejecutar mensajes, preguntas, condiciones, acciones básicas y handoff
+- **Base para IVR y voz** - El mismo canvas queda preparado para sumar nodos de llamadas e IVR en una fase posterior
 
 ### Macros
 
-Execute múltiplas ações com um só clique:
+Ejecuta múltiples acciones con un solo clic:
 
-- **Macros pessoais** - Visíveis apenas para você
-- **Macros globais** - Disponíveis para toda a equipe
-- **Ações em cadeia** - Combine múltiplas operações
+- **Macros personales** - Visibles solo para ti
+- **Macros globales** - Disponibles para todo el equipo
+- **Acciones en cadena** - Combina múltiples operaciones
 
 ### Agent Bots
 
-- **Bots de webhook** - Conecte com lógica externa via HTTP
-- **Integração Typebot** - Conecte com fluxos conversacionais do Typebot
-- **Handover para humanos** - Transferência suave para agentes reais
-- **Handover inteligente** - Se um humano responder em conversa pendente do bot, a transferência ocorre automaticamente
-- **Bots por caixa de entrada** - Configure bots específicos por canal
-- **Atribuição manual restrita por inbox** - O seletor de agente oferece apenas Agent Bots ativos configurados no inbox da conversa
-- **Indicador de digitação** - Os bots podem ativar e desativar o indicador "digitando..." para uma experiência mais natural
-- **Opções avançadas de webhook** *(Enterprise)* - Configure timeout personalizado para requisições do bot, novas tentativas automáticas em caso de falha e tratamento granular de erros; melhora a confiabilidade das integrações com sistemas externos lentos ou instáveis
-- **Assinaturas de webhook por canal** - Permite assinar eventos de saída de Agent Bots e canais API para validar autenticidade ponta a ponta
+- **Bots de webhook** - Conecta con lógica externa vía HTTP
+- **Integración Typebot** - Conecta con flujos conversacionales de Typebot
+- **Handover a humanos** - Transferencia fluida a agentes reales
+- **Handover inteligente** - Si un humano responde en conversación pendiente del bot, se transfiere automáticamente
+- **Vencimiento con handover** - Al vencer una sesión de Webhook, se libera el bot y se intenta asignar la conversación abierta a un agente elegible; sin disponibilidad queda abierta y sin asignar
+- **Cola sin asignar humana** - Las conversaciones asignadas a un Agent Bot no aparecen en la cola Sin asignar; solo incluye conversaciones sin agente humano ni bot
+- **Bots por inbox** - Configura bots específicos por canal
+- **Asignación manual restringida por inbox** - El selector de agente solo ofrece Agent Bots activos configurados en el inbox de la conversación
+- **Indicador de escritura** - Los bots pueden activar y desactivar el indicador "escribiendo..." para una experiencia más natural
+- **Opciones avanzadas de webhook** *(Enterprise)* - Configura timeout personalizado para peticiones del bot, reintentos automáticos ante fallos, y manejo de errores granular; mejora la fiabilidad de integraciones con sistemas externos lentos o inestables
+- **Firmas de webhook por canal** - Permite firmar eventos salientes de Agent Bots y canales API para validar autenticidad extremo a extremo
 
-### Typebot *(Mega — Opções Avançadas)*
+### Typebot *(Mega — Opciones Avanzadas)*
 
-Além da integração padrão, a MEGA estende as capacidades do Typebot com comandos especiais:
+Además de la integración estándar de Typebot, MEGA extiende sus capacidades con comandos especiales:
 
-- **Atribuição de agente via MEGA_CMD** - Use o comando `MEGA_CMD:assign_agent:email@empresa.com` no Typebot para atribuir automaticamente a conversa a um agente específico
-- **Atribuição de equipe via MEGA_CMD** - Use `MEGA_CMD:assign_team:nome_equipe` para encaminhar a conversa à equipe correspondente de dentro do fluxo do bot
-- **Placeholders de lista** - Injete listas dinâmicas de agentes ou equipes como variáveis Typebot para criar menus de seleção personalizados
-- **Primeira mensagem só com mídia** - Abre corretamente nova conversa quando a primeira interação não tem texto
-- **Compatibilidade de localização** - Encaminha coordenadas em formato de link de mapas para continuidade do fluxo
-- **Delay padrão estável** - Comportamento mais previsível quando o bot não define atraso explícito
-- **Sem código adicional** - Tudo é configurado diretamente no fluxo do Typebot, sem modificar o bot da MEGA
+- **Asignación de agente vía MEGA_CMD** - Usa el comando `MEGA_CMD:assign_agent:email@empresa.com` en Typebot para asignar automáticamente la conversación a un agente específico
+- **Asignación de equipo vía MEGA_CMD** - Usa `MEGA_CMD:assign_team:nombre_equipo` para derivar la conversación al equipo correspondiente desde el flujo del bot
+- **Placeholders de lista** - Inyecta listas dinámicas de agentes o equipos como variables Typebot para crear menús de selección personalizados
+- **Primer mensaje multimedia** - Si la primera interacción llega solo con media, la conversación se abre correctamente
+- **Ubicación compatible** - Reenvío de coordenadas en formato de enlace de mapas para continuidad del flujo
+- **Delay por defecto estable** - Mejor consistencia en tiempos de espera cuando el bot no define delay explícito
+- **Sin código adicional** - Todo se configura directamente en el flujo de Typebot, sin modificar el bot de MEGA
 
 ### Captain *(Enterprise)*
 
-Assistente de IA avançado que transforma como sua equipe trabalha.
+Asistente de IA avanzado impulsado por modelos de lenguaje para automatización inteligente del servicio al cliente.
 
-**Assistentes de IA:**
+**Captain Assistants:**
 
-Crie assistentes especializados para diferentes necessidades:
+Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
 
-- **Múltiplos assistentes** - Configure assistentes diferentes por caixa de entrada
-- **Contexto personalizado** - Cada assistente entende seu domínio específico
-- **Personalidade configurável** - Defina tom, estilo e abordagem
-- **Revisão de FAQ por conversa** - Revise sugestões e suas conversas de origem permitidas; sugestões abertas podem ser editadas, aprovadas como FAQs confiáveis ou descartadas
-- **Modelos por função** - Configure modelos separados para Assistant, Copilot, sugestões e geração de FAQs a partir de documentos e PDFs
-- **Troca fácil** - Alterne entre assistentes conforme necessário
-- **Visão geral do assistente** - Monitore conversas atendidas, resolução automática, transferências, horas economizadas, reaberturas, profundidade da conversa, cobertura de conhecimento e resumos de período gerados por IA
-- **Compreensão de imagens** - O assistente pode analisar imagens enviadas nas conversas
-- **Suporte multimodal** - Processa texto e imagens simultaneamente para respostas contextuais
-- **Ignorar grupos** - Configure o assistente para não responder em conversas de grupo
-- **Alvos ignorados** - Defina conversas ou contatos específicos que o assistente deve pular
+- **Múltiples asistentes** - Crea diferentes asistentes para diferentes propósitos
+- **Configuración personalizada** - Ajusta temperatura, modelo y parámetros de comportamiento
+- **Revisión de FAQ desde conversaciones** - Revisa sugerencias y sus conversaciones fuente permitidas; las sugerencias abiertas se pueden editar, aprobar como FAQ confiables o descartar
+- **Modelos por función** - Configura modelos separados para Assistant, Copilot, sugerencias, generación de FAQs desde documentos y PDFs
+- **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
+- **Asignación a inbox** - Vincula asistentes a canales específicos
+- **Exclusividad con bots externos** - Captain no responde ni programa resoluciones automáticas en inboxes con un Agent Bot activo o Dialogflow
+- **Resumen del asistente** - Monitorea conversaciones atendidas, resolución automática, transferencias, horas ahorradas, reaperturas, profundidad de conversación, cobertura de conocimiento y resúmenes de periodo generados con IA
+- **Citas confiables** - Captain V2 muestra únicamente enlaces web públicos validados por el servidor, registra las fuentes realmente seleccionadas y mantiene las URLs renderizadas fuera del historial enviado al modelo; las sesiones anteriores conservan sus fuentes existentes
+- **Comprensión de imágenes** - El asistente puede analizar imágenes enviadas en las conversaciones
+- **Soporte multimodal** - Procesa texto e imágenes simultáneamente para respuestas contextuales
+- **Ignorar grupos** - Configura el asistente para no responder en conversaciones grupales
+- **Objetivos ignorados** - Define conversaciones o contactos específicos que el asistente debe omitir
 
-**Base de Conhecimento (Documentos):**
+**Captain Documents:**
 
-Treine o Captain com seu próprio conteúdo:
+Sube documentos para entrenar tu asistente de IA:
 
-- **Upload de arquivos** - PDF, Word, texto e mais
-- **URLs de sites** - Ingira páginas web automaticamente
-- **Campos de auto-sincronização** - Registre status e data da última sincronização para manter as fontes atualizadas
-- **Auto-sincronização escalonada** - Atualize fontes web conforme o plano com execução distribuída para evitar picos de carga
-- **Texto puro** - Adicione conhecimento diretamente
-- **FAQs** - Respostas estruturadas pergunta/resposta
-- **Vinculação com Help Center** - Use artigos existentes como base
+- **Carga de documentos** - Añade PDFs, archivos de texto y más (hasta 10MB)
+- **Procesamiento automático** - Los documentos se procesan e indexan automáticamente
+- **Campos de auto-sincronización** - Guarda estado y fecha de sincronización para mantener fuentes documentales alineadas
+- **Auto-sincronización escalonada** - Actualiza fuentes web según el plan con ejecución distribuida para evitar picos de carga
+- **Respuestas relacionadas** - Ve qué respuestas usan cada documento
+- **Gestión masiva** - Añade y elimina documentos fácilmente
 
-**Cenários de IA:**
+**Captain Scenarios:**
 
-Fluxos automatizados que o Captain pode executar:
+Configura escenarios y flujos de trabajo específicos:
 
-- **Ações predefinidas** - Mapeie ações comuns para o Captain executar
-- **Coleta de informação** - Recolha dados do cliente antes de transferir
-- **Execução de tarefas** - Deixe o Captain realizar ações por você
-- **Escalonamento inteligente** - Saiba quando transferir para humano
+- **Instrucciones personalizadas** - Define comportamiento para situaciones específicas
+- **Asignación de herramientas** - Asigna herramientas específicas por escenario
+- **Creación completa por MCP** - Las IA conectadas al MCP de la cuenta pueden guardar y actualizar IDs de herramientas integradas, personalizadas y MCP; los IDs no disponibles se rechazan explícitamente
+- **Reglas de activación** - Define cuándo aplica cada escenario
+- **Ordenamiento por prioridad** - Controla la precedencia de escenarios
 
-**Ferramentas Personalizadas:**
+**Captain Custom Tools:**
 
-Estenda as capacidades do Captain com integrações:
+Crea herramientas personalizadas para tu asistente de IA:
 
-- **Chamadas de API** - Conecte o Captain com sistemas externos
-- **Métodos HTTP ampliados** - Suporte a GET, POST, PUT, PATCH e DELETE nas ferramentas
-- **Ferramentas personalizadas** - Crie ações específicas para seu negócio
-- **Contexto dinâmico** - Busque informação em tempo real
+- **Contratos tipados completos** - Las tools personalizadas y MCP conservan objetos, arrays, enums y campos anidados; solo se ofrecen al escenario cuando están habilitadas y conectadas
 
-**Servidores MCP (Model Context Protocol):**
+- **Integraciones HTTP** - Conecta con APIs externas (GET/POST/PUT/PATCH/DELETE)
+- **Autenticación** - Soporte para Basic, Bearer y API Key
+- **Mapeo de parámetros** - Define parámetros de entrada/salida
+- **Activar/desactivar** - Alterna herramientas según necesites
 
-Conecte servidores MCP para ampliar as capacidades do seu assistente:
+**Captain MCP Servers:**
 
-- **MCP nativo por conta** - Crie servidores MCP por conta com endpoint dedicado
-- **Acesso seguro e flexível** - Compatível com autenticação OAuth e token estático
-- **Arquivos de qualquer provedor de IA** - O ChatGPT descobre seu seletor nativo; Claude e outros clientes podem usar URL HTTPS temporária, base64, multipart ou signed ID sem exigir uma URL pública permanente
-- **Upload direto autenticado** - Clientes MCP JSON podem solicitar destinos assinados pela API sem depender de CSRF do navegador
-- **Outbound universal via MCP** - Inicie texto, mídia ou templates para telefone, email, contato ou identidade do provedor; arquivos diretos também funcionam em cabeçalhos de mídia de templates, e referências inválidas são rejeitadas antes do envio
-- **Catálogo de uso cotidiano** - Publica ferramentas prontas para operações diárias da conta
-- **Cobertura operacional ampliada** - Inclui agendamento, tarefas, campanhas, SLA, calendário, relatórios, notificações e chat interno; não expõe importação nem exportação de dados
-- **Help Center via MCP** - Consulte, busque e obtenha artigos e categorias a partir de agentes conectados
-- **Atribuição a assistentes** - Vincule servidores MCP a assistentes específicos
-- **Gestão centralizada** - Administre todos seus servidores MCP nas configurações
+Conecta servidores MCP (Model Context Protocol) para ampliar las capacidades de tu asistente:
 
-**Modo Auto-Resolve do Captain:**
+- **MCP nativo por cuenta** - Crea servidores MCP propios por cuenta con endpoint dedicado
+- **Ejecución Captain autenticada** - Las acciones del MCP nativo conservan la identidad del asistente mediante pruebas firmadas de un solo uso; los mensajes confirmados quedan atribuidos a Captain sin duplicar respuestas ni abrir la conversación
+- **Playground fiel a producción** - Con Captain V2 prueba handoffs a escenarios y carga únicamente sus tools asignadas; el flujo legacy prueba el asistente base. Ninguno permite selección directa desde el mensaje
+- **Acceso seguro y flexible** - Compatible con autenticación OAuth y token estático
+- **Archivos para cualquier proveedor de IA** - ChatGPT descubre su selector nativo; Claude y otros clientes pueden usar URL temporal HTTPS, base64, multipart o signed ID sin exigir una URL pública permanente
+- **Carga directa autenticada** - Los clientes MCP JSON pueden solicitar destinos firmados mediante la API sin depender de CSRF del navegador
+- **Outbound universal por MCP** - Inicia texto, multimedia o plantillas para teléfono, email, contacto o identificador del proveedor; admite archivos directos también en cabeceras multimedia de plantillas y rechaza referencias inválidas antes del envío
+- **Catálogo de uso cotidiano** - Publica herramientas listas para operaciones diarias de la cuenta
+- **Cobertura operativa ampliada** - Incluye programación, tareas, campañas, SLA, calendario, reportes, notificaciones y chat interno; no expone importación ni exportación de datos
+- **Help Center por MCP** - Consulta, busca y obtiene artículos y categorías desde agentes conectados
+- **Asignación a asistentes** - Vincula servidores MCP a asistentes específicos
+- **Gestión centralizada** - Administra todos tus servidores MCP desde la configuración
 
-Configure como o Captain gerencia a resolução automática de conversas:
+**Captain Auto-Resolve Mode:**
 
-- **Modo avaliado** - O Captain analisa o contexto e decide autonomamente se resolve ou mantém a conversa aberta
-- **Modo legado** - Comportamento original: resolve automaticamente conversas pendentes com base no temporizador
-- **Modo desativado** - O Captain não resolve conversas automaticamente
-- **Por conta** - Configurável no nível da conta nas configurações do Captain
+Configura cómo Captain maneja la resolución automática de conversaciones:
 
-**Copilot para Agentes:**
+- **Modo evaluado** - Captain analiza el contexto y decide autónomamente si resolver o mantener abierta la conversación
+- **Modo legado** - Comportamiento anterior: resuelve automáticamente conversaciones pendientes según el temporizador
+- **Modo deshabilitado** - Captain no resuelve conversaciones automáticamente
+- **Por cuenta** - Configurable a nivel de cuenta en la sección Captain
 
-Assistência em tempo real enquanto os agentes trabalham:
+**Captain Copilot:**
 
-- **Sugestões de resposta** - IA gera respostas sugeridas baseadas no contexto
-- **Resumo de conversa** - Obtenha contexto rapidamente de conversas longas
-- **Busca no Help Center** - Encontre artigos relevantes automaticamente
-- **Melhoria de texto** - Corrija gramática e melhore tom
-- **Tradução instantânea** - Traduza mensagens on-the-fly
+Asistencia de IA en tiempo real para tus agentes:
 
-**Funcionalidades de IA:**
+- **Hilos de Copilot** - Conversaciones persistentes con la IA
+- **Contexto inteligente** - La IA entiende el contexto de la conversación
+- **Herramientas de agente** - Busca conversaciones, contactos, artículos
+- **Sugerencias** - Sugerencias de respuesta impulsadas por IA
+- **Acceso a atributos de contacto** - Captain puede leer y usar los atributos personalizados del contacto para respuestas más precisas
 
-- **Correção gramatical** - Conserte erros em um clique
-- **Expansão de texto** - Amplie respostas curtas
-- **Simplificação** - Torne respostas complexas mais claras
-- **Mudança de tom** - Formal, amigável, profissional
-- **Resumos** - Condense conversas longas
+**Acciones de IA:**
 
-**Transcrição de Áudio:**
+- **Sugerencias de respuesta** - La IA genera respuestas sugeridas
+- **Resumen de conversación** - Obtén contexto rápidamente
+- **Búsqueda de FAQs** - Encuentra FAQs relevantes automáticamente
+- **Handoff** - Transferencia inteligente a agentes humanos
+- **Etiquetado automático** - La IA sugiere etiquetas para conversaciones
+- **Actualizaciones de prioridad** - La IA recomienda cambios de prioridad
+- **Notas privadas** - La IA puede añadir notas internas
 
-Transcreva automaticamente mensagens de áudio para texto:
+**Transcripción de Audio:**
 
-- **Transcrição automática** - Converta notas de voz em texto legível
-- **Controle de gravações de chamadas** - Ative ou desative a transcrição por provedor (WhatsApp Cloud e WaVoIP)
-- **Diarização de chamadas** - Separa gravações por turno usando o nome do contato e do agente atribuído
-- **Transcrição manual** - Enfileira a transcrição pelo menu contextual quando uma mensagem de áudio ainda não tem texto
-- **Modelos OpenAI** - Usa GPT-4o Mini Transcribe por padrão para notas de voz, com Whisper disponível como override por conta; para gravações de chamadas, normaliza o áudio e combina diarização GPT-4o com GPT-4o Transcribe para melhorar a fidelidade
-- **Multi-idioma** - Suporte para múltiplos idiomas
-- **Contexto nas conversas** - Os agentes podem ler o conteúdo dos áudios rapidamente
+Transcribe automáticamente mensajes de audio a texto:
 
-**Provedores de IA suportados:**
+- **Transcripción automática** - Convierte notas de voz en texto legible
+- **Control de grabaciones de llamadas** - Activa o desactiva la transcripción de grabaciones por proveedor (WhatsApp Cloud y WaVoIP)
+- **Diarización de llamadas** - Separa las grabaciones por turno usando el nombre del contacto y del agente asignado
+- **Transcripción manual** - Permite encolar la transcripción desde el menú contextual cuando un audio aún no tiene texto
+- **Modelos OpenAI** - Usa GPT-4o Mini Transcribe por defecto para notas de voz, con Whisper disponible como override por cuenta; para grabaciones de llamadas normaliza el audio y combina GPT-4o diarizado con GPT-4o Transcribe para mejorar fidelidad
+- **Multi-idioma** - Soporte para múltiples idiomas
+- **Contexto en conversaciones** - Los agentes pueden leer el contenido de los audios rápidamente
+
+**Proveedores de IA soportados:**
 
 - **OpenAI** - GPT-4o, GPT-4, GPT-3.5 Turbo
 - **Anthropic** - Claude (Sonnet, Opus, Haiku)
 - **Google** - Gemini (Pro, Flash)
-- **Azure OpenAI** - Implementações de OpenAI no Azure
-- **Amazon Bedrock** - Modelos hospedados na AWS
-- **DeepSeek** - Modelos de IA de código aberto
+- **Azure OpenAI** - Implementaciones de OpenAI en Azure
+- **Amazon Bedrock** - Modelos alojados en AWS
+- **DeepSeek** - Modelos de IA de código abierto
 
 ---
 
-## 👥 CRM e Gestão de Contatos
+## 👥 CRM y Gestión de Contactos
 
-### Perfis de Contato
+### Perfiles de Contacto
 
-- **Informação completa** - Nome, email, telefone, localização
-- **Avatar automático** - Foto de perfil quando disponível
-- **Última atividade** - Acompanhamento de interações
-- **Tipo de contato** - Visitante, Lead, Cliente
+- **Información completa** - Nombre, email, teléfono, ubicación
+- **Avatar automático** - Foto de perfil cuando disponible
+- **Última actividad** - Seguimiento de interacciones
+- **Tipo de contacto** - Visitante, Lead, Cliente
 
 ### Atributos Personalizados
 
-- **Campos flexíveis** - Crie atributos para contatos e conversas
-- **Tipos de dados** - Texto, número, lista, data, checkbox, link
-- **Integração com automações** - Use atributos como condições
-- **Visibilidade configurável** *(Enterprise)* - Defina quais funções (roles) podem ver cada atributo; oculte campos sensíveis de agentes com nível inferior
+- **Campos flexibles** - Crea atributos para contactos y conversaciones
+- **Tipos de datos** - Texto, número, lista, fecha, checkbox, enlace
+- **Integración con automatizaciones** - Usa atributos como condiciones
+- **Visibilidad configurable** *(Enterprise)* - Define qué roles pueden ver cada atributo; oculta campos sensibles a agentes de menor nivel
 
 ### Etiquetas
 
-- **Organização flexível** - Categorize contatos e conversas
-- **Etiquetas de conversa** - Classifique por tema ou status
-- **Busca rápida ao atribuir** - Filtre etiquetas de forma aproximada no menu de contexto de uma conversa, com as já atribuídas primeiro
-- **Etiquetas de contato** - Segmente sua base de clientes
-- **Cores personalizadas** - Identificação visual rápida
+- **Organización flexible** - Categoriza contactos y conversaciones
+- **Etiquetas de conversación** - Clasifica por tema o estado
+- **Búsqueda rápida al asignar** - Filtra etiquetas de forma difusa desde el menú contextual de una conversación, con las ya asignadas primero
+- **Etiquetas de contacto** - Segmenta tu base de clientes
+- **Colores personalizados** - Identificación visual rápida
 
 ### Empresas/Companies *(Enterprise)*
 
-- **Agrupe contatos** - Organize contatos por empresa
-- **Domínio automático** - Associação por domínio de email
-- **Visão unificada** - Histórico de todas as conversas da empresa
-- **Favicon automático** - O sistema baixa automaticamente o favicon do domínio da empresa para exibir como avatar; funciona com qualquer site que tenha favicon configurado
+- **Agrupa contactos** - Organiza contactos por empresa
+- **Dominio automático** - Asociación por dominio de email
+- **Vista unificada** - Historial de todas las conversaciones de la empresa
+- **Favicon automático** - El sistema descarga automáticamente el favicon del dominio de la empresa para mostrar como avatar; funciona con cualquier sitio web que tenga favicon configurado
 
 ### Notas
 
-- **Notas por contato** - Documente informações importantes
-- **Histórico interno** - Mantenha contexto entre interações
+- **Notas por contacto** - Documenta información importante
+- **Historial interno** - Mantén contexto entre interacciones
 
-### Importação de Dados
+### Importación de Datos
 
-- **Upload de CSV** - Importe contatos em massa
-- **Mapeamento de campos** - Associe colunas com atributos
-- **Validação automática** - Detecte erros antes de importar
-- **Acesso controlado** - Importação e exportação disponíveis para administradores e gestores de contatos
+- **CSV Upload** - Importa contactos masivamente
+- **Mapeo de campos** - Asocia columnas con atributos
+- **Validación automática** - Detecta errores antes de importar
+- **Acceso controlado** - Importación y exportación disponibles para administradores y responsables de contactos
 
-### Bloqueio de Contatos
+### Bloqueo de Contactos
 
-- **Bloqueio manual** - Evite mensagens de contatos problemáticos
-- **Filtragem automática** - Não aparecem na caixa de entrada principal
-- **Bloqueio ativo no WhatsApp** - Mensagens recebidas de contatos bloqueados são descartadas antes de abrir conversa
+- **Bloqueo manual** - Evita mensajes de contactos problemáticos
+- **Filtrado automático** - No aparecen en la bandeja principal
+- **Bloqueo activo en WhatsApp** - Los mensajes entrantes de contactos bloqueados se descartan automáticamente antes de abrir conversación
 
 ### CRM V2 *(Beta)*
 
-Sistema avançado de gestão de relacionamento com clientes:
+Gestión de contactos mejorada con mayor flexibilidad:
 
-**Visão 360° do cliente:**
-
-- **Perfil unificado** - Todas as informações em um lugar
-- **Histórico completo** - Todas as interações e canais
-- **Timeline de atividades** - Cronologia de eventos
-
-**Funcionalidades avançadas:**
-
-- **Campos personalizados** - Crie atributos ilimitados
-- **Empresas/Organizações** - Agrupe contatos por empresa
-- **Busca por empresa** - Encontre contatos pelo nome da empresa/organização
-- **Relacionamentos** - Conecte contatos relacionados
-- **Scoring de leads** - Priorize contatos por valor
-- **Segmentação** - Crie segmentos dinâmicos
-- **Scroll infinito** - Carregamento automático de mais contatos ao rolar
-- **Paginação inteligente** - Indicador de mais resultados disponíveis
+- **Contactos sin identificadores** - Permite contactos sin email o teléfono
+- **Búsqueda mejorada** - Mejor descubrimiento y filtrado de contactos
+- **Búsqueda por empresa** - Encuentra contactos por nombre de empresa/compañía
+- **Contactos resueltos** - Lógica más inteligente para identificar contactos reales
+- **Compatibilidad con exportación** - Funciona con todas las funciones de exportación
+- **Scroll infinito** - Carga automática de más contactos al desplazarte
+- **Paginación inteligente** - Indicador de más resultados disponibles
 
 ---
 
-## 📢 Campanhas em Massa
+## 📢 Campañas Masivas
 
-Sistema completo de campanhas para comunicação proativa com clientes através de múltiplos canais.
+Sistema completo de campañas para comunicación proactiva con clientes a través de múltiples canales.
 
-### Tipos de Campanhas
+### Tipos de Campañas
 
-#### Campanhas Ongoing (Chat ao Vivo)
+#### Campañas Ongoing (Live Chat)
 
-Mensagens proativas para visitantes do seu site:
+Mensajes proactivos para visitantes de tu sitio web:
 
-- **Triggers por URL** - Ative campanhas em páginas específicas
-- **Triggers por tempo** - Mostre mensagem após X segundos na página
-- **Triggers por eventos** - Ative conforme comportamento do usuário
-- **Horário comercial** - Só dispara durante horário de trabalho
-- **Habilitar/desabilitar** - Ative ou pause campanhas facilmente
+- **Triggers por URL** - Activa campañas en páginas específicas
+- **Triggers por tiempo** - Muestra mensaje después de X segundos en la página
+- **Triggers por eventos** - Activa según comportamiento del usuario
+- **Horarios de negocio** - Solo dispara durante horario laboral
+- **Habilitación/deshabilitación** - Activa o pausa campañas fácilmente
 
-#### Campanhas One-Off (Envio Único)
+#### Campañas One-Off (Envío Único)
 
-Envios em massa para uma audiência segmentada:
+Envíos masivos a una audiencia segmentada:
 
-- **WhatsApp** - Campanhas via WhatsApp Business
-- **SMS (Twilio)** - Mensagens de texto em massa
-- **SMS (Bandwidth/outros)** - Provedores SMS alternativos
-- **Canal de API** - Campanhas através de canais personalizados
+- **WhatsApp** - Campañas vía WhatsApp Business
+- **SMS (Twilio)** - Mensajes de texto masivos
+- **SMS (Bandwidth/otros)** - Proveedores SMS alternativos
+- **API Channel** - Campañas a través de canales personalizados
 
-### Audiência e Segmentação
+### Audiencia y Segmentación
 
-**Seleção de contatos:**
+**Selección de contactos:**
 
-- **Por contatos individuais** - Selecione contatos específicos
-- **Por etiquetas** - Inclua todos os contatos com certas etiquetas
-- **Combinação** - Misture contatos diretos e etiquetas
-- **Deduplicação automática** - Evite duplicados por número de telefone
+- **Por contactos individuales** - Selecciona contactos específicos
+- **Por etiquetas** - Incluye todos los contactos con ciertas etiquetas
+- **Combinación** - Mezcla contactos directos y etiquetas
+- **Deduplicación automática** - Evita duplicados por número de teléfono
 
-**Filtragem inteligente:**
+**Filtrado inteligente:**
 
-- Exclui contatos sem número de telefone
-- Deduplicação por telefone (pega o primeiro contato)
-- Contador de audiência pré-envio
+- Excluye contactos sin número de teléfono
+- Deduplicación por teléfono (toma el primer contacto)
+- Contador de audiencia pre-envío
 
-### Agendamento
+### Programación
 
-- **Envio imediato** - Execute a campanha no momento
-- **Envio agendado** - Agende para data e hora específica
-- **Só em horário comercial** - Pausa envios fora do horário e retoma automaticamente
-- **Fuso horário da caixa de entrada** - Respeita a configuração de cada inbox
+- **Envío inmediato** - Ejecuta la campaña al momento
+- **Envío programado** - Agenda para fecha y hora específica
+- **Solo en horario laboral** - Pausa envíos fuera de horario y retoma automáticamente
+- **Zona horaria del inbox** - Respeta la configuración de cada inbox
 
-### Conteúdo de Campanhas
+### Contenido de Campañas
 
-**Mensagens de texto:**
+**Mensajes de texto:**
 
-- Mensagem personalizável com texto livre
-- Suporte a emojis
-- **Spintax** - Variações automáticas de texto usando sintaxe `{Olá|Bom dia} {amigo|parceiro}` para mensagens únicas por destinatário
+- Mensaje personalizable con texto libre
+- Soporte de emojis
+- **Spintax** - Variaciones automáticas de texto usando sintaxis `{Hola|Buenos días} {amigo|compañero}` para mensajes únicos por destinatario
 
-**Arquivos anexos** *(Evolution/WAHA/Uazapi/API)*:
+**Archivos adjuntos** *(Evolution/WAHA/Uazapi/API)*:
 
-- Imagens (JPEG, PNG, WebP)
-- Vídeos (MP4, 3GP)
+- Imágenes (JPEG, PNG, WebP)
+- Videos (MP4, 3GP)
 - Documentos (PDF, Office, etc.)
-- Múltiplos arquivos por campanha
+- Múltiples archivos por campaña
 
-**Templates de WhatsApp** *(Cloud API/Notificame)*:
+**Plantillas de WhatsApp** *(Cloud API/Notificame)*:
 
-- Templates aprovados pelo Meta
-- Parâmetros dinâmicos por contato
-- Componentes de header, body e buttons
+- Templates aprobados por Meta
+- Parámetros dinámicos por contacto
+- Componentes de header, body y buttons
 - Multi-idioma
 
-### Multi-Inbox (Rotação de Linhas) *(Mega)*
+### Constructor de Plantillas Meta *(Mega)*
 
-Envie campanhas de múltiplas linhas de WhatsApp para maximizar o alcance e evitar limites:
+Crea y gestiona tus plantillas de WhatsApp directamente desde MEGA, sin necesidad de acceder al Meta Business Manager:
 
-- **Distribuição automática** - As mensagens são distribuídas entre suas linhas
-- **Rotação configurável** - Defina quantas mensagens enviar por cada linha antes de trocar
-- **Evite bloqueios** - Ao distribuir a carga, você reduz o risco de limites por linha
-- **Maior velocidade** - Envie mais mensagens em menos tempo usando várias linhas
+**Gestión de plantillas:**
 
-### Controle de Velocidade *(Mega)*
+- **Lista centralizada** - Ve todas las plantillas de todos tus inboxes de WhatsApp en un solo lugar
+- **API unificada de plantillas cacheadas** - Las integraciones pueden listar plantillas cacheadas de inboxes WhatsApp nativos y Twilio, filtrarlas por el nombre exacto del proveedor y consultar el último intento de sincronización sin contactar al proveedor
+- **Estado de aprobación** - Monitorea si cada plantilla está aprobada, pendiente o rechazada por Meta
+- **Métricas de uso** - Ve cuántas veces fue entregada cada plantilla y su tasa de lectura
+- **Filtros avanzados** - Filtra por estado, categoría, idioma, canal y rango de fechas
+- **Búsqueda** - Encuentra plantillas rápidamente por nombre o contenido
+- **Eliminar plantillas** - Elimina plantillas individuales o en lote con confirmación
+- **Sincronizar plantillas** - Botón de sincronización para traer plantillas nuevas desde Meta
+- **Sincronización inicial automática** - Al crear el canal, se ejecuta una sincronización inicial de plantillas
+- **Prevención de duplicados** - Validaciones de inserción para evitar duplicados durante sincronizaciones
+- **Tabla responsive** - Mejor visualización de metadata de plantillas en desktop y móvil
 
-Envio inteligente que protege suas linhas de WhatsApp:
+**Constructor visual:**
 
-- **Pausas automáticas** - O sistema faz pausas entre mensagens para simular envio humano
-- **Velocidade adaptável** - Configuração otimizada conforme o provedor
-- **Prevenção de bloqueios** - Evita que o WhatsApp detecte comportamento de spam
-- **Sem configuração manual** - Valores ótimos pré-configurados
+- **Crear plantilla paso a paso** - Flujo guiado con pasos: Info Básica → Constructor
+- **Header opcional** - Agrega encabezado de texto o multimedia (imagen, video, documento)
+- **Cuerpo del mensaje** - Editor con soporte de negritas `*texto*`, cursivas `_texto_`, variables `{{1}}`, `{{2}}`
+- **Barra de formato** - Botones de formato (negrita, cursiva) e inserción de variables con un clic
+- **Footer opcional** - Texto de pie de mensaje (hasta 60 caracteres)
+- **Botones de acción** - Visitar sitio web, llamar por teléfono, respuesta rápida o copiar código
+- **Vista previa en tiempo real** - Ve cómo quedará la plantilla antes de enviarla
+- **Valores de ejemplo** - Define ejemplos para las variables para facilitar la aprobación de Meta
+- **Categorías** - Marketing, Utilidad, Autenticación
+- **Multi-idioma** - Crea plantillas en cualquier idioma soportado por WhatsApp
 
-### Status de Campanha
+**Edición de plantillas:**
 
-| Status | Descrição |
-|--------|-----------|
-| **Active** | Campanha pronta para executar |
-| **Running** | Campanha em execução |
-| **Completed** | Campanha finalizada com sucesso |
-| **Error** | Campanha com erros críticos |
+- **Editar plantilla existente** - Modifica una plantilla ya creada
+- **Nueva versión** - Al editar, el sistema crea una nueva versión y la envía a aprobación
+- **Estado de versión** - Sigue el historial de aprobación de cada versión
+- **Vista de detalle** - Consulta una plantilla completa antes de pasar a modo edición
+- **Carga de media optimizada** - Ajustes en subida de archivos multimedia para edición/envío
 
-### Métricas e Acompanhamento
+### Multi-Inbox (Rotación de Líneas) *(Mega)*
 
-Monitore o desempenho das suas campanhas em tempo real:
+Envía campañas desde múltiples líneas de WhatsApp para maximizar el alcance y evitar límites:
 
-- **Contador de audiência** - Saiba a quantos contatos sua campanha vai chegar
-- **Mensagens enviadas** - Acompanhamento em tempo real do progresso
-- **Mensagens com falha** - Identifique problemas de entrega
-- **Relatório de erros** - Baixe detalhes de envios com falha para correção
+- **Distribución automática** - Los mensajes se reparten entre tus líneas
+- **Rotación configurable** - Define cuántos mensajes enviar por cada línea antes de cambiar
+- **Evita bloqueos** - Al distribuir la carga, reduces el riesgo de límites por línea
+- **Mayor velocidad** - Envía más mensajes en menos tiempo usando varias líneas
 
-### Proteção Anti-Spam
+### Control de Velocidad *(Mega)*
 
-O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
+Envío inteligente que protege tus líneas de WhatsApp:
 
-- **Sem duplicados** - Não envia duas vezes para o mesmo contato
-- **Detecção automática** - Pula contatos que já receberam a campanha
-- **Histórico de envios** - Cada mensagem fica vinculada à sua campanha
+- **Pausas automáticas** - El sistema hace pausas entre mensajes para simular envío humano
+- **Velocidad adaptable** - Configuración optimizada según el proveedor
+- **Prevención de bloqueos** - Evita que WhatsApp detecte comportamiento de spam
+- **Sin configuración manual** - Valores óptimos preconfigurados
 
-### Remetente e Conversas
+### Estados de Campaña
 
-- **Atribua um agente** - As respostas da campanha chegam ao agente selecionado
-- **Reutilização inteligente** - Se já existe conversa com o contato, usa a mesma
-- **Fechamento automático** - Opção de fechar a conversa após o envio
+| Estado | Descripción |
+|--------|-------------|
+| **Active** | Campaña lista para ejecutarse |
+| **Running** | Campaña en ejecución |
+| **Completed** | Campaña finalizada exitosamente |
+| **Error** | Campaña con errores críticos |
 
-### Canais Suportados
+### Métricas y Seguimiento
 
-| Canal | Tipo | Templates | Anexos | Multi-inbox |
-|-------|------|-----------|--------|-------------|
-| Website (Chat ao Vivo) | Ongoing | ❌ | ❌ | ❌ |
-| WhatsApp Cloud | One-off | ✅ | ✅ (no template) | ✅ |
-| WhatsApp Notificame | One-off | ✅ | ✅ (no template) | ✅ |
+Monitorea el rendimiento de tus campañas en tiempo real:
+
+- **Contador de audiencia** - Sabe a cuántos contactos llegará tu campaña
+- **Mensajes enviados** - Seguimiento en tiempo real del progreso
+- **Mensajes fallidos** - Identifica problemas de entrega
+- **Reporte de errores** - Descarga detalle de envíos fallidos para corrección
+- **Progreso en tiempo real** *(Mega)* - Barra de progreso en vivo que se actualiza automáticamente mientras la campaña se ejecuta
+- **ETA estimada** *(Mega)* - Tiempo estimado de finalización visible durante la ejecución de la campaña
+
+### Protección Anti-Spam
+
+El sistema incluye múltiples protecciones para mantener la calidad de tus envíos:
+
+- **Sin duplicados** - No envía dos veces al mismo contacto
+- **Detección automática** - Omite contactos que ya recibieron la campaña
+- **Historial de envíos** - Cada mensaje queda vinculado a su campaña
+
+### Remitente y Conversaciones
+
+- **Asigna un agente** - Las respuestas de la campaña llegan al agente seleccionado
+- **Reutilización inteligente** - Si ya existe conversación con el contacto, se usa la misma
+- **Cierre automático** - Opción de cerrar la conversación después del envío
+
+### Canales Soportados
+
+| Canal | Tipo | Templates | Adjuntos | Multi-inbox |
+|-------|------|-----------|----------|-------------|
+| Website (Live Chat) | Ongoing | ❌ | ❌ | ❌ |
+| WhatsApp Cloud | One-off | ✅ | ✅ (en template) | ✅ |
+| WhatsApp Notificame | One-off | ✅ | ✅ (en template) | ✅ |
 | WhatsApp Evolution | One-off | ❌ | ✅ | ✅ |
 | WhatsApp WAHA | One-off | ❌ | ✅ | ✅ |
 | WhatsApp Uazapi | One-off | ❌ | ✅ | ✅ |
 | Twilio SMS | One-off | ❌ | ❌ | ❌ |
 | SMS | One-off | ❌ | ❌ | ❌ |
-| Canal de API | One-off | ❌ | ✅ | ✅ |
+| API Channel | One-off | ❌ | ✅ | ❌ |
 
-### Gestão de Campanhas
+### Gestión de Campañas
 
-- **Criar e editar** - Interface intuitiva para configurar campanhas
-- **Pausar e retomar** *(Mega)* - Pause uma campanha em execução e retome a qualquer momento sem perder o progresso
-- **Editar antes de enviar** *(Mega)* - Modifique o conteúdo, audiência e configuração de campanhas que ainda não foram enviadas ou estão pausadas
-- **Ver métricas** - Dashboard com estatísticas em tempo real
-- **Exportar relatórios** - Baixe detalhes da campanha
-
-### Métricas de Campanha
-
-- **Contador de audiência** - Saiba quantos contatos a campanha vai atingir
-- **Mensagens enviadas** - Acompanhamento do progresso em tempo real
-- **Mensagens com falha** - Identifique problemas de entrega
-- **Relatório de erros** - Baixe detalhes de envios com falha para correção
-- **Progresso em tempo real** *(Mega)* - Barra de progresso ao vivo que se atualiza automaticamente enquanto a campanha é executada
-- **ETA estimado** *(Mega)* - Tempo estimado de conclusão visível durante a execução da campanha
+- **Crear y editar** - Interfaz intuitiva para configurar campañas
+- **Pausar y reanudar** *(Mega)* - Pausa una campaña en ejecución y reanúdala en cualquier momento sin perder el progreso
+- **Editar antes de enviar** *(Mega)* - Modifica el contenido, audiencia y configuración de campañas que aún no fueron enviadas o que están pausadas
+- **Ver métricas** - Dashboard con estadísticas en tiempo real
+- **Exportar reportes** - Descarga detalles de la campaña
 
 ---
 
-## 📚 Central de Ajuda (Help Center)
+## 📚 Centro de Ayuda (Help Center)
 
-### Portais de Conhecimento
+### Portales de Conocimiento
 
-- **Múltiplos portais** - Crie bases de conhecimento por produto/marca
-- **Domínio personalizado** - Hospede no seu próprio domínio
-- **Design configurável** - Cores, logo, texto de cabeçalho
-- **Layouts selecionáveis** - Escolha entre uma página inicial clássica ou navegação lateral em estilo documentação
-- **Multi-idioma** - Artigos em múltiplos idiomas
-- **Embeds GuideJar** - Insira guias interativos do GuideJar no conteúdo da Central de Ajuda
+- **Múltiples portales** - Crea bases de conocimiento por producto/marca
+- **Dominio personalizado** - Aloja en tu propio dominio
+- **Diseño configurable** - Colores, logo, texto de cabecera
+- **Integraciones analíticas** - Los administradores pueden conectar Google Analytics 4, Google Tag Manager, Microsoft Clarity, Hotjar, Plausible, Amplitude y Meta Pixel; los scripts se publican solo con un identificador válido
+- **Layouts seleccionables** - Elige entre una portada clásica o una navegación tipo documentación con barra lateral
+- **Multi-idioma** - Artículos en múltiples idiomas
+- **Embeds GuideJar** - Inserta guías interactivas de GuideJar dentro del contenido del Help Center
 
-### Organização de Conteúdo
+### Organización de Contenido
 
-- **Categorias** - Agrupe artigos por tema
-- **Subpastas** - Organização hierárquica
-- **Artigos** - Conteúdo rico com markdown
-- **Criar a partir da categoria** - Inicie novos artigos diretamente da tela de cada categoria
-- **Redimensionamento de imagens** - Ajuste imagens dentro do editor para layouts de artigo mais limpos
-- **Menu slash no editor** - Insira blocos e comandos rapidamente digitando /
-- **Vídeos pelo menu slash** - Incorpore links de vídeo compatíveis (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar e MP4) com pré-visualização no editor e no artigo publicado
-- **Tabelas nativas no editor** - Crie e edite tabelas diretamente no editor de artigos
-- **Tabelas em Markdown** - Renderização correta de tabelas dentro dos artigos
-- **Posicionamento** - Ordene artigos manualmente
-- **Reordenamento de categorias** - Arraste e solte para reordenar categorias do help center; a ordem é salva automaticamente
+- **Categorías** - Agrupa artículos por tema
+- **Subcarpetas** - Organización jerárquica
+- **Artículos** - Contenido rico con markdown
+- **Crear desde categoría** - Inicia artículos nuevos directamente desde la vista de cada categoría
+- **Redimensionado de imágenes** - Ajusta imágenes dentro del editor para mejorar la maquetación de artículos
+- **Menú slash en editor** - Inserta bloques y comandos rápidamente escribiendo /
+- **Menú slash seguro en tablas** - Dentro de las celdas, usa solo formatos inline que Markdown conserva, con navegación por flechas y Ctrl+N/P contenida en el menú
+- **Videos desde el menú slash** - Inserta enlaces de video compatibles (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar y MP4) con vista previa dentro del editor y del artículo publicado
+- **Tablas nativas en editor** - Crea y edita tablas directamente en el editor de artículos
+- **Separadores desde el menú slash** - Inserta un separador horizontal desde el menú del editor para dividir secciones del artículo
+- **Tablas Markdown** - Renderizado correcto de tablas en artículos del portal
+- **Posicionamiento** - Ordena artículos manualmente
+- **Reordenamiento de categorías** - Arrastra y suelta para reordenar categorías en el portal; el orden se guarda automáticamente
 
-### Status de Artigos
+### Estados de Artículos
 
-- **Rascunho** - Em preparação
-- **Publicado** - Visível para usuários
-- **Arquivado** - Oculto mas preservado
-- **Rascunho por idioma** - Cada tradução de um artigo pode estar em rascunho de forma independente; publique apenas os idiomas prontos sem afetar os demais
+- **Borrador** - En preparación
+- **Publicado** - Visible para usuarios
+- **Archivado** - Oculto pero conservado
+- **Borrador por idioma** - Cada traducción de un artículo puede estar en estado borrador independientemente; publica solo los idiomas listos sin afectar los demás
 
-### SEO e Acesso
+### SEO y Acceso
 
-- **Meta descrições** - Otimize para buscadores
-- **URLs amigáveis** - Slugs personalizáveis
-- **Widget integrado** - Conecte portal com chat ao vivo
+- **Meta descripciones** - Optimiza para buscadores
+- **URLs amigables** - Slugs personalizables
+- **Widget integrado** - Conecta portal con chat en vivo
 
-### Geração de Conteúdo com IA *(Enterprise)*
+### Generación de Contenido con IA *(Enterprise)*
 
-- **FAQs a partir de PDF** - Envie documentos PDF para gerar rascunhos de FAQ com IA
-- **Contexto adicional** - Adicione instruções opcionais para orientar a geração do conteúdo
-- **Publicação assistida** - Revise e publique apenas as entradas geradas que desejar manter
+- **FAQs desde PDF** - Sube documentos PDF para generar borradores de preguntas frecuentes con IA
+- **Contexto adicional** - Añade instrucciones opcionales para orientar la generación del contenido
+- **Publicación asistida** - Revisa y publica solo las entradas generadas que quieras conservar
 
-### Inserir Artigos nas Conversas
+### Insertar Artículos en Conversaciones
 
-- **Busca de artigos** - Busque artigos a partir da caixa de resposta
-- **Pré-visualização** - Visualize o artigo antes de inserir
-- **Inserir como link** - Adicione o link do artigo à mensagem
-- **Busca estável no popover** - Resultados restaurados e confiáveis no popover da conversa
-- **Copiar link** - Copie a URL do artigo para a área de transferência
-- **Acesso rápido** - Botão dedicado no painel de resposta
+- **Búsqueda de artículos** - Busca artículos desde la caja de respuesta
+- **Vista previa** - Visualiza el artículo antes de insertar
+- **Insertar como enlace** - Añade el link del artículo al mensaje
+- **Resultados en popover** - Búsqueda de artículos restaurada y estable desde el panel de conversación
+- **Copiar enlace** - Copia la URL del artículo al portapapeles
+- **Acceso rápido** - Botón dedicado en el panel de respuesta
 
-### Busca por Embeddings *(Enterprise)*
+### Búsqueda por Embeddings *(Enterprise)*
 
-- **Busca semântica** - Encontre artigos por significado, não apenas palavras-chave
-- **IA contextual** - Sugira artigos relevantes nas conversas
-
----
-
-## 📊 Relatórios e Analytics
-
-### Relatórios de Conversas
-
-- **Volume** - Novas, resolvidas, pendentes
-- **Tempo de resolução** - Média e distribuição
-- **Primeira resposta** - Tempo de resposta inicial
-- **Tendências** - Evolução temporal
-- **Drilldown de barras** - Abra cada barra do gráfico para revisar as conversas ou mensagens que compõem a métrica, com navegação entre buckets e contagem de resultados
-
-### Relatórios de Agentes
-
-- **Produtividade individual** - Conversas gerenciadas
-- **Tempo de resposta** - Por agente
-- **Satisfação** - CSAT por agente
-- **Disponibilidade** - Tempo online/offline
-
-### Relatórios de Inbox
-
-- **Comparativo de canais** - Desempenho por inbox
-- **Distribuição de carga** - Equilíbrio entre inboxes
-- **Horários de pico** - Identifique momentos de maior demanda
-
-### Relatórios de Equipes
-
-- **Performance por equipe** - Métricas de grupo
-- **Distribuição** - Carga de trabalho entre equipes
-
-### Relatórios de Etiquetas
-
-- **Uso de etiquetas** - Frequência e tendências
-- **Categorização** - Análise por classificação
-
-### Pesquisas CSAT
-
-- **Satisfação do cliente** - Pesquisas pós-conversa
-- **Notas 1-5** - Escala de satisfação
-- **Comentários** - Feedback qualitativo
-- **Filtros** - Por agente, inbox, equipe, data
-- **Notas de revisão** *(Enterprise)* - Adicione notas internas às respostas CSAT para acompanhamento de qualidade
-- **CSAT via Templates WhatsApp** *(Mega)* - Envie pesquisas CSAT usando templates oficiais do WhatsApp em vez da mensagem clássica no chat; requer aprovação da Meta; o sistema cria e gerencia automaticamente o template com versionamento; configurável por inbox com alternância entre modo clássico e modo template
-- **Visibilidade do feedback para agentes** *(Mega)* - Permite ocultar por inbox os comentários escritos de CSAT dos agentes mantendo as avaliações visíveis; os administradores conservam acesso completo e o padrão mantém a visibilidade atual
-
-### Relatórios Resumidos
-
-- **Métricas consolidadas** - Visão geral das métricas chave em um só lugar
-- **Filtros por período** - Filtre por faixa de datas personalizada
-- **Agrupamento** - Agrupe dados por agente, equipe ou inbox
-
-### Exportação
-
-- **CSV/Excel** - Baixe dados para análise externa
-- **Filtros personalizados** - Exporte exatamente o que precisa
-- **Compatibilidade regional de CSV** - Exportação com UTF-8 BOM e separador `;` para planilhas
-
-### Relatórios de Bots *(Enterprise)*
-
-Analytics completos de desempenho dos seus chatbots:
-
-**Métricas de uso:**
-
-- **Total de sessões** - Quantas conversas o bot gerenciou
-- **Taxa de resolução** - Percentual de casos resolvidos sem humano
-- **Tempo de resposta** - Velocidade média do bot
-- **Mensagens processadas** - Volume total de interações
-
-**Análise de handover:**
-
-- **Taxa de transferência** - Quando o bot transfere para humanos
-- **Motivos de transferência** - Por que os clientes precisam de humanos
-- **Tempo até transferência** - Quanto tempo tentou resolver
-
-**Métricas de satisfação:**
-
-- **CSAT pós-bot** - Satisfação após interação com bot
-- **Comparação bot vs humano** - Veja diferenças de qualidade
-
-**Insights por bot:**
-
-- **Por caixa de entrada** - Desempenho por canal
-- **Por tipo de bot** - Compare agentbots vs Captain
-- **Tendências temporais** - Evolução de métricas
-
-### Relatórios de Chamadas *(Enterprise)*
-
-Analytics completos do canal de voz:
-
-**Métricas de volume:**
-
-- **Total de chamadas** - Entrada e saída
-- **Taxa de atendimento** - Percentual de chamadas atendidas
-- **Chamadas perdidas** - Identificar horas de pico sem cobertura
-- **Distribuição horária** - Quando mais ligam
-
-**Métricas de desempenho:**
-
-- **Duração média** - Tempo médio de chamada
-- **Tempo de espera** - Quanto o cliente espera antes de ser atendido
-- **Taxa de abandono** - Clientes que desligam esperando
-
-**Análise por agente:**
-
-- **Chamadas por agente** - Distribuição de carga
-- **Duração por agente** - Tempo médio de cada agente
-- **Taxa de resolução** - Efetividade por agente
-
-**Exportação:**
-
-- **Relatórios detalhados** - Baixe registros de chamadas
-- **Gravações** - Acesse gravações para revisão de qualidade
+- **Búsqueda semántica** - Encuentra artículos por significado, no solo palabras clave
+- **IA contextual** - Sugiere artículos relevantes en conversaciones
 
 ---
 
-## 👨‍👩‍👧‍👦 Gestão de Equipes
+## 📊 Reportes y Analíticas
+
+### Reportes de Conversaciones
+
+- **Volumen** - Nuevas, resueltas, pendientes
+- **Tiempo de resolución** - Promedio y distribución
+- **Primera respuesta** - Tiempo de respuesta inicial
+- **Tendencias** - Evolución temporal
+- **Drilldown de barras** - Abre cada barra del gráfico para revisar conversaciones o mensajes que componen la métrica, con navegación entre buckets y conteos del resultado
+
+### Reportes de Agentes
+
+- **Productividad individual** - Conversaciones manejadas
+- **Tiempo de respuesta** - Por agente
+- **Satisfacción** - CSAT por agente
+- **Disponibilidad** - Tiempo online/offline
+
+### Reportes de Inbox
+
+- **Comparativa de canales** - Rendimiento por inbox
+- **Distribución de carga** - Balance entre inboxes
+- **Horarios pico** - Identifica momentos de mayor demanda
+
+### Reportes de Equipos
+
+- **Performance por equipo** - Métricas grupales
+- **Distribución** - Carga de trabajo entre equipos
+
+### Reportes de Etiquetas
+
+- **Uso de etiquetas** - Frecuencia y tendencias
+- **Categorización** - Análisis por clasificación
+
+### Reportes de Bot
+
+Monitorea el rendimiento de tu IA y bots:
+
+- **Dashboard de métricas de bot** - Analíticas completas de bots
+- **Resueltas por bot** - Conversaciones resueltas completamente por IA/bots
+- **Handoffs de bot** - Conversaciones transferidas a agentes humanos
+- **Tasa de resolución** - Porcentaje de resoluciones automatizadas
+- **Ahorro de tiempo** - Tiempo de agente ahorrado por automatización
+- **Filtros** - Por rango de fechas, inbox, tipo de bot
+
+### Reportes de Llamadas *(Enterprise)*
+
+Analíticas completas del canal de voz:
+
+- **Dashboard de llamadas** - Estadísticas completas de llamadas
+- **Total de llamadas** - Resumen de todas las llamadas
+- **Llamadas contestadas** - Llamadas conectadas exitosamente
+- **Llamadas perdidas** - Llamadas entrantes no contestadas
+- **Llamadas en progreso** - Llamadas actualmente activas
+- **Entrantes/Salientes** - Desglose por dirección
+- **Métricas de duración** - Tiempos totales y promedio
+- **Filtros** - Por fecha, inbox, agente, estado, dirección
+
+### Encuestas CSAT
+
+- **Satisfacción del cliente** - Encuestas post-conversación
+- **Ratings 1-5** - Escala de satisfacción
+- **Comentarios** - Feedback cualitativo
+- **Filtros** - Por agente, inbox, equipo, fecha
+- **Notas de revisión** *(Enterprise)* - Añade notas internas a las respuestas CSAT para seguimiento de calidad
+- **CSAT vía Plantillas WhatsApp** *(Mega)* - Envía encuestas CSAT usando plantillas oficiales de WhatsApp en lugar del mensaje clásico en chat; requiere aprobación de Meta; el sistema crea y gestiona automáticamente la plantilla con versionado; configurable por inbox con toggle entre modo clásico y modo plantilla
+- **Visibilidad del feedback para agentes** *(Mega)* - Permite ocultar por inbox los comentarios escritos de CSAT a los agentes manteniendo visibles las calificaciones; los administradores conservan acceso completo y por defecto se mantiene la visibilidad actual
+
+### Reportes Resumidos
+
+- **Métricas consolidadas** - Vista general de las métricas clave en un solo lugar
+- **Filtros por período** - Filtra por rango de fechas personalizado
+- **Agrupación** - Agrupa datos por agente, equipo o inbox
+
+### Exportación
+
+- **CSV/Excel** - Descarga datos para análisis externo
+- **Filtros personalizados** - Exporta exactamente lo que necesitas
+- **Formato regional mejorado** - Exportación CSV con UTF-8 BOM y separador `;` para compatibilidad con hojas de cálculo locales
+
+---
+
+## 👨‍👩‍👧‍👦 Gestión de Equipos
 
 ### Agentes
 
-- **Funções** - Administrador, Agente
-- **Permissões granulares** - Controle de acesso por funcionalidade
-- **Perfil personalizado** - Avatar, nome, assinatura
-- **Avatar específico por conta** - Um usuário compartilhado mantém um único seletor enquanto cada conta armazena e exibe sua própria foto de perfil
-- **Controle de sessões do navegador** - As abas do mesmo perfil compartilham uma sessão no servidor; o logout a remove e o limite configurado bloqueia apenas perfis de navegador realmente novos
-- **Status de disponibilidade** - Online, Ocupado, Offline
-- **Desligamento guiado de agentes** - Antes de remover um agente, escolha entre deixar as conversas sem atribuição ou reatribuir em lote
+- **Roles** - Administrador, Agente
+- **Permisos granulares** - Control de acceso por funcionalidad
+- **Perfil personalizado** - Avatar, nombre, firma
+- **Avatar específico por cuenta** - Un usuario compartido mantiene un solo selector mientras cada cuenta guarda y muestra su propia foto de perfil
+- **Control de sesiones del navegador** - Las pestañas del mismo perfil comparten una sesión del servidor; el logout la elimina y el límite configurado solo bloquea perfiles de navegador realmente nuevos
+- **Estado de disponibilidad** - Online, Busy, Offline
+- **Salida guiada de agentes** - Antes de eliminar un agente puedes dejar sus conversaciones sin asignar o reasignarlas en lote
 
-### Equipes
+### Equipos
 
-- **Departamentos** - Vendas, Suporte, Faturamento, etc.
-- **Atribuição automática** - Round-robin dentro da equipe
-- **Restrição de visibilidade** - Membros veem apenas suas conversas
-- **Identificação visual** - Configure um emoji ou ícone com cor por equipe para reconhecê-la em listas e seletores de atribuição
+- **Departamentos** - Ventas, Soporte, Facturación, etc.
+- **Asignación automática** - Round-robin dentro del equipo
+- **Restricción de visibilidad** - Miembros ven solo sus conversaciones
+- **Identificación visual** - Configura un emoji o icono con color por equipo para reconocerlo en listas y selectores de asignación
 
-### Inboxes e Membros
+### Inboxes y Miembros
 
-- **Acesso por inbox** - Atribua agentes a canais específicos
-- **Limite de capacidade** - Máximo de conversas por agente
-- **Políticas de atribuição** - Configure regras de distribuição
+- **Acceso por inbox** - Asigna agentes a canales específicos
+- **Capacidad límite** - Máximo de conversaciones por agente
+- **Políticas de asignación** - Configura reglas de distribución
 
-### Políticas de Atribuição *(Enterprise)*
+### Políticas de Asignación
 
-Sistemas avançados para distribuir conversas de forma justa e eficiente:
+Configura distribución inteligente de conversaciones:
 
-**Tipos de política:**
+- **Round Robin** - Distribuye conversaciones equitativamente entre agentes
+- **Distribución justa** - Límite configurable (por defecto 100) por ventana de tiempo
+- **Ventana de distribución** - Período de tiempo personalizable (por defecto 3600 segundos)
+- **Prioridad de conversación** - Primera creada o más tiempo esperando
+- **Múltiples inboxes** - Aplica la misma política a múltiples canales
+- **Activar/desactivar** - Alterna políticas según necesites
 
-- **Round Robin** - Rotação entre agentes disponíveis
-- **Distribuição Justa** - Considera carga atual de cada agente
-- **Auto-atribuição** - Agentes escolhem quais conversas aceitar
+### Políticas de Capacidad de Agente *(Enterprise)*
 
-**Regras de atribuição:**
+Define límites de conversaciones por agente:
 
-- **Por caixa de entrada** - Cada inbox pode ter sua própria política
-- **Por equipe** - Configure regras diferentes por departamento
-- **Limites de capacidade** - Respeita o máximo de conversas por agente
+- **Límites de capacidad** - Máximo de conversaciones activas por agente
+- **Límites por inbox** - Capacidad diferente por tipo de canal
+- **Reglas de exclusión** - Reglas basadas en JSON para excluir ciertos casos
+- **Distribución balanceada** - Selector inteligente para balance óptimo de carga
+- **Ajuste en tiempo real** - Los cambios de capacidad toman efecto inmediatamente
 
-**Lógica inteligente:**
+### Roles Personalizados *(Enterprise)*
 
-- **Só agentes disponíveis** - Só atribui para quem está online
-- **Peso de agentes** - Alguns agentes podem receber mais que outros
-- **Rebalanceamento** - Redistribui quando agentes ficam sobrecarregados
+- **Permisos a medida** - Crea roles con permisos específicos
+- **Gestión de conversaciones** - Todas, no asignadas, o solo participando
+- **Acceso a funcionalidades** - Contactos, reportes, campañas, etc.
+- **Permisos de CSAT** - Controla qué roles pueden ver y gestionar encuestas de satisfacción
 
-### Política de Capacidade de Agente *(Enterprise)*
+### Horarios de Trabajo
 
-Controle avançado da carga de trabalho:
+- **Disponibilidad por inbox** - Define horarios de atención
+- **Zonas horarias** - Soporte multi-región
+- **Mensajes fuera de horario** - Respuestas automáticas
+- **Pausa de almuerzo** - Configura intervalos de descanso dentro del horario laboral
+- **Horarios por día** - Define horarios diferentes para cada día de la semana
 
-**Configuração de capacidade:**
+### Configuración de Notificaciones
 
-- **Limite por agente** - Máximo de conversas ativas por agente
-- **Limite por conta** - Máximo total de conversas por conta
-- **Por caixa de entrada** - Limites diferentes por canal
+Cada agente puede personalizar exactamente cuándo y cómo recibir alertas:
 
-**Tipos de conversa:**
+**Tipos de notificación:**
 
-- **Abertas contam** - Conversas ativas consomem capacidade
-- **Pendentes contam** - Configurável se pendentes consomem capacidade
-- **Adiadas não contam** - Conversas adiadas liberam capacidade
+- Nueva conversación creada
+- Conversación asignada a ti
+- Nuevo mensaje en tus conversaciones
+- Cuando te mencionan en una conversación
+- Mensajes en conversaciones donde participas
 
-**Comportamento quando cheio:**
+**Canales de notificación:**
 
-- **Fila de espera** - Novas conversas aguardam em fila
-- **Não atribuir** - Ficam sem agente até liberar capacidade
-- **Reatribuição automática** - Move para outro agente com capacidade
+- **Email** - Recibe alertas en tu correo electrónico
+- **Push** - Notificaciones instantáneas en navegador o app móvil
+- **Personalización total** - Elige qué tipo de alerta recibir por cada canal
 
-### Funções Personalizadas *(Enterprise)*
+### Posponer Notificaciones
 
-- **Permissões sob medida** - Crie funções com permissões específicas
-- **Gestão de conversas** - Todas, não atribuídas, ou apenas participando
-- **Acesso a funcionalidades** - Contatos, relatórios, campanhas, etc.
-- **Permissões de CSAT** - Controle quais funções podem visualizar e gerenciar pesquisas de satisfação
+Pausa temporalmente las notificaciones de conversaciones específicas:
 
-### Horários de Trabalho
-
-- **Disponibilidade por inbox** - Defina horários de atendimento
-- **Fusos horários** - Suporte multi-região
-- **Mensagens fora do horário** - Respostas automáticas
-- **Pausa para almoço** - Configure intervalos de descanso dentro do horário comercial
-- **Horários por dia** - Defina horários diferentes para cada dia da semana
-
-### Configuração de Notificações
-
-Cada agente pode personalizar exatamente quando e como receber alertas:
-
-**Tipos de notificação:**
-
-- Nova conversa criada
-- Conversa atribuída a você
-- Nova mensagem nas suas conversas
-- Quando te mencionam numa conversa
-- Mensagens em conversas onde participa
-
-**Canais de notificação:**
-
-- **Email** - Receba alertas no seu email
-- **Push** - Notificações instantâneas no navegador ou app móvel
-- **Personalização total** - Escolha que tipo de alerta receber por cada canal
-
-### Adiamento de Notificações (Notification Snooze)
-
-Pause notificações temporariamente para conversas específicas:
-
-- **Opções de snooze** - 1 hora, 3 horas, 1 dia, 1 semana, ou tempo personalizado
-- **Reabertura automática** - Notificação reativa após período de snooze
-- **Acesso via command bar** - Adie rapidamente via atalho de teclado
-- **Por notificação** - Adie notificações individuais sem afetar outras
-- **Indicador visual** - Veja quando uma notificação está adiada
+- **Opciones de posposición** - 1 hora, 3 horas, 1 día, 1 semana o tiempo personalizado
+- **Reapertura automática** - La notificación se reactiva después del período
+- **Acceso desde barra de comandos** - Pospón rápidamente con atajo de teclado
+- **Por notificación** - Pospón notificaciones individuales sin afectar otras
+- **Indicador visual** - Ve cuándo una notificación está pospuesta
 
 ---
 
-## 🔌 Integrações
+## 🔌 Integraciones
 
 ### Webhooks
 
-Conecte a MEGA com qualquer sistema externo através de notificações automáticas:
+Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
 
-- **Eventos em tempo real** - Receba alertas instantâneos quando algo acontece
-- **Integração com seu CRM** - Sincronize dados automaticamente
-- **Automações externas** - Acione fluxos em outras ferramentas
-- **Flexibilidade total** - Configure quais eventos te interessam
-- **Normalização de inscrições** - Validação e normalização consistentes de eventos e aliases
-- **Payload enriquecido de anexos** - Inclui `content_type` e extensão dos arquivos em eventos webhook
-- **Evento de atualização de Agent Bot** - Dispara webhook quando uma conversa gerenciada por bot é atualizada
-- **Evento `inbox_updated`** - Notifica mudanças relevantes da inbox, incluindo desconexões do canal
-- **Aliases de inscrição** - Atribua nomes descritivos a cada inscrição de webhook para facilitar o gerenciamento
-- **Segredo global de webhook** *(Enterprise)* - Configure uma assinatura de segurança no nível da instalação para verificar a autenticidade de todos os eventos webhook; os payloads são assinados com HMAC-SHA256 usando o segredo configurado
+- **Eventos en tiempo real** - Recibe alertas instantáneas cuando algo sucede
+- **Integración con tu CRM** - Sincroniza datos automáticamente
+- **Automatizaciones externas** - Activa flujos en otras herramientas
+- **Flexibilidad total** - Configura qué eventos te interesan
+- **Normalización de suscripciones** - Validación consistente de eventos y aliases de suscripción
+- **Payload enriquecido de adjuntos** - Incluye `content_type` y extensión de archivos en eventos webhook
+- **Evento de actualización de Agent Bot** - Dispara webhook cuando se actualiza una conversación gestionada por bot
+- **Evento `inbox_updated`** - Notifica cambios relevantes de la bandeja, incluyendo desconexiones del canal
+- **Alias de suscripción** - Asigna nombres descriptivos a cada suscripción de webhook para facilitar la gestión
+- **Secreto global de webhook** *(Enterprise)* - Configura una firma de seguridad a nivel de instalación para verificar la autenticidad de todos los eventos webhook; los payloads se firman con HMAC-SHA256 usando el secreto configurado
 
-### Tarefas *(Mega)*
+### Tareas *(Mega)*
 
-Planeje e acompanhe o trabalho interno em visualizações compartilhadas de calendário e lista:
+Planifica y controla el trabajo interno desde vistas compartidas de calendario y lista:
 
-- **Ativação controlada** - Superadministradores habilitam o recurso da conta e administradores conectam Tarefas em Configurações -> Integrações
-- **Tipos personalizados** - Administradores definem categorias reutilizáveis e cores semânticas para o trabalho da equipe
-- **Paleta consistente** - Os tipos usam a mesma paleta visual de 22 cores do Google Agenda e mantêm a cor escolhida no calendário, detalhes e listas, sem que o status a substitua
-- **Permissões por escopo** - Administradores controlam todas as tarefas; roles personalizadas podem receber separadamente gestão das próprias/atribuídas, leitura global e relatórios; agentes padrão só veem e gerenciam tarefas criadas por eles ou atribuídas a eles
-- **Visualizações de calendário e lista** - Alterne entre o calendário mensal e uma lista operacional persistente com tarefa, tipo, responsável, datas, prioridade e status; ambas abrem o mesmo detalhe
-- **Filtros operacionais** - Busque por título, filtre por responsável —inclusive sem responsável—, tipo e hoje, esta semana ou próximos 30 dias; um único seletor de status começa em Todas as tarefas e oferece pendentes, em andamento, vencidas, concluídas ou canceladas; ordene e agrupe a lista por status, responsável ou vencimento
-- **Tarefas de vários dias** - Uma tarefa aparece em cada dia do calendário que intersecta sua programação, inclusive quando começou antes do mês visível
-- **Experiência mobile** - Em telas pequenas, os filtros se reorganizam sem comprimir o calendário mensal; formulários e detalhes mantêm as ações visíveis sem cobrir o conteúdo
-- **Leitura antes de editar** - Ao abrir uma tarefa, seus detalhes são exibidos; concluir e cancelar ficam no cabeçalho com resumo obrigatório, enquanto editar e, somente para administradores, excluir com confirmação ficam no rodapé
-- **Responsabilidade clara** - Atribua uma tarefa a um agente da conta ou deixe-a sem responsável
-- **Histórico resiliente** - Excluir contato, conversa, item Kanban ou responsável preserva seus rótulos históricos, limpa referências ativas e resincroniza a projeção Google sem duplicar a cascata de exclusão
-- **Estados operacionais** - Gerencie tarefas pendentes, em andamento, concluídas ou canceladas; vencimentos são detectados automaticamente após o prazo
-- **Encerramento documentado** - Concluir ou cancelar exige um resumo do resultado para registrar o que ocorreu e os próximos passos
-- **Aviso ao responsável** - Ao atingir o prazo, somente o agente responsável recebe um popup e uma notificação para abrir, concluir, cancelar ou editar a tarefa; ele pode marcar o aviso como visto ou adiá-lo para reaparecer automaticamente, e tarefas sem responsável não geram aviso
-- **Tarefas recorrentes** - Repita tarefas por dia, semana, mês ou ano, com intervalo, dias semanais e término por data ou até 100 repetições
-- **Contexto conectado** - Vincule opcionalmente contato e conversa, ou crie um item em um funil e etapa sem exigir cliente
-- **Criação a partir de conversas** - O ReplyBox mostra uma ação ao lado do calendário quando Tarefas está habilitada e conectada; abre o formulário com contato, conversa, responsável atual e qualquer item Kanban relacionado preenchidos
-- **Acompanhamento por contato** - O ContactPanel inclui um acordeão próprio de Tarefas no formato do calendário, identifica cada conversa vinculada pelo número visível estável e mantém tarefas pendentes, em andamento e vencidas do contato visíveis em novas conversas
-- **Kanban condicionado** - O vínculo e a criação de itens Kanban aparecem somente quando `kanban_board` está habilitado na conta
-- **Tarefas dentro do item** - Quando Tarefas está habilitada e conectada, o detalhe Kanban separa o histórico técnico de uma aba operacional para criar, consultar e abrir tarefas vinculadas ao item
-- **Rastreabilidade no Kanban** - O histórico do item registra quando uma tarefa vinculada é criada, atualizada, iniciada, concluída, cancelada, reaberta, vinculada, desvinculada ou excluída, incluindo status e responsável
-- **Participantes e prioridade** - Defina prioridade, responsável, participantes da conta e convidados externos
-- **Google Agenda opcional** - Sincronize início, fim e participantes em um único evento, preservando a tarefa local em caso de falha
-- **Relatórios de tarefas** - Administradores e roles personalizadas com a permissão específica de relatórios de tarefas acompanham data, responsável, tipo e status; a permissão geral de relatórios não concede esse acesso
-- **API para desenvolvedores** - Use os CRUDs de Tarefas e Tipos de tarefa com escopo de conta pelo Swagger/OpenAPI ou pela coleção Postman gerada, incluindo busca, interseção de intervalo, ordenação, paginação opcional e campos de workflows vinculados
+- **Activación controlada** - Los superadministradores habilitan el feature de la cuenta y los administradores conectan Tareas desde Configuración -> Integraciones
+- **Tipos personalizados** - Los administradores definen categorías reutilizables y colores semánticos para el trabajo del equipo
+- **Paleta coherente** - Los tipos usan los mismos 22 colores visuales de Google Calendar y conservan el color elegido en el calendario, los detalles y los listados, sin que el estado lo reemplace
+- **Permisos por alcance** - Los administradores controlan todas las tareas; un rol personalizado puede recibir gestión de tareas propias/asignadas, lectura global e informes como permisos independientes; los agentes estándar solo ven y gestionan las tareas que crearon o tienen asignadas
+- **Vistas calendario y lista** - Alterna entre el calendario mensual y una lista operativa persistente con tarea, tipo, responsable, fechas, prioridad y estado; ambas abren el mismo detalle
+- **Filtros operativos** - Busca por título, filtra por responsable —incluido sin responsable—, tipo y hoy, semana o próximos 30 días; un único selector de estado comienza en Todas las tareas y permite pendientes, en curso, vencidas, completadas o canceladas; ordena y agrupa la lista por estado, responsable o vencimiento
+- **Tareas de varios días** - Una tarea se muestra en cada día del calendario que intersecta su programación, incluso si comenzó antes del mes visible
+- **Experiencia móvil** - En pantallas pequeñas, los filtros se reorganizan sin comprimir el calendario mensual; los formularios y detalles mantienen acciones visibles sin tapar el contenido
+- **Lectura antes de editar** - Al abrir una tarea se muestra su detalle; concluir y cancelar están en el encabezado con resumen obligatorio, mientras editar y, solo para administradores, eliminar con confirmación quedan en el pie
+- **Responsabilidad clara** - Asigna una tarea a un agente de la cuenta o déjala sin responsable
+- **Historial resistente** - Si se elimina el contacto, la conversación, el ítem Kanban o el responsable, la tarea conserva sus nombres y contexto históricos, limpia referencias vivas y resincroniza su proyección de Google sin duplicar la cascada
+- **Estados operativos** - Gestiona tareas pendientes, en curso, completadas o canceladas; las vencidas se detectan automáticamente al superar la fecha límite
+- **Cierre documentado** - Completar o cancelar exige un resumen del resultado para conservar qué ocurrió y los próximos pasos
+- **Aviso al responsable** - Al alcanzar la fecha límite, solo el agente responsable recibe un popup y una notificación para abrir la tarea y concluirla, cancelarla o editarla; puede marcar el aviso como visto o posponerlo para que reaparezca automáticamente, y las tareas sin responsable no generan avisos
+- **Tareas recurrentes** - Repite tareas por día, semana, mes o año, con intervalo, días semanales y finalización por fecha o hasta 100 repeticiones
+- **Contexto conectado** - Vincula opcionalmente contacto y conversación, o crea un ítem en un funnel y etapa sin exigir un cliente
+- **Creación desde conversaciones** - El ReplyBox muestra una acción junto al calendario cuando Tareas está habilitada y conectada; abre el formulario con contacto, conversación, responsable actual y cualquier ítem Kanban relacionado precargados
+- **Seguimiento por contacto** - El ContactPanel incluye un acordeón propio de Tareas con el mismo formato del calendario, identifica cada conversación vinculada por su número visible estable y conserva visibles las pendientes, en curso y vencidas del contacto aunque se abra una conversación nueva
+- **Kanban condicionado** - El vínculo y la creación de ítems Kanban solo aparecen cuando `kanban_board` está habilitado en la cuenta
+- **Tareas dentro del ítem** - Cuando Tareas está habilitada y conectada, el detalle Kanban separa el historial técnico de una pestaña operativa para crear, consultar y abrir las tareas vinculadas al ítem
+- **Trazabilidad en Kanban** - El historial del ítem registra cuándo una tarea vinculada se crea, actualiza, inicia, concluye, cancela, reabre, vincula, desvincula o elimina, incluyendo estado y responsable
+- **Participantes y prioridad** - Define prioridad, responsable, participantes de la cuenta e invitados externos
+- **Google Calendar opcional** - Sincroniza inicio, fin y asistentes en un único evento, mostrando cualquier fallo sin perder la tarea local
+- **Informes de tareas** - Los administradores y roles personalizados con el permiso específico de informes consultan tareas por fecha, responsable, tipo y estado; el permiso general de informes no lo habilita
+- **API para desarrolladores** - Usa los CRUD de Tareas y Tipos de tarea con alcance de cuenta desde Swagger/OpenAPI o la colección Postman generada, incluidos búsqueda, intersección de rango, ordenamiento, paginación opcional y campos de workflows vinculados
 
-### Google Agenda *(Mega)*
+### Google Calendar *(Mega)*
 
-- **Lembretes pessoais** - O criador recebe aviso no MEGA e por push do navegador, pode adiá-lo e reabrir o evento; criador e contato da conversa são preenchidos como convidados sem duplicação.
+- **Recordatorios personales** - El creador recibe un aviso dentro de MEGA y por push del navegador, puede posponerlo y volver a abrir el evento; creador y contacto de la conversación se precargan como invitados sin duplicados.
 
-Conecte o Google Agenda como integracao de produtividade no nivel da conta, nao como inbox/canal:
+Conecta Google Calendar como integración de productividad a nivel de cuenta, no como inbox/canal:
 
-- **OAuth por conta** - Administradores conectam o calendario em Configuracoes -> Integracoes -> Google Agenda
-- **Disponibilidade condicionada** - O espaço `/calendar`, o ícone do compositor e os eventos do painel da conversa só aparecem quando o Google está configurado globalmente e a conta está conectada com um calendário selecionado; ativar apenas o feature da conta não os exibe
-- **Criacao minimalista** - Use um editor de duas colunas inspirado no Google Agenda com fusos selecionaveis, convidados removiveis, Google Meet e contexto MEGA vertical com canais visiveis na busca de conversas
-- **Selecao de calendario** - Importe por padrao todos os calendarios acessiveis ou limite a entrada a um; o MEGA preserva um destino de saida concreto e novas configuracoes iniciam com sync bidirecional
-- **Camada interna de eventos** - O MEGA salva eventos internos e rastreia IDs externos do Google separadamente
-- **Calendario operacional do MEGA** - Agentes gerenciam visoes de dia, semana, mes e lista em `/calendar`
-- **Exclusao permanente sincronizada** - Administradores removem primeiro o evento vinculado do Google e somente depois o registro local; se o Google falhar, o MEGA preserva o evento
-- **Formulario completo de evento** - Eventos manuais suportam fuso horario, local, convidados, lembretes, recorrencia simples, disponibilidade, visibilidade e Google Meet
-- **Vinculos MEGA buscaveis** - Ao criar ou editar eventos, agentes buscam e selecionam contato, conversa e item Kanban sem digitar IDs internos
-- **Controles por modulo** - Habilite sincronizacao para calendario interno, Kanban, conversas e lembretes em um so lugar
-- **Sync ao salvar** - Quando a sincronizacao de saida esta habilitada, o MEGA cria ou atualiza o evento no calendario Google selecionado preservando o estado interno
-- **Polling automatico do Google** - A cada cinco minutos o MEGA importa somente eventos alterados desde o ultimo poll bem-sucedido de cada calendario; eventos excluidos no Google removem a entrada local vinculada e `/calendar` mantem sync manual como fallback
-- **Estado da conexao** - Veja a identidade conectada, reconecte quando necessario e desconecte sem apagar eventos internos
-- **Ponte com Kanban** - Itens com data programada ou deadline podem criar eventos internos e sincronizar com o calendario selecionado
-- **Agenda e envio em conversas** - Os agentes usam no compositor o mesmo formulário com recursos do Google, contato e conversa preenchidos, e o botão “Criar e enviar” compartilha horário, local, detalhes e link do Google Meet gerado
-- **Acompanhamento em conversas** - O painel mostra eventos vinculados com ponto pulsante verde (<50%), amarelo (50–90%) ou vermelho (≥90%) conforme o avanço de Início a Fim, deixa vencidos opacos e reabre o editor compartilhado
-- **Importacao e backfill** - Administradores podem importar eventos do Google e migrar IDs legados do Kanban para o modelo global de calendario
-
-### Construtor de Templates Meta *(Mega)*
-
-Crie e gerencie seus templates do WhatsApp diretamente da MEGA, sem precisar acessar o Meta Business Manager:
-
-**Gestão de templates:**
-
-- **Lista centralizada** - Veja todos os templates de todas as suas caixas de entrada do WhatsApp em um só lugar
-- **Status de aprovação** - Monitore se cada template está aprovado, pendente ou rejeitado pela Meta
-- **Métricas de uso** - Veja quantas vezes cada template foi entregue e sua taxa de leitura
-- **Filtros avançados** - Filtre por status, categoria, idioma, canal e intervalo de datas
-- **Busca** - Encontre templates rapidamente por nome ou conteúdo
-- **Excluir templates** - Exclua templates individuais ou em lote com confirmação
-- **Sincronizar templates** - Botão de sincronização para trazer novos templates da Meta
-- **Sincronização inicial automática** - Ao criar o canal, uma sincronização inicial de templates é executada
-- **Prevenção de duplicados** - Validações de inserção para evitar duplicados durante sincronização
-- **Tabela responsiva** - Melhor visualização de metadados de templates em desktop e mobile
-
-**Construtor visual:**
-
-- **Criação passo a passo** - Fluxo guiado: Informações Básicas → Construtor
-- **Cabeçalho opcional** - Cabeçalho de texto ou multimídia (imagem, vídeo, documento)
-- **Corpo da mensagem** - Editor com negrito *texto*, itálico *texto*, variáveis {{1}}, {{2}}
-- **Barra de formatação** - Botões de formato e inserção de variáveis com um clique
-- **Rodapé opcional** - Texto de rodapé (até 60 caracteres)
-- **Botões de ação** - Visitar site, ligar, resposta rápida ou copiar código
-- **Pré-visualização em tempo real** - Veja como o template ficará antes de enviar
-- **Valores de exemplo** - Defina exemplos para variáveis para facilitar a aprovação da Meta
-- **Categorias** - Marketing, Utilidade, Autenticação
-- **Multi-idioma** - Crie templates em qualquer idioma suportado pelo WhatsApp
-
-**Edição de templates:**
-
-- **Visualização detalhada** - Consulte a estrutura completa do template antes de editar
-- **Upload de mídia otimizado** - Melhorias no envio de arquivos multimídia para edição/envio
+- **OAuth por cuenta** - Los administradores conectan el calendario desde Configuración -> Integraciones -> Google Calendar
+- **Disponibilidad condicionada** - El espacio `/calendar`, el icono del compositor y los eventos del panel de conversación solo aparecen cuando Google está configurado globalmente, la cuenta está conectada y tiene un calendario seleccionado; activar el feature de cuenta por sí solo no los muestra
+- **Creación minimalista** - Usa un editor de dos columnas inspirado en Google Calendar con zonas seleccionables, invitados removibles, Google Meet y contexto MEGA vertical con canales visibles al buscar conversaciones
+- **Selección de calendario** - Importa por defecto todos los calendarios accesibles o limita la entrada a uno; MEGA conserva un destino saliente concreto y la configuración nueva inicia en sync bidireccional
+- **Capa interna de eventos** - MEGA guarda eventos internos y rastrea IDs externos de Google por separado
+- **Calendario operativo de MEGA** - Los agentes gestionan vistas de dia, semana, mes y lista desde `/calendar`
+- **Borrado permanente sincronizado** - Los administradores eliminan primero el evento vinculado de Google y solo después su registro local; si Google falla, MEGA conserva el evento
+- **Formulario completo de evento** - Los eventos manuales soportan zona horaria, ubicacion, invitados, recordatorios, recurrencia simple, disponibilidad, visibilidad y Google Meet
+- **Vinculos MEGA buscables** - Al crear o editar eventos, los agentes buscan y seleccionan contacto, conversacion e item Kanban sin escribir IDs internos
+- **Controles por módulo** - Habilita sincronización para calendario interno, Kanban, conversaciones y recordatorios desde un solo lugar
+- **Sync al guardar** - Cuando la sincronizacion saliente esta habilitada, MEGA crea o actualiza el evento en el calendario Google seleccionado conservando el estado interno
+- **Polling automatico de Google** - Cada cinco minutos MEGA importa solo eventos modificados desde el ultimo poll exitoso de cada calendario; los eventos eliminados en Google borran su entrada local vinculada y `/calendar` conserva sync manual como respaldo
+- **Estado de conexión** - Ve la identidad conectada, reconecta cuando haga falta y desconecta sin borrar eventos internos
+- **Puente con Kanban** - Ítems con fecha programada o deadline pueden crear eventos internos y sincronizarlos al calendario seleccionado
+- **Agenda y envío desde conversaciones** - Los agentes usan desde el compositor el mismo formulario con capacidades Google, contacto y conversación precargados, y el botón “Crear y enviar” comparte el horario, ubicación, detalles y enlace Google Meet generado
+- **Seguimiento en conversaciones** - El panel lista eventos vinculados con un punto pulsante verde (<50%), amarillo (50–90%) o rojo (≥90%) según el avance de Inicio a Fin, opaca los vencidos y reabre el editor compartido
+- **Importación y backfill** - Los administradores pueden importar eventos desde Google y migrar IDs legacy de Kanban al modelo global de calendario
 
 ### Apps de Dashboard
 
-Estenda a plataforma com apps personalizados exibidos na interface de conversa:
+Embebe aplicaciones personalizadas en la vista de conversación:
 
-**Tipos de apps:**
+- **iFrames personalizados** - Embebe apps externas en conversaciones
+- **Contexto dinámico** - Pasa información de conversación y contacto a la app
+- **Apps por usuario** - Las apps pueden configurarse por agente
+- **Múltiples apps** - Añade varias apps al mismo inbox
+- **Seguro** - Las apps corren en iframes aislados
+- **Datos en tiempo real** - Las apps reciben actualizaciones de conversación en vivo
+- **Scripts de dashboard (Super Admin)** *(Mega)* - Publica personalizaciones globales en paneles sin tocar el código base
+- **Vista previa y activación por script** *(Mega)* - Prueba cambios de forma segura y activa/desactiva scripts de manera independiente
 
-- **Panel de conversa** - Apps na barra lateral da conversa
-- **Panel de contato** - Apps no perfil do contato
-- **Background** - Apps que rodam sem interface visível
+### Platform Apps
 
-**Funcionalidades:**
+Construye y conecta aplicaciones externas con acceso completo a la API:
 
-- **iFrames personalizados** - Incorpore apps externos nas conversas
-- **Contexto dinâmico** - Passe informações da conversa para o app
-- **SDK JavaScript** - Interaja com dados da MEGA
-- **Eventos em tempo real** - Reaja a mudanças na conversa
-- **Scripts de dashboard (Super Admin)** *(Mega)* - Publique personalizações globais sem alterar o código base
-- **Preview seguro e ativação por script** *(Mega)* - Teste alterações com segurança e ative/desative scripts de forma independente
-
-**Casos de uso:**
-
-- Mostrar dados de CRM externos
-- Calculadoras ou ferramentas internas
-- Integração com sistemas legados
-- Formulários personalizados para agentes
-
-### Platform Apps (Developer API)
-
-APIs para desenvolvedores criarem integrações avançadas:
-
-**Tipos de integração:**
-
-- **Inbox Apps** - Crie canais personalizados
-- **Bots** - Automatize com webhooks de bot
-- **Dashboard Apps** - Estenda a interface
-
-**Recursos de API:**
-
-- **API REST completa** - Acesso a todas as entidades
-- **Webhooks** - Receba eventos em tempo real
-- **SDKs** - Node.js e outras linguagens
-- **Documentação** - Referência completa de API
-
-### Templates de Email
-
-Personalize emails transacionais e de notificação:
-
-**Funcionalidades:**
-
-- **Editor de templates** - Modifique o conteúdo e design
-- **Variáveis dinâmicas** - Insira dados do contato e conversa
-- **Preview** - Veja como fica antes de salvar
-- **Multi-idioma** - Templates diferentes por idioma
-- **Layouts de resposta com marca** - Administradores podem configurar um HTML Liquid de fallback por conta e uma substituição por caixa de Email; o layout deve incluir `{{ content_for_layout }}` e aceita até 262.144 caracteres.
-
-**Tipos de email:**
-
-- Notificação de nova mensagem
-- Resumo de conversa
-- Convite para agentes
-- Emails de campanha
+- **Acceso completo a API** - Acceso programático completo a la plataforma
+- **Permissibles** - Control granular sobre qué recursos puede acceder la app
+- **Gestión de cuentas** - Crea y gestiona cuentas programáticamente
+- **Gestión de usuarios** - Administra usuarios vía API
+- **Integración de bots** - Conecta bots personalizados vía Platform Apps
+- **Tokens seguros** - Tokens de API con permisos delimitados
+- **Casos de uso** - Integraciones CRM, dashboards personalizados, sistemas de automatización
 
 ### Slack
 
-Gerencie conversas de clientes diretamente do Slack, sem trocar de ferramenta:
+Gestiona conversaciones de clientes directamente desde Slack, sin cambiar de herramienta:
 
-- **Sincronização automática** - As conversas aparecem em canais do Slack
-- **Responda do Slack** - Responda a clientes sem abrir a MEGA
-- **Notas privadas** - Comunique-se com sua equipe sem o cliente ver
-- **Vinculação de perfis** - Conecte usuários do Slack com agentes da MEGA
-- **Canais privados** - Organize por equipe ou tipo de conversa
-- **Alertas de reconexão** - Aviso se a integração precisa de renovação
+- **Sincronización automática** - Las conversaciones aparecen en canales de Slack
+- **Responde desde Slack** - Contesta a clientes sin abrir MEGA
+- **Notas privadas** - Comunícate con tu equipo sin que el cliente vea
+- **Vinculación de perfiles** - Conecta usuarios de Slack con agentes de MEGA
+- **Canales privados** - Organiza por equipo o tipo de conversación
+- **Alertas de reconexión** - Aviso si la integración necesita renovarse
 
 ### Dialogflow
 
-- **Bot de NLU** - Conecte com agentes do Dialogflow
-- **Intents e entidades** - Processamento de linguagem natural
+- **Bot de NLU** - Conecta con agentes de Dialogflow
+- **Intents y entidades** - Procesamiento de lenguaje natural
 
 ### OpenAI / GPT
 
-Funcionalidades de IA avançada com modelos GPT:
+Funcionalidades de IA avanzada con modelos GPT:
 
-- **Assistente de escrita** - Melhore e corrija suas respostas
-- **Resumo de conversa** - Gere resumos automáticos
-- **Tradução automática** - Traduza mensagens para qualquer idioma
-- **Tom de resposta** - Ajuste o tom (formal, amigável, etc.)
-- **Expansão de texto** - Desenvolva ideias curtas em respostas completas
-- **Simplificação** - Simplifique textos complexos
+- **Asistente de escritura** - Mejora y corrige tus respuestas
+- **Resumen de conversación** - Genera resúmenes automáticos
+- **Traducción automática** - Traduce mensajes a cualquier idioma
+- **Tono de respuesta** - Ajusta el tono (formal, amigable, etc.)
+- **Expansión de texto** - Desarrolla ideas cortas en respuestas completas
+- **Simplificación** - Simplifica textos complejos
 
-### Dyte (Chamadas de Vídeo)
+### Dyte (Video Calls)
 
-Videochamadas integradas diretamente na conversa:
+Videollamadas integradas directamente en la conversación:
 
-- **Criar reunião** - Inicie uma videochamada com um clique
-- **Entrar na reunião** - Clientes podem entrar pelo widget
-- **Botão na caixa de resposta** - Acesso rápido da caixa de resposta
-- **Tipo de mensagem de vídeo** - As chamadas aparecem na timeline
+- **Crear reunión** - Inicia una videollamada con un clic
+- **Unirse a reunión** - Clientes pueden unirse desde el widget
+- **Botón en reply box** - Acceso rápido desde la caja de respuesta
+- **Mensajes de tipo video** - Las llamadas aparecen en el timeline
 
 ### Google Translate
 
-Tradução automática de mensagens nas conversas:
+Traducción automática de mensajes en conversaciones:
 
-- **Tradução automática** - Traduza mensagens recebidas para seu idioma configurado
-- **Detecção de idioma** - Identifica automaticamente o idioma da mensagem
-- **Tradução em contexto** - As mensagens traduzidas são exibidas inline na conversa
-- **Suporte multi-idioma** - Compatível com todos os idiomas do Google Translate
+- **Traducción automática** - Traduce mensajes entrantes a tu idioma configurado
+- **Detección de idioma** - Identifica automáticamente el idioma del mensaje
+- **Traducción en contexto** - Los mensajes traducidos se muestran inline en la conversación
+- **Soporte multi-idioma** - Compatible con todos los idiomas de Google Translate
 
 ### Linear *(Enterprise)*
 
-- **Gestão de tickets** - Crie issues a partir de conversas
-- **Sincronização** - Mantenha status atualizados
+- **Gestión de tickets** - Crea issues desde conversaciones
+- **Sincronización** - Mantén estados actualizados
 
 ### Shopify *(Enterprise)*
 
-- **Dados do cliente** - Visualize histórico de compras
-- **Pedidos recentes** - Contexto de e-commerce
+- **Datos del cliente** - Visualiza historial de compras
+- **Pedidos recientes** - Contexto de e-commerce
 
 ### WooCommerce *(Enterprise/Mega)*
 
-Integração completa com WooCommerce:
+Integración completa con WooCommerce:
 
-- **Conexão de loja** - Vincule sua loja WooCommerce
-- **Histórico de pedidos** - Veja pedidos do cliente em contexto
-- **Busca por email/telefone** - Encontre pedidos automaticamente
-- **Webhooks do WooCommerce** - Receba eventos da loja
-- **Painel de pedidos** - Visualização de pedidos na conversa
+- **Conexión de tienda** - Vincula tu tienda WooCommerce
+- **Historial de pedidos** - Ve pedidos del cliente en contexto
+- **Búsqueda por email/teléfono** - Encuentra pedidos automáticamente
+- **Webhooks de WooCommerce** - Recibe eventos de la tienda
+- **Panel de pedidos** - Vista de pedidos en la conversación
 
 ### Notion *(Enterprise)*
 
-- **Documentação** - Conecte páginas do Notion
-- **Base de conhecimento** - Acesso rápido a recursos
+- **Documentación** - Conecta páginas de Notion
+- **Base de conocimiento** - Acceso rápido a recursos
 
 ### CRM (LeadSquared)
 
-- **Sincronização de leads** - Envie contatos para seu CRM
-- **Histórico unificado** - Visão 360 do cliente
+- **Sincronización de leads** - Envía contactos a tu CRM
+- **Historial unificado** - Vista 360 del cliente
+
+### Plantillas de Email
+
+Personaliza las comunicaciones por email con tu marca:
+
+- **Plantillas personalizadas** - Crea plantillas de email con tu marca
+- **Plantillas por cuenta** - Diferentes plantillas para cada cuenta
+- **Variables Liquid** - Contenido dinámico con sustitución de variables
+- **Plantillas de instalación** - Plantillas predeterminadas para toda la instalación
+- **Tipos de plantilla** - Soporte para diferentes tipos de email (notificaciones, transcripciones, etc.)
+- **Layouts de respuesta con marca** - Los administradores pueden configurar un HTML Liquid de respaldo por cuenta y una sobrescritura por bandeja de Email; debe incluir `{{ content_for_layout }}` y admite hasta 262.144 caracteres.
 
 ---
 
 ## 💎 Funcionalidades Enterprise
 
-### SLA (Acordos de Nível de Serviço)
+### SLA (Acuerdos de Nivel de Servicio)
 
-- **Políticas configuráveis** - Defina tempos alvo
-- **Primeira resposta** - Tempo máximo para responder; seu relógio ativo termina após a primeira resposta do agente e os descumprimentos permanecem nos relatórios de SLA
-- **Próxima resposta** - Tempo entre respostas
-- **Resolução** - Tempo total de atendimento
-- **Horário comercial** - Cálculo em horas úteis
-- **Alertas e notificações** - Aviso antes de descumprir
-- **Relatórios de SLA** - Cumprimento e tendências
+- **Políticas configurables** - Define tiempos objetivo
+- **Primera respuesta** - Tiempo máximo para responder; su reloj activo termina después de la primera respuesta del agente y los incumplimientos permanecen en los reportes SLA
+- **Siguiente respuesta** - Tiempo entre respuestas
+- **Resolución** - Tiempo total de atención
+- **Horarios de negocio** - Cálculo en horas hábiles
+- **Alertas y notificaciones** - Aviso antes de incumplir
+- **Reportes de SLA** - Cumplimiento y tendencias
 
-### Logs de Auditoria
+### Logs de Auditoría
 
-- **Registro completo** - Toda ação fica registrada
-- **Quem, o quê, quando** - Rastreabilidade total
-- **Conformidade** - Para requisitos regulatórios
+- **Registro completo** - Toda acción queda registrada
+- **Quién, qué, cuándo** - Trazabilidad total
+- **Cumplimiento** - Para requisitos regulatorios
 
 ### SAML/SSO
 
-Single Sign-On empresarial para autenticação centralizada:
+Single Sign-On empresarial para autenticación centralizada:
 
-**Provedores suportados:**
+**Proveedores soportados:**
 
-- **Okta** - Integração completa com Okta
+- **Okta** - Integración completa con Okta
 - **Azure AD** - Microsoft Entra ID
-- **Google Workspace** - Google como provedor de identidade
-- **OneLogin** - Suporte completo
-- **Auth0** - Integração disponível
-- **SAML 2.0 genérico** - Qualquer provedor compatível
+- **Google Workspace** - Google como proveedor de identidad
+- **OneLogin** - Soporte completo
+- **Auth0** - Integración disponible
+- **SAML 2.0 genérico** - Cualquier proveedor compatible
 
 **Funcionalidades:**
 
-- **Provisionamento automático** - Crie usuários automaticamente no primeiro login
-- **Mapeamento de grupos** - Sincronize grupos/equipes do IdP
-- **Força SSO** - Exija SSO para todos os usuários da conta
-- **Múltiplos domínios** - Configure SSO para diferentes domínios de email
-- **Logout único** - Single Logout (SLO) suportado
+- **Provisionamiento automático** - Crea usuarios automáticamente en el primer login
+- **Mapeo de grupos** - Sincroniza grupos/equipos del IdP
+- **Forzar SSO** - Exige SSO para todos los usuarios de la cuenta
+- **Múltiples dominios** - Configura SSO para diferentes dominios de email
+- **Logout único** - Single Logout (SLO) soportado
 
-**Segurança:**
+**Seguridad:**
 
-- **Autenticação centralizada** - Gestão de acesso unificada
-- **Políticas de senha no IdP** - Use as regras de senha corporativas
-- **MFA no IdP** - Multi-factor authentication do provedor
-- **Revogação instantânea** - Remova acesso desativando no IdP
+- **Autenticación centralizada** - Gestión de acceso unificada
+- **Políticas de contraseña en IdP** - Usa las reglas de contraseña corporativas
+- **MFA en IdP** - Multi-factor authentication del proveedor
+- **Revocación instantánea** - Elimina acceso desactivando en el IdP
 
-### Retrospectiva Anual (Year in Review)
+### Asignación Avanzada (V2)
 
-Resumo visual do ano da sua equipe de atendimento:
+- **Capacidad por agente** - Límites dinámicos
+- **Balanceo inteligente** - Distribución óptima de carga
+- **Reglas complejas** - Lógica de asignación personalizada
 
-**Métricas apresentadas:**
+### Búsqueda Avanzada
 
-- **Volume de conversas** - Total gerenciado no ano
-- **Tempo de resposta** - Média de velocidade de resposta
-- **Satisfação** - Pontuação CSAT do ano
-- **Agentes destaque** - Reconhecimento de top performers
+- **Indexación completa** - Búsqueda en todos los mensajes
+- **Filtros combinados** - Múltiples criterios simultáneos
+- **Resultados instantáneos** - Performance optimizada
 
-**Funcionalidades:**
+### Atributos Requeridos de Conversación
 
-- **Visualização interativa** - Interface visual atraente
-- **Comparação anual** - Evolução em relação ao ano anterior
-- **Compartilhável** - Exporte para apresentar à equipe
-- **Por equipe** - Veja métricas de departamentos específicos
+Obliga a los agentes a completar atributos específicos antes de resolver conversaciones:
 
-### Atribuição Avançada (V2)
+- **Campos obligatorios** - Define qué atributos personalizados deben llenarse
+- **Validación al resolver** - Bloquea la resolución hasta completar los campos requeridos
+- **Macros seguras** - Las macros que resuelven solicitan los atributos requeridos; si se omiten, ejecutan las demás acciones pero mantienen la conversación abierta
+- **Mejora la calidad de datos** - Asegura que toda conversación tenga la información necesaria
 
-- **Capacidade por agente** - Limites dinâmicos
-- **Balanceamento inteligente** - Distribuição ótima de carga
-- **Regras complexas** - Lógica de atribuição personalizada
+### Conferencias de Voz
 
-### Busca Avançada
+Conferencias de llamadas de voz entre agentes y clientes:
 
-- **Indexação completa** - Busca em todas as mensagens
-- **Filtros combinados** - Múltiplos critérios simultâneos
-- **Resultados instantâneos** - Performance otimizada
+- **Llamadas múltiples** - Conecta a varios participantes en una sola llamada
+- **Gestión de conferencia** - Controles completos de la conferencia
+- **Integrado en conversaciones** - Las conferencias se asocian a conversaciones existentes
 
-### Atributos Obrigatórios de Conversa
+### Custom Branding (Marca Personalizada)
 
-Obrigue os agentes a preencher atributos específicos antes de resolver conversas:
+Personaliza completamente la apariencia de tu plataforma:
 
-- **Campos obrigatórios** - Defina quais atributos personalizados devem ser preenchidos
-- **Validação ao resolver** - Bloqueia a resolução até completar os campos obrigatórios
-- **Melhoria na qualidade dos dados** - Garanta que toda conversa tenha as informações necessárias
+- **Logo personalizado** - Tu logo en lugar del de Chatwoot
+- **Logo modo oscuro** - Logo específico para dark mode
+- **Logo thumbnail** - Versión reducida para el favicon
+- **Ícono de notificaciones y PWA** - Imagen cuadrada independiente para las alertas del sistema y el ícono instalable; usa `/favicon-badge-16x16.png` por defecto y el logo thumbnail como respaldo
+- **Nombre de marca** - Cambia el nombre mostrado en toda la plataforma
+- **Nombre de instalación** - Nombre para la instancia específica
+- **Color primario** - Define tu color corporativo principal
+- **URL de marca** - Enlace de tu empresa
+- **URL del widget** - Enlace en el widget de chat
+- **Términos y privacidad** - URLs personalizadas para páginas legales
+- **Meta descripción** - SEO personalizado para tu instalación
 
-### Conferências de Voz
+### Deshabilitar Branding
 
-Conferências de chamadas de voz entre agentes e clientes:
+- **Widget sin marca** - Oculta "Powered by Chatwoot" del live chat
+- **Emails sin marca** - Correos salientes sin branding de Chatwoot
+- **Portales limpios** - Help Center sin referencias a Chatwoot
 
-- **Chamadas múltiplas** - Conecte vários participantes em uma única chamada
-- **Gestão de conferência** - Controles completos da conferência
-- **Integrado nas conversas** - As conferências são associadas a conversas existentes
+### Roles Personalizados
 
-### Marca Personalizada (Custom Branding)
+Crea roles a la medida de tu organización con control granular de permisos:
 
-Personalize completamente a aparência da sua plataforma:
+**Controla el acceso a:**
 
-- **Logo personalizado** - Seu logo em vez do Chatwoot
-- **Logo modo escuro** - Logo específico para dark mode
-- **Logo thumbnail** - Versão reduzida para o favicon
-- **Ícone de notificações e PWA** - Imagem quadrada independente para alertas do sistema e o ícone instalável; usa `/favicon-badge-16x16.png` por padrão e o logo thumbnail como fallback
-- **Nome da marca** - Mude o nome exibido em toda a plataforma
-- **Nome da instalação** - Nome para a instância específica
-- **Cor primária** - Defina sua cor corporativa principal
-- **URL da marca** - Link da sua empresa
-- **URL do widget** - Link no widget de chat
-- **Termos e privacidade** - URLs personalizadas para páginas legais
-- **Meta descrição** - SEO personalizado para sua instalação
+- **Conversaciones** - Quién puede ver y gestionar qué conversaciones
+- **Contactos** - Acceso a datos de clientes
+- **Reportes** - Quién ve las estadísticas
+- **Campañas** - Permisos para crear y enviar campañas
+- **Centro de Ayuda** - Gestión de artículos y portales
+- **Datos sensibles** - Control sobre números de teléfono visibles
 
-### Desabilitar Branding
+**Ejemplos de roles:**
 
-- **Widget sem marca** - Oculte "Powered by Chatwoot" do chat ao vivo
-- **Emails sem marca** - Emails enviados sem branding do Chatwoot
-- **Portais limpos** - Help Center sem referências ao Chatwoot
-
-### Funções Personalizadas
-
-Crie funções sob medida para sua organização com controle granular de permissões:
-
-**Controle o acesso a:**
-
-- **Conversas** - Quem pode ver e gerenciar quais conversas
-- **Contatos** - Acesso a dados de clientes
-- **Relatórios** - Quem vê as estatísticas
-- **Campanhas** - Permissões para criar e enviar campanhas
-- **Central de Ajuda** - Gestão de artigos e portais
-- **Dados sensíveis** - Controle sobre números de telefone visíveis
-
-**Exemplos de funções:**
-
-- **Supervisor** - Vê relatórios e métricas sem editar configuração
-- **Agente Sênior** - Pode pegar conversas não atribuídas
-- **Agente Básico** - Só trabalha com suas conversas atribuídas
-- **Analista** - Acesso exclusivo a relatórios e estatísticas
-- **Community Manager** - Gerencia campanhas e conteúdo do Help Center
+- **Supervisor** - Ve reportes y métricas sin editar configuración
+- **Agente Senior** - Puede tomar conversaciones no asignadas
+- **Agente Básico** - Solo trabaja con sus conversaciones asignadas
+- **Analista** - Acceso exclusivo a reportes y estadísticas
+- **Community Manager** - Gestiona campañas y contenido del Help Center
 
 ---
 
@@ -1793,374 +1673,393 @@ Crie funções sob medida para sua organização com controle granular de permis
 
 ### 🧭 Onboarding Guiado
 
-- **Configuração inicial dedicada** - Complete os dados da conta por um fluxo administrativo específico
-- **URL do site normalizada** - Salve o endereço com protocolo para integrações e automações posteriores
-- **Conexão guiada do Instagram** - Retome a configuração da caixa de entrada após autorizar o Instagram pelo onboarding
+- **Configuración inicial dedicada** - Completa los datos de la cuenta mediante un flujo administrativo específico
+- **Sitio web normalizado** - Guarda la dirección con protocolo para integraciones y automatizaciones posteriores
+- **Conexión guiada de Instagram** - Retoma la configuración de la bandeja después de autorizar Instagram desde onboarding
 
-### 📅 Mensagens Programadas
+### 📅 Mensajes Programados
 
-Programe o envio automático de mensagens nas suas conversas:
+Programa el envío automático de mensajes en tus conversaciones:
 
-- **Programação flexível** - Escolha data e hora exata para enviar a mensagem
-- **Recorrência** - Programe mensagens recorrentes: diário, semanal, mensal ou anual
-- **Templates** - Use templates de mensagens predefinidos para envios programados
-- **Anexos** - Inclua imagens, documentos e arquivos em mensagens programadas
-- **Status de acompanhamento** - Monitore o status: pendente, enviado, falhou, cancelado
-- **Cancelamento** - Cancele mensagens programadas antes de serem enviadas
-- **Múltiplas por conversa** - Programe várias mensagens na mesma conversa
-- **Histórico** - Consulte o histórico de mensagens programadas e seu status
+- **Programación flexible** - Elige fecha y hora exacta para enviar el mensaje
+- **Recurrencia** - Programa mensajes recurrentes: diario, semanal, mensual o anual
+- **Plantillas** - Usa plantillas de mensajes predefinidas para envíos programados
+- **Adjuntos** - Incluye imágenes, documentos y archivos en mensajes programados
+- **Estados de seguimiento** - Monitorea el estado: pendiente, enviado, fallido, cancelado
+- **Cancelación** - Cancela mensajes programados antes de que se envíen
+- **Recuperación y reenvío** - Reintenta o reprograma un mensaje fallido, y vuelve a programar una copia editable de uno ya enviado, conservando destinatario y adjuntos
+- **Programación universal por API** - Programa un mensaje para un teléfono, email o identificador de proveedor y crea o reutiliza el contacto automáticamente
+- **Múltiples por conversación** - Programa varios mensajes en la misma conversación
+- **Historial** - Consulta el historial de mensajes programados y su estado
 
-### 🔒 Placeholder de Mensagem Excluída
+### 🔒 Placeholder de Mensaje Eliminado
 
-Configure por inbox se os agentes veem o texto original junto ao aviso de exclusão:
+Configura por inbox si los agentes ven el texto original y los adjuntos junto al aviso de eliminación:
 
-- **Retenção para agentes** - Pode mostrar o texto original abaixo de "Esta mensagem foi excluída" dentro do dashboard
-- **Configurável por inbox** - Cada canal pode ter sua própria configuração
-- **Proteção do contato** - A API pública e os eventos em tempo real destinados ao contato entregam apenas o aviso de exclusão
+- **Retención para agentes** - Puede mostrar el texto original y los adjuntos debajo de "Este mensaje fue eliminado" dentro del dashboard
+- **Configurable por inbox** - Cada canal puede tener su propia configuración
+- **Protección del contacto** - La API pública y los eventos en tiempo real dirigidos al contacto entregan solo el aviso de eliminación, sin metadatos ni URLs de adjuntos
 
-### Provedores de WhatsApp Alternativos
+### Proveedores WhatsApp Alternativos
 
-A MEGA inclui múltiplos provedores de WhatsApp além da API oficial do Meta, permitindo flexibilidade em custos, funcionalidades e casos de uso.
+MEGA incluye múltiples proveedores de WhatsApp además de la API oficial de Meta, permitiendo flexibilidad en costos, funcionalidades y casos de uso.
 
-**Gestão multi-servidor (Mega):**
+**Gestión multi-servidor (Mega):**
 
-- **Múltiplos servidores por provedor** - Configure mais de um servidor por canal para continuidade operacional
-- **Capacidade configurável** - Defina limites por servidor para distribuir volume de mensagens
-- **Edição parcial de servidores legados** - Ajuste configurações existentes sem recriar a conexão completa
-- **Visibilidade do servidor atribuído** - Identifique rapidamente qual servidor está vinculado a cada inbox
+- **Múltiples servidores por proveedor** - Configura más de un servidor por canal para continuidad operativa
+- **Capacidad configurable** - Define límites por servidor para distribuir volumen de mensajes
+- **Edición parcial de servidores legacy** - Ajusta configuraciones existentes sin recrear la conexión completa
+- **Servidor asignado visible** - Visualiza qué servidor está vinculado a cada inbox desde la configuración
 
 ---
 
 ### 📱 WhatsApp Evolution
 
-Conexão direta ao WhatsApp sem necessidade de API oficial, ideal para empresas que buscam flexibilidade e economia.
+Conexion directa a WhatsApp sin necesidad de API oficial, ideal para empresas que buscan flexibilidad y ahorro de costos.
 
-**Vantagens principais:**
+**Ventajas principales:**
 
-- **Conexão por QR** - Vincule seu WhatsApp em segundos escaneando um código
-- **Sem templates obrigatórios** - Envie mensagens livremente sem aprovações
-- **Sem janela de 24 horas** - Inicie conversas quando quiser
-- **Sem custo por mensagem** - Evite as taxas da API oficial do Meta
+- **Conexión por QR** - Vincula tu WhatsApp en segundos escaneando un código
+- **Sin plantillas obligatorias** - Envía mensajes libremente sin aprobaciones
+- **Sin ventana de 24 horas** - Inicia conversaciones cuando quieras
+- **Sin costos por mensaje** - Evita las tarifas de la API oficial de Meta
 
-**Todo tipo de conteúdo:**
+**Todo tipo de contenido:**
 
-- Textos, imagens, vídeos, documentos
-- Áudio e notas de voz
+- Textos, imágenes, videos, documentos
+- Audio y notas de voz
 - Stickers
-- Suporte a grupos de WhatsApp
+- Soporte para grupos de WhatsApp
 
 **Ideal para:**
 
-- Empresas que buscam reduzir custos
-- Operações que precisam de flexibilidade em mensagens
-- Equipes que já usam WhatsApp pessoal ou business app
+- Empresas que buscan reducir costos
+- Operaciones que necesitan flexibilidad en mensajes
+- Equipos que ya usan WhatsApp personal o business app
+
+- **Recepción de mensajes grupales** - Atiende grupos directamente desde MEGA
+- **Identificación de participantes** - Ve quién envía cada mensaje
 
 ---
 
 ### 📱 WhatsApp WAHA
 
-Solução robusta e de alta disponibilidade para operações exigentes que requerem máxima estabilidade.
+Solución robusta y de alta disponibilidad para operaciones exigentes que requieren máxima estabilidad.
 
-**Vantagens principais:**
+**Ventajas principales:**
 
-- **Alta disponibilidade** - Projetado para produção com reconexão automática
-- **Múltiplos números** - Gerencie várias linhas em uma instalação
-- **Muito estável** - Ideal para operações 24/7
+- **Alta disponibilidad** - Diseñado para producción con reconexión automática
+- **Múltiples números** - Gestiona varias líneas en una instalación
+- **Muy estable** - Ideal para operaciones 24/7
 
-**Conteúdo multimídia completo:**
+**Contenido multimedia completo:**
 
-- Textos, imagens, vídeos, documentos
-- Áudio e notas de voz
-- Stickers e reações, incluindo envio de reações com token de API
-- Suporte completo a grupos
+- Textos, imágenes, videos, documentos
+- Audio y notas de voz
+- Stickers y reacciones, incluido envío de reacciones con token de API
+- Soporte completo de grupos
 
-**Funções avançadas:**
+**Funciones avanzadas:**
 
-- Status de presença (digitando, online)
-- Confirmações de leitura
-- Mensagens editadas e excluídas
-- Autorização com passkey por meio de estados de sessão dedicados da WAHA e extensão de navegador
-- Sincronização global e por conversa sob demanda de mensagens recentes, com proteção de concorrência por conta e processamento dedicado opcional para instalações de alto volume
+- Estado de presencia (escribiendo, en línea)
+- Confirmaciones de lectura
+- Mensajes editados y eliminados
+- Autorización con passkey mediante estados de sesión dedicados de WAHA y extensión de navegador
+- Sincronización global y por conversación bajo demanda de mensajes recientes, con protección de concurrencia por cuenta y procesamiento dedicado opcional para instalaciones de alto volumen
 
 **Ideal para:**
 
-- Operações de alto volume
-- Empresas que precisam de máxima estabilidade
-- Equipes com múltiplas linhas de WhatsApp
+- Operaciones de alto volumen
+- Empresas que necesitan máxima estabilidad
+- Equipos con múltiples líneas de WhatsApp
 
 ---
 
 ### 📱 WhatsApp Uazapi
 
-Solução econômica e escalável para operações de alto volume.
+Solución económica y escalable para operaciones de alto volumen.
 
-**Vantagens principais:**
+**Ventajas principales:**
 
-- **Preço competitivo** - Ideal para alto volume de mensagens
-- **Conexão flexível** - Por QR ou código de emparelhamento
-- **Múltiplas linhas** - Cada número com sua própria configuração
-- **Controle de velocidade** - Evite bloqueios com envio controlado
+- **Precio competitivo** - Ideal para alto volumen de mensajes
+- **Conexión flexible** - Por QR o código de emparejamiento
+- **Múltiples líneas** - Cada número con su propia configuración
+- **Control de velocidad** - Evita bloqueos con envío controlado
 
-**Conteúdo suportado:**
+**Contenido soportado:**
 
-- Textos, imagens, vídeos
-- Áudio e notas de voz
+- Textos, imágenes, videos
+- Audio y notas de voz
 - Documentos
-- Sincronização global e por conversa sob demanda de mensagens recentes, com recuperação de mídia histórica
+- Sincronización global y por conversación bajo demanda de mensajes recientes, con recuperación de multimedia histórica
 
-**Configuração de filtros de chat:**
+**Configuración de filtros de chat:**
 
-Defina quais conversas você deseja receber na plataforma:
+Define qué conversaciones deseas recibir en la plataforma:
 
-- **Filtrar por tipo** - Receba apenas chats individuais, grupos, ou ambos
-- **Lista de exclusão** - Ignore números específicos
-- **Lista de inclusão** - Receba apenas de números específicos
-- **Configuração pela UI** - Gerencie filtros diretamente das configurações do canal
+- **Filtrar por tipo** - Recibe solo chats individuales, grupos, o ambos
+- **Lista de exclusión** - Ignora números específicos
+- **Lista de inclusión** - Recibe solo de números específicos
+- **Configuración desde UI** - Gestiona filtros directamente desde la configuración del canal
 
 **Ideal para:**
 
-- Empresas com orçamento apertado
-- Operações de alto volume
-- Equipes que precisam de múltiplas linhas de baixo custo
+- Empresas con presupuesto ajustado
+- Operaciones de alto volumen
+- Equipos que necesitan múltiples líneas a bajo costo
 
 ---
 
 ### 📱 WhatsApp Notificame
 
-Provedor brasileiro que combina a API oficial do WhatsApp Business com facilidade de uso.
+Proveedor brasileño que combina la API oficial de WhatsApp Business con facilidad de uso.
 
-**Vantagens principais:**
+**Ventajas principales:**
 
-- **API oficial do Meta** - Toda a confiabilidade da API oficial
-- **Templates aprovados** - Envie mensagens fora da janela de 24h
-- **Sincronização automática** - Seus templates aprovados são importados automaticamente
-- **Múltiplas linhas** - Gerencie vários canais de uma conta
+- **API oficial de Meta** - Toda la confiabilidad de la API oficial
+- **Plantillas aprobadas** - Envía mensajes fuera de la ventana de 24h
+- **Sincronización automática** - Tus plantillas aprobadas se importan automáticamente
+- **Múltiples líneas** - Gestiona varios canales desde una cuenta
 
-**Conteúdo suportado:**
+**Contenido soportado:**
 
-- Textos e templates com parâmetros personalizados
-- Imagens, vídeos e documentos
-- Localizações compartilhadas
+- Textos y plantillas con parámetros personalizados
+- Imágenes, videos y documentos
+- Ubicaciones compartidas
 
 **Ideal para:**
 
-- Empresas no Brasil ou América Latina
-- Operações que requerem templates oficiais
-- Equipes que precisam da confiabilidade da API oficial
+- Empresas en Brasil o Latinoamérica
+- Operaciones que requieren plantillas oficiales
+- Equipos que necesitan la confiabilidad de la API oficial
 
 ---
 
-### 🎙️ Integração WaVoIP (Webphone) *(Evolution/WAHA/Uazapi)*
+### 🎙️ Integración WaVoIP (Webphone) *(Evolution/WAHA/Uazapi)*
 
-Faça chamadas de voz pelo WhatsApp diretamente da plataforma usando provedores alternativos:
+Realiza llamadas de voz por WhatsApp directamente desde la plataforma usando proveedores alternativos:
 
-**O que é WaVoIP?**
+**¿Qué es WaVoIP?**
 
-WaVoIP permite chamadas de voz pelo WhatsApp para provedores que não usam a Cloud API oficial do Meta (Evolution, WAHA, Uazapi). É um serviço de terceiros que conecta as chamadas de voz ao seu navegador.
+WaVoIP permite llamadas de voz a través de WhatsApp para proveedores que no usan la Cloud API oficial de Meta (Evolution, WAHA, Uazapi). Es un servicio de terceros que conecta las llamadas de voz a tu navegador.
 
-**Funcionalidades principais:**
+**Características principales:**
 
-- **Chamadas de entrada e saída** - Suporte completo de voz pelo WhatsApp
-- **Webphone intuitivo** - Widget flutuante fácil de usar no navegador
-- **Controles completos** - Silenciar, desligar, aceitar, recusar chamadas
-- **Duração em tempo real** - Cronômetro visível durante a chamada
-- **Indicador de qualidade** - Monitore a qualidade da conexão ao vivo
-- **Sessão persistente do dispositivo** - Mantém autenticação e status por inbox para reduzir reconexões manuais
-- **Gravação automática** - Gravação automática com opção de download
-- **Armazenamento de gravações** - Gravações salvas e anexadas às conversas
+- **Llamadas entrantes y salientes** - Soporte completo de voz sobre WhatsApp
+- **Webphone intuitivo** - Widget flotante fácil de usar en tu navegador
+- **Controles completos** - Silenciar, colgar, aceptar, rechazar llamadas
+- **Duración en tiempo real** - Cronómetro visible durante la llamada
+- **Indicador de calidad** - Monitorea la calidad de conexión en vivo
+- **Sesión persistente del dispositivo** - Conserva autenticación y estado por bandeja para simplificar reconexiones
+- **Grabación automática** - Grabación automática con opción de descarga
+- **Almacenamiento de grabaciones** - Grabaciones guardadas y adjuntadas a conversaciones
 
-**Como funciona:**
+**Cómo funciona:**
 
-1. Configure suas credenciais de conta WaVoIP
-2. Ative a função WaVoIP na sua conta
-3. O widget webphone aparece quando chegam chamadas
-4. Aceite/recuse chamadas diretamente do navegador
-5. Faça chamadas de saída do perfil do contato
+1. Configura tus credenciales de cuenta WaVoIP
+2. Habilita la función WaVoIP en tu cuenta
+3. El widget webphone aparece cuando llegan llamadas
+4. Acepta/rechaza llamadas directamente desde el navegador
+5. Realiza llamadas salientes desde el perfil del contacto
 
-**Benefícios:**
+**Beneficios:**
 
-- Chamadas de voz sem API oficial do WhatsApp Business
-- Funciona com números pessoais de WhatsApp
-- Sem cobranças por chamada do Meta
-- Histórico completo de chamadas na conversa
-
----
-
-### 🔄 Migração de Inbox
-
-Quando precisar reorganizar seus canais:
-
-- **Transfira conversas** - Mova chats entre canais sem perder histórico
-- **Preserve todo o contexto** - Mensagens, arquivos e notas são mantidos
-- **Operações em massa** - Migre múltiplas conversas de uma vez
-
-### Histórico de Conversa Unificado
-
-Contexto completo de cada cliente independentemente de como te contatou:
-
-- **Visão 360°** - Todo histórico do contato em um lugar
-- **Todos os canais** - WhatsApp, email, redes sociais, tudo junto
-- **Contexto imediato** - Entenda o cliente antes de responder
-
-### Controles de Privacidade
-
-Configure o que seus agentes podem ver e acessar:
-
-- **Só minhas conversas** - Agentes veem apenas seus chats atribuídos
-- **Ocultar contatos** - Restrinja acesso à base de dados completa
-- **Interface simplificada** - Oculte opções que não precisam usar
-- **Controle granular** - Configure permissões por conta
+- Llamadas de voz sin API oficial de WhatsApp Business
+- Funciona con números personales de WhatsApp
+- Sin cargos por llamada de Meta
+- Historial completo de llamadas en la conversación
 
 ---
 
-### 📝 Edição e Exclusão de Mensagens *(Evolution/WAHA/Uazapi)*
+### 🔄 Migración de Inbox
 
-Edite e exclua mensagens do WhatsApp após o envio:
+Cuando necesites reorganizar tus canales:
 
-**Editar Mensagens:**
+- **Transfiere conversaciones** - Mueve chats entre canales sin perder historial
+- **Conserva todo el contexto** - Mensajes, archivos y notas se mantienen
+- **Operaciones masivas** - Migra múltiples conversaciones a la vez
 
-- **Janela de 15 minutos** - Edite mensagens enviadas dentro de 15 minutos
-- **Sincronização** - Mensagens editadas sincronizam do WhatsApp automaticamente
-- **Indicador de edição** - Mensagens editadas mostram label "editada"
-- **Todos os provedores** - Funciona com Evolution, WAHA e Uazapi
+### Historial de Conversación Unificado
 
-**Excluir Mensagens:**
+Contexto completo de cada cliente sin importar por dónde te contactó:
 
-- **Apagar para todos** - Remova mensagens enviadas
-- **Confirmação** - Confirmação de segurança antes da exclusão
-- **Atualização de status** - Mensagens excluídas aparecem como excluídas na conversa
+- **Vista 360°** - Todo el historial del contacto en un lugar
+- **Todos los canales** - WhatsApp, email, redes sociales, todo junto
+- **Contexto inmediato** - Entiende al cliente antes de responder
 
----
+### Controles de Privacidad
 
-### 🧩 Quadro Kanban Comercial *(Mega)*
+Configura qué pueden ver y acceder tus agentes:
 
-Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto omnichannel das conversas:
-
-- **Funis com etapas personalizáveis** - Crie múltiplos funis e defina uma etapa padrão por funil
-- **Alertas Kanban** - Notifica membros das equipes selecionadas e agentes atribuídos por automações de etapa, e o agente responsável quando uma tarefa de checklist chega à data limite; alertas dispensados reaparecem após o intervalo configurado no funil apenas enquanto essa tarefa permanecer pendente. Agrupa alertas em um banner não bloqueante e não envia email
-- **Visão em quadro e em lista** - Alterne entre pipeline visual e lista operacional conforme o fluxo da equipe
-- **Filtros avançados por inbox/canal/atividade** - Segmente oportunidades por origem e movimentação recente
-- **Filtros por etiquetas** - Filtre por etiquetas de conversa em quadro/lista e reflita nas métricas por etapa
-- **Colunas configuráveis por usuário** - Mostre ou oculte colunas e mantenha preferências salvas localmente
-- **Ficha 360 do item** - Inclui checklist, notas, anexos, agentes atribuídos, ofertas e atributos personalizados
-- **Notas longas legíveis** - Abra o texto formatado completo e os anexos em uma visualização com rolagem, com edição direta quando tiver permissão
-- **Busca nas relações do item** - Encontre conversas vinculadas com busca remota ao gerenciar relações do item
-- **Moeda padrão por conta** - A moeda base do quadro é definida nas configurações da conta (`default_currency`)
-- **Moeda consistente em todo o Kanban** - Cards, detalhes, ofertas, atividades e histórico seguem a prioridade oferta → item → conta → idioma; cada lado de uma alteração histórica mantém sua própria moeda
-- **Totais por moeda em cada etapa** - O cabeçalho mantém PYG, USD, EUR e qualquer outra moeda separados, sem conversão nem soma entre moedas; o tooltip cobre todas as ofertas filtradas mesmo quando a paginação ainda não carregou todos os cards
-- **Override de moeda por oferta custom** - Em ofertas manuais do tipo produto/serviço, o usuário pode escolher a moeda por oferta
-- **Sem moeda em itens sem ofertas** - Se o item não tem ofertas, o valor aparece como placeholder e não entra em totais monetários
-- **Gestão de etiquetas no card** - Adicione ou remova etiquetas diretamente no card do item
-- **Relacionamentos nativos com contato e conversa** - Mantenha o contexto comercial ligado ao chat real do cliente
-- **Ponte com Google Agenda** - Itens com data programada ou deadline podem criar eventos de calendario do MEGA quando a sincronizacao de Kanban esta habilitada no nivel da conta
-- **Automações por etapa** - Dispare ações ao entrar ou mover etapas, incluindo mensagens rápidas e regras operacionais
-- **Acompanhamentos sem resposta** - Envie texto ou multimídia carregada após a espera configurada somente se o contato não respondeu, com autocompletar de variáveis do ReplyBox para dados do contato e da conversa; inboxes configurados do WhatsApp Cloud também permitem templates aprovados e mantêm a restrição de 24 horas para mensagens livres
-- **Sincronização em tempo real** - Mudanças de etapa e dados do item refletem instantaneamente na lista de chats e no painel do contato
-- **Negócios abertos do contato** - Cada funil pode habilitar na Configuração Avançada a exibição de seus itens Kanban abertos em todas as conversas do contato atual; a opção é desativada por padrão, preserva as regras de visibilidade e identifica as conversas relacionadas
-- **Painéis autorizados** - O bloco Kanban do painel de conversa e a entrada do sidebar ficam ocultos quando o usuário não tem itens visíveis nem funis disponíveis para adicionar negócios
-- **Acesso Kanban em tempo real** - Ao adicionar ou remover agentes do funil, o sidebar, a lista de funis e os itens visíveis atualizam sem recarregar
-- **Múltiplas conversas vinculadas** - Um mesmo item Kanban pode se relacionar com várias conversas; a primeira permanece como vínculo principal e as adicionais aparecem na aba de relacionamentos, com seletor limitado aos inboxes do funil e ícones de canal
-- **Uma oportunidade aberta por contato e funil** - A criação automática reutiliza o item aberto do contato e vincula nele novas conversas do Instagram, WhatsApp ou outros inboxes habilitados; cada funil é avaliado separadamente e uma oportunidade ganha ou perdida permite iniciar outra
-- **Histórico sem vínculo quebrado** - Se uma conversa vinculada for excluída, o item Kanban permanece como histórico e o vínculo é limpo
-- **Acesso Kanban por função e permissão** - Administradores gerenciam todos os funis e itens; agentes e funções com `kanban_view` trabalham somente no quadro e nos itens autorizados; funis que contêm itens autorizados podem ser abertos em modo leitura e `kanban_manage` permite gerenciar e editar apenas os funis atribuídos, sem criar, duplicar, excluir, definir o padrão ou alterar a visibilidade
-- **Autoatribuição administrativa** - O administrador pode se atribuir e se remover de qualquer item mesmo sem constar entre os agentes ou inboxes do funil; os demais usuários mantêm as regras normais de elegibilidade
-- **Visibilidade controlada dos itens** - O criador sempre pode ver seu item; com uma conversa vinculada válida, o responsável só pode vê-lo se também estiver selecionado no funil, e os agentes atribuídos manualmente ao item podem vê-lo; um vínculo stale fica visível somente para administrador e criador, e itens sem atribuição respeitam o modo `everyone` ou `assigned_only` do funil
-- **Agentes flexíveis por funil** - Sem inboxes selecionadas, qualquer agente da conta pode ser adicionado e atribuído pelo funil; com inboxes configuradas, os agentes devem ter acesso a pelo menos uma e novas atribuições são bloqueadas se esse acesso for perdido
-- **Configuração e automações protegidas** - A configuração global é somente leitura para os atores Kanban; suas alterações e as automações globais são exclusivas de administradores. `kanban_manage` administra apenas os funis atribuídos ao usuário
+- **Solo mis conversaciones** - Agentes ven únicamente sus chats asignados
+- **Ocultar contactos** - Restringe acceso a la base de datos completa
+- **Interfaz simplificada** - Oculta opciones que no necesitan usar
+- **Control granular** - Configura permisos por cuenta
 
 ---
 
-## 🔐 Segurança e Conformidade
+### 📝 Edición y Eliminación de Mensajes *(Evolution/WAHA/Uazapi)*
 
-### Autenticação
+Edita y elimina mensajes de WhatsApp después de enviarlos:
 
-- **2FA/MFA** - Autenticação de dois fatores
+**Editar Mensajes:**
+
+- **Ventana de 15 minutos** - Edita mensajes enviados dentro de 15 minutos
+- **Sincronización de actualizaciones** - Los mensajes editados se sincronizan automáticamente desde WhatsApp
+- **Indicador de edición** - Los mensajes editados muestran la etiqueta "editado"
+- **Todos los proveedores** - Funciona con Evolution, WAHA y Uazapi
+
+**Eliminar Mensajes:**
+
+- **Eliminar para todos** - Quita mensajes enviados
+- **Confirmación** - Confirmación de seguridad antes de eliminar
+- **Actualización de estado** - Los mensajes eliminados se muestran como eliminados en la conversación
+
+---
+
+### 🧩 Tablero Kanban Comercial *(Mega)*
+
+Gestiona oportunidades comerciales en un pipeline visual conectado al historial omnicanal:
+
+- **Embudos con etapas personalizables** - Crea múltiples embudos y define una etapa predeterminada por embudo
+- **Alertas Kanban** - Notifica a miembros de equipos seleccionados y agentes asignados desde automatizaciones de etapa, y al agente responsable cuando una tarea de checklist llega a su fecha límite; las alertas descartadas reaparecen después del intervalo configurado en el funnel solo mientras esa tarea siga pendiente. Agrupa alertas en un banner no bloqueante y no envía email
+- **Vista tablero y vista lista** - Alterna entre pipeline visual y listado operativo según el flujo del equipo
+- **Filtros avanzados por inbox/canal/actividad** - Segmenta oportunidades por origen y movimiento reciente
+- **Filtros por etiquetas** - Filtra por etiquetas de conversación en tablero y lista, con impacto en métricas por etapa
+- **Columnas configurables por usuario** - Muestra u oculta columnas y conserva preferencias localmente
+- **Ficha 360 del ítem** - Incluye checklist, notas, adjuntos, agentes asignados, ofertas y atributos personalizados
+- **Notas extensas legibles** - Abre el texto completo con formato y adjuntos en una vista desplazable, con edición directa cuando tengas permiso
+- **Búsqueda en relaciones del ítem** - Encuentra conversaciones vinculadas con búsqueda remota al gestionar relaciones
+- **Moneda predeterminada por cuenta** - La moneda base del tablero se define desde configuración de cuenta (`default_currency`)
+- **Moneda consistente en todo Kanban** - Tarjetas, detalle, ofertas, actividades e historial respetan la prioridad oferta → ítem → cuenta → idioma; cada lado de un cambio histórico conserva su propia moneda
+- **Totales por moneda en cada etapa** - El encabezado separa PYG, USD, EUR y cualquier otra moneda sin convertirlas ni sumarlas entre sí; el tooltip incluye todas las ofertas filtradas, aunque todavía no estén cargadas por paginación
+- **Moneda por oferta custom (override)** - En ofertas manuales de tipo producto/servicio el usuario puede elegir moneda por oferta
+- **Sin moneda en ítems sin ofertas** - Si un ítem no tiene ofertas, el valor se muestra como placeholder y no contamina totales monetarios
+- **Gestión de etiquetas desde el ítem** - Añade o quita etiquetas directamente desde la tarjeta del item
+- **Relaciones nativas con contacto y conversación** - Mantén el contexto comercial conectado con el chat real del cliente
+- **Puente con Google Calendar** - Ítems con fecha programada o deadline pueden crear eventos de calendario de MEGA cuando la sincronización Kanban está habilitada a nivel de cuenta
+- **Automatizaciones por etapa** - Dispara acciones al entrar o mover etapas, incluyendo mensajes rápidos y reglas operativas
+- **Seguimientos por falta de respuesta** - Envía texto o multimedia subida después de la espera configurada solo si el contacto no respondió, con autocompletado de variables del ReplyBox para datos del contacto y la conversación; para inboxes configurados de WhatsApp Cloud también permite templates aprobados y conserva la restricción de 24 horas para mensajes libres
+- **Sincronización en tiempo real** - Cambios de etapa y datos del ítem se reflejan al instante en lista de chats y panel del contacto
+- **Negocios abiertos del contacto** - Cada embudo puede habilitar desde Configuración Avanzada la visualización de sus ítems Kanban abiertos en todas las conversaciones del contacto actual; la opción está desactivada por defecto, conserva las reglas de visibilidad e identifica las conversaciones relacionadas
+- **Paneles autorizados** - El bloque Kanban del panel de conversación y la entrada del sidebar se ocultan cuando el usuario no tiene ítems visibles ni funnels disponibles para agregar negocios
+- **Acceso Kanban en tiempo real** - Al agregar o remover agentes del funnel, el sidebar, la lista de funnels y los ítems visibles se actualizan sin recargar
+- **Múltiples conversaciones vinculadas** - Un mismo ítem Kanban puede relacionarse con varias conversaciones; la primera queda como vínculo principal y las adicionales se muestran en la pestaña de relaciones, con selector limitado a los inboxes del funnel e íconos de canal
+- **Una oportunidad abierta por contacto y funnel** - La creación automática reutiliza el ítem abierto del contacto y vincula allí sus nuevas conversaciones de Instagram, WhatsApp u otros inboxes habilitados; cada funnel se evalúa por separado y una oportunidad ganada o perdida permite iniciar otra
+- **Histórico sin relación rota** - Si se elimina una conversación vinculada, el ítem Kanban se conserva como histórico y se limpia el vínculo
+- **Acceso por rol y permiso Kanban** - Los administradores administran todos los embudos e ítems; agentes y roles con `kanban_view` trabajan solo en el tablero y los ítems autorizados; los embudos que contienen ítems autorizados se pueden abrir en modo lectura y `kanban_manage` permite gestionar y editar únicamente los embudos asignados, sin crear, duplicar, eliminar, definir el predeterminado ni cambiar la visibilidad
+- **Autoasignación administrativa** - El administrador puede asignarse y removerse de cualquier ítem aunque no figure entre los agentes o inboxes del embudo; los demás usuarios conservan las reglas normales de elegibilidad
+- **Visibilidad controlada de ítems** - El creador siempre puede ver su ítem; con una conversación vinculada válida el responsable solo lo ve si también está seleccionado en el funnel, y los agentes asignados manualmente al ítem lo ven; un vínculo stale queda solo para administrador y creador, y los ítems sin atribución respetan el modo del embudo `everyone` o `assigned_only`
+- **Agentes flexibles por embudo** - Sin inboxes seleccionados, cualquier agente de la cuenta puede agregarse y asignarse desde el embudo; con inboxes configurados, los agentes deben tener acceso a por lo menos uno y se bloquean nuevas atribuciones si pierden ese acceso
+- **Configuración y automatizaciones protegidas** - La configuración global es de solo lectura para los actores Kanban; sus cambios y las automatizaciones globales son exclusivos de administradores. `kanban_manage` administra únicamente los funnels que tiene asignados
+
+---
+
+### 📊 Resumen del Año (Year in Review)
+
+Estadísticas e insights anuales para tu cuenta:
+
+- **Resumen anual** - Vista completa del rendimiento de tu año
+- **Métricas clave** - Conversaciones, mensajes, tiempos de resolución
+- **Día más ocupado** - Identifica tu día de mayor actividad
+- **Tipo de personalidad** - Categorización divertida basada en tus patrones de trabajo
+- **Slides interactivos** - Presentación atractiva de tus estadísticas
+- **Resultados en caché** - Carga rápida para vistas repetidas
+- **Compartir** - Comparte tus logros con tu equipo
+
+---
+
+## 🔐 Seguridad y Cumplimiento
+
+### Autenticación
+
+- **2FA/MFA** - Autenticación de dos factores
 - **SAML/SSO** - Single Sign-On empresarial
-- **Tokens de API** - Acesso programático seguro
-- **Suporte para conta suspensa** - Usuários suspensos veem o aviso de política e a ação para contatar o suporte; administradores no Cloud podem abrir o faturamento para regularizar o pagamento e restaurar o acesso
+- **Tokens de API** - Acceso programático seguro
+- **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política y la acción para contactar soporte; los administradores en Cloud pueden abrir facturación para regularizar el pago y restaurar el acceso
 
-### Privacidade
+### Privacidad
 
-- **GDPR Ready** - Conformidade com regulamentações
-- **Exclusão de dados** - Direito ao esquecimento
-- **Exportação** - Portabilidade de dados
+- **GDPR Ready** - Cumplimiento de regulaciones
+- **Eliminación de datos** - Derecho al olvido
+- **Exportación** - Portabilidad de datos
 
-### Infraestrutura
+### Infraestructura
 
-- **Criptografia em trânsito** - HTTPS obrigatório
-- **Criptografia em repouso** - Dados protegidos
-- **Backups automáticos** - Recuperação de desastres
-- **Proteção de licença** *(Mega)* - Verificação de integridade para reforçar controle de deploy
-- **Observabilidade de release** - Melhor rastreabilidade de erros por versão no monitoramento
-
----
-
-## 📱 Aplicativos
-
-### Aplicativo Web Progressivo (PWA) *(Mega)*
-
-MEGA funciona como um **Progressive Web App** completo: instale em qualquer dispositivo e tenha uma experiência idêntica a um app nativo, sem passar por lojas de aplicativos.
-
-**Instalação e Experiência Nativa:**
-
-- **Instalável com um toque** - Banner inteligente que aparece automaticamente em dispositivos móveis convidando a instalar o app
-- **Desktop e celular** - Funciona no Chrome, Edge, Safari (iOS/macOS) e qualquer navegador compatível com PWA
-- **Tela cheia** - Executa em modo standalone, sem a barra de endereços do navegador
-- **Splash screen personalizada** - Tela de carregamento animada com o logo e cores da sua marca ao iniciar o app
-- **Atalhos rápidos** - Acesse diretamente Conversas ou Notificações pelo menu contextual do ícone do app
-- **Ícone dinâmico** - O ícone do app é gerado a partir do ícone de notificações configurado, com fallback para o logo thumbnail, em todos os tamanhos necessários (48px a 512px)
-- **Badge monocromático** - Ícone badge otimizado com silhueta monocromática para notificações do sistema
-
-**Notificações Push Avançadas:**
-
-- **Notificações push nativas** - Receba alertas instantâneos mesmo com o app fechado, diretamente no sistema operacional
-- **Indicador na aba** - Se uma mensagem chega com a aba oculta ou sem foco, o favicon muda para o ícone de notificações e volta ao normal quando o usuário retorna
-- **Resposta rápida inline** - Responda mensagens diretamente pela notificação sem abrir o app
-- **Marcar como lido** - Marque notificações como lidas pela própria notificação com um toque
-- **Empilhamento de mensagens** - Mensagens da mesma conversa são empilhadas em uma única notificação (estilo WhatsApp) mostrando até 10 mensagens
-- **Contador de não lidos** - O badge do ícone do app mostra o número exato de notificações não lidas
-- **Timestamp de cache preciso** - Invalidação consistente de assets do Service Worker para evitar conteúdo desatualizado
-- **Ativação inteligente** - Prompt automático ao abrir a PWA pela primeira vez para ativar notificações com flags pré-configurados (atribuição, menção, mensagem nova)
-- **Som configurável** - Alertas de áudio que funcionam até no iOS, com desbloqueio automático do AudioContext ao primeiro toque
-- **Som diferido** - Se o app está em segundo plano e não consegue reproduzir áudio, reproduz automaticamente quando você volta ao app
-- **Vibração** - Padrão de vibração personalizado em dispositivos móveis ao receber notificações
-
-**Funcionamento Offline:**
-
-- **Página offline personalizada** - Quando não há conexão, exibe uma página elegante com o logo da sua marca e botão de tentar novamente
-- **Cache inteligente** - Os assets estáticos (JS, CSS, fontes, imagens) são cacheados automaticamente para carregamento instantâneo
-- **Navegação resiliente** - As páginas visitadas são cacheadas com estratégia network-first, permitindo acesso mesmo sem conexão
-- **Limpeza automática** - O Service Worker remove caches obsoletos de versões anteriores ao se atualizar
-
-**Personalização de Marca (White-label):**
-
-- **Manifesto dinâmico** - O manifesto PWA é gerado dinamicamente com o nome, descrição, cores e logo da sua instalação
-- **Suporte SVG** - Os logos SVG são convertidos automaticamente para PNG de alta resolução usando rsvg-convert para máxima compatibilidade
-- **Ícones para Apple** - Geração automática de apple-touch-icons em todos os tamanhos exigidos pelo iOS
-- **Splash screens iOS** - 14 resoluções de splash screen pré-geradas para todos os modelos de iPhone e iPad
-- **Cores da marca** - O theme-color e background-color do manifesto usam sua cor primária configurada
-
-### Aplicativo Móvel *(Em desenvolvimento)*
-
-- **iOS e Android** - Atenda clientes do seu celular
-- **Notificações push** - Alertas instantâneos de novas conversas
-- **Funcionalidade completa** - Todas as ferramentas no seu bolso
+- **Encriptación en tránsito** - HTTPS obligatorio
+- **Encriptación en reposo** - Datos protegidos
+- **Backups automáticos** - Recuperación ante desastres
+- **Protección de licencia** *(Mega)* - Verificación de integridad para reforzar control de despliegues
+- **Observabilidad de release** - Mejor trazabilidad de errores por versión en monitoreo
 
 ---
 
-## 📞 Suporte e Recursos
+## 📱 Aplicaciones
 
-### Contratos da API
+### Aplicación Web Progresiva (PWA) *(Mega)*
 
-- Swagger/OpenAPI 3.1 detecta rotas sem documentação e operações obsoletas ou duplicadas.
-- O build gera uma coleção Postman v2.1 importável, separada por token da conta, token do aplicativo da plataforma e rotas públicas.
+MEGA funciona como una **Progressive Web App** completa: instálala en cualquier dispositivo y obtén una experiencia idéntica a una app nativa, sin pasar por tiendas de aplicaciones.
 
-- **Central de Ajuda** - Documentação completa e guias passo a passo
-- **Comunidade ativa** - Conecte-se com outros usuários
-- **Suporte Enterprise** - Atendimento prioritário e dedicado para clientes empresariais
+**Instalación y Experiencia Nativa:**
+
+- **Instalable en un toque** - Banner inteligente que aparece automáticamente en dispositivos móviles invitando a instalar la app
+- **Escritorio y móvil** - Funciona en Chrome, Edge, Safari (iOS/macOS) y cualquier navegador compatible con PWA
+- **Pantalla completa** - Se ejecuta en modo standalone, sin barra de direcciones del navegador
+- **Splash screen personalizado** - Pantalla de carga animada con el logo y colores de tu marca al iniciar la app
+- **Atajos rápidos** - Accede directamente a Conversaciones o Notificaciones desde el menú contextual del ícono de la app
+- **Ícono dinámico** - El ícono de la app se genera desde el ícono de notificaciones configurado, con respaldo en el logo thumbnail, en todos los tamaños necesarios (48px a 512px)
+- **Badge monocromático** - Ícono badge optimizado con silueta monocromática para notificaciones del sistema
+
+**Notificaciones Push Avanzadas:**
+
+- **Notificaciones push nativas** - Recibe alertas instantáneas incluso con la app cerrada, directamente en el sistema operativo
+- **Indicador en la pestaña** - Si llega un mensaje con la pestaña oculta o sin foco, el favicon cambia al ícono de notificaciones y vuelve al normal al regresar
+- **Respuesta rápida inline** - Responde mensajes directamente desde la notificación sin abrir la app
+- **Marcar como leído** - Marca notificaciones como leídas desde la propia notificación con un toque
+- **Apilamiento de mensajes** - Los mensajes de la misma conversación se apilan en una sola notificación (estilo WhatsApp) mostrando hasta 10 mensajes
+- **Contador de no leídos** - El badge del ícono de la app muestra el número exacto de notificaciones sin leer
+- **Timestamp de caché preciso** - Invalidación consistente de assets del Service Worker para evitar contenido desactualizado
+- **Activación inteligente** - Prompt automático al abrir la PWA por primera vez para activar notificaciones con flags preconfigurados (asignación, mención, mensaje nuevo)
+- **Sonido configurable** - Alertas de audio que funcionan incluso en iOS, con desbloqueo automático de AudioContext al primer toque
+- **Sonido diferido** - Si la app está en segundo plano y no puede reproducir audio, lo reproduce automáticamente cuando vuelves a la app
+- **Vibración** - Patrón de vibración personalizado en dispositivos móviles al recibir notificaciones
+
+**Funcionamiento Offline:**
+
+- **Página offline personalizada** - Cuando no hay conexión, muestra una página elegante con el logo de tu marca y botón de reintento
+- **Cache inteligente** - Los assets estáticos (JS, CSS, fuentes, imágenes) se cachean automáticamente para carga instantánea
+- **Navegación resiliente** - Las páginas visitadas se cachean con estrategia network-first, permitiendo acceso incluso sin conexión
+- **Limpieza automática** - El Service Worker elimina caches obsoletas de versiones anteriores al actualizarse
+
+**Personalización de Marca (White-label):**
+
+- **Manifiesto dinámico** - El manifiesto PWA se genera dinámicamente con el nombre, descripción, colores y logo de tu instalación
+- **Soporte SVG** - Los logos SVG se convierten automáticamente a PNG de alta resolución usando rsvg-convert para máxima compatibilidad
+- **Íconos para Apple** - Generación automática de apple-touch-icons en todos los tamaños requeridos por iOS
+- **Splash screens iOS** - 14 resoluciones de splash screen pre-generadas para todos los modelos de iPhone y iPad
+- **Colores de marca** - El theme-color y background-color del manifiesto usan tu color primario configurado
+
+### Aplicación Móvil *(En desarrollo)*
+
+- **iOS y Android** - Atiende clientes desde tu teléfono
+- **Notificaciones push** - Alertas instantáneas de nuevas conversaciones
+- **Funcionalidad completa** - Todas las herramientas en tu bolsillo
 
 ---
 
-*MEGA - Transformando a forma como as empresas se comunicam com seus clientes.*
+## 📞 Soporte y Recursos
 
-**© 2026 MEGA - Todos os direitos reservados**
+### Contratos API
+
+- Swagger/OpenAPI 3.1 detecta rutas sin documentar y operaciones obsoletas o duplicadas.
+- El build genera una colección Postman v2.1 importable, separada por token de cuenta, token de aplicación de plataforma y rutas públicas.
+
+- **Centro de Ayuda** - Documentación completa y guías paso a paso
+- **Comunidad activa** - Conecta con otros usuarios
+- **Soporte Enterprise** - Atención prioritaria y dedicada para clientes empresariales
+
+---
+
+*MEGA - Transformando la forma en que las empresas se comunican con sus clientes.*
+
+**© 2026 MEGA - Todos los derechos reservados**

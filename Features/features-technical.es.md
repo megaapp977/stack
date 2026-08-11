@@ -1,8 +1,8 @@
 # MEGA - Detalle Tecnico de Funcionalidades (ES)
 
 Version: Enterprise
-Última actualización: 31 de julio de 2026
-Idioma: Español
+Ultima actualizacion: 10 de agosto de 2026
+Idioma: Espanol
 
 ## 1. Objetivo
 
@@ -40,23 +40,25 @@ Se complementa con [features.es.md](features.es.md), que esta orientado a presen
 - Instagram, Facebook, TikTok, Telegram, X, SMS y Email integrados como inboxes.
 - Email IMAP con timeout dedicado de procesamiento para evitar jobs colgados en bandejas de correo.
 - Diagnóstico de conexión para bandejas Gmail con autenticación IMAP/SMTP XOAUTH2 en vivo, categorías de error seguras, fechas de actividad entrante/saliente reciente y reconexión OAuth exclusiva para administradores.
+- Al borrar mensajes o conversaciones de bandejas Gmail, un job asíncrono busca el RFC `Message-ID` guardado, resuelve los IDs opacos de Gmail y elimina permanentemente el mensaje o hilo sin bloquear el borrado local.
 - Inferencia del proveedor de email desde registros MX del dominio de registro para sugerir integraciones Gmail u Outlook durante el onboarding.
 - Subida de adjuntos con reconocimiento explicito de archivos `.pfx` junto a formatos multimedia y documentales habituales.
 - API Channel: canal generico para integrar sistemas propietarios via API/webhooks.
 - Formulario pre-chat del widget: las casillas marcadas como obligatorias usan la regla de aceptacion del formulario, por lo que el envio queda bloqueado hasta que se seleccionen; el mensaje localizado de campo obligatorio se conserva.
 - Voz Twilio y llamadas WhatsApp Cloud: flujo WebRTC con historial unificado en conversacion; las llamadas Cloud desde perfiles sin conversacion resuelven o crean de forma segura el hilo del contacto respetando la continuidad del inbox y la visibilidad del agente. Los permisos de llamada pueden usar un template aprobado seleccionado desde ReplyBox o configurado como predeterminado por inbox, conservan el WAMID para correlacionar la respuesta y registran el mensaje saliente en la conversacion sin reenviarlo al proveedor. Las consultas a Meta son la fuente de verdad: normalizan y almacenan los estados sin permiso, temporal y permanente, y respetan la acción `start_call` antes de iniciar; cada cambio se registra como actividad, con la fecha de vencimiento recibida para permisos temporales. El cliente y el servidor impiden una segunda llamada activa por agente, incluso entre pestañas. Los candidatos del inbox se determinan con las reglas estándar de asignación —capacidad, equipo y overflow— y se excluyen quienes ya están en llamada; un administrador online que activó notificaciones solo entra como respaldo cuando no queda un agente elegible. Cuando una llamada Cloud está aceptándose, conectándose o activa, la interfaz y el modelo rechazan cambiar agente o equipo; una llamada que solo timbra todavía se puede reasignar y el cambio vuelve a estar disponible al finalizar. Los controles, solicitudes de permiso, inicio y webhooks de llamadas se deshabilitan para canales Cloud marcados como coexistencia con WhatsApp Business App, porque las llamadas continúan en la aplicación WhatsApp Business. Los reportes Twilio normalizan datos desde el modelo Call, las grabaciones nativas opcionales requieren aceptacion del costo de storage y las grabaciones se exponen en conversaciones y reportes de llamadas.
-- Control de transcripcion de audio: GPT-4o Mini Transcribe por defecto para notas de voz con Whisper disponible como override por cuenta; las grabaciones mantienen flags por cuenta para habilitacion general y comportamiento por proveedor (WhatsApp Cloud y WaVoIP), normalizacion de audio, diarizacion por turno, transcripcion fiel con GPT-4o Transcribe, etiquetas basadas en el nombre del contacto/agente asignado y reintento manual desde el menu contextual de mensajes de audio sin texto.
+- Control de transcripcion de audio: GPT-4o Mini Transcribe por defecto para notas de voz con Whisper disponible como override por cuenta; las grabaciones mantienen flags por cuenta para habilitacion general y comportamiento por proveedor (WhatsApp Cloud y WaVoIP), normalizacion de audio, diarizacion por turno, transcripcion fiel con GPT-4o Transcribe, etiquetas basadas en el nombre del contacto/agente asignado y reintento manual desde el menu contextual de mensajes de audio sin texto. Las transcripciones almacenadas participan en OpenSearch, el fallback GIN/SQL, los resultados globales de conversaciones y la busqueda de mensajes dentro de una conversacion, conservando los permisos y filtros existentes.
 - WaVoIP con persistencia de sesion por inbox y recuperacion segura de credenciales segun rol.
 
 ### 3.2 Nucleo de conversaciones
 
 - Las solicitudes de transcripcion por email desde el widget deshabilitan su boton durante el envio y por 15 segundos despues de un envio exitoso, evitando solicitudes repetidas y manteniendo el reintento inmediato despues de un error.
 - La visibilidad del feedback CSAT se almacena por inbox en `csat_config.hide_feedback_from_agents`. Los serializadores de mensajes del dashboard y Action Cable eliminan solo `feedback_message` para usuarios de cuenta no administradores, mientras las calificaciones, los datos persistidos y los payloads de administradores y clientes permanecen sin cambios.
-- Los mensajes eliminados pueden conservar el texto original para agentes según `inboxes.show_deleted_message_placeholder`; la API pública y los broadcasts Action Cable dirigidos al contacto reemplazan `content` y `processed_message_content` por el aviso de eliminación y omiten `content_attributes.original_content` y `translations`, sin alterar el registro persistido.
+- Los mensajes eliminados pueden conservar el texto original y los adjuntos para agentes según `inboxes.show_deleted_message_placeholder`; la API pública, los payloads del widget y los broadcasts Action Cable dirigidos al contacto reemplazan `content` y `processed_message_content` por el aviso de eliminación, omiten `content_attributes.original_content` y `translations`, y exponen una lista vacía de adjuntos sin alterar el registro persistido.
 - Estados: open, pending, resolved, snoozed.
 - Prioridad: urgencia operativa por conversacion.
 - Participantes: colaboracion multiagente en una misma conversacion.
 - API de atributos personalizados: `POST .../custom_attributes` conserva el reemplazo como predeterminado y acepta `merge=true` para actualizar solo las claves recibidas; `POST .../destroy_custom_attributes` elimina claves específicas y devuelve los atributos restantes.
+- Atributos requeridos Enterprise en macros: el dashboard detecta `resolve_conversation` y `change_status` a resuelta, solicita y persiste los valores faltantes antes de ejecutar, y permite continuar sin resolver al cerrar el diálogo. El overlay de `Macros::ExecutionService` también bloquea la resolución directa cuando faltan valores de definiciones requeridas vigentes; una casilla `false` cuenta como completa y los valores nulos como faltantes.
 - Borradores y pinned: continuidad de trabajo por agente.
 - Filtros avanzados y vistas personalizadas: segmentacion operativa de alto volumen.
 - Orden dedicado por unread en la lista de conversaciones.
@@ -115,10 +117,27 @@ Acciones:
 - Remover asignacion de agente o equipo.
 - Etiquetar, cambiar estado/prioridad, enviar webhook, silenciar.
 
+Flow Builder MVP:
+
+- Persistencia: `flow_builder_flows` para borradores editables, `flow_builder_flow_versions` para snapshots publicados y `flow_builder_flow_inboxes` para vincular un flow publicado a un inbox como bot nativo.
+- API account-scoped: `/api/v1/accounts/:account_id/flow_builder/flows` con CRUD, `validate`, `publish` y `pause`.
+- Ejecuciones account-scoped: `flow_builder_executions` guarda estado, duracion, contexto, snapshot de definicion, pasos parciales/completos, entrada y salida por nodo, incluyendo snapshots de conversacion, mensaje y contacto; API anidada `/flows/:flow_id/executions` lista y muestra detalle.
+- Permisos: Pundit admin-only y feature flag `flow_builder`.
+- Frontend: ruta `flow_builder_index`, Vuex module `flowBuilder`, canvas con `@vue-flow/core`, nodo Action reutilizando `AutomationActionInput`/`useAutomationValues` para inputs dinamicos, y pestaña de ejecuciones con replay visual readonly, checks verdes por nodo ejecutado, ruta recorrida verde/roja, inspector de payloads por nodo y actualizacion en vivo via ActionCable.
+- Estado operativo: switch en listado y editor que publica para activar o llama `pause` para desactivar, reutilizando el estado `published`/`paused` del backend.
+- Catalogo inicial: trigger, message, question, condition, switch, set, loop, code, action, handoff, wait, webhook y end.
+- Configuracion Wait: el inspector normaliza `duration/unit` legado a `mode/amount/unit/run_at` y soporta espera por intervalo o por fecha/hora especifica; la reanudacion real sigue fuera del runtime inicial.
+- Validacion: un solo trigger, edges existentes, sin ciclos, sin self-edge y configuracion minima por tipo de nodo.
+- Runtime inicial: flows publicados pueden dispararse desde eventos internos compatibles con Automation (`message_created`, `conversation_created`, `conversation_updated`, `conversation_opened`, `conversation_resolved`) o desde inicio tipo AgentBot por inbox para `message_created`; ejecutan nodos basicos de mensaje, pregunta, condicion, switch, acciones reutilizadas de `ActionService`, handoff y fin; las condiciones y casos switch soportan mensaje, conversacion y datos del contacto.
+- Vinculacion AgentBot: al publicar, el inicio tipo AgentBot valida inbox obligatorio y evita conflictos con AgentBot, Dialogflow u otro Flow Builder activo en el mismo inbox; al pausar o cambiar de modo se remueve la vinculacion.
+- Limite actual: estado conversacional multi-turn, webhook externo, wait/code/set/loop en runtime y acciones con adjuntos de regla, SLA/Kanban o envio de mensaje duplicado quedan para las siguientes fases.
+
 Bots:
 
 - Agent Bots por inbox con handover inteligente; los selectores de asignación manual solo exponen bots activos configurados en todos los inboxes solicitados.
 - Las conversaciones nuevas y campañas sin remitente de un Agent Bot activo quedan pendientes con el bot como propietario; las asignaciones humanas explícitas se preservan y el handover, la apertura humana o la desconexión del bot limpian su propiedad. Dialogflow, Captain y los destinos ignorados no reciben propietario Agent Bot.
+- El scope compartido `Conversation.unassigned` exige que tanto `assignee_id` como `assignee_agent_bot_id` sean nulos, por lo que las conversaciones de bot no afectan la lista ni el contador de la cola humana sin asignar.
+- El vencimiento de una sesión Webhook usa el handover canónico: abre la conversación, limpia la propiedad del bot y habilita la autoasignación humana solo durante esa transición. Sin agente elegible, conserva la conversación abierta y sin asignar con los reintentos acotados existentes.
 - El ReplyBox detecta la propiedad `AgentBot` en conversaciones pendientes, fuerza el modo efectivo `NOTE` sin sobrescribir borradores de respuesta y el banner de takeover reabre y reasigna al agente actual, actualizando también el tipo de asignado local.
 - Typebot extendido con comandos MEGA_CMD para asignacion de agente/equipo.
 - Typebot ignora reacciones de WhatsApp para evitar inicios o mensajes artificiales.
@@ -128,14 +147,20 @@ Bots:
 
 - Proveedores soportados: OpenAI, Anthropic, Google, Azure OpenAI, Bedrock, DeepSeek.
 - Assistants: configuracion por inbox con instrucciones y contexto.
+- Exclusividad de bots: `InboxBotStatus` identifica Agent Bots activos y Dialogflow como bots externos; Captain no programa respuestas ni resoluciones automáticas para esos inboxes.
 - Resumen del asistente: endpoints Enterprise de estadisticas, drilldown y resumen cacheado basados en `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder` y `Captain::OverviewSummaryService`; el cliente reutiliza las estadisticas cargadas para el resumen, cancela solicitudes de estadisticas reemplazadas, reintenta una vez un fallo transitorio y muestra esqueletos de metricas durante la carga. Los resúmenes usan el idioma de la cuenta; el tiempo ahorrado estimado se deriva de las respuestas publicas del asistente usando una suposicion fija de 2 minutos de esfuerzo de agente por respuesta.
 - Routing de modelos Captain por feature (`assistant`, `copilot`, `document_faq_generation`, `conversation_faq_matching`, `pdf_faq_generation`, `audio_transcription`, etc.) con override por cuenta y fallback a configuracion global.
 - Sugerencias de FAQ desde conversaciones: un trabajo de baja prioridad con mutex extrae solo mensajes públicos de clientes y agentes humanos junto con el contexto del negocio, rechaza conversaciones no aptas y agrupa observaciones semánticamente equivalentes por asistente e idioma; la API Enterprise de revisión lista y previsualiza solo fuentes disponibles para el agente actual, permite editar, aprobar o descartar mientras estén abiertas y bloquea las revisiones ante aprobaciones simultáneas. La aprobación crea una FAQ aprobada y conserva sus observaciones fuente; las FAQ aprobadas y sugerencias descartadas evitan duplicados nuevos.
 - Detalles de generación: `GET /api/v1/accounts/:account_id/captain/agent_sessions/:message_id` en Enterprise autoriza la conversación del mensaje, hidrata citas y títulos de escenarios y alimenta el popover de mensajes Captain. Las sesiones se almacenan por mensaje; una sesión de transferencia se asocia a su nota privada no vacía. El modelo y los créditos solo se muestran a superadministradores o en desarrollo.
+- Citas confiables de Captain V2: `faq_lookup` entrega índices locales tipados sin URLs; el agente principal permanece sin `response_schema` y emite marcadores `[[citation:N]]` que el servidor convierte en partes persistibles, filtra contra el mapa de la ejecución y renderiza solo documentos HTTP(S) públicos del asistente. Se rechazan credenciales, destinos privados, PDFs y parámetros firmados; `faq_ids` conserva resultados recuperados, mientras `used_faq_ids` y `cited_document_ids` guardan solo selecciones válidas. El historial reutiliza texto limpio y las sesiones legacy con columnas nulas siguen hidratándose desde `faq_ids`.
 - Captain Documents: carga, indexacion y auto-sincronizacion por plan con jitter, cola purgable, limites configurables por cuenta y globales, y una vista de detalles con contenido rastreado, metadatos de origen y recuento de preguntas frecuentes generadas.
-- Captain Scenarios: reglas de activacion y prioridad.
-- Captain Custom Tools: integraciones HTTP con GET, POST, PUT, PATCH y DELETE.
-- MCP Servers nativo por cuenta: endpoints dedicados por slug en /mcp/:account_id/:slug.
+- Captain Scenarios: reglas de activación y prioridad; la API conserva `tools` enviados explícitamente, normaliza IDs escalares o metadata `{ id }`, valida contra `assistant.available_tool_ids` y mantiene referencias `tool://` cuando se omite el campo. Account MCP publica schemas específicos para crear y actualizar escenarios.
+- Captain Custom Tools: integraciones HTTP con GET, POST, PUT, PATCH y DELETE; admiten fragmentos JSON Schema para parámetros complejos y Account MCP publica contratos directos para listar, crear, consultar, actualizar, eliminar y probar tools personalizadas.
+- Runtime de tools Captain: conserva íntegro el `inputSchema` de cada servidor MCP, reenvía objetos y arrays sin convertirlos a texto, excluye servidores deshabilitados o desconectados, refresca cada 10 minutos los catálogos conectados que quedaron obsoletos y limita cada solicitud a 128 tools incluyendo handoffs. Un error transitorio de conexión conserva el último catálogo utilizable y mantiene el servidor elegible para reintento; errores permanentes no anuncian un catálogo obsoleto como conectado. En Playground V1 y V2 no existe selección directa mediante `@` o `tool://`. V1 prueba el asistente legacy base sin MCP directas; V2 conserva las tools normales del asistente principal, ejecuta los handoffs y carga en cada agente de escenario únicamente sus tools asignadas, igual que en una conversación real. Las referencias `tool://` dentro de la configuración de escenarios permanecen soportadas. El proxy acepta objetos JSON y cadenas que contienen objetos JSON, pero rechaza JSON inválido o valores no-objeto en vez de vaciarlos silenciosamente.
+- MCP Servers nativo por cuenta: endpoints dedicados por slug en /mcp/:account_id/:slug. Las ejecuciones Captain hacia un MCP nativo llevan una prueba firmada, de un solo uso y ligada a cuenta, asistente, servidor, endpoint, tool y argumentos; el handshake permanece neutral y las llamadas MCP externas conservan su identidad normal.
+- Los diagnósticos del cliente MCP usan nivel INFO para que el logger DEBUG del transporte no exponga cabeceras de autorización ni pruebas de ejecución.
+- Las conexiones nativas a la propia instancia pueden usar `MCP_INTERNAL_BASE_URL`; desarrollo usa por defecto `MCP_INTERNAL_PORT`/3000 y nunca el `PORT` asignado por proceso al worker. Solo se reemplaza el origen, conservando la ruta de cuenta y la firma de la solicitud mientras se evitan timeouts de hairpin por DNS público.
+- Un `conversation_message_send` nativo cierra el turno Captain únicamente con un resultado estructurado exitoso que confirma conversación activa, mensaje público saliente y remitente Captain. Su marcador de ciclo de vida, consumo y evento de finalización son idempotentes; los turnos obsoletos se descartan antes del efecto MCP.
 - El POST MCP conserva JSON-RPC por `application/json` y admite una extensión `multipart/form-data`: `payload` contiene la solicitud JSON-RPC completa y `attachments[]` los archivos locales.
 - Los uploads multipart se limitan a `conversation_message_send`, su alias legado y `outbound_messages_create`; respetan `MAXIMUM_FILE_UPLOAD_SIZE`, con 15 adjuntos combinados para conversaciones y exactamente uno para outbound.
 - Multipart es una extensión HTTP de Mega y requiere soporte explícito del cliente; los clientes MCP JSON estándar no la utilizan automáticamente.
@@ -168,6 +193,7 @@ Bots:
 - Ongoing campaigns para widget/live chat.
 - One-off campaigns para WhatsApp, SMS y API Channel.
 - Constructor de templates Meta con ciclo de aprobacion y sincronizacion.
+- El endpoint cache-only del inbox lista templates de WhatsApp nativo y Twilio, aplica la clave de nombre exacto de cada proveedor y expone el último intento de sincronización sin consultar a Meta ni Twilio.
 - Control de velocidad, rotacion multi-inbox y metricas de ejecucion.
 
 ### 3.8 Help Center
@@ -175,8 +201,11 @@ Bots:
 - Articulos multi-idioma con estado por idioma.
 - Las ediciones de titulo y contenido de articulos publicados se guardan en columnas de borrador, con flujos de revision, publicacion y descarte que preservan la version visible hasta publicar.
 - Layouts de portal seleccionables: landing clasica o documentacion con sidebar.
+- La analítica del portal se guarda en `portal.config.analytics`; solo los administradores pueden actualizar los identificadores permitidos, que el modelo valida antes de renderizar los scripts de seguimiento públicos.
 - Contenido recomendado por locale persistido en `portal.config.popular_content`, con listas ordenadas y límites de 3 categorías y 6 artículos; se omiten registros eliminados o artículos no publicados y se conserva el fallback por popularidad.
 - Editor con menu slash, tablas nativas e insercion de enlaces de video compatibles mediante un campo validado; el enlace se convierte en el embed existente para mostrar su vista previa en el editor y el portal publico.
+- El menu slash del editor de articulos expone `horizontalRule`, que inserta el nodo horizontal existente de ProseMirror y mueve el cursor al parrafo siguiente.
+- Cuando la selección de ProseMirror está dentro de una tabla, el menú slash filtra los comandos de bloque que las celdas Markdown no pueden persistir y conserva solo formatos inline; las flechas y Ctrl+N/P quedan a cargo del menú mientras tenga opciones.
 - Creacion de articulos desde la vista de categoria.
 - Redimensionado de imagenes dentro del editor de articulos.
 - Insercion de articulos en conversacion con busqueda y popover estable.
@@ -302,6 +331,8 @@ Bots:
 ### Paridad API y colección Postman
 
 Las rutas soportadas bajo `/api`, `/platform/api` y `/public/api` se comparan con OpenAPI 3.1 por método y ruta normalizada. La validación detecta operaciones ausentes, obsoletas o duplicadas; no afirma cobertura de pruebas para cada campo de respuesta. `bundle exec rake swagger:build` regenera Swagger y `swagger/postman_collection.json` con estructura lista para importar: los recursos de Application API aparecen en el primer nivel y heredan `api_access_token`; Mega Platform APIs y Mega Public APIs conservan carpetas y autenticación propias. Las variables de colección centralizan `host`, `api_version`, `account_id`, credenciales e identificadores de ruta. Los mensajes multimedia incluyen ejemplos separados para seleccionar un archivo con `multipart/form-data` o utilizar un `signed_blob_id` con JSON. `Idempotency-Key` aparece desactivado y es opcional; puede habilitarse con `{{$guid}}` o una clave fija para comprobar reintentos.
+
+Los mensajes programados se pueden crear a nivel de cuenta con `contact_id` e `inbox_id`, sin requerir una conversación, dentro de una conversación, o mediante `POST /scheduled_outbound_messages` con teléfono, email, `contact_id` o `source_id`: este último resuelve o crea el contacto/contact-inbox en una transacción y deja el mensaje pendiente sin crear una conversación anticipadamente. Los fallidos se recuperan mediante acciones explícitas y autorizadas: el reintento los deja pendientes y encola el envío inmediato; la reprogramación exige una fecha futura, preserva contenido, plantilla y adjuntos, y mantiene los límites de cuenta y conversación. Un mensaje enviado puede volver a programarse como una copia independiente no recurrente, con fecha futura y contenido editables, conservando destinatario, inbox, plantilla y adjuntos.
 
 Checklist recomendado por cambio funcional:
 

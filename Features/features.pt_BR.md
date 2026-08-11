@@ -4,7 +4,7 @@
 
 **Versão:** Enterprise
 **Baseado em:** Funcionalidades Exclusivas Mega
-**Última Atualização:** 31 de julho de 2026
+**Última Atualização:** 10 de agosto de 2026
 
 ---
 
@@ -192,6 +192,7 @@ Muitos clientes preferem email para consultas formais, documentação ou acompan
 - **Qualquer provedor** - Conecte Gmail, Outlook, seu servidor próprio ou qualquer email
 - **Configuração guiada** - Detecta Gmail ou Outlook pelo seu domínio para sugerir a integração correta
 - **Verificação de conexão do Gmail** - Teste IMAP e SMTP em tempo real, consulte a atividade recente e reconecte a conta nas configurações da caixa de entrada
+- **Exclusão permanente sincronizada com o Gmail** - Ao excluir um email ou conversa de uma caixa Gmail, ele também é excluído permanentemente no Gmail
 - **Histórico completo** - Toda a sequência de emails visível em uma só conversa
 - **Resposta citada** - Responda citando partes específicas do email original
 - **Editor rico** - Formatação completa, listas, negrito, itálico, links
@@ -488,6 +489,7 @@ As integrações podem atualizar apenas as chaves enviadas dos atributos persona
 Encontre mensagens específicas dentro de uma conversa:
 
 - **Busca de texto** - Procure palavras ou frases em todas as mensagens
+- **Busca em transcrições de áudio** - Encontre mensagens de voz por palavras ou frases contidas na transcrição
 - **Filtro por datas** - Restrinja a busca a um período específico
 - **Destaque de resultados** - Mensagens encontradas são destacadas visualmente
 - **Scroll automático** - Navegue instantaneamente até a mensagem encontrada
@@ -775,6 +777,24 @@ Configure fluxos automáticos baseados em eventos e condições:
 - Silenciar conversa
 - Redistribuir para agentes online
 
+### Flow Builder *(Mega - MVP)*
+
+Desenhe automações conversacionais em um canvas visual com blocos conectáveis.
+
+- **Canvas visual estilo n8n** - Monte fluxos arrastando blocos, conectando caminhos e editando cada etapa em um inspetor lateral
+- **Blocos iniciais** - Disparador, mensagem, pergunta, condição, switch, set, loop, código, ação, transferência, espera, webhook e fim
+- **Espera configurável** - O nó de espera permite definir intervalo de tempo ou data/hora específica no inspetor
+- **Ações reutilizadas de Automation** - O nó Ação usa os mesmos seletores para etiquetas, equipes, agentes, prioridade, email, webhook, notas privadas e status de conversa compatíveis
+- **Rascunhos e publicação versionada** - Edite sem alterar a versão publicada e publique snapshots estáveis
+- **Ativação e pausa por switch** - Ative ou pause flows publicados pela lista ou pelo editor sem entrar em ações secundárias
+- **Validação antes de publicar** - Detecta ciclos, múltiplos disparadores, conexões quebradas e blocos incompletos
+- **Runtime inicial de eventos** - Flows publicados podem iniciar a partir de eventos internos compatíveis com Automation e executar mensagens, perguntas, condições, roteamento switch, ações básicas e handoff
+- **Decisões Switch multirrota** - Roteia um flow por valor de campo para múltiplas saídas nomeadas com uma saída fallback quando nada corresponde
+- **Início tipo AgentBot** - O trigger pode ser vinculado a uma inbox para iniciar o flow como bot nativo ao receber mensagens, com exclusividade frente a AgentBot, Dialogflow ou outros flows ativos
+- **Condições com dados do contato** - Avalie nome, email, telefone, identificador e atributos personalizados do contato
+- **Histórico visual de execuções ao vivo** - Reproduza o flow executado no canvas, marque nós com sucesso/erro, pinte o caminho percorrido e abra cada nó para revisar entrada, saída e erros
+- **Base para IVR e voz** - O mesmo canvas fica preparado para adicionar nós de chamadas e IVR em uma fase posterior
+
 ### Macros
 
 Execute múltiplas ações com um só clique:
@@ -789,8 +809,10 @@ Execute múltiplas ações com um só clique:
 - **Integração Typebot** - Conecte com fluxos conversacionais do Typebot
 - **Handover para humanos** - Transferência suave para agentes reais
 - **Handover inteligente** - Se um humano responder em conversa pendente do bot, a transferência ocorre automaticamente
+- **Handover por expiração** - Quando uma sessão de Webhook expira, a conversa é aberta, libera o bot e tenta a atribuição automática a um agente elegível; se ninguém estiver disponível, permanece aberta e sem atribuição
 - **Bots por caixa de entrada** - Configure bots específicos por canal
 - **Propriedade explícita do bot** - Conversas tratadas por um Agent Bot conectado ficam pendentes e atribuídas ao bot; a abertura, o handover por uma pessoa ou a desconexão do bot libera essa propriedade sem substituir atribuições humanas explícitas
+- **Fila humana sem atribuição** - Conversas atribuídas a um Agent Bot não aparecem na fila Sem atribuição; ela inclui apenas conversas sem agente humano nem bot
 - **Assumir pelo painel** - Enquanto um Agent Bot atende uma conversa pendente, o compositor fica em modo de nota privada e oferece uma ação para assumir, reabrir a conversa e atribuí-la ao agente atual
 - **Atribuição manual restrita por inbox** - O seletor de agente oferece apenas Agent Bots ativos configurados no inbox da conversa
 - **Indicador de digitação** - Os bots podem ativar e desativar o indicador "digitando..." para uma experiência mais natural
@@ -824,8 +846,10 @@ Crie assistentes especializados para diferentes necessidades:
 - **Modelos por função** - Configure modelos separados para Assistant, Copilot, sugestões e geração de FAQs a partir de documentos e PDFs
 - **Sugestões de FAQ por conversa** - Conversas resolvidas com respostas reutilizáveis de agentes humanos são agrupadas em sugestões de FAQ para revisão; agentes só revisam sugestões e conversas de origem às quais têm acesso e podem editar, aprovar ou descartar sugestões abertas para publicar FAQs confiáveis
 - **Troca fácil** - Alterne entre assistentes conforme necessário
+- **Exclusividade com bots externos** - O Captain não responde nem agenda resolução automática em inboxes com um Agent Bot ativo ou Dialogflow
 - **Visão geral do assistente** - Monitore conversas atendidas, resolução automática, transferências, tempo economizado estimado, reaberturas, profundidade da conversa, cobertura de conhecimento e resumos de período gerados por IA no idioma da conta; as métricas exibem carregamento visual e permanecem consistentes ao alternar o período
 - **Detalhes da geração** - Abra o indicador “Gerado pelo Captain” em uma resposta do assistente ou nota privada de transferência para ver as etapas de ferramentas e cenários, fontes da base de conhecimento e raciocínio; o modelo e os créditos ficam disponíveis apenas para superadministradores
+- **Citações confiáveis** - O Captain V2 exibe somente links web públicos validados pelo servidor, registra as fontes realmente selecionadas e mantém as URLs renderizadas fora do histórico enviado ao modelo; sessões anteriores preservam suas fontes existentes
 - **Compreensão de imagens** - O assistente pode analisar imagens enviadas nas conversas
 - **Suporte multimodal** - Processa texto e imagens simultaneamente para respostas contextuais
 - **Ignorar grupos** - Configure o assistente para não responder em conversas de grupo
@@ -852,11 +876,14 @@ Fluxos automatizados que o Captain pode executar:
 - **Ações predefinidas** - Mapeie ações comuns para o Captain executar
 - **Coleta de informação** - Recolha dados do cliente antes de transferir
 - **Execução de tarefas** - Deixe o Captain realizar ações por você
+- **Criação completa por MCP** - IAs conectadas ao MCP da conta podem salvar e atualizar IDs de ferramentas integradas, personalizadas e MCP; IDs indisponíveis são rejeitados explicitamente
 - **Escalonamento inteligente** - Saiba quando transferir para humano
 
 **Ferramentas Personalizadas:**
 
 Estenda as capacidades do Captain com integrações:
+
+- **Contratos tipados completos** - Tools personalizadas e MCP preservam objetos, arrays, enums e campos aninhados; os cenários só as recebem quando estão habilitadas e conectadas
 
 - **Chamadas de API** - Conecte o Captain com sistemas externos
 - **Métodos HTTP ampliados** - Suporte a GET, POST, PUT, PATCH e DELETE nas ferramentas
@@ -876,6 +903,8 @@ Conecte servidores MCP para ampliar as capacidades do seu assistente:
 - **Cobertura operacional ampliada** - Inclui agendamento, tarefas, campanhas, SLA, calendário, relatórios, notificações e chat interno; não expõe importação nem exportação de dados
 - **Help Center via MCP** - Consulte, busque e obtenha artigos e categorias a partir de agentes conectados
 - **Atribuição a assistentes** - Vincule servidores MCP a assistentes específicos
+- **Ações nativas atribuídas ao Captain** - Execuções MCP nativas assinadas preservam o assistente como remetente e confirmam mensagens entregues sem duplicação nem handoff acidental
+- **Playground fiel à produção** - O catálogo permanece disponível para configurar cenários. Com o Captain V2, o playground testa handoffs reais e carrega somente as tools atribuídas ao cenário; o fluxo legado testa o assistente base sem seleção direta
 - **Gestão centralizada** - Administre todos seus servidores MCP nas configurações
 
 **Modo Auto-Resolve do Captain:**
@@ -1163,6 +1192,7 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Múltiplos portais** - Crie bases de conhecimento por produto/marca
 - **Domínio personalizado** - Hospede no seu próprio domínio
 - **Design configurável** - Cores, logo, texto de cabeçalho
+- **Integrações de análise** - Administradores podem conectar Google Analytics 4, Google Tag Manager, Microsoft Clarity, Hotjar, Plausible, Amplitude e Meta Pixel; os scripts são publicados apenas com um identificador válido
 - **Layouts selecionáveis** - Escolha entre uma página inicial clássica ou navegação lateral em estilo documentação
 - **Multi-idioma** - Artigos em múltiplos idiomas
 - **Conteúdo recomendado por localidade** - Selecione e ordene até 3 categorias e 6 artigos em destaque por localidade; o conteúdo popular permanece como fallback quando nada é configurado
@@ -1176,7 +1206,9 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Criar a partir da categoria** - Inicie novos artigos diretamente da tela de cada categoria
 - **Redimensionamento de imagens** - Ajuste imagens dentro do editor para layouts de artigo mais limpos
 - **Menu slash no editor** - Insira blocos e comandos rapidamente digitando /
+- **Menu slash seguro em tabelas** - Dentro das células, use apenas formatação inline preservada pelo Markdown, com navegação por setas e Ctrl+N/P contida no menu
 - **Vídeos pelo menu slash** - Incorpore links de vídeo compatíveis (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar e MP4) com pré-visualização no editor e no artigo publicado
+- **Divisores pelo menu slash** - Insira um divisor horizontal pelo menu do editor para separar seções do artigo
 - **Tabelas nativas no editor** - Crie e edite tabelas diretamente no editor de artigos
 - **Tabelas em Markdown** - Renderização correta de tabelas dentro dos artigos
 - **Posicionamento** - Ordene artigos manualmente
@@ -1526,6 +1558,7 @@ Crie e gerencie seus templates do WhatsApp diretamente da MEGA, sem precisar ace
 **Gestão de templates:**
 
 - **Lista centralizada** - Veja todos os templates de todas as suas caixas de entrada do WhatsApp em um só lugar
+- **API unificada de templates em cache** - Integrações podem listar templates em cache de inboxes WhatsApp nativos e Twilio, filtrar pelo nome exato do provedor e consultar a última tentativa de sincronização sem contatar o provedor
 - **Status de aprovação** - Monitore se cada template está aprovado, pendente ou rejeitado pela Meta
 - **Métricas de uso** - Veja quantas vezes cada template foi entregue e sua taxa de leitura
 - **Filtros avançados** - Filtre por status, categoria, idioma, canal e intervalo de datas
@@ -1770,6 +1803,7 @@ Resumo visual do ano da sua equipe de atendimento:
 ### Busca Avançada
 
 - **Indexação completa** - Busca em todas as mensagens
+- **Resultados com transcrições** - Encontre áudios transcritos nos resultados de mensagens e sua conversa associada
 - **Filtros combinados** - Múltiplos critérios simultâneos
 - **Resultados instantâneos** - Performance otimizada
 
@@ -1779,6 +1813,7 @@ Obrigue os agentes a preencher atributos específicos antes de resolver conversa
 
 - **Campos obrigatórios** - Defina quais atributos personalizados devem ser preenchidos
 - **Validação ao resolver** - Bloqueia a resolução até completar os campos obrigatórios
+- **Macros seguras** - Macros que resolvem solicitam os atributos obrigatórios; se forem ignorados, executam as demais ações, mas mantêm a conversa aberta
 - **Melhoria na qualidade dos dados** - Garanta que toda conversa tenha as informações necessárias
 
 ### Conferências de Voz
@@ -1853,16 +1888,18 @@ Programe o envio automático de mensagens nas suas conversas:
 - **Anexos** - Inclua imagens, documentos e arquivos em mensagens programadas
 - **Status de acompanhamento** - Monitore o status: pendente, enviado, falhou, cancelado
 - **Cancelamento** - Cancele mensagens programadas antes de serem enviadas
+- **Recuperação e novo envio** - Tente novamente ou reagende uma mensagem com falha, ou programe uma cópia editável de uma mensagem enviada preservando destinatário e anexos
+- **API de programação universal** - Programe uma mensagem para telefone, e-mail ou identificador de provedor criando ou reutilizando o contato automaticamente
 - **Múltiplas por conversa** - Programe várias mensagens na mesma conversa
 - **Histórico** - Consulte o histórico de mensagens programadas e seu status
 
 ### 🔒 Placeholder de Mensagem Excluída
 
-Configure por inbox se os agentes veem o texto original junto ao aviso de exclusão:
+Configure por inbox se os agentes veem o texto original e os anexos junto ao aviso de exclusão:
 
-- **Retenção para agentes** - Pode mostrar o texto original abaixo de "Esta mensagem foi excluída" dentro do dashboard
+- **Retenção para agentes** - Pode mostrar o texto original e os anexos abaixo de "Esta mensagem foi excluída" dentro do dashboard
 - **Configurável por inbox** - Cada canal pode ter sua própria configuração
-- **Proteção do contato** - A API pública e os eventos em tempo real destinados ao contato entregam apenas o aviso de exclusão
+- **Proteção do contato** - A API pública e os eventos em tempo real destinados ao contato entregam apenas o aviso de exclusão, sem metadados nem URLs de anexos
 
 ### Provedores de WhatsApp Alternativos
 

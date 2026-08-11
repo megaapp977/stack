@@ -1,7 +1,7 @@
 # MEGA - Technical Feature Detail (EN)
 
 Version: Enterprise
-Last updated: July 31, 2026
+Last updated: August 10, 2026
 Language: English
 
 ## 1. Purpose
@@ -40,23 +40,25 @@ It complements [features.en.md](features.en.md), which is focused on commercial 
 - Instagram, Facebook, TikTok, Telegram, X, SMS, and Email exposed as inbox channels.
 - IMAP email processing with a dedicated timeout to avoid stuck mailbox jobs.
 - Gmail inbox connection diagnostics with live IMAP/SMTP XOAUTH2 authentication, safe error categories, recent incoming/outgoing activity timestamps, and administrator-only OAuth reconnection.
+- When messages or conversations are deleted from Gmail inboxes, an asynchronous job searches the stored RFC `Message-ID`, resolves Gmail's opaque identifiers, and permanently deletes the message or thread without blocking the local deletion.
 - Email provider inference from signup-domain MX records to suggest Gmail or Outlook integrations during onboarding.
 - Attachment uploads with explicit `.pfx` recognition alongside common media and document formats.
 - API Channel: generic gateway for proprietary platforms via API/webhooks.
 - Widget pre-chat form: checkboxes marked required use the form acceptance rule, so submission remains blocked until they are selected; the localized required-field message is retained.
 - Twilio voice and WhatsApp Cloud calls: WebRTC flow with a unified timeline; Cloud calls from profiles without a conversation safely resolve or create the contact thread while honoring inbox continuity and agent visibility. Call permission can use an approved template selected from ReplyBox or configured as the inbox default, retains the WAMID to correlate the reply, and records the outgoing message in the conversation without sending it to the provider twice. Meta queries are the source of truth: they normalize and persist no-permission, temporary, and permanent states, and honor the `start_call` action before starting a call; every change is recorded as activity, with Meta's expiry date for temporary permissions. Client and server prevent a second active call per agent, including across tabs. Inbox candidates are determined by the standard assignment rules —capacity, team, and overflow— and agents already on a call are excluded; an online administrator who enabled call notifications enters only as a fallback when no eligible agent remains. While a Cloud call is accepting, connecting, or active, both the UI and model reject agent and team changes; a ringing call remains reassignable and reassignment is available again after termination. Calling controls, permission requests, call initiation, and call webhooks are disabled for Cloud channels marked as WhatsApp Business App coexistence, because calling remains in the WhatsApp Business app. Twilio reports normalize data from the Call model, optional native recordings require storage-cost acceptance, and recordings are exposed in conversations and call reports.
-- Audio transcription controls: GPT-4o Mini Transcribe defaults for voice notes with Whisper available as an account override; call recordings keep account-level flags for master enablement and per-provider behavior (WhatsApp Cloud and WaVoIP), audio normalization, turn-based diarization, higher-fidelity GPT-4o Transcribe text, contact/assigned-agent name labels, and manual retry from the context menu for audio messages without text.
+- Audio transcription controls: GPT-4o Mini Transcribe defaults for voice notes with Whisper available as an account override; call recordings keep account-level flags for master enablement and per-provider behavior (WhatsApp Cloud and WaVoIP), audio normalization, turn-based diarization, higher-fidelity GPT-4o Transcribe text, contact/assigned-agent name labels, and manual retry from the context menu for audio messages without text. Stored transcriptions participate in OpenSearch, GIN/SQL fallback, global conversation results, and in-conversation message search while retaining the existing permission scopes and filters.
 - WaVoIP with per-inbox session persistence and role-aware credential reuse.
 
 ### 3.2 Conversation core
 
 - Widget email-transcript requests disable their button while in flight and for 15 seconds after a successful send, preventing repeated delivery requests while retaining immediate retry after a failed request.
 - CSAT feedback visibility is stored per inbox in `csat_config.hide_feedback_from_agents`. Dashboard message serializers and Action Cable redact only `feedback_message` for non-administrator account users, while ratings, persisted data, administrator payloads, and public customer payloads remain unchanged.
-- Deleted messages may retain their original text for agents through `inboxes.show_deleted_message_placeholder`; the public API and contact-facing Action Cable broadcasts replace `content` and `processed_message_content` with the deletion notice and omit `content_attributes.original_content` and `translations` without changing the persisted record.
+- Deleted messages may retain their original text and attachments for agents through `inboxes.show_deleted_message_placeholder`; the public API, widget payloads, and contact-facing Action Cable broadcasts replace `content` and `processed_message_content` with the deletion notice, omit `content_attributes.original_content` and `translations`, and expose an empty attachment list without changing the persisted record.
 - Status model: open, pending, resolved, snoozed.
 - Priority model: urgency handling per conversation.
 - Participants: multi-agent collaboration in the same thread.
 - Custom attributes API: `POST .../custom_attributes` keeps replacement as the default and accepts `merge=true` to update only supplied keys; `POST .../destroy_custom_attributes` removes specific keys and returns the remaining attributes.
+- Enterprise required attributes in macros: the dashboard detects `resolve_conversation` and resolved `change_status` actions, prompts for and persists missing values before execution, and can continue without resolving when the dialog is dismissed. The `Macros::ExecutionService` overlay also blocks direct resolution while values for current required definitions are missing; checkbox `false` counts as filled and nullish values as missing.
 - Drafts and pinned: per-agent workflow continuity.
 - Advanced filters and custom views: high-volume operational segmentation.
 - Dedicated unread sort mode in the conversation list.
@@ -115,10 +117,27 @@ Actions:
 - Remove agent or team assignment.
 - Labeling, status/priority update, webhook send, mute.
 
+Flow Builder MVP:
+
+- Persistence: `flow_builder_flows` for editable drafts, `flow_builder_flow_versions` for published snapshots, and `flow_builder_flow_inboxes` to bind a published flow to an inbox as a native bot.
+- Account-scoped API: `/api/v1/accounts/:account_id/flow_builder/flows` with CRUD, `validate`, `publish`, and `pause`.
+- Account-scoped executions: `flow_builder_executions` stores status, duration, context, definition snapshot, partial/final steps, and per-node input/output, including conversation, message, and contact snapshots; nested `/flows/:flow_id/executions` API lists and shows details.
+- Permissions: admin-only Pundit policy and `flow_builder` feature flag.
+- Frontend: `flow_builder_index` route, Vuex `flowBuilder` module, `@vue-flow/core` canvas, Action node reusing `AutomationActionInput`/`useAutomationValues` for dynamic inputs, and executions tab with readonly visual replay, green checks on executed nodes, green/red traversed paths, per-node payload inspector, and live ActionCable updates.
+- Operational state: switch in the list and editor that publishes to activate or calls `pause` to deactivate, reusing the backend `published`/`paused` state.
+- Initial catalog: trigger, message, question, condition, switch, set, loop, code, action, handoff, wait, webhook, and end.
+- Wait configuration: the inspector normalizes legacy `duration/unit` into `mode/amount/unit/run_at` and supports interval or fixed date/time settings; actual runtime resumption remains outside the initial runtime.
+- Validation: single trigger, existing edge endpoints, no cycles, no self-edge, and minimum configuration per node type.
+- Initial runtime: published flows can trigger from Automation-compatible internal events (`message_created`, `conversation_created`, `conversation_updated`, `conversation_opened`, `conversation_resolved`) or from an AgentBot-style inbox start for `message_created`; they execute basic message, question, condition, switch, reused `ActionService` actions, handoff, and end nodes; conditions and switch cases support message, conversation, and contact data.
+- AgentBot binding: on publish, the AgentBot-style start validates the required inbox and prevents conflicts with AgentBot, Dialogflow, or another active Flow Builder bot on the same inbox; pausing or changing the start mode removes the binding.
+- Current boundary: multi-turn conversation state, external webhook triggers, wait/code/set/loop runtime, and actions with rule attachments, SLA/Kanban, or duplicated message sending remain next-phase work.
+
 Bots:
 
 - Agent Bots per inbox with smart handover; manual assignment selectors expose only active bots configured on every requested inbox.
 - New conversations and senderless campaigns for an active Agent Bot stay pending with the bot as owner; explicit human assignments are preserved, and handoff, human open, or bot disconnection clears bot ownership. Dialogflow, Captain, and ignored targets do not receive an Agent Bot owner.
+- The shared `Conversation.unassigned` scope requires both `assignee_id` and `assignee_agent_bot_id` to be null, so bot-owned conversations do not affect the human Unassigned queue's list or count.
+- Webhook session expiry uses the canonical handoff: it opens the conversation, clears bot ownership, and enables human auto-assignment only during that transition. With no eligible agent, the conversation remains open and unassigned with the existing bounded retries.
 - ReplyBox detects `AgentBot` ownership on pending conversations, forces the effective `NOTE` mode without overwriting reply drafts, and the takeover banner reopens and assigns the conversation to the current agent while updating the local assignee type.
 - Extended Typebot with MEGA_CMD commands for agent/team assignment.
 - Typebot ignores WhatsApp reactions to avoid artificial starts or messages.
@@ -128,14 +147,20 @@ Bots:
 
 - Supported providers: OpenAI, Anthropic, Google, Azure OpenAI, Bedrock, DeepSeek.
 - Assistants: inbox-level configuration with custom instructions and context.
+- Bot exclusivity: `InboxBotStatus` identifies active Agent Bots and Dialogflow as external bots; Captain does not schedule replies or automatic resolution for those inboxes.
 - Assistant overview: Enterprise stats, drilldown, and cached summary endpoints backed by `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder`, and `Captain::OverviewSummaryService`; the client reuses loaded stats for the summary, cancels superseded stats requests, retries a transient failure once, and renders metric skeletons while loading. Summaries use the account language; estimated time saved is derived from public assistant replies using a fixed 2-minute agent effort assumption per reply.
 - Captain model routing by feature (`assistant`, `copilot`, `document_faq_generation`, `conversation_faq_matching`, `pdf_faq_generation`, `audio_transcription`, etc.) with account overrides and global configuration fallback.
 - Conversation FAQ suggestions: a low-priority mutex job extracts only public customer and human-agent messages plus business context, rejects unsuitable conversations, and groups semantically matching observations by assistant and language; the Enterprise review API lists and previews only sources available to the current agent, supports edit/approve/dismiss while open, and locks reviews against concurrent approval. Approval creates an approved FAQ and retains its source observations; approved FAQs and dismissed suggestions suppress new duplicates.
 - Generation details: Enterprise `GET /api/v1/accounts/:account_id/captain/agent_sessions/:message_id` authorizes the message conversation, hydrates citations and scenario titles, and supplies the Captain message popover. Sessions are cached per message; a handoff session is attached to its non-empty private reason note. Model and credit data render only for super administrators or development.
+- Trusted Captain V2 citations: `faq_lookup` returns typed run-local indexes without URLs; the main agent remains free of `response_schema` and emits `[[citation:N]]` markers that the server converts to persisted parts, filters against the run mapping, and renders only public HTTP(S) documents owned by the assistant. Credentials, private destinations, PDFs, and signed parameters are rejected; `faq_ids` retains retrieved results while `used_faq_ids` and `cited_document_ids` contain only valid selections. History restores clean text, and legacy sessions with null new columns still hydrate from `faq_ids`.
 - Captain Documents: upload, indexing, plan-based auto-sync with jitter, a purgable queue, configurable per-account and global limits, and a details view for crawled content, source metadata, and generated FAQ counts.
-- Captain Scenarios: activation rules and priority ordering.
-- Captain Custom Tools: HTTP integrations with GET, POST, PUT, PATCH, DELETE.
-- Native account MCP servers: dedicated endpoints per slug at /mcp/:account_id/:slug.
+- Captain Scenarios: activation rules and priority ordering; the API preserves explicitly submitted `tools`, normalizes scalar IDs or `{ id }` metadata, validates against `assistant.available_tool_ids`, and keeps `tool://` references when the field is omitted. Account MCP publishes dedicated create and update schemas.
+- Captain Custom Tools: HTTP integrations with GET, POST, PUT, PATCH, and DELETE; they accept JSON Schema fragments for complex parameters, and Account MCP publishes direct contracts to list, create, inspect, update, delete, and test custom tools.
+- Captain tool runtime: preserves each MCP server's complete `inputSchema`, forwards objects and arrays without converting them to text, excludes disabled or disconnected servers, refreshes stale connected catalogs every 10 minutes, and caps every provider request at 128 tools including handoffs. A transient connection failure retains the last usable catalog and remains eligible for retry; permanent errors do not advertise a stale catalog as connected. Neither V1 nor V2 Playground supports direct selection through `@` or `tool://`. V1 tests the base legacy assistant without direct MCP tools; V2 keeps the main assistant's normal tools, performs handoffs, and loads only each scenario agent's assigned tools, matching live conversations. Scenario configuration continues to support `tool://` references. The proxy accepts JSON objects and strings containing JSON objects, but rejects invalid JSON or non-object values instead of silently emptying them.
+- Native account MCP servers: dedicated endpoints per slug at /mcp/:account_id/:slug. Captain executions to a native MCP carry a signed one-time proof bound to the account, assistant, server, endpoint, tool, and arguments; the handshake remains neutral and external MCP calls retain their normal identity.
+- MCP client diagnostics run at INFO level so authorization headers and execution proofs are never emitted by the dependency's DEBUG transport logger.
+- Native self-connections may use `MCP_INTERNAL_BASE_URL`; development defaults to `MCP_INTERNAL_PORT`/3000 and never inherits a worker's per-process `PORT`. Only the origin is replaced, so the account endpoint path and signed request binding remain unchanged while avoiding public-DNS hairpin timeouts.
+- A native `conversation_message_send` closes the Captain turn only from a structured successful result that confirms the active conversation, outgoing public message, and Captain sender. Its lifecycle marker, usage charge, and completion event are idempotent; stale turns are discarded before the MCP side effect.
 - The MCP POST endpoint keeps JSON-RPC over `application/json` and supports a `multipart/form-data` extension: `payload` contains the complete JSON-RPC request and `attachments[]` carries local files.
 - Multipart uploads are restricted to `conversation_message_send`, its legacy alias, and `outbound_messages_create`; they enforce `MAXIMUM_FILE_UPLOAD_SIZE`, with 15 combined attachments for conversations and exactly one for outbound.
 - Multipart is a Mega HTTP extension that requires explicit client support; standard JSON-only MCP clients do not use it automatically.
@@ -168,6 +193,7 @@ Bots:
 - Ongoing campaigns for widget/live chat.
 - One-off campaigns for WhatsApp, SMS, and API Channel.
 - Meta template builder with approval lifecycle and sync.
+- The cache-only inbox endpoint lists native and Twilio WhatsApp templates, applies the provider-specific exact-name key, and exposes the last synchronization-attempt time without calling Meta or Twilio.
 - Rate control, multi-inbox rotation, and execution metrics.
 
 ### 3.8 Help Center
@@ -175,8 +201,11 @@ Bots:
 - Multi-language articles with per-language draft state.
 - Published article title/content edits are staged in draft columns, with review, publish, and discard flows that preserve the live version until publication.
 - Selectable portal layouts: classic landing page or documentation sidebar mode.
+- Portal analytics are stored in `portal.config.analytics`; only administrators can update the whitelisted provider identifiers, which the model validates before the public layout renders their tracking snippets.
 - Recommended content per locale is stored in `portal.config.popular_content`, with ordered lists capped at 3 categories and 6 articles; deleted records and unpublished articles are omitted while popularity-based fallback remains available.
 - Editor with slash menu, native tables, and supported-video URL insertion through a validated field; the URL is converted into the existing embed for preview in the editor and public portal.
+- The article-editor slash menu exposes `horizontalRule`, which inserts the existing ProseMirror horizontal-rule node and moves the caret to the paragraph below it.
+- When the ProseMirror selection is inside a table, the slash menu filters out block commands that Markdown cells cannot persist and retains only inline marks; Arrow Up/Down and Ctrl+N/P are handled by the menu while it has items.
 - Article creation directly from category views.
 - In-editor image resizing for article composition.
 - Conversation insertion flow with stable popover search.
@@ -302,6 +331,8 @@ Bots:
 ### API parity and Postman collection
 
 Supported routes under `/api`, `/platform/api`, and `/public/api` are compared with OpenAPI 3.1 by normalized method and path. Validation detects missing, stale, or duplicate operations; it does not claim test coverage for every response field. `bundle exec rake swagger:build` regenerates Swagger and `swagger/postman_collection.json` in an import-ready structure: Application API resources are top-level folders inheriting `api_access_token`, while Mega Platform APIs and Mega Public APIs retain dedicated folders and authentication. Collection variables centralize `host`, `api_version`, `account_id`, credentials, and path identifiers. Multimedia messages include separate examples for selecting a file with `multipart/form-data` or using a JSON `signed_blob_id`. `Idempotency-Key` is optional and disabled; it can be enabled with `{{$guid}}` or a fixed key to verify retries.
+
+Scheduled messages can be created at account level with `contact_id` and `inbox_id`, without requiring a conversation, inside a conversation, or through `POST /scheduled_outbound_messages` with a phone, email, `contact_id`, or `source_id`: the latter resolves or creates the contact/contact-inbox transactionally and leaves the message pending without creating a conversation early. Failed messages recover through explicit, authorized actions: retry makes the record pending and queues it immediately; reschedule requires a future time, preserves content, template parameters, and attachments, and keeps account and conversation boundaries intact. A sent message can be scheduled again as an independent, non-recurring copy with editable future time and content while retaining its recipient, inbox, template, and attachments.
 
 Recommended checklist for feature-level changes:
 
