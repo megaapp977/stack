@@ -1,8 +1,9 @@
 ##############
 #
-# Execute o mando para migrar o banco:
+# Siga o procedimento de implantação em README.md antes de atualizar o stack.
+# Execute a migração com a nova imagem e interrompa o deploy se ela falhar:
 #
-# bundle exec rails db:chatwoot_prepare
+# bundle exec rails db:mega_prepare
 #
 # Sidekiq dividido en 6 workers:
 #   Worker 1 (critical): critical, high, default
@@ -70,6 +71,7 @@ x-variables:
   ENABLE_RACK_ATTACK: "false"
   EVENT_DISPATCHER_IN_MAIN_SIDEKIQ: "false"
   WHATSAPP_HISTORY_SYNC_IN_MAIN_SIDEKIQ: "false"
+  WHATSAPP_IN_MAIN_SIDEKIQ: "false"
   TZ: UTC
   ENABLE_PUSH_RELAY_SERVER: "true"
   WEBHOOKS_TRIGGER_TIMEOUT: 40
