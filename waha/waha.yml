@@ -65,9 +65,9 @@ services:
       # QR não precisa em produção
       - WAHA_PRINT_QR=False
       
-      ## Apps "chatwoot ou calls" (Opcional no uso com o Mega).
+      ## Apps "chatwoot, calls e mcp"(Opcional no uso com o Mega).
       - WAHA_APPS_ENABLED=true
-      - WAHA_APPS_ON=calls #App rejeitar ligaçoes automatico e enviar msg
+      - WAHA_APPS_ON=calls,mcp #App rejeitar ligaçoes automatico e enviar msg
       # - WAHA_APPS_OFF=chatwoot #- Desativa aplicativos específicos (separados por vírgula).
 
       ## Redis (Opcional no uso com o Mega). 
