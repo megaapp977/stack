@@ -1,0 +1,1336 @@
+From f415f9150e1c4cb673d918a45b095fbf09dfcff4 Mon Sep 17 00:00:00 2001
+From: Raphael Serafim <raphaelvserafim@gmail.com>
+Date: Sun, 23 Aug 2026 13:26:33 -0400
+Subject: [PATCH] feat: canal Wame com WhatsApp, Instagram e Messenger
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Adiciona Channel::Wame, que atende as tres redes por uma unica instancia do
+Wame. A rede de cada caixa fica em `medium`, e o evento de entrada e roteado
+pelo campo `provider` do envelope — a instancia dispara tudo para uma URL so.
+
+Inclui o card no wizard de caixas, icone por rede na lista e na conversa,
+sincronizacao de nome e foto do perfil, e status de entrega/leitura.
+---
+ .../api/v1/accounts/inboxes_controller.rb     |   5 +-
+ app/controllers/webhooks/wame_controller.rb   |   9 +
+ app/helpers/api/v1/inboxes_helper.rb          |   3 +-
+ .../components-next/icon/provider.js          |  10 +
+ .../components-next/message/MessageMeta.vue   |  10 +-
+ .../components/widgets/ChannelItem.vue        |   1 +
+ .../dashboard/composables/useInbox.js         |   7 +
+ app/javascript/dashboard/helper/inbox.js      |  10 +
+ .../dashboard/i18n/locale/en/inboxMgmt.json   |  35 ++-
+ .../dashboard/i18n/locale/pt/inboxMgmt.json   |  35 ++-
+ .../i18n/locale/pt_BR/inboxMgmt.json          |  35 ++-
+ .../settings/inbox/ChannelFactory.vue         |   2 +
+ .../dashboard/settings/inbox/ChannelList.vue  |   6 +
+ .../routes/dashboard/settings/inbox/Index.vue |  36 ++-
+ .../settings/inbox/channels/Wame.vue          | 219 ++++++++++++++++++
+ .../settings/inbox/components/ChannelName.vue |  12 +
+ app/jobs/send_reply_job.rb                    |   1 +
+ app/jobs/webhooks/wame_events_job.rb          |  41 ++++
+ app/models/account.rb                         |   1 +
+ app/models/channel/wame.rb                    | 127 ++++++++++
+ app/models/inbox.rb                           |   4 +
+ app/services/wame/incoming_message_service.rb |  75 ++++++
+ app/services/wame/send_on_wame_service.rb     |  73 ++++++
+ app/views/api/v1/models/_inbox.json.jbuilder  |   4 +-
+ config/locales/en.yml                         |   4 +
+ config/locales/pt.yml                         |   4 +
+ config/locales/pt_BR.yml                      |   4 +
+ config/routes.rb                              |   1 +
+ .../20260823000000_create_channel_wame.rb     |  19 ++
+ ...cope_channel_wame_uniqueness_to_account.rb |   9 +
+ ...000002_add_profile_name_to_channel_wame.rb |   7 +
+ ...00003_add_webhook_token_to_channel_wame.rb |  12 +
+ lib/redis/redis_keys.rb                       |   3 +
+ theme/icons.js                                |   8 +
+ 34 files changed, 811 insertions(+), 21 deletions(-)
+ create mode 100644 app/controllers/webhooks/wame_controller.rb
+ create mode 100644 app/javascript/dashboard/routes/dashboard/settings/inbox/channels/Wame.vue
+ create mode 100644 app/jobs/webhooks/wame_events_job.rb
+ create mode 100644 app/models/channel/wame.rb
+ create mode 100644 app/services/wame/incoming_message_service.rb
+ create mode 100644 app/services/wame/send_on_wame_service.rb
+ create mode 100644 db/migrate/20260823000000_create_channel_wame.rb
+ create mode 100644 db/migrate/20260823000001_scope_channel_wame_uniqueness_to_account.rb
+ create mode 100644 db/migrate/20260823000002_add_profile_name_to_channel_wame.rb
+ create mode 100644 db/migrate/20260823000003_add_webhook_token_to_channel_wame.rb
+
+diff --git a/app/controllers/api/v1/accounts/inboxes_controller.rb b/app/controllers/api/v1/accounts/inboxes_controller.rb
+index 822fce7..83897c9 100644
+--- a/app/controllers/api/v1/accounts/inboxes_controller.rb
++++ b/app/controllers/api/v1/accounts/inboxes_controller.rb
+@@ -105,7 +105,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
+   end
+ 
+   def allowed_channel_types
+-    %w[web_widget api email line telegram whatsapp sms]
++    %w[web_widget api email line telegram whatsapp sms wame]
+   end
+ 
+   def update_inbox_working_hours
+@@ -215,7 +215,8 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
+       'line' => Channel::Line,
+       'telegram' => Channel::Telegram,
+       'whatsapp' => Channel::Whatsapp,
+-      'sms' => Channel::Sms
++      'sms' => Channel::Sms,
++      'wame' => Channel::Wame
+     }[permitted_params[:channel][:type]]
+   end
+ 
+diff --git a/app/controllers/webhooks/wame_controller.rb b/app/controllers/webhooks/wame_controller.rb
+new file mode 100644
+index 0000000..7e822a7
+--- /dev/null
++++ b/app/controllers/webhooks/wame_controller.rb
+@@ -0,0 +1,9 @@
++class Webhooks::WameController < ActionController::API
++  # A instância dispara TODOS os eventos das três redes para esta única URL.
++  # O token identifica a instância; o `provider` do envelope diz qual caixa
++  # recebe. A key nunca aparece aqui — a URL é pública.
++  def process_payload
++    Webhooks::WameEventsJob.perform_later(params[:webhook_token], params.to_unsafe_hash)
++    head :ok
++  end
++end
+diff --git a/app/helpers/api/v1/inboxes_helper.rb b/app/helpers/api/v1/inboxes_helper.rb
+index 6c64dd0..6c2c932 100644
+--- a/app/helpers/api/v1/inboxes_helper.rb
++++ b/app/helpers/api/v1/inboxes_helper.rb
+@@ -111,7 +111,8 @@ module Api::V1::InboxesHelper
+       'line' => Current.account.line_channels,
+       'telegram' => Current.account.telegram_channels,
+       'whatsapp' => Current.account.whatsapp_channels,
+-      'sms' => Current.account.sms_channels
++      'sms' => Current.account.sms_channels,
++      'wame' => Current.account.wame_channels
+     }[permitted_params[:channel][:type]]
+   end
+ end
+diff --git a/app/javascript/dashboard/components-next/icon/provider.js b/app/javascript/dashboard/components-next/icon/provider.js
+index 7328d25..ebbf74d 100644
+--- a/app/javascript/dashboard/components-next/icon/provider.js
++++ b/app/javascript/dashboard/components-next/icon/provider.js
+@@ -19,6 +19,7 @@ const channelTypeIconMap = {
+   'Channel::Whatsapp': 'i-woot-whatsapp',
+   'Channel::Instagram': 'i-woot-instagram',
+   'Channel::Tiktok': 'i-woot-tiktok',
++  'Channel::Wame': 'i-woot-wame',
+ };
+ 
+ const providerIconMap = {
+@@ -66,6 +67,15 @@ export function useChannelIcon(inbox) {
+       icon = 'i-woot-whatsapp';
+     }
+ 
++    // Wame carrega WhatsApp, Instagram e Messenger num tipo so. O `medium` diz
++    // qual rede e esta caixa, para a conversa exibir o icone da rede real em vez
++    // do glifo do provedor. Mesmo mecanismo do Twilio acima.
++    if (type === INBOX_TYPES.WAME) {
++      if (inboxDetails.medium === 'instagram') icon = 'i-woot-instagram';
++      else if (inboxDetails.medium === 'messenger') icon = 'i-woot-messenger';
++      else icon = 'i-woot-whatsapp';
++    }
++
+     // Voice-enabled inboxes use the combined channel + voice-wave badge glyph.
+     if (isVoiceCallEnabled(inboxDetails)) {
+       icon = getInboxVoiceIcon(type, inboxDetails.medium);
+diff --git a/app/javascript/dashboard/components-next/message/MessageMeta.vue b/app/javascript/dashboard/components-next/message/MessageMeta.vue
+index f26339c..69b813d 100644
+--- a/app/javascript/dashboard/components-next/message/MessageMeta.vue
++++ b/app/javascript/dashboard/components-next/message/MessageMeta.vue
+@@ -21,6 +21,7 @@ const {
+   isAnEmailChannel,
+   isAnInstagramChannel,
+   isATiktokChannel,
++  isAWameChannel,
+ } = useInbox();
+ 
+ const {
+@@ -62,7 +63,8 @@ const isSent = computed(() => {
+     isASmsInbox.value ||
+     isATelegramChannel.value ||
+     isAnInstagramChannel.value ||
+-    isATiktokChannel.value
++    isATiktokChannel.value ||
++    isAWameChannel.value
+   ) {
+     return sourceId.value && status.value === MESSAGE_STATUS.SENT;
+   }
+@@ -85,7 +87,8 @@ const isDelivered = computed(() => {
+     isASmsInbox.value ||
+     isAFacebookInbox.value ||
+     isAnInstagramChannel.value ||
+-    isATiktokChannel.value
++    isATiktokChannel.value ||
++    isAWameChannel.value
+   ) {
+     return sourceId.value && status.value === MESSAGE_STATUS.DELIVERED;
+   }
+@@ -110,7 +113,8 @@ const isRead = computed(() => {
+     isATwilioChannel.value ||
+     isAFacebookInbox.value ||
+     isAnInstagramChannel.value ||
+-    isATiktokChannel.value
++    isATiktokChannel.value ||
++    isAWameChannel.value
+   ) {
+     return sourceId.value && status.value === MESSAGE_STATUS.READ;
+   }
+diff --git a/app/javascript/dashboard/components/widgets/ChannelItem.vue b/app/javascript/dashboard/components/widgets/ChannelItem.vue
+index e055c2d..bb849ec 100644
+--- a/app/javascript/dashboard/components/widgets/ChannelItem.vue
++++ b/app/javascript/dashboard/components/widgets/ChannelItem.vue
+@@ -57,6 +57,7 @@ const isActive = computed(() => {
+   }
+ 
+   return [
++    'wame',
+     'website',
+     'twilio',
+     'api',
+diff --git a/app/javascript/dashboard/composables/useInbox.js b/app/javascript/dashboard/composables/useInbox.js
+index 6e8d0a5..19a664e 100644
+--- a/app/javascript/dashboard/composables/useInbox.js
++++ b/app/javascript/dashboard/composables/useInbox.js
+@@ -138,6 +138,12 @@ export const useInbox = (inboxId = null) => {
+     return channelType.value === INBOX_TYPES.TIKTOK;
+   });
+ 
++  // Wame entrega sent/delivered/read reais das tres redes, pelos mesmos
++  // `statuses[]` do envelope Meta — o tique vale como no WhatsApp nativo.
++  const isAWameChannel = computed(() => {
++    return channelType.value === INBOX_TYPES.WAME;
++  });
++
+   const voiceCallEnabled = computed(() => isVoiceCallEnabled(inbox.value));
+ 
+   const voiceCallProvider = computed(() => getVoiceCallProvider(inbox.value));
+@@ -160,6 +166,7 @@ export const useInbox = (inboxId = null) => {
+     isAnEmailChannel,
+     isAnInstagramChannel,
+     isATiktokChannel,
++    isAWameChannel,
+     voiceCallEnabled,
+     voiceCallProvider,
+   };
+diff --git a/app/javascript/dashboard/helper/inbox.js b/app/javascript/dashboard/helper/inbox.js
+index f44898b..779ef9b 100644
+--- a/app/javascript/dashboard/helper/inbox.js
++++ b/app/javascript/dashboard/helper/inbox.js
+@@ -11,6 +11,7 @@ export const INBOX_TYPES = {
+   SMS: 'Channel::Sms',
+   INSTAGRAM: 'Channel::Instagram',
+   TIKTOK: 'Channel::Tiktok',
++  WAME: 'Channel::Wame',
+ };
+ 
+ // Short channel-type slugs used to identify a channel without leaning on its
+@@ -219,6 +220,15 @@ export const getInboxIconByType = (
+     return iconMap[INBOX_TYPES.WHATSAPP];
+   }
+ 
++  // Wame carries three networks under one channel type. The medium says which
++  // one this inbox is, so the conversation shows the real network icon instead
++  // of a generic provider glyph.
++  if (type === INBOX_TYPES.WAME) {
++    if (medium === 'instagram') return iconMap[INBOX_TYPES.INSTAGRAM];
++    if (medium === 'messenger') return iconMap[INBOX_TYPES.FB];
++    return iconMap[INBOX_TYPES.WHATSAPP];
++  }
++
+   return iconMap[type] ?? defaultIcon;
+ };
+ 
+diff --git a/app/javascript/dashboard/i18n/locale/en/inboxMgmt.json b/app/javascript/dashboard/i18n/locale/en/inboxMgmt.json
+index bef5bc8..7f3e015 100644
+--- a/app/javascript/dashboard/i18n/locale/en/inboxMgmt.json
++++ b/app/javascript/dashboard/i18n/locale/en/inboxMgmt.json
+@@ -520,6 +520,10 @@
+           "VOICE": {
+             "TITLE": "Voice",
+             "DESCRIPTION": "Integrate with Twilio Voice"
++          },
++          "WAME": {
++            "TITLE": "Wame API",
++            "DESCRIPTION": "Connect WhatsApp, Instagram and Messenger with one key"
+           }
+         }
+       },
+@@ -554,6 +558,34 @@
+         "SIGN_IN": "Sign in with Google",
+         "EMAIL_PLACEHOLDER": "Enter email address",
+         "ERROR_MESSAGE": "There was an error connecting to Google, please try again"
++      },
++      "WAME_CHANNEL": {
++        "TITLE": "Wame API",
++        "DESC": "Connect your Wame instance. One key serves WhatsApp, Instagram Direct and Messenger — pick the networks you want and each becomes its own inbox.",
++        "INBOX_NAME": {
++          "LABEL": "Inbox name",
++          "PLACEHOLDER": "Sales",
++          "ERROR": "Inbox name is required"
++        },
++        "SERVER": {
++          "LABEL": "Server",
++          "SUBTITLE": "Root URL of your Wame instance.",
++          "ERROR": "Enter a valid URL starting with http",
++          "PLACEHOLDER": "https://us.api-wa.me"
++        },
++        "KEY": {
++          "LABEL": "Instance key",
++          "PLACEHOLDER": "your-instance-key",
++          "SUBTITLE": "The key identifies and authenticates the instance. Find it in your Wame panel.",
++          "ERROR": "Instance key is required"
++        },
++        "CHANNELS": {
++          "LABEL": "Networks",
++          "SUBTITLE": "Only networks enabled on this key will be accepted; each one becomes a separate inbox with its own icon."
++        },
++        "SUBMIT_BUTTON": "Create Wame channel",
++        "ERROR_MESSAGE": "Could not reach the Wame instance. Check the server and key.",
++        "PARTIAL": "{created} inbox(es) created. Not created — {failed}"
+       }
+     },
+     "DETAILS": {
+@@ -1374,7 +1406,8 @@
+       "API": "API Channel",
+       "INSTAGRAM": "Instagram",
+       "TIKTOK": "TikTok",
+-      "VOICE": "Voice"
++      "VOICE": "Voice",
++      "WAME": "Wame"
+     }
+   }
+ }
+diff --git a/app/javascript/dashboard/i18n/locale/pt/inboxMgmt.json b/app/javascript/dashboard/i18n/locale/pt/inboxMgmt.json
+index 581908d..febd13d 100644
+--- a/app/javascript/dashboard/i18n/locale/pt/inboxMgmt.json
++++ b/app/javascript/dashboard/i18n/locale/pt/inboxMgmt.json
+@@ -520,6 +520,10 @@
+           "VOICE": {
+             "TITLE": "Voz",
+             "DESCRIPTION": "Integrate with Twilio Voice"
++          },
++          "WAME": {
++            "TITLE": "Wame API",
++            "DESCRIPTION": "Conecte WhatsApp, Instagram e Messenger com uma única key"
+           }
+         }
+       },
+@@ -554,6 +558,34 @@
+         "SIGN_IN": "Entrar com o Google",
+         "EMAIL_PLACEHOLDER": "Insira o endereço de e-mail",
+         "ERROR_MESSAGE": "Ocorreu um erro ao conectar ao Google, por favor, tente novamente"
++      },
++      "WAME_CHANNEL": {
++        "TITLE": "Wame API",
++        "DESC": "Conecte sua instância Wame. Uma key atende WhatsApp, Instagram Direct e Messenger — escolha as redes que quiser e cada uma vira sua própria caixa de entrada.",
++        "INBOX_NAME": {
++          "LABEL": "Nome da caixa de entrada",
++          "PLACEHOLDER": "Vendas",
++          "ERROR": "O nome da caixa de entrada é obrigatório"
++        },
++        "SERVER": {
++          "LABEL": "Servidor",
++          "SUBTITLE": "URL raiz da sua instância Wame.",
++          "ERROR": "Informe uma URL válida começando com http",
++          "PLACEHOLDER": "https://us.api-wa.me"
++        },
++        "KEY": {
++          "LABEL": "Key da instância",
++          "PLACEHOLDER": "sua-key-da-instancia",
++          "SUBTITLE": "A key identifica e autentica a instância. Você a encontra no painel do Wame.",
++          "ERROR": "A key da instância é obrigatória"
++        },
++        "CHANNELS": {
++          "LABEL": "Redes",
++          "SUBTITLE": "Só as redes habilitadas nessa key serão aceitas; cada uma vira uma caixa separada, com seu próprio ícone."
++        },
++        "SUBMIT_BUTTON": "Criar canal Wame",
++        "ERROR_MESSAGE": "Não foi possível alcançar a instância Wame. Confira o servidor e a key.",
++        "PARTIAL": "{created} caixa(s) criada(s). Não criadas — {failed}"
+       }
+     },
+     "DETAILS": {
+@@ -1373,7 +1405,8 @@
+       "API": "Canal da API",
+       "INSTAGRAM": "Instagram",
+       "TIKTOK": "TikTok",
+-      "VOICE": "Voz"
++      "VOICE": "Voz",
++      "WAME": "Wame"
+     }
+   }
+ }
+diff --git a/app/javascript/dashboard/i18n/locale/pt_BR/inboxMgmt.json b/app/javascript/dashboard/i18n/locale/pt_BR/inboxMgmt.json
+index b989875..2775e54 100644
+--- a/app/javascript/dashboard/i18n/locale/pt_BR/inboxMgmt.json
++++ b/app/javascript/dashboard/i18n/locale/pt_BR/inboxMgmt.json
+@@ -520,6 +520,10 @@
+           "VOICE": {
+             "TITLE": "Voz",
+             "DESCRIPTION": "Integre com o Twilio Voice"
++          },
++          "WAME": {
++            "TITLE": "Wame API",
++            "DESCRIPTION": "Conecte WhatsApp, Instagram e Messenger com uma única key"
+           }
+         }
+       },
+@@ -554,6 +558,34 @@
+         "SIGN_IN": "Entrar com o Google",
+         "EMAIL_PLACEHOLDER": "Digite o endereço de e-mail",
+         "ERROR_MESSAGE": "Houve um erro ao conectar com o Google, por favor, tente novamente"
++      },
++      "WAME_CHANNEL": {
++        "TITLE": "Wame API",
++        "DESC": "Conecte sua instância Wame. Uma key atende WhatsApp, Instagram Direct e Messenger — escolha as redes que quiser e cada uma vira sua própria caixa de entrada.",
++        "INBOX_NAME": {
++          "LABEL": "Nome da caixa de entrada",
++          "PLACEHOLDER": "Vendas",
++          "ERROR": "O nome da caixa de entrada é obrigatório"
++        },
++        "SERVER": {
++          "LABEL": "Servidor",
++          "SUBTITLE": "URL raiz da sua instância Wame.",
++          "ERROR": "Informe uma URL válida começando com http",
++          "PLACEHOLDER": "https://us.api-wa.me"
++        },
++        "KEY": {
++          "LABEL": "Key da instância",
++          "PLACEHOLDER": "sua-key-da-instancia",
++          "SUBTITLE": "A key identifica e autentica a instância. Você a encontra no painel do Wame.",
++          "ERROR": "A key da instância é obrigatória"
++        },
++        "CHANNELS": {
++          "LABEL": "Redes",
++          "SUBTITLE": "Só as redes habilitadas nessa key serão aceitas; cada uma vira uma caixa separada, com seu próprio ícone."
++        },
++        "SUBMIT_BUTTON": "Criar canal Wame",
++        "ERROR_MESSAGE": "Não foi possível alcançar a instância Wame. Confira o servidor e a key.",
++        "PARTIAL": "{created} caixa(s) criada(s). Não criadas — {failed}"
+       }
+     },
+     "DETAILS": {
+@@ -1373,7 +1405,8 @@
+       "API": "Canal da API",
+       "INSTAGRAM": "Instagram",
+       "TIKTOK": "TikTok",
+-      "VOICE": "Voz"
++      "VOICE": "Voz",
++      "WAME": "Wame"
+     }
+   }
+ }
+diff --git a/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelFactory.vue b/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelFactory.vue
+index 969800e..1d9b1ab 100644
+--- a/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelFactory.vue
++++ b/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelFactory.vue
+@@ -13,8 +13,10 @@ import Telegram from './channels/Telegram.vue';
+ import Instagram from './channels/Instagram.vue';
+ import Tiktok from './channels/Tiktok.vue';
+ import Voice from './channels/Voice.vue';
++import Wame from './channels/Wame.vue';
+ 
+ const channelViewList = {
++  wame: Wame,
+   facebook: Facebook,
+   website: Website,
+   twitter: Twitter,
+diff --git a/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelList.vue b/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelList.vue
+index fd509d3..8bfa0d6 100644
+--- a/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelList.vue
++++ b/app/javascript/dashboard/routes/dashboard/settings/inbox/ChannelList.vue
+@@ -23,6 +23,12 @@ const hasTiktokConfigured = computed(() => {
+ const channelList = computed(() => {
+   const { apiChannelName } = globalConfig.value;
+   const channels = [
++    {
++      key: 'wame',
++      title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.WAME.TITLE'),
++      description: t('INBOX_MGMT.ADD.AUTH.CHANNEL.WAME.DESCRIPTION'),
++      icon: 'i-woot-wame',
++    },
+     {
+       key: 'website',
+       title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.WEBSITE.TITLE'),
+diff --git a/app/javascript/dashboard/routes/dashboard/settings/inbox/Index.vue b/app/javascript/dashboard/routes/dashboard/settings/inbox/Index.vue
+index 6698cb5..835a010 100644
+--- a/app/javascript/dashboard/routes/dashboard/settings/inbox/Index.vue
++++ b/app/javascript/dashboard/routes/dashboard/settings/inbox/Index.vue
+@@ -125,15 +125,20 @@ const openDelete = inbox => {
+           class="flex justify-between flex-row items-start gap-4 py-4"
+         >
+           <div class="flex items-center gap-4">
+-            <div
+-              v-if="inbox.avatar_url"
+-              class="bg-n-alpha-3 rounded-xl size-10 ring ring-n-solid-1 border border-n-strong shadow-sm grid place-items-center"
+-            >
++            <div v-if="inbox.avatar_url" class="relative size-10 shrink-0">
+               <Avatar
+                 :src="inbox.avatar_url"
+                 :name="inbox.name"
+-                :size="24"
++                :size="40"
+                 rounded-full
++                class="ring-1 ring-n-strong shadow-sm"
++              />
++              <!-- Com foto de perfil, o icone do canal viraria invisivel: a
++                   caixa mostra quem e a conexao mas nao por qual rede. O selo
++                   preserva os dois. -->
++              <ChannelIcon
++                class="absolute -bottom-0.5 -right-0.5 size-5 text-n-slate-12 bg-n-solid-1 rounded-full p-0.5 ring-1 ring-n-strong"
++                :inbox="inbox"
+               />
+             </div>
+             <div
+@@ -146,12 +151,21 @@ const openDelete = inbox => {
+               <span class="block text-heading-3 text-n-slate-12 capitalize">
+                 {{ inbox.name }}
+               </span>
+-              <ChannelName
+-                :channel-type="inbox.channel_type"
+-                :medium="inbox.medium"
+-                :voice-enabled="inbox.voice_enabled"
+-                class="text-body-main text-n-slate-11"
+-              />
++              <div
++                class="flex items-center gap-1 text-body-main text-n-slate-11"
++              >
++                <span
++                  v-if="inbox.profile_name"
++                  class="after:content-['·'] after:ml-1"
++                >
++                  {{ inbox.profile_name }}
++                </span>
++                <ChannelName
++                  :channel-type="inbox.channel_type"
++                  :medium="inbox.medium"
++                  :voice-enabled="inbox.voice_enabled"
++                />
++              </div>
+             </div>
+           </div>
+           <div class="flex gap-3 justify-end">
+diff --git a/app/javascript/dashboard/routes/dashboard/settings/inbox/channels/Wame.vue b/app/javascript/dashboard/routes/dashboard/settings/inbox/channels/Wame.vue
+new file mode 100644
+index 0000000..135fc1e
+--- /dev/null
++++ b/app/javascript/dashboard/routes/dashboard/settings/inbox/channels/Wame.vue
+@@ -0,0 +1,219 @@
++<script>
++import { mapGetters } from 'vuex';
++import { useVuelidate } from '@vuelidate/core';
++import { useAlert } from 'dashboard/composables';
++import { required } from '@vuelidate/validators';
++import router from '../../../../index';
++import PageHeader from '../../SettingsSubPageHeader.vue';
++import NextButton from 'dashboard/components-next/button/Button.vue';
++
++const shouldBeUrl = (value = '') => (value ? value.startsWith('http') : false);
++
++export default {
++  components: {
++    PageHeader,
++    NextButton,
++  },
++  setup() {
++    return { v$: useVuelidate() };
++  },
++  data() {
++    return {
++      inboxName: '',
++      server: 'https://us.api-wa.me',
++      instanceKey: '',
++      // Uma key do Wame pode servir WhatsApp, Instagram e Messenger ao mesmo
++      // tempo. Cada rede vira uma caixa de entrada própria, para que a conversa
++      // exiba o ícone da rede certa. As três vêm marcadas: o backend recusa a
++      // que a instância não tiver, então marcar tudo é o caminho mais curto.
++      channels: ['whatsapp', 'instagram', 'messenger'],
++    };
++  },
++  computed: {
++    ...mapGetters({
++      uiFlags: 'inboxes/getUIFlags',
++    }),
++    availableChannels() {
++      return [
++        { value: 'whatsapp', label: 'WhatsApp', icon: 'i-woot-whatsapp' },
++        {
++          value: 'instagram',
++          label: 'Instagram Direct',
++          icon: 'i-woot-instagram',
++        },
++        { value: 'messenger', label: 'Messenger', icon: 'i-woot-messenger' },
++      ];
++    },
++  },
++  validations: {
++    inboxName: { required },
++    server: { required, shouldBeUrl },
++    instanceKey: { required },
++  },
++  methods: {
++    async createChannel() {
++      this.v$.$touch();
++      if (this.v$.$invalid || !this.channels.length) {
++        return;
++      }
++
++      // Uma caixa por rede escolhida. O backend valida servidor + key em
++      // GET /{key}/instance e recusa a rede que a instância não tiver.
++      //
++      // Cada rede é independente: uma recusada não pode derrubar as outras nem
++      // esconder as que deram certo. Sem isso, marcar as três numa key que só
++      // tem duas criava duas caixas e mostrava apenas o erro da terceira — e o
++      // retry seguinte esbarrava nas que já existiam.
++      // Sequencial de proposito: criar em paralelo dispararia varias validacoes
++      // contra a mesma instancia ao mesmo tempo.
++      const { created, failed } = await this.channels.reduce(
++        async (previous, channel) => {
++          const acc = await previous;
++          try {
++            const inbox = await this.$store.dispatch('inboxes/createChannel', {
++              name:
++                this.channels.length > 1
++                  ? `${this.inboxName.trim()} — ${channel}`
++                  : this.inboxName.trim(),
++              channel: {
++                type: 'wame',
++                server: this.server.trim().replace(/\/$/, ''),
++                instance_key: this.instanceKey.trim(),
++                medium: channel,
++              },
++            });
++            acc.created.push(inbox);
++          } catch (error) {
++            acc.failed.push(`${channel}: ${error.message || ''}`.trim());
++          }
++          return acc;
++        },
++        Promise.resolve({ created: [], failed: [] })
++      );
++
++      if (!created.length) {
++        useAlert(
++          failed.join(' · ') ||
++            this.$t('INBOX_MGMT.ADD.WAME_CHANNEL.ERROR_MESSAGE')
++        );
++        return;
++      }
++
++      // Alguma rede entrou: segue o fluxo, mas diz o que ficou de fora.
++      if (failed.length) {
++        useAlert(
++          this.$t('INBOX_MGMT.ADD.WAME_CHANNEL.PARTIAL', {
++            created: created.length,
++            failed: failed.join(' · '),
++          })
++        );
++      }
++
++      router.replace({
++        name: 'settings_inboxes_add_agents',
++        params: {
++          page: 'new',
++          inbox_id: created[0].id,
++        },
++      });
++    },
++  },
++};
++</script>
++
++<template>
++  <div class="h-full w-full p-6 col-span-6">
++    <PageHeader
++      :header-title="$t('INBOX_MGMT.ADD.WAME_CHANNEL.TITLE')"
++      :header-content="$t('INBOX_MGMT.ADD.WAME_CHANNEL.DESC')"
++    />
++    <form
++      class="flex flex-wrap flex-col mx-0"
++      @submit.prevent="createChannel()"
++    >
++      <div class="flex-shrink-0 flex-grow-0">
++        <label :class="{ error: v$.inboxName.$error }">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.INBOX_NAME.LABEL') }}
++          <input
++            v-model="inboxName"
++            type="text"
++            :placeholder="
++              $t('INBOX_MGMT.ADD.WAME_CHANNEL.INBOX_NAME.PLACEHOLDER')
++            "
++            @blur="v$.inboxName.$touch"
++          />
++          <span v-if="v$.inboxName.$error" class="message">{{
++            $t('INBOX_MGMT.ADD.WAME_CHANNEL.INBOX_NAME.ERROR')
++          }}</span>
++        </label>
++      </div>
++
++      <div class="flex-shrink-0 flex-grow-0">
++        <label :class="{ error: v$.server.$error }">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.SERVER.LABEL') }}
++          <input
++            v-model="server"
++            type="text"
++            :placeholder="$t('INBOX_MGMT.ADD.WAME_CHANNEL.SERVER.PLACEHOLDER')"
++            @blur="v$.server.$touch"
++          />
++          <span v-if="v$.server.$error" class="message">{{
++            $t('INBOX_MGMT.ADD.WAME_CHANNEL.SERVER.ERROR')
++          }}</span>
++        </label>
++        <p class="help-text">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.SERVER.SUBTITLE') }}
++        </p>
++      </div>
++
++      <div class="flex-shrink-0 flex-grow-0">
++        <label :class="{ error: v$.instanceKey.$error }">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.KEY.LABEL') }}
++          <input
++            v-model="instanceKey"
++            type="text"
++            :placeholder="$t('INBOX_MGMT.ADD.WAME_CHANNEL.KEY.PLACEHOLDER')"
++            @blur="v$.instanceKey.$touch"
++          />
++          <span v-if="v$.instanceKey.$error" class="message">{{
++            $t('INBOX_MGMT.ADD.WAME_CHANNEL.KEY.ERROR')
++          }}</span>
++        </label>
++        <p class="help-text">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.KEY.SUBTITLE') }}
++        </p>
++      </div>
++
++      <div class="flex-shrink-0 flex-grow-0 mt-2">
++        <label>
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.CHANNELS.LABEL') }}
++        </label>
++        <div class="flex flex-col gap-1 mt-1">
++          <label
++            v-for="option in availableChannels"
++            :key="option.value"
++            class="flex items-center gap-2 font-normal"
++          >
++            <input v-model="channels" type="checkbox" :value="option.value" />
++            <span :class="option.icon" class="size-4 flex-shrink-0" />
++            {{ option.label }}
++          </label>
++        </div>
++        <p class="help-text">
++          {{ $t('INBOX_MGMT.ADD.WAME_CHANNEL.CHANNELS.SUBTITLE') }}
++        </p>
++      </div>
++
++      <div class="w-full mt-4">
++        <NextButton
++          :is-loading="uiFlags.isCreating"
++          :disabled="!channels.length"
++          type="submit"
++          solid
++          blue
++          :label="$t('INBOX_MGMT.ADD.WAME_CHANNEL.SUBMIT_BUTTON')"
++        />
++      </div>
++    </form>
++  </div>
++</template>
+diff --git a/app/javascript/dashboard/routes/dashboard/settings/inbox/components/ChannelName.vue b/app/javascript/dashboard/routes/dashboard/settings/inbox/components/ChannelName.vue
+index 711217f..547e2dd 100644
+--- a/app/javascript/dashboard/routes/dashboard/settings/inbox/components/ChannelName.vue
++++ b/app/javascript/dashboard/routes/dashboard/settings/inbox/components/ChannelName.vue
+@@ -34,6 +34,7 @@ const i18nMap = {
+   'Channel::Api': 'API',
+   'Channel::Instagram': 'INSTAGRAM',
+   'Channel::Tiktok': 'TIKTOK',
++  'Channel::Wame': 'WAME',
+ };
+ 
+ const twilioChannelName = () => {
+@@ -43,6 +44,14 @@ const twilioChannelName = () => {
+   return t(`INBOX_MGMT.CHANNELS.TWILIO_SMS`);
+ };
+ 
++// Wame carrega as tres redes num tipo so; o `medium` diz qual e esta caixa.
++// Mesmo padrao do Twilio, que ja distingue sms de whatsapp por aqui.
++const wameChannelName = () => {
++  if (props.medium === 'instagram') return t('INBOX_MGMT.CHANNELS.INSTAGRAM');
++  if (props.medium === 'messenger') return t('INBOX_MGMT.CHANNELS.MESSENGER');
++  return t('INBOX_MGMT.CHANNELS.WHATSAPP');
++};
++
+ const readableChannelName = computed(() => {
+   if (props.channelType === 'Channel::Api') {
+     return globalConfig.value.apiChannelName || t('INBOX_MGMT.CHANNELS.API');
+@@ -53,6 +62,9 @@ const readableChannelName = computed(() => {
+     }
+     return twilioChannelName();
+   }
++  if (props.channelType === 'Channel::Wame') {
++    return wameChannelName();
++  }
+   return t(`INBOX_MGMT.CHANNELS.${i18nMap[props.channelType]}`);
+ });
+ </script>
+diff --git a/app/jobs/send_reply_job.rb b/app/jobs/send_reply_job.rb
+index e892c18..59862b0 100644
+--- a/app/jobs/send_reply_job.rb
++++ b/app/jobs/send_reply_job.rb
+@@ -5,6 +5,7 @@ class SendReplyJob < ApplicationJob
+     'Channel::TwitterProfile' => ::Twitter::SendOnTwitterService,
+     'Channel::TwilioSms' => ::Twilio::SendOnTwilioService,
+     'Channel::Line' => ::Line::SendOnLineService,
++    'Channel::Wame' => ::Wame::SendOnWameService,
+     'Channel::Telegram' => ::Telegram::SendOnTelegramService,
+     'Channel::Whatsapp' => ::Whatsapp::SendOnWhatsappService,
+     'Channel::Sms' => ::Sms::SendOnSmsService,
+diff --git a/app/jobs/webhooks/wame_events_job.rb b/app/jobs/webhooks/wame_events_job.rb
+new file mode 100644
+index 0000000..907cbef
+--- /dev/null
++++ b/app/jobs/webhooks/wame_events_job.rb
+@@ -0,0 +1,41 @@
++class Webhooks::WameEventsJob < MutexApplicationJob
++  queue_as :low
++  # Orçamento de retry (20 × 2s = 40s) precisa passar do TTL de 30s do lock,
++  # senão um webhook que chega logo após a trava esgota as tentativas antes de
++  # quem a segura terminar, e a mensagem some em silêncio.
++  retry_on LockAcquisitionError, wait: 2.seconds, attempts: 20
++
++  def perform(webhook_token, params = {})
++    # `provider` no topo do envelope: whatsapp, instagram ou messenger.
++    provider = params['provider'] || params[:provider]
++    channel = Channel::Wame.for_webhook(webhook_token, provider)
++    return if channel.blank? || channel.inbox.blank?
++
++    sender_id = sender_id_from(params)
++    return process(channel, params) if sender_id.blank?
++
++    # Álbum chega como webhooks concorrentes. Serializa por (caixa, remetente)
++    # para o primeiro criar a conversa e os demais anexarem nela.
++    key = format(::Redis::Alfred::WAME_MESSAGE_MUTEX, inbox_id: channel.inbox.id, sender_id: sender_id)
++    with_lock(key, 30.seconds) do
++      process(channel, params)
++    end
++  end
++
++  private
++
++  def process(channel, params)
++    Wame::IncomingMessageService.new(inbox: channel.inbox, params: params).perform
++  end
++
++  # Telefone no WhatsApp, IGSID no Instagram, PSID no Messenger — o envelope
++  # põe os três no mesmo lugar.
++  def sender_id_from(params)
++    value = params.dig('entry', 0, 'changes', 0, 'value') || {}
++    contact = Array(value['contacts']).first || {}
++    message = Array(value['messages']).first || {}
++
++    contact['wa_id'].presence || contact['user_id'].presence ||
++      message['from'].presence || message['from_user_id'].presence
++  end
++end
+diff --git a/app/models/account.rb b/app/models/account.rb
+index 20aaced..f5e7309 100644
+--- a/app/models/account.rb
++++ b/app/models/account.rb
+@@ -103,6 +103,7 @@ class Account < ApplicationRecord
+   has_many :web_widgets, dependent: :destroy_async, class_name: '::Channel::WebWidget'
+   has_many :webhooks, dependent: :destroy_async
+   has_many :whatsapp_channels, dependent: :destroy_async, class_name: '::Channel::Whatsapp'
++  has_many :wame_channels, dependent: :destroy_async, class_name: '::Channel::Wame'
+   has_many :working_hours, dependent: :destroy_async
+ 
+   has_one_attached :contacts_export
+diff --git a/app/models/channel/wame.rb b/app/models/channel/wame.rb
+new file mode 100644
+index 0000000..8b140ad
+--- /dev/null
++++ b/app/models/channel/wame.rb
+@@ -0,0 +1,127 @@
++# == Schema Information
++#
++# Table name: channel_wame
++#
++#  id           :bigint           not null, primary key
++#  server       :string           not null
++#  instance_key :string           not null
++#  medium       :string           not null, default("whatsapp")
++#  created_at   :datetime         not null
++#  updated_at   :datetime         not null
++#  account_id   :integer          not null
++#
++# Indexes
++#
++#  index_channel_wame_on_key_and_medium  (instance_key,medium) UNIQUE
++#
++
++class Channel::Wame < ApplicationRecord
++  include Channelable
++
++  # A key é a credencial: viaja no path das chamadas e dá acesso total à
++  # instância. Cifra em repouso pelo mesmo guard usado nos outros canais.
++  # deterministic: a key precisa ser consultável — a validação de unicidade e a
++  # busca da caixa no webhook fazem where(instance_key:). Com cifra aleatória
++  # (padrão do Rails 7) essas queries nunca casariam, e o índice do banco
++  # estouraria como 500 em vez de devolver erro tratado.
++  encrypts :instance_key, deterministic: true if Chatwoot.encryption_configured?
++
++  self.table_name = 'channel_wame'
++
++  # Redes que a API do Wame aceita no campo `provider` do corpo da requisição.
++  MEDIUMS = %w[whatsapp instagram messenger].freeze
++
++  EDITABLE_ATTRS = [:server, :instance_key, :medium].freeze
++
++  before_validation :ensure_webhook_token, on: :create
++  after_create_commit :sync_profile_from_instance
++
++  validates :server, presence: true
++  validates :instance_key, presence: true
++  validates :medium, presence: true, inclusion: { in: MEDIUMS }
++  validates :instance_key, uniqueness: { scope: [:account_id, :medium], message: I18n.t('errors.inboxes.wame.duplicate') }
++  validate :validate_instance_reachable, on: :create
++
++  def name
++    'Wame'
++  end
++
++  # URL única da instância: o Wame manda todos os eventos das três redes para
++  # cá, e o `provider` do envelope diz qual caixa recebe.
++  def webhook_url
++    "#{ENV.fetch('FRONTEND_URL', '')}/webhooks/wame/#{webhook_token}"
++  end
++
++  # Caixas irmãs — mesma conta, mesma key, redes diferentes.
++  # Sem fallback para outra rede: um evento de Messenger caindo na caixa de
++  # WhatsApp criaria contato com PSID num inbox de telefone. Se a rede não tem
++  # caixa, o evento é descartado — melhor perder do que corromper.
++  def self.for_webhook(token, provider)
++    where(webhook_token: token).find_by(medium: provider.presence || 'whatsapp')
++  end
++
++  # A key autentica sozinha — não há header de autorização.
++  def api_headers
++    { 'Content-Type' => 'application/json' }
++  end
++
++  def instance_path
++    "#{server.to_s.chomp('/')}/#{instance_key}"
++  end
++
++  def message_path(endpoint)
++    "#{instance_path}/message/#{endpoint}"
++  end
++
++  # Fallback para baixar mídia por id. No fluxo normal o envelope já traz a
++  # URL pronta dentro da própria mensagem.
++  def media_url(media_id)
++    "#{instance_path}/message/#{media_id}/media"
++  end
++
++  # Canais que a instância realmente expõe, conforme GET /{key}/instance.
++  def available_channels
++    response = HTTParty.get("#{instance_path}/instance", headers: api_headers, timeout: 10)
++    return [] unless response.success?
++
++    Array(response.parsed_response.dig('instance', 'channels'))
++  rescue StandardError => e
++    Rails.logger.warn "[WAME] instance lookup failed: #{e.message}"
++    []
++  end
++
++  # Nome e foto vêm do GET /instance. Rodam depois do commit porque a inbox só
++  # existe a partir daí, e a foto é baixada em background para não segurar a
++  # criação se o CDN estiver lento.
++  def sync_profile_from_instance
++    response = HTTParty.get("#{instance_path}/instance", headers: api_headers, timeout: 10)
++    return unless response.success?
++
++    user = response.parsed_response.dig('instance', 'user') || {}
++    update_column(:profile_name, user['name']) if user['name'].present?
++
++    picture = user['imageProfile']
++    Avatar::AvatarFromUrlJob.perform_later(inbox, picture) if picture.present? && inbox.present?
++  rescue StandardError => e
++    # Perfil é enfeite: se falhar, a caixa continua funcionando.
++    Rails.logger.warn "[WAME] profile sync failed: #{e.message}"
++  end
++
++  private
++
++  # Caixas da mesma key compartilham o token: a instância só conhece uma URL.
++  def ensure_webhook_token
++    sibling = self.class.where(account_id: account_id, instance_key: instance_key).where.not(webhook_token: nil).first
++    self.webhook_token = sibling&.webhook_token || SecureRandom.hex(24)
++  end
++
++  # Recusa na criação a caixa cuja rede a instância não tem. Sem isso o cliente
++  # só descobriria o engano quando a primeira mensagem falhasse silenciosamente.
++  def validate_instance_reachable
++    channels = available_channels
++    return errors.add(:base, I18n.t('errors.inboxes.wame.unreachable')) if channels.blank?
++    return if channels.include?(medium)
++
++    errors.add(:base, I18n.t('errors.inboxes.wame.channel_unavailable', medium: medium))
++  end
++end
+diff --git a/app/models/inbox.rb b/app/models/inbox.rb
+index cb98705..507c074 100644
+--- a/app/models/inbox.rb
++++ b/app/models/inbox.rb
+@@ -167,6 +167,10 @@ class Inbox < ApplicationRecord
+     channel_type == 'Channel::Whatsapp'
+   end
+ 
++  def wame?
++    channel_type == 'Channel::Wame'
++  end
++
+   def twilio_whatsapp?
+     channel_type == 'Channel::TwilioSms' && channel.medium == 'whatsapp'
+   end
+diff --git a/app/services/wame/incoming_message_service.rb b/app/services/wame/incoming_message_service.rb
+new file mode 100644
+index 0000000..f48ce0d
+--- /dev/null
++++ b/app/services/wame/incoming_message_service.rb
+@@ -0,0 +1,75 @@
++# O Wame entrega os eventos das três redes no mesmo envelope, que replica a
++# estrutura da WhatsApp Cloud API (entry[].changes[].value). Por isso herda da
++# base do WhatsApp: ela já sabe ler esse formato, e o helper de identidade já
++# resolve `user_id` / `from_user_id`, que é como Instagram e Messenger chegam.
++#
++# Requer `webhookFormat: "meta"` na configuração de webhook da instância.
++# Referência: https://us.api-wa.me/assets/examples/webhooks/meta/index.json
++class Wame::IncomingMessageService < Whatsapp::IncomingMessageBaseService
++  private
++
++  # O Marcel re-detecta OGG/Opus como `audio/opus` na hora de anexar, e nesse
++  # tipo o player do navegador não toca. O próprio Chatwoot normaliza isso no
++  # provider do Cloud, pelo mesmo motivo — aqui vale na entrada.
++  def attach_files
++    super
++
++    @message.attachments.each do |attachment|
++      next unless attachment.file.attached?
++      next unless attachment.file.blob.content_type == 'audio/opus'
++
++      attachment.file.blob.update(content_type: 'audio/ogg')
++    end
++  end
++
++  def processed_params
++    @processed_params ||= params[:entry].try(:first).try(:[], 'changes').try(:first).try(:[], 'value')
++  end
++
++  # A URL da mídia já vem pronta no envelope (`image.url`, `audio.url`, ...),
++  # apontando para GET /{key}/message/{messageId}/media. Não há media_id para
++  # resolver antes nem token para anexar.
++  def download_attachment_file(attachment_payload)
++    url = attachment_payload[:url].presence || attachment_payload[:link].presence
++    url ||= inbox.channel.media_url(attachment_payload[:id]) if attachment_payload[:id].present?
++    return if url.blank?
++
++    downloaded = Down.download(url)
++    file = decode_media_envelope(downloaded) || downloaded
++
++    filename = attachment_payload[:filename]
++    file.define_singleton_method(:original_filename) { filename } if filename.present?
++    file
++  rescue Down::Error => e
++    # Perder o anexo é ruim; perder a mensagem inteira por causa dele é pior.
++    Rails.logger.error "[WAME] media download failed: #{e.message}"
++    nil
++  end
++
++  # O endpoint de mídia do Wame NÃO devolve o binário: devolve
++  # { messageId, mimetype, base64: "data:audio/ogg;base64,..." }.
++  # Sem decodificar, o anexo salvo é o próprio JSON — o player abre com
++  # 00:00/00:00 e o download entrega um arquivo inútil.
++  def decode_media_envelope(downloaded)
++    return nil unless downloaded.content_type.to_s.include?('json')
++
++    payload = JSON.parse(downloaded.read)
++    raw = payload['base64'].to_s.sub(/\Adata:[^;]+;base64,/, '')
++    return nil if raw.blank?
++
++    # "audio/ogg; codecs=opus" → "audio/ogg" → ".ogg"
++    mime = payload['mimetype'].to_s.split(';').first.presence || 'application/octet-stream'
++    extension = ".#{mime.split('/').last}"
++    name = "#{payload['messageId'].presence || 'media'}#{extension}"
++
++    tempfile = Tempfile.new(['wame-media', extension], binmode: true)
++    tempfile.write(Base64.decode64(raw))
++    tempfile.rewind
++    tempfile.define_singleton_method(:content_type) { mime }
++    tempfile.define_singleton_method(:original_filename) { name }
++    tempfile
++  rescue JSON::ParserError, ArgumentError => e
++    Rails.logger.error "[WAME] media decode failed: #{e.message}"
++    nil
++  end
++end
+diff --git a/app/services/wame/send_on_wame_service.rb b/app/services/wame/send_on_wame_service.rb
+new file mode 100644
+index 0000000..2a80c6e
+--- /dev/null
++++ b/app/services/wame/send_on_wame_service.rb
+@@ -0,0 +1,73 @@
++class Wame::SendOnWameService < Base::SendOnChannelService
++  private
++
++  def channel_class
++    Channel::Wame
++  end
++
++  def perform_reply
++    response = message.attachments.present? ? send_attachment : send_text
++
++    if response&.success? && response.parsed_response.is_a?(Hash) && response.parsed_response['id'].present?
++      # O id devolvido no envio é o mesmo que volta em statuses[] quando a
++      # mensagem for entregue e lida — guardá-lo é o que liga um ao outro.
++      message.update!(source_id: response.parsed_response['id'])
++      Messages::StatusUpdateService.new(message, 'sent').perform
++    else
++      Messages::StatusUpdateService.new(message, 'failed', error_message(response)).perform
++    end
++  end
++
++  def send_text
++    post('text', text: message.outgoing_content)
++  end
++
++  def send_attachment
++    attachment = message.attachments.first
++    endpoint = %w[image audio video].include?(attachment.file_type) ? attachment.file_type : 'document'
++
++    post(endpoint, attachment_payload(endpoint, attachment))
++  end
++
++  def attachment_payload(endpoint, attachment)
++    payload = { url: attachment.download_url }
++
++    case endpoint
++    when 'audio'
++      # Nota de voz não aceita legenda em nenhum dos três canais.
++      payload
++    when 'document'
++      payload.merge(
++        mimetype: attachment.file.content_type,
++        fileName: attachment.file.filename.to_s,
++        caption: message.outgoing_content.presence
++      )
++    else
++      payload.merge(caption: message.outgoing_content.presence)
++    end
++  end
++
++  # `to` é o telefone no WhatsApp, o IGSID no Instagram e o PSID no Messenger —
++  # em todos os casos é o source_id que o contact_inbox guardou na entrada.
++  # `provider` diz ao Wame por qual rede despachar.
++  def post(endpoint, payload)
++    HTTParty.post(
++      channel.message_path(endpoint),
++      headers: channel.api_headers,
++      body: payload.merge(to: contact_inbox.source_id, provider: channel.medium).compact.to_json,
++      timeout: 30
++    )
++  rescue StandardError => e
++    Rails.logger.error "[WAME] send failed: #{e.message}"
++    nil
++  end
++
++  def error_message(response)
++    return I18n.t('errors.inboxes.wame.unreachable') if response.blank?
++
++    parsed = response.parsed_response
++    return parsed['message'] if parsed.is_a?(Hash) && parsed['message'].present?
++
++    "HTTP #{response.code}"
++  end
++end
+diff --git a/app/views/api/v1/models/_inbox.json.jbuilder b/app/views/api/v1/models/_inbox.json.jbuilder
+index e297b52..ee8e14e 100644
+--- a/app/views/api/v1/models/_inbox.json.jbuilder
++++ b/app/views/api/v1/models/_inbox.json.jbuilder
+@@ -66,7 +66,9 @@ json.reauthorization_required resource.channel.try(:reauthorization_required?) i
+ ## Twilio Attributes
+ json.messaging_service_sid resource.channel.try(:messaging_service_sid)
+ json.phone_number resource.channel.try(:phone_number)
+-json.medium resource.channel.try(:medium) if resource.twilio?
++json.medium resource.channel.try(:medium) if resource.twilio? || resource.wame?
++json.profile_name resource.channel.try(:profile_name) if resource.wame?
++json.webhook_url resource.channel.try(:webhook_url) if resource.wame?
+ if resource.twilio?
+   json.content_templates resource.channel.try(:content_templates)
+   if Current.account_user&.administrator?
+diff --git a/config/locales/en.yml b/config/locales/en.yml
+index 96fd0d1..02ef7ae 100644
+--- a/config/locales/en.yml
++++ b/config/locales/en.yml
+@@ -173,6 +173,10 @@ en:
+     openai:
+       invalid_api_key: 'OpenAI API key is invalid or revoked. Please check your key in your OpenAI dashboard.'
+     inboxes:
++      wame:
++        unreachable: Could not reach the Wame instance. Check the server URL and the instance key.
++        duplicate: already has an inbox for this network in this account.
++        channel_unavailable: "This key does not have %{medium} enabled. Enable it in the Wame panel and try again."
+       imap:
+         socket_error: Please check the network connection, IMAP address and try again.
+         no_response_error: Please check the IMAP credentials and try again.
+diff --git a/config/locales/pt.yml b/config/locales/pt.yml
+index 905a500..3bf0bfc 100644
+--- a/config/locales/pt.yml
++++ b/config/locales/pt.yml
+@@ -155,6 +155,10 @@ pt:
+     openai:
+       invalid_api_key: 'OpenAI API key is invalid or revoked. Please check your key in your OpenAI dashboard.'
+     inboxes:
++      wame:
++        unreachable: Não foi possível alcançar a instância Wame. Confira o servidor e a key.
++        channel_unavailable: "Esta key não tem %{medium} habilitado. Habilite no painel do Wame e tente de novo."
++        duplicate: já tem uma caixa de entrada para esta rede nesta conta.
+       imap:
+         socket_error: Por favor, verifique a ligação à rede, endereço IMAP e tente novamente.
+         no_response_error: Por favor, verifique as credenciais do IMAP e tente novamente.
+diff --git a/config/locales/pt_BR.yml b/config/locales/pt_BR.yml
+index f5d8e2e..72a256f 100644
+--- a/config/locales/pt_BR.yml
++++ b/config/locales/pt_BR.yml
+@@ -155,6 +155,10 @@ pt_BR:
+     openai:
+       invalid_api_key: 'A chave da API da OpenAI é inválida ou revogada. Por favor, verifique sua chave no seu painel da OpenAI.'
+     inboxes:
++      wame:
++        unreachable: Não foi possível alcançar a instância Wame. Confira o servidor e a key.
++        channel_unavailable: "Esta key não tem %{medium} habilitado. Habilite no painel do Wame e tente de novo."
++        duplicate: já tem uma caixa de entrada para esta rede nesta conta.
+       imap:
+         socket_error: Por favor, verifique a conexão de rede, endereço IMAP e tente novamente.
+         no_response_error: Por favor, verifique as credenciais de IMAP e tente novamente.
+diff --git a/config/routes.rb b/config/routes.rb
+index 5d37786..616f004 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -663,6 +663,7 @@ Rails.application.routes.draw do
+   post 'webhooks/twitter', to: 'api/v1/webhooks#twitter_events'
+   post 'webhooks/line/:line_channel_id', to: 'webhooks/line#process_payload'
+   post 'webhooks/telegram/:bot_token', to: 'webhooks/telegram#process_payload'
++  post 'webhooks/wame/:webhook_token', to: 'webhooks/wame#process_payload'
+   post 'webhooks/sms/:phone_number', to: 'webhooks/sms#process_payload'
+   get 'webhooks/whatsapp/:phone_number', to: 'webhooks/whatsapp#verify'
+   post 'webhooks/whatsapp/:phone_number', to: 'webhooks/whatsapp#process_payload'
+diff --git a/db/migrate/20260823000000_create_channel_wame.rb b/db/migrate/20260823000000_create_channel_wame.rb
+new file mode 100644
+index 0000000..91e7e41
+--- /dev/null
++++ b/db/migrate/20260823000000_create_channel_wame.rb
+@@ -0,0 +1,19 @@
++class CreateChannelWame < ActiveRecord::Migration[7.1]
++  def change
++    create_table :channel_wame do |t|
++      t.integer :account_id, null: false
++      t.string :server, null: false
++      t.string :instance_key, null: false
++      # Rede que esta caixa atende: whatsapp, instagram ou messenger.
++      # Uma key do Wame pode servir as três, e cada uma vira uma caixa própria
++      # para que a conversa exiba o ícone da rede certa.
++      t.string :medium, null: false, default: 'whatsapp'
++
++      t.timestamps
++    end
++
++    # A mesma key não pode gerar duas caixas para a mesma rede.
++    add_index :channel_wame, [:instance_key, :medium], unique: true, name: 'index_channel_wame_on_key_and_medium'
++    add_index :channel_wame, :account_id
++  end
++end
+diff --git a/db/migrate/20260823000001_scope_channel_wame_uniqueness_to_account.rb b/db/migrate/20260823000001_scope_channel_wame_uniqueness_to_account.rb
+new file mode 100644
+index 0000000..bc14680
+--- /dev/null
++++ b/db/migrate/20260823000001_scope_channel_wame_uniqueness_to_account.rb
+@@ -0,0 +1,9 @@
++class ScopeChannelWameUniquenessToAccount < ActiveRecord::Migration[7.1]
++  def change
++    # A mesma key em contas diferentes são tenants diferentes; o único conflito
++    # real é a mesma conta ligar a mesma rede duas vezes.
++    remove_index :channel_wame, name: 'index_channel_wame_on_key_and_medium'
++    add_index :channel_wame, [:account_id, :instance_key, :medium], unique: true,
++              name: 'index_channel_wame_on_account_key_and_medium'
++  end
++end
+diff --git a/db/migrate/20260823000002_add_profile_name_to_channel_wame.rb b/db/migrate/20260823000002_add_profile_name_to_channel_wame.rb
+new file mode 100644
+index 0000000..aae3475
+--- /dev/null
++++ b/db/migrate/20260823000002_add_profile_name_to_channel_wame.rb
+@@ -0,0 +1,7 @@
++class AddProfileNameToChannelWame < ActiveRecord::Migration[7.1]
++  def change
++    # Nome verificado da conta no Wame (user.name do GET /instance). Guardado
++    # para a lista de caixas dizer de quem é a conexão sem consultar a API.
++    add_column :channel_wame, :profile_name, :string
++  end
++end
+diff --git a/db/migrate/20260823000003_add_webhook_token_to_channel_wame.rb b/db/migrate/20260823000003_add_webhook_token_to_channel_wame.rb
+new file mode 100644
+index 0000000..4b7a3e3
+--- /dev/null
++++ b/db/migrate/20260823000003_add_webhook_token_to_channel_wame.rb
+@@ -0,0 +1,12 @@
++class AddWebhookTokenToChannelWame < ActiveRecord::Migration[7.1]
++  def change
++    # A instância do Wame dispara TODOS os eventos para uma URL só — o canal de
++    # origem vem no `provider` do envelope. Então a URL identifica a instância,
++    # não a caixa, e as caixas irmãs da mesma key compartilham o token.
++    #
++    # Token opaco em vez da key: a URL do webhook é pública e a key é credencial
++    # de acesso total à instância.
++    add_column :channel_wame, :webhook_token, :string
++    add_index :channel_wame, :webhook_token
++  end
++end
+diff --git a/lib/redis/redis_keys.rb b/lib/redis/redis_keys.rb
+index c71f30f..73d06dd 100644
+--- a/lib/redis/redis_keys.rb
++++ b/lib/redis/redis_keys.rb
+@@ -87,6 +87,9 @@ module Redis::RedisKeys
+   SLACK_MESSAGE_MUTEX = 'SLACK_MESSAGE_LOCK::%<conversation_id>s::%<reference_id>s'.freeze
+   EMAIL_MESSAGE_MUTEX = 'EMAIL_CHANNEL_LOCK::%<inbox_id>s'.freeze
+   WHATSAPP_MESSAGE_MUTEX = 'WHATSAPP_MESSAGE_CREATE_LOCK::%<inbox_id>s::%<sender_id>s'.freeze
++  # Mesmo motivo do WhatsApp: entregas concorrentes do mesmo contato criariam
++  # contato e conversa duplicados na mesma caixa.
++  WAME_MESSAGE_MUTEX = 'WAME_MESSAGE_CREATE_LOCK::%<inbox_id>s::%<sender_id>s'.freeze
+   CRM_PROCESS_MUTEX = 'CRM_PROCESS_MUTEX::%<hook_id>s'.freeze
+   CAPTAIN_DOCUMENT_SYNC_MUTEX = 'CAPTAIN_DOCUMENT_SYNC_LOCK::%<document_id>s'.freeze
+   CAPTAIN_CONVERSATION_FAQ_MUTEX = 'CAPTAIN_CONVERSATION_FAQ_LOCK::%<assistant_id>s::%<language>s'.freeze
+diff --git a/theme/icons.js b/theme/icons.js
+index ad0dd80..861c99c 100644
+--- a/theme/icons.js
++++ b/theme/icons.js
+@@ -1,4 +1,12 @@
+ export const icons = {
++  // Marca Wame. Origem: https://wame.api.br/images/favicon.svg — o arquivo
++  // é um PNG embutido, não vetor, então este ícone não acompanha currentColor
++  // nem escala sem perda. Trocar por um SVG vetorial quando houver.
++  wame: {
++    body: `<image width="96" height="96" xlink:href="data:image/png;base64,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"/>`,
++    width: 96,
++    height: 96,
++  },
+   'logic-or': {
+     body: `<rect x="14" y="5" width="2" height="13" rx="1" fill="currentColor"/><rect x="8" y="5" width="2" height="13" rx="1" fill="currentColor"/>`,
+     width: 24,
+-- 
+2.39.5 (Apple Git-154)
+

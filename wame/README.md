@@ -275,6 +275,34 @@ Nos canais sociais, métodos sem equivalente (botões, listas, templates) respon
 
 ---
 
+## Implementação de referência
+
+O arquivo [`chatwoot-channel-v4.17.0.patch`](chatwoot-channel-v4.17.0.patch) traz uma implementação completa do canal, feita e testada sobre o **Chatwoot upstream v4.17.0-ce**. São 34 arquivos, incluindo:
+
+- `Channel::Wame` — modelo do canal, com validação contra a instância na criação e token de webhook compartilhado entre as caixas irmãs
+- `Wame::SendOnWameService` e `Wame::IncomingMessageService` — envio e recebimento
+- `Webhooks::WameController` + job, com mutex por caixa e remetente
+- card no wizard de caixas de entrada, ícone por rede, nome e foto do perfil
+- migrations da tabela `channel_wame`
+
+O desenho central: **um tipo de canal, três redes**. Cada rede vira sua própria caixa, distinguida pelo campo `medium`, o que permite exibir o ícone da rede correta em cada conversa — mesmo mecanismo que o Chatwoot já usa para separar SMS de WhatsApp no Twilio.
+
+Aplicar com:
+
+```bash
+git am < chatwoot-channel-v4.17.0.patch
+```
+
+> **Não é drop-in.** O patch é contra o upstream v4.17.0. Instalações com base estendida — providers próprios, `IncomingMessageBaseService` modificado — vão precisar de ajuste nos pontos de registro (`PROVIDERS`, `provider_service`, o dispatch de entrada e o `send_reply_job`). Serve como referência do que é preciso tocar, não como merge automático.
+
+### Estado dos testes
+
+| | |
+|---|---|
+| WhatsApp | verificado ponta a ponta com número real: recebimento, envio, mídia (áudio, imagem, PDF) e status `sent`/`delivered`/`read` |
+| Instagram e Messenger | caminho de código verificado com os payloads reais do catálogo; entrega ao vivo não exercitada |
+| Reações | não aparecem — o Chatwoot upstream descarta `reaction` por design, para qualquer canal |
+
 ## Contato
 
 Dúvidas de integração, ambiente de homologação e credencial de teste: <https://wame.api.br>
