@@ -1,7 +1,9 @@
 # MEGA - Detalhe Tecnico de Funcionalidades (PT-BR)
 
 Versao: Enterprise
-Ultima atualizacao: 10 de agosto de 2026
+
+As gravações do Twilio Voice permanecem anexadas a `Call`; uma configuração explícita da conta habilita sua transcrição idempotente, transmissão da mensagem e indexação na busca.
+Ultima atualizacao: 1 de setembro de 2026
 Idioma: Portugues (Brasil)
 
 ## 1. Objetivo
@@ -15,6 +17,7 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 - Frontend dashboard: Vue 3.
 - Overlay Enterprise: extensoes e overrides em enterprise.
 - Processamento assincrono: Sidekiq para jobs em background.
+- Métricas opcionais de filas Sidekiq para o CloudWatch: `ENABLE_SIDEKIQ_CLOUDWATCH` inicia a publicação somente no processo servidor do Sidekiq. Usa o perfil da instância por padrão (ou credenciais dedicadas `SIDEKIQ_CLOUDWATCH_AWS_*`) e publica QueueLatency, QueueSize, EnqueuedJobs e Utilization em um intervalo positivo validado.
 - Camada realtime: Action Cable para conversas, salas e quadros.
 - Persistencia: PostgreSQL como banco principal.
 - Seguranca de API: politicas de permissao e controle por papel.
@@ -23,21 +26,30 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 
 ### 3.1 Canais de mensagens e voz
 
+- Os identificadores públicos das caixas são resolvidos no frontend por tipo de canal e exibidos junto ao nome na barra lateral, na lista e no cabeçalho de configurações. Os IDs de página do Facebook e de perfil do X são valores opacos de roteamento e, por isso, são excluídos da exibição, embora permaneçam no payload da caixa para operações do provedor. A busca combina correspondências de nome/tipo com os identificadores normalizados visíveis, sem duplicar resultados e preservando a direção de texto misto com `bdi`.
 - WhatsApp Cloud API: canal oficial com templates e eventos de entrega; fora da janela de atendimento de 24 horas, o serviço rejeita localmente mensagens livres de automações sem parâmetros de template antes de contatar o provedor.
-- Mega Hub para Meta: modo opcional no Super Admin para conectar WhatsApp, Messenger e Instagram usando apps compartilhados do Hub; o bloco de credenciais do Hub é configurado em Super Admin → Mega Hub, e as caixas criadas continuam enviando pelos serviços nativos e recebem eventos reenviados por webhook.
+- Mega Hub para Meta: modo opcional no Super Admin para conectar WhatsApp, Messenger e Instagram usando apps compartilhados do Hub; o bloco de credenciais do Hub é configurado em Super Admin → Mega Hub, e as caixas criadas continuam enviando pelos serviços nativos e recebem eventos reenviados por webhook. A saúde do WhatsApp valida o forward do Hub em vez de comparar o callback da Meta para o Hub com o callback direto do MEGA, e só informa falha de configuração quando confirma que o forward é inválido. A tela final trata o Mega Hub como cadastro integrado e não mostra instruções manuais de URL do webhook nem token de verificação.
 - Saúde da conexão do WhatsApp Cloud: falhas de token manual são exibidas sem bloquear o processamento de webhooks recebidos, enquanto o cadastro integrado mantém o fluxo de reautorização.
 - A saúde do número do WhatsApp Cloud persiste os dados disponíveis do número quando o enriquecimento opcional do negócio WABA falha, preserva os últimos metadados empresariais e registra o erro de enriquecimento separadamente.
+- A Saúde da conta consulta o perfil comercial do WhatsApp sob demanda para caixas Cloud API e o retorna sem persistência. Uma falha nessa consulta é registrada e não oculta os dados principais do número ou do negócio.
 - Caixas do WhatsApp Cloud com cadastro integrado podem usar uma migração manual guiada e controlada por feature flag para um aplicativo Meta próprio; o fluxo valida as credenciais de WABA, número e token antes de atualizar a conexão, enquanto o alerta de reautorização permanece visível quando necessário.
+- A configuração manual guiada do WhatsApp cria uma nova caixa Cloud a partir de um ID de WABA, ID de número de telefone e token permanente validados. Ela armazena a WABA nas duas chaves de compatibilidade, configura explicitamente o callback no nível do telefone, expõe verificações de callback/assinatura e evita o callback genérico após a criação.
 - No Cloud, `whatsapp_embedded_signup_inbox_creation` é o controle único para criar caixas por cadastro integrado, reconfigurá-las proativamente e reautorizá-las. Instalações próprias mantêm `whatsapp_reconfigure` para reconfiguração proativa; o endpoint exige administrador e preserva a recuperação quando a reautorização é necessária.
+- O cadastro integrado aceita conclusões de coexistência com WhatsApp Business App sem `phone_number_id`; ele encaminha `is_coexistence` e `is_business_app_onboarding` para que o serviço de autorização configure o canal e os webhooks desse fluxo.
 - WhatsApp Evolution, WAHA e Uazapi: provedores alternativos com suporte multimidia e grupos.
+- Edições recebidas em grupos via Evolution, WAHA e Uazapi preservam um cabeçalho existente em negrito `número - nome` abaixo do marcador localizado de edição; edições repetidas e corpos já prefixados pelo provedor não duplicam cabeçalhos.
 - Os placeholders não suportados do WhatsApp preservam `unsupported_reason`, código e subtipo quando a Meta os fornece. Somente `131060` é classificado como indisponibilidade por coexistência; `131051`, outros tipos e registros antigos usam uma orientação neutra. Mensagens enviadas sem conteúdo enviável ou sem resposta da WAHA são marcadas como falhas, e não como conteúdo recebido não suportado.
 - Estado de conexão por provedor: WAHA, Evolution e Uazapi usam suas próprias APIs e webhooks; a validação de assinatura da Meta fica reservada ao WhatsApp Cloud.
+- Proxy de sessão do WAHA: a configuração é aplicada por `config.proxy` ao atualizar a sessão, com `server`, usuário e senha opcionais; ela pode ser removida com `proxy: null`.
+- Proxy da Uazapi: as configurações da caixa permitem um proxy interno regional com cidade brasileira validada pelo catálogo do provedor, um proxy personalizado sem fallback ou sem proxy; alterar ou remover o proxy aplica o modo correspondente do provedor, e a remoção limpa a preferência regional salva.
 - Vinculação WAHA com passkey: detecção proativa da extensão via `WAHA_PASSKEY_CHROME_EXTENSION_ID`, estados `PASSKEY_REQUIRED` e `PASSKEY_CONFIRMATION_REQUIRED` dentro de `session.status`, challenge por `/auth/passkey/challenge`, fluxo temporário por token para asserção, assinatura com extensão de navegador em `web.whatsapp.com` e confirmação manual por código; os GET sem dados pendentes retornam `422`.
 - Sincronização global sob demanda para WAHA e Uazapi: jobs Sidekiq com progresso em Redis, janelas de 24h/7d, deduplicação por ids do provedor, reutilização de conversas abertas, download assíncrono de mídia histórica, bloqueio de concorrência por conta e worker dedicado opcional `whatsapp_history_sync` para instalações de alto volume.
 - Sincronização por conversa para WAHA e Uazapi: ação manual pelo menu da conversa, com janelas de 24h/7d e deduplicação por ids do provedor.
+- Download diferido de mídia de grupos WAHA (lazy media): uma caixa pode ativar `lazy_media_download` para persistir somente a mídia recebida em grupos como anexo pendente (apenas identificadores do provedor em `meta`); um agente baixa sob demanda pelo endpoint de conversa `download_attachment`, que reutiliza o fluxo comprovado em duas etapas metadata-then-binary e anexa o arquivo de forma idempotente. Conversas individuais mantêm o download imediato.
 - Reações do WhatsApp: atores do dashboard e tokens de API podem adicionar, substituir e remover uma reação por mensagem preservando ecos do WhatsApp Device.
 - Notificame: variante oficial orientada a operacao LATAM.
 - Instagram, Facebook, TikTok, Telegram, X, SMS e Email como inboxes.
+- A autorização do TikTok é aplicada pela funcionalidade de conta `channel_tiktok`; contas hospedadas sem acesso veem a opção de solicitar suporte e o onboarding exclui o TikTok das sugestões detectadas.
 - Processamento de email IMAP com timeout dedicado para evitar jobs travados nas caixas de entrada.
 - Diagnóstico de conexão para caixas do Gmail com autenticação IMAP/SMTP XOAUTH2 em tempo real, categorias de erro seguras, datas de atividade recente de entrada/saída e reconexão OAuth exclusiva para administradores.
 - Quando mensagens ou conversas são excluídas de caixas Gmail, um job assíncrono busca o RFC `Message-ID` armazenado, resolve os identificadores opacos do Gmail e exclui permanentemente a mensagem ou sequência sem bloquear a exclusão local.
@@ -54,16 +66,19 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 - As solicitacoes de transcricao por email no widget desabilitam o botao durante o envio e por 15 segundos apos um envio bem-sucedido, evitando solicitacoes repetidas e mantendo a nova tentativa imediata apos uma falha.
 - A visibilidade do feedback CSAT e armazenada por inbox em `csat_config.hide_feedback_from_agents`. Os serializadores de mensagens do dashboard e o Action Cable removem apenas `feedback_message` para usuarios da conta que nao sao administradores, enquanto as avaliacoes, os dados persistidos e os payloads de administradores e clientes permanecem inalterados.
 - As mensagens excluidas podem reter o texto original e os anexos para agentes por meio de `inboxes.show_deleted_message_placeholder`; a API publica, os payloads do widget e os broadcasts do Action Cable destinados ao contato substituem `content` e `processed_message_content` pelo aviso de exclusao, omitem `content_attributes.original_content` e `translations`, e expoem uma lista vazia de anexos sem alterar o registro persistido.
+- O endpoint de mensagens do widget retorna `403 Forbidden` para envios de texto e anexos a uma conversa resolvida quando `inboxes.allow_messages_after_resolved` é falso. Essa proteção no servidor também cobre novas tentativas de mensagens com falha e mantém a conversa resolvida sem alterações.
 - Modelo de status: open, pending, resolved, snoozed.
+- Os timestamps relativos do dashboard usam `exactTimestamp` em um tooltip com atraso, exibindo data e hora completas; `TimeAgo` mostra criação e última atividade em linhas separadas.
 - Modelo de prioridade: tratamento de urgencia por conversa.
 - Participantes: colaboracao multiagente na mesma thread.
 - API de atributos personalizados: `POST .../custom_attributes` mantém a substituição como padrão e aceita `merge=true` para atualizar apenas as chaves recebidas; `POST .../destroy_custom_attributes` remove chaves específicas e retorna os atributos restantes.
-- Atributos obrigatórios Enterprise em macros: o dashboard detecta `resolve_conversation` e `change_status` para resolvida, solicita e persiste os valores ausentes antes da execução e pode continuar sem resolver quando o diálogo é fechado. O overlay de `Macros::ExecutionService` também bloqueia a resolução direta enquanto faltarem valores de definições obrigatórias vigentes; checkbox `false` conta como preenchido e valores nulos como ausentes.
+- Execução de macros e atributos obrigatórios: o editor de resposta oferece um seletor com `#`, enquanto a barra de comandos mostra **Executar uma macro** somente em rotas de conversa ativas com a função de macros habilitada; ambos usam a mesma ordem persistida da barra lateral. As três superfícies compartilham a execução, detectam `resolve_conversation` e `change_status` para resolvida, solicitam e persistem valores ausentes antes da execução e podem continuar sem resolver quando o diálogo é fechado. O overlay de `Macros::ExecutionService` também bloqueia a resolução direta enquanto faltarem valores de definições obrigatórias vigentes; checkbox `false` conta como preenchido e valores nulos como ausentes.
 - Rascunhos e fixadas: continuidade de trabalho por agente.
 - Filtros avancados e visoes personalizadas: segmentacao para alto volume.
 - Ordenacao dedicada por unread na lista de conversas.
 - Filtros dedicados no sidebar: unread, mentions, participating, groups e unattended na navegacao de conversas.
 - Contadores reativos no sidebar: unread por tipo de conversa e mentions via notification_type=conversation_mention.
+- A interface legada de histórico e a rota `/notifications` são removidas, enquanto `inbox_view` permanece desabilitado. As notificações persistidas continuam alimentando popups realtime, contadores do sidebar e reconciliação após reconexão. Calendário usa seu payload Push especializado; `kanban_note_agent_assigned`, `kanban_stage_automation`, `kanban_checklist_due_date` e `account_task_due` usam um payload operacional separado com URLs diretas e sem entrega por e-mail.
 - Assignment V2: distribuicao inteligente com capacidade e regras.
 - Os inboxes expoem `auto_assign_on_agent_reply` para manter conversas nao atribuidas sem responsavel quando um agente envia uma mensagem de saida.
 - Usuários com várias contas mantêm um único seletor de avatar, mas suas operações de upload e remoção atuam sobre o vínculo `AccountUser` ativo. Os payloads de agentes e mensagens priorizam esse avatar e usam o avatar global de `User` como fallback; o comportamento de usuários com uma única conta continua global e nenhum permissionamento ou toggle de política é adicionado.
@@ -71,6 +86,7 @@ Ele complementa [features.pt_BR.md](features.pt_BR.md), que e voltado para apres
 - SLA Enterprise: `AppliedSla` expoe prazos FRT/NRT/RT calculados no backend; quando a politica usa horario comercial, `Sla::BusinessHoursService` consome a configuracao de working hours do inbox e a resposta JSON entrega `sla_*_due_at` ao dashboard. Ao resolver uma conversa, `sla_completed_at` e registrado e congela a duracao exibida dos descumprimentos FRT/NRT/RT; SLAs historicos sem essa marca continuam visiveis como descumprimentos estaticos. Conversas com contato bloqueado rejeitam nova atribuicao de SLA, sao excluidas de processamento/relatorios e limpam `sla_policy_id`, `applied_sla` e `sla_events` dos payloads enquanto seguirem bloqueadas.
 - Drilldown de relatorios V2: `/api/v2/accounts/:account_id/reports/drilldown` retorna as conversas, mensagens ou eventos que compoem uma barra do grafico; `V2::Reports::DrilldownBuilder` valida metrica, bucket, permissao de administrador, paginacao, filtros por conta/inbox/agente/equipe/etiqueta, horario comercial e serializacao da ultima mensagem, com rate limit dedicado no Rack::Attack.
 - Respostas prontas com anexos reutilizaveis tambem nos fluxos de nova conversa.
+- O seletor de respostas prontas e teletransportado e ancorado ao cursor, carrega a lista da conta pelo cache IndexedDB endurecido, filtra atalhos/conteudo localmente, reconcilia invalidacoes em tempo real, mostra conteudo renderizado compativel com o canal e preserva placeholders Liquid sem valor para avaliacao no backend.
 - Editor de resposta com upload de imagens inline em Email e Widget Web, redimensionamento por ProseMirror e renderizacao segura de `cw_image_width`/`cw_image_height`.
 - A resolucao de `reply_to` no WhatsApp respeita `conversation_history` buscando identificadores citados em conversas anteriores do mesmo contact inbox, sem ampliar a busca para todas as mensagens da conta. Em coexistencia, tambem vincula WAMIDs de escopo de telefone e BSUID que compartilham um unico token decodificado; identificadores malformados ou ambiguos permanecem sem vinculo.
 - Fluxo de desligamento de agentes com revisao previa das conversas atribuidas e opcao de desatribuir ou reatribuir em lote respeitando acesso por inbox/equipe.
@@ -103,7 +119,7 @@ Eventos suportados:
 - Conversa criada e atualizada.
 - Mensagem recebida e criada.
 
-- Regras com espera persistem uma execução pendente reclamada por regra, conversa e episódio de estado. Um worker agendado revalida a feature flag, a regra e as condições antes de executar; mudanças de status e respostas invalidam o episódio correspondente.
+- Regras com espera persistem uma execução pendente reclamada por regra, conversa e episódio de estado. O editor preserva as condições estruturais da espera e aceita condições adicionais unidas com `AND`; um worker agendado revalida a feature flag, a regra e todas as condições antes de executar. Mudanças de status e respostas invalidam o episódio correspondente.
 
 Condicoes:
 
@@ -116,21 +132,6 @@ Acoes:
 - Atribuir ao ultimo agente que respondeu.
 - Remover atribuicao de agente ou equipe.
 - Etiquetar, alterar status/prioridade, enviar webhook, silenciar.
-
-Flow Builder MVP:
-
-- Persistencia: `flow_builder_flows` para rascunhos editaveis, `flow_builder_flow_versions` para snapshots publicados e `flow_builder_flow_inboxes` para vincular um flow publicado a uma inbox como bot nativo.
-- API por conta: `/api/v1/accounts/:account_id/flow_builder/flows` com CRUD, `validate`, `publish` e `pause`.
-- Execucoes por conta: `flow_builder_executions` armazena status, duracao, contexto, snapshot da definicao, passos parciais/finais e entrada/saida por no, incluindo snapshots de conversa, mensagem e contato; API aninhada `/flows/:flow_id/executions` lista e mostra detalhes.
-- Permissoes: politica Pundit apenas para administradores e feature flag `flow_builder`.
-- Frontend: rota `flow_builder_index`, modulo Vuex `flowBuilder`, canvas com `@vue-flow/core`, no Action reutilizando `AutomationActionInput`/`useAutomationValues` para inputs dinamicos, e aba de execucoes com replay visual readonly, checks verdes por no executado, caminho percorrido verde/vermelho, inspetor de payloads por no e atualizacao ao vivo via ActionCable.
-- Estado operacional: switch na lista e no editor que publica para ativar ou chama `pause` para desativar, reutilizando o estado `published`/`paused` do backend.
-- Catalogo inicial: trigger, message, question, condition, switch, set, loop, code, action, handoff, wait, webhook e end.
-- Configuracao Wait: o inspetor normaliza `duration/unit` legado para `mode/amount/unit/run_at` e suporta espera por intervalo ou por data/hora especifica; a retomada real continua fora do runtime inicial.
-- Validacao: trigger unico, endpoints de edges existentes, sem ciclos, sem self-edge e configuracao minima por tipo de no.
-- Runtime inicial: flows publicados podem disparar a partir de eventos internos compativeis com Automation (`message_created`, `conversation_created`, `conversation_updated`, `conversation_opened`, `conversation_resolved`) ou de inicio tipo AgentBot por inbox para `message_created`; executam nos basicos de mensagem, pergunta, condicao, switch, acoes reutilizadas de `ActionService`, handoff e fim; condicoes e casos switch suportam mensagem, conversa e dados do contato.
-- Vinculacao AgentBot: ao publicar, o inicio tipo AgentBot valida a inbox obrigatoria e evita conflitos com AgentBot, Dialogflow ou outro Flow Builder ativo na mesma inbox; ao pausar ou mudar de modo a vinculacao e removida.
-- Limite atual: estado conversacional multi-turn, webhook externo, wait/code/set/loop em runtime e acoes com anexos de regra, SLA/Kanban ou envio de mensagem duplicado ficam para as proximas fases.
 
 Bots:
 
@@ -146,17 +147,21 @@ Bots:
 ### 3.5 IA Captain
 
 - Provedores suportados: OpenAI, Anthropic, Google, Azure OpenAI, Bedrock, DeepSeek.
-- Assistants: configuracao por inbox com instrucoes e contexto.
+- Assistants: configuracao por inbox com instrucoes e contexto. `config.auto_resolve_mode` e persistido por assistente como `evaluated`, `legacy` ou `disabled`; assistentes existentes sem esse valor usam o modo da conta como compatibilidade. Com o Captain V2, `config.auto_resolve_after` aceita de 5 a 1.440 minutos e e normalizado em incrementos de cinco, enquanto `send_inactivity_resolution_message` controla a mensagem publica. Uma árvore validada e opcional de condições de público e `response_window` (`always`, `business_hours` ou `outside_business_hours`) definem a elegibilidade ao criar ou reabrir conversas; as que já estão pendentes continuam sem interrupção. A API mescla com seguranca as atualizacoes de configuracao e serializa os valores efetivos.
+- A reconciliação de faturamento cloud ativa `captain_integration_v2` para todo plano que não seja o padrão e o desativa para o plano padrão configurado. Ela não depende de um atributo de rollout por conta; o runtime do Captain V1 e a flag de recurso continuam disponíveis.
 - Exclusividade de bots: `InboxBotStatus` identifica Agent Bots ativos e Dialogflow como bots externos; o Captain não agenda respostas nem resolução automática para esses inboxes.
-- Visao geral do assistente: endpoints Enterprise de estatisticas, drilldown e resumo cacheado baseados em `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder` e `Captain::OverviewSummaryService`; o cliente reutiliza as estatisticas carregadas para o resumo, cancela solicitacoes de estatisticas substituidas, tenta novamente uma vez uma falha transitoria e mostra esqueletos de metricas durante o carregamento. Os resumos usam o idioma da conta; o tempo economizado estimado e derivado das respostas publicas do assistente usando uma suposicao fixa de 2 minutos de esforco do agente por resposta.
-- Roteamento de modelos Captain por feature (`assistant`, `copilot`, `document_faq_generation`, `conversation_faq_matching`, `pdf_faq_generation`, `audio_transcription`, etc.) com override por conta e fallback para configuracao global.
+- Visao geral do assistente: os endpoints Enterprise legados de estatisticas, drilldown e resumo cacheado continuam baseados em `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder` e `Captain::OverviewSummaryService`. A flag local `captain_overview_v2` seleciona uma interface redesenhada e opcional que consome os builders dedicados de resultados, fluxo e tendencia de resolucao; a tendencia inclui taxas alinhadas do periodo atual e anterior, enquanto o CSAT apenas humano indisponivel permanece nil em vez de uma pontuacao falsa. `overview_summary` gera no servidor ate tres insights localizados e arredondados, ignora relatorios sem atividade e compartilha no Redis um cache bem-sucedido de uma hora por conta, versao do assistente, intervalo, fuso horario e idioma. O tempo economizado estimado e derivado das respostas publicas do assistente usando uma suposicao fixa de 2 minutos de esforco do agente por resposta.
+- O roteamento de modelos Captain separa recursos de cliente e internos no Super Admin. O avaliador interno `conversation_completion` aceita modelos OpenAI compatíveis; sua rota resolve o override da conta, depois o modelo da instalação auto-hospedada e por fim o padrão do YAML. As preferências do Captain para clientes continuam expondo somente recursos de cliente.
+- Editor de resposta do Copilot: mede as sugestões renderizadas após a atualização do DOM e cresce temporariamente para exibi-las, com limite de 350 px. O redimensionamento manual mantém prioridade e é restaurado quando a sugestão fecha; os estados de carregamento e sugestão fazem cross-fade no mesmo lugar.
+- Sugestões de resposta do Copilot: uma solicitação explícita valida o acesso do agente à conversa e uma última mensagem pública recebida. Um job dedicado usa o prompt, FAQs, citações e somente custom tools GET do assistente, sem cenários ou handoff; ele revalida acesso e atualidade antes de persistir, descarta rascunhos obsoletos e consome crédito apenas por uma resposta válida salva.
 - Sugestões de FAQ por conversa: um job de baixa prioridade com mutex extrai apenas mensagens públicas de clientes e agentes humanos junto com o contexto do negócio, rejeita conversas inadequadas e agrupa observações semanticamente equivalentes por assistente e idioma; FAQs aprovadas e sugestões descartadas impedem novos duplicados.
 - Revisão de sugestões de FAQ: a API Enterprise lista e pré-visualiza apenas fontes acessíveis ao agente atual, permite editar, aprovar ou descartar sugestões abertas e bloqueia revisões contra aprovações simultâneas. A aprovação cria uma FAQ aprovada e preserva suas observações de origem.
 - Detalhes da geração: `GET /api/v1/accounts/:account_id/captain/agent_sessions/:message_id` no Enterprise autoriza a conversa da mensagem, hidrata citações e títulos de cenários e alimenta o popover da mensagem Captain. As sessões são armazenadas por mensagem; uma sessão de transferência é associada à sua nota privada não vazia. O modelo e os créditos são exibidos apenas para superadministradores ou em desenvolvimento.
 - Citações confiáveis do Captain V2: `faq_lookup` retorna índices locais tipados sem URLs; o agente principal continua sem `response_schema` e emite marcadores `[[citation:N]]` que o servidor converte em partes persistidas, filtra pelo mapa da execução e renderiza apenas documentos HTTP(S) públicos do assistente. Credenciais, destinos privados, PDFs e parâmetros assinados são rejeitados; `faq_ids` preserva resultados recuperados, enquanto `used_faq_ids` e `cited_document_ids` guardam apenas seleções válidas. O histórico reutiliza texto limpo e sessões legadas com as novas colunas nulas continuam sendo hidratadas por `faq_ids`.
-- Captain Documents: upload, indexacao e auto-sincronizacao por plano com jitter, fila purgable, limites configuraveis por conta e globais e uma vista de detalhes com conteudo rastreado, metadados da fonte e quantidade de FAQs geradas.
-- Captain Scenarios: regras de ativação e prioridade; a API preserva `tools` enviados explicitamente, normaliza IDs escalares ou metadados `{ id }`, valida com `assistant.available_tool_ids` e mantém referências `tool://` quando o campo é omitido. O Account MCP publica schemas específicos para criar e atualizar cenários.
-- Captain Custom Tools: integrações HTTP com GET, POST, PUT, PATCH e DELETE; aceitam fragmentos JSON Schema para parâmetros complexos e o Account MCP publica contratos diretos para listar, criar, consultar, atualizar, excluir e testar tools personalizadas.
+- Captain Documents: upload, indexacao e auto-sincronizacao por plano com jitter, fila purgable, limites configuraveis por conta e globais e uma vista de detalhes com conteudo rastreado, metadados da fonte, quantidade de FAQs geradas e uso em conversas exclusivo para administradores.
+- Analitica de uso de conhecimento: `Captain::ConversationUsageBuilder` calcula conversas ativas distintas a partir de sessoes do assistente com resposta entregue (`credits_consumed > 0`), usando indices GIN em `document_ids` e `used_faq_ids`; pagina drilldowns em 25 registros, exclui handoffs e conversas excluidas, permite ordenar documentos por uso e expoe o uso de FAQs criadas por usuarios apenas a administradores.
+- Captain Scenarios: regras de ativação e prioridade; as APIs de gerenciamento retornam registros ativados e desativados, enquanto apenas os ativados são executados. A API preserva `tools` enviados explicitamente, normaliza IDs escalares ou metadados `{ id }`, aceita referências salvas a ferramentas personalizadas desativadas e mantém referências `tool://` quando o campo é omitido. O Account MCP publica schemas específicos para criar e atualizar cenários.
+- Captain Custom Tools: integrações HTTP com GET, POST, PUT, PATCH e DELETE; aceitam fragmentos JSON Schema para parâmetros complexos e o Account MCP publica contratos diretos para listar, criar, consultar, atualizar, excluir e testar tools personalizadas. A resposta de detalhe informa quantos cenários ativados usam uma ferramenta, para que o dashboard avise antes da desativação; ferramentas desativadas são excluídas da execução.
 - Runtime de tools Captain: preserva integralmente o `inputSchema` de cada servidor MCP, encaminha objetos e arrays sem convertê-los em texto, exclui servidores desabilitados ou desconectados, atualiza a cada 10 minutos os catálogos conectados obsoletos e limita cada solicitação a 128 tools incluindo handoffs. Uma falha transitória de conexão preserva o último catálogo utilizável e mantém o servidor elegível para nova tentativa; erros permanentes não anunciam um catálogo obsoleto como conectado. No Playground V1 e V2 não existe seleção direta por `@` ou `tool://`. V1 testa o assistente legado base sem tools MCP diretas; V2 mantém as tools normais do assistente principal, executa os handoffs e carrega em cada agente de cenário somente suas tools atribuídas, como em uma conversa real. As referências `tool://` na configuração de cenários continuam suportadas. O proxy aceita objetos JSON e strings contendo objetos JSON, mas rejeita JSON inválido ou valores que não sejam objetos em vez de esvaziá-los silenciosamente.
 - MCP nativo por conta: endpoints dedicados por slug em /mcp/:account_id/:slug. As execuções do Captain para um MCP nativo levam uma prova assinada de uso único vinculada à conta, assistente, servidor, endpoint, tool e argumentos; o handshake permanece neutro e chamadas MCP externas mantêm sua identidade normal.
 - Os diagnósticos do cliente MCP usam nível INFO para impedir que o logger DEBUG do transporte exponha cabeçalhos de autorização ou provas de execução.
@@ -173,7 +178,7 @@ Bots:
 - Autenticacao dupla: Bearer OAuth ou Api-Access-Token estatico.
 - Catalogo MCP curado para uso cotidiano: ferramentas com nomes estaveis por dominio (conversations, contacts, inboxes, help center, reports, kanban e outros).
 - Tools MCP publicadas: base (account_context, account_actions_list, account_action_call) + catalogo curado; inclui agendamento de mensagens, tarefas, modelos, campanhas, SLA, politicas, calendario, relatorios, Captain, notificacoes, chat interno e o ciclo completo do Help Center; nao publica tools de importacao nem exportacao de dados; dinamicas explicitas via allowed_tools.
-- Auto-resolve mode: evaluated, legacy ou disabled por conta. O modo avaliado envia ao avaliador o status da conversa e o conteúdo rotulado das mensagens não privadas; transferências e acompanhamentos pendentes permanecem abertas.
+- Auto-resolve mode: evaluated, legacy ou disabled por assistente. O modo avaliado envia ao avaliador o status da conversa e o conteúdo rotulado das mensagens não privadas; os caminhos de resolução e handoff bloqueiam e recarregam a conversa antes da transição, criam mensagens na transação e emitem eventos somente após sucesso. Transferências e acompanhamentos pendentes permanecem abertas.
 
 ### 3.6 CRM e gestao de contatos
 
@@ -182,8 +187,10 @@ Bots:
 - Etiquetas em contatos e conversas.
 - O submenu de etiquetas do menu de contexto das conversas usa busca aproximada com `picoSearch`, mostra primeiro as etiquetas atribuidas sem alterar a ordem de origem de cada grupo e permite selecoes repetidas sem tirar o foco da busca. Consultas em branco mostram todas as etiquetas e o menu de contexto so fecha quando o foco sai dele.
 - Empresas agrupadas por dominio com timeline unificada.
+- A entrada do sidebar de Empresas e sua autorizacao CRUD estao disponiveis para administradores, agentes padrao e funcoes personalizadas com a permissao `companies_manage`.
 - Os payloads de contato expõem `company_id` quando Companies esta habilitado; atualizacoes de contato podem atribuir ou limpar a empresa e mantem `additional_attributes.company_name` sincronizado.
 - Importacao e exportacao de contatos disponiveis para administradores e papeis Enterprise com permissao `contact_manage`.
+- A exportacao CSV de contatos usa `CSVSafe` para prefixar valores iniciados por caracteres de formula e impedir sua execucao em planilhas.
 - A importação do Intercom é exclusiva para administradores e protegida pela feature `data_import`; credenciais e mapeamentos persistentes são armazenados por conta.
 - Páginas de contatos e conversas são processadas por jobs Sidekiq, com registros idempotentes de itens/mapeamentos, logs de ignorados/erros, execuções retomáveis e caixas de entrada API por origem.
 - Importações inativas por 15 minutos podem ser retomadas por um endpoint autorizado da conta; a nova tentativa bloqueia a conta e a importação, alterna o identificador da execução e preserva cursor, estatísticas e erros registrados.
@@ -204,7 +211,7 @@ Bots:
 - Layouts de portal selecionaveis: landing classica ou documentacao com sidebar.
 - A análise do portal é armazenada em `portal.config.analytics`; apenas administradores podem atualizar os identificadores permitidos, validados pelo modelo antes de renderizar os scripts públicos de rastreamento.
 - Conteúdo recomendado por localidade é persistido em `portal.config.popular_content`, com listas ordenadas limitadas a 3 categorias e 6 artigos; registros excluídos e artigos não publicados são omitidos, preservando o fallback por popularidade.
-- Editor com menu slash, tabelas nativas e insercao de URLs de vídeo compatíveis por um campo validado; a URL é convertida no embed existente para pré-visualização no editor e no portal público.
+- Editor com menu slash, tabelas nativas, envios de imagens em segundo plano (progresso, cancelamento e nova tentativa) e envio de MP4 ou URLs de vídeo compatíveis; a mídia mantém sua posição durante o envio e as dimensões do vídeo persistem no editor e no portal público.
 - O menu slash do editor de artigos expõe `horizontalRule`, que insere o nó horizontal existente do ProseMirror e move o cursor para o parágrafo seguinte.
 - Quando a seleção do ProseMirror está dentro de uma tabela, o menu slash filtra comandos de bloco que as células Markdown não conseguem persistir e mantém apenas formatação inline; as setas e Ctrl+N/P ficam sob controle do menu enquanto houver opções.
 - Criacao de artigos diretamente da visualizacao da categoria.
@@ -217,6 +224,8 @@ Bots:
 
 - Funis com etapas configuraveis e etapa padrao.
 - Visoes board e list para fluxos distintos de equipe.
+- `ListTab` consome `GET /kanban_items` em páginas de 30 cards, substitui o estado na primeira página e adiciona itens únicos nas seguintes; ao trocar de funil, reinicia cards e metadados antes de solicitar a nova página inicial.
+- `GET /kanban_items/report_export` usa o escopo de políticas Kanban e os filtros do relatório sem paginação. Ele emite CSV UTF-8 com BOM e linhas CRLF por Ruby CSV, cabeçalhos/prioridades localizados, nomes configurados de etapa e moeda explícita do item antes da moeda da conta.
 - Filtros por inbox, canal, etapa e atividade.
 - Filtros por etiquetas de conversa em board/list e nas estatisticas por etapa.
 - O formulário compartilhado de criação carrega as etiquetas da conta e envia os títulos selecionados em `kanban_item.labels`; o endpoint de criação as atribui ao novo item antes da única persistência, sem alterar as etiquetas da conversa vinculada. O card mantém o endpoint de gestão de etiquetas por item.
@@ -261,11 +270,13 @@ Bots:
 
 - API universal de saída: `POST /api/v1/accounts/:account_id/outbound_messages` exige `api_access_token` e autorização sobre o inbox; aceita exatamente um entre `phone_number`, `email`, `contact_id` ou `source_id`, resolve ou cria contato/contact-inbox/conversa e entrega texto, um anexo ou um template de WhatsApp ao `Messages::MessageBuilder` e `SendReplyJob`. Para templates, renderiza o BODY aprovado sincronizado com suas variáveis antes de persistir a mensagem, para que o dashboard e os webhooks exponham o conteúdo enviado. Templates de canais WhatsApp nativos (exceto Twilio) com cabeçalho de mídia aceitam `header.media_file` como multipart ou signed blob ID; o serviço o armazena e gera `header.media_url` para o provedor. `Idempotency-Key` é opcional: quando omitido, cada requisição é um novo envio; quando informado, uma nova tentativa idêntica retorna a resposta original e um payload diferente retorna `409`. O HTTP `202` confirma enfileiramento local, não entrega do provedor.
 - Webhooks com payload enriquecido e segredo global HMAC-SHA256.
+- Em instalações hospedadas, o acesso por tokens de API e a entrega de webhooks de saída exigem a funcionalidade de conta `api_and_webhooks`; instalações autogerenciadas permanecem habilitadas por padrão.
 - Evento de webhook `inbox_updated` para mudancas de estado e desconexao de inboxes.
 - Dashboard Apps para extensoes embutidas via iFrame por contexto; usuarios autenticados da conta podem le-los, mas somente administradores podem cria-los, atualiza-los ou exclui-los.
 - Dashboard Scripts (Super Admin) para customizacao global sem alterar core.
 - Platform Apps para integracoes externas de alto nivel via API.
 - Integracoes de negocio: Slack, Linear, Shopify, WooCommerce, Notion, CRM, Google Agenda e Tarefas.
+- O Slack oferece `two_way` (padrao) e `alert`; este ultimo preserva a sincronizacao para o Slack, mas descarta respostas recebidas no topico para que nunca cheguem ao cliente.
 - Tarefas é protegida pelo recurso de conta `activities` e por um `Integrations::Hook` de conta habilitado; o mesmo par controla visibilidade da integração, acesso à API, rota e item do sidebar.
 - `/activities` persiste a visualização calendário/lista e seus critérios operacionais na query da rota. Sem `status` —ou com valor inválido— inicia em `all` e não envia filtro; valores explícitos válidos são preservados. O calendário continua sem paginação; a lista usa busca por título, ordenação e agrupamento no servidor, e metadados opcionais de `page`/`per_page`.
 - Consultas do calendário usam a interseção explícita `overlaps_from`/`overlaps_to`. O cliente projeta uma tarefa de vários dias em cada data visível intersectada, não somente na data de início.
@@ -303,7 +314,8 @@ Bots:
 - `GoogleCalendar::EventMapperService` mapeia metadata do evento para campos Google de local, convidados, lembretes, recorrencia simples, disponibilidade, visibilidade, permissoes de convidados e Google Meet.
 - O editor responsivo usa linhas com icones, seletor de fusos IANA e chips removiveis; a lateral coloca o contexto com a marca da instalação abaixo das permissoes dos convidados, com buscas flutuantes e o icone do canal em cada resultado de conversa; persiste destino e URL Meet.
 - Google Agenda suporta importacao manual de entrada via `google_calendar_integration/import_events` e backfill Kanban legado via `google_calendar_integration/backfill_kanban`; triggers do Flow Builder ficam diferidos.
-- Assets de notificações e PWA gerados dinamicamente a partir de `NOTIFICATION_ICON` (padrão `/favicon-badge-16x16.png`), com fallback para `LOGO_THUMBNAIL`, fundo configurável e cache invalidado por asset, cor e timestamp do blob; o favicon mantém `LOGO_THUMBNAIL`, muda para `NOTIFICATION_ICON` em mensagens recebidas com a aba oculta ou sem foco e é restaurado no retorno.
+- Os assets do aplicativo PWA e splash são gerados dinamicamente a partir de `LOGO_THUMBNAIL`, rasterizando SVG via librsvg/libvips e com fallback para `NOTIFICATION_ICON`; alertas Push do sistema e badges usam `NOTIFICATION_ICON` (padrão `/favicon-badge-16x16.png`) com fallback recíproco, mas o badge monocromático não é anunciado como ícone instalável. O splash HTML desaparece dois frames após a primeira renderização do Vue, com transição de 180 ms e limite de segurança de 4 s. O fundo é configurável e o cache é invalidado por asset, cor e timestamp do blob; o favicon mantém a imagem do aplicativo, muda para a de notificações com a aba oculta ou sem foco e é restaurado no retorno.
+- A confiabilidade da PWA exclui navegação autenticada do Cache Storage, limita assets Vite com fingerprint, faz o Rails servir `/sw.js` com cabeçalhos de revalidação obrigatória, reconcilia o estado realtime somente após a confirmação do `RoomChannel` e mantém o ciclo de opt-out/logout/troca de chave VAPID por usuário e dispositivo; a ativação aceita chaves VAPID Base64 ou binárias inicializadas pelo Rails e diferencia navegador incompatível, permissão bloqueada, configuração ausente, sessão expirada e falha de registro. Proxies reversos e CDNs devem preservar os cabeçalhos do worker.
 
 ### 3.11 Cadastro e onboarding
 
@@ -320,10 +332,12 @@ Bots:
 
 ### 3.13 Seguranca e conformidade
 
-- 2FA/MFA, SAML/SSO, funcoes personalizadas e logs de auditoria. O relatório de evidências de exclusão do Super Admin consulta apenas linhas retidas de `audits`: a destruição de Inbox usa sua associação com Account, enquanto as de Conversation e Contact usam a captura de `account_id` em `audited_changes`; ele nunca une registros vivos excluídos nem infere exclusões de Message.
+- 2FA/MFA, SAML/SSO, funcoes personalizadas e logs de auditoria. SAML rejeita convites e autenticação de usuários associados a mais de uma conta, e as mudanças em massa de provedor só afetam usuários exclusivos da conta. O relatório de evidências de exclusão do Super Admin consulta apenas linhas retidas de `audits`: a destruição de Inbox usa sua associação com Account, enquanto as de Conversation e Contact usam a captura de `account_id` em `audited_changes`; ele nunca une registros vivos excluídos nem infere exclusões de Message.
+- O endpoint Enterprise de logs de auditoria aceita os filtros opcionais `q`, `types[]`, `since`, `until` e `sort`; as datas são limitadas a épocas Unix seguras para o banco e o índice de associação da conta com data suporta a ordenação filtrada. Os filtros do dashboard ficam na URL e descartam respostas obsoletas.
 - Os registros de sessao de usuario suportam uma etiqueta `custom_name` editavel pelo agente; a metadata de IP permanece interna e nao e exposta nos payloads de sessoes do dashboard.
 - A autenticação web envia um ID persistente e validado de 128 bits por perfil do navegador como client ID do token. As abas reutilizam um único `UserSession`, a reautenticação rotaciona a mesma vaga e um logout bem-sucedido remove token e linha. Novos perfis recebem o seletor bloqueante apenas ao atingir `MAX_USER_SESSIONS`; clientes móveis mantêm IDs gerados e expulsão silenciosa.
 - O estado de dashboard para conta suspensa mantem o widget de suporte visivel e expoe uma acao explicita para contatar o suporte. No Cloud, o guard de rotas e a tela suspensa permitem apenas que administradores acessem o faturamento para restaurar a conta; agentes permanecem na tela suspensa. O Super Admin valida uma categoria e um motivo de até 256 caracteres, adiciona eventos em `accounts.internal_attributes.suspensions`, preserva metadata interna não relacionada e permite corrigir o último evento sem alterar sua marca de tempo.
+- `POST /super_admin/users/:id/resend_confirmation` é restrito ao Super Admin; ele reenvia as instruções padrão do Devise somente para usuários não confirmados e não enfileira e-mail para usuários confirmados. A página de detalhes oculta a ação depois que o usuário é confirmado.
 - Protecao de licenca Mega em fluxos de deploy.
 - Observabilidade de release para rastreabilidade por versao.
 

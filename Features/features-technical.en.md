@@ -1,7 +1,9 @@
 # MEGA - Technical Feature Detail (EN)
 
 Version: Enterprise
-Last updated: August 10, 2026
+
+Twilio Voice recordings remain attached to `Call`; an explicit account setting enables their idempotent transcription, message broadcast, and search indexing.
+Last updated: September 1, 2026
 Language: English
 
 ## 1. Purpose
@@ -15,6 +17,7 @@ It complements [features.en.md](features.en.md), which is focused on commercial 
 - Dashboard frontend: Vue 3.
 - Enterprise overlay: extensions and overrides under enterprise.
 - Async processing: Sidekiq background jobs.
+- Optional Sidekiq-to-CloudWatch queue metrics: `ENABLE_SIDEKIQ_CLOUDWATCH` starts reporting only in the Sidekiq server process. It uses an instance role by default (or dedicated `SIDEKIQ_CLOUDWATCH_AWS_*` credentials), and publishes QueueLatency, QueueSize, EnqueuedJobs, and Utilization on a validated positive interval.
 - Realtime layer: Action Cable for conversations, rooms, and boards.
 - Persistence: PostgreSQL as primary database.
 - API security: permission policies and role-based controls.
@@ -23,21 +26,30 @@ It complements [features.en.md](features.en.md), which is focused on commercial 
 
 ### 3.1 Messaging and voice channels
 
+- Public inbox identifiers are resolved in the frontend by channel type and shown beside the name in the sidebar, list, and settings header. Facebook page IDs and X profile IDs are opaque routing values and are therefore excluded from display, while remaining in the inbox payload for provider operations. Search combines name/type matches with displayed normalized identifiers without duplicating results, while `bdi` preserves mixed text direction.
 - WhatsApp Cloud API: official channel with templates and delivery events; outside the 24-hour customer service window, the service locally rejects automation free-form messages without template parameters before contacting the provider.
-- Mega Hub for Meta: optional Super Admin mode to connect WhatsApp, Messenger, and Instagram using shared Hub apps; the Hub credentials block is configured in Super Admin → Mega Hub, and created inboxes still send through native services and receive relayed webhook events.
+- Mega Hub for Meta: optional Super Admin mode to connect WhatsApp, Messenger, and Instagram using shared Hub apps; the Hub credentials block is configured in Super Admin → Mega Hub, and created inboxes still send through native services and receive relayed webhook events. WhatsApp account health validates the Hub forward rather than comparing Meta's Hub callback with MEGA's direct callback, and only reports a webhook configuration failure when the forward is confirmed invalid. The finish screen treats Mega Hub like embedded signup and does not expose manual webhook URL or verification-token instructions.
 - WhatsApp Cloud connection health: manual-token failures are surfaced without blocking inbound webhook processing, while embedded signup still uses the reauthorization flow.
 - WhatsApp Cloud phone health persists its available phone-level data when optional WABA business enrichment fails, retains the last business metadata, and records the enrichment error separately.
+- Account Health fetches the WhatsApp business profile on demand for Cloud API inboxes and returns it without persisting it. A profile lookup failure is logged and does not hide core phone or business health data.
 - Embedded-signup WhatsApp Cloud inboxes can use a feature-flagged guided manual migration to a customer-owned Meta app; the flow validates WABA, phone-number, and token credentials before updating the connection, while the reauthorization alert remains visible when required.
+- Guided manual WhatsApp setup creates a new Cloud inbox from a validated WABA ID, Phone Number ID, and permanent access token. It stores the WABA under both compatibility keys, explicitly configures the phone-level callback, exposes callback/subscription checks, and avoids the generic post-create webhook callback.
 - On Cloud, `whatsapp_embedded_signup_inbox_creation` is the single gate for embedded-signup inbox creation, proactive reconfiguration, and reauthorization. Self-hosted installations retain `whatsapp_reconfigure` for proactive reconfiguration; the endpoint requires an administrator and preserves recovery when reauthorization is required.
+- Embedded signup accepts WhatsApp Business App coexistence completions without a `phone_number_id`; it forwards `is_coexistence` and `is_business_app_onboarding` so the authorization service configures the channel and webhooks for that flow.
 - WhatsApp Evolution, WAHA, and Uazapi: alternative providers with multimedia and group support.
+- Incoming group edits from Evolution, WAHA, and Uazapi preserve an existing bold `number - name` participant header beneath the localized edit marker; repeated edits and provider-prefixed bodies remain deduplicated.
 - Unsupported WhatsApp placeholders retain `unsupported_reason`, code, and subtype when Meta provides them. Only `131060` is classified as coexistence unavailability; `131051`, other types, and legacy rows use neutral guidance. Outgoing messages without sendable content or a WAHA response are marked failed rather than unsupported inbound content.
 - Provider-specific connection status: WAHA, Evolution, and Uazapi use their own APIs and webhooks; Meta signature validation is reserved for WhatsApp Cloud.
+- WAHA session proxy: configuration is applied through `config.proxy` when updating the session, with a `server` plus optional username and password; it can be removed with `proxy: null`.
+- Uazapi proxy: inbox settings support an internal regional proxy with a Brazilian city validated from the provider catalog, a custom proxy without fallback, or no proxy; changing or removing a proxy applies the corresponding provider mode, and removal clears the stored regional preference.
 - WAHA passkey linking: proactive extension detection via `WAHA_PASSKEY_CHROME_EXTENSION_ID`, `PASSKEY_REQUIRED` and `PASSKEY_CONFIRMATION_REQUIRED` states inside `session.status`, challenge retrieval through `/auth/passkey/challenge`, temporary assertion handoff, browser-extension signing on `web.whatsapp.com`, and manual code confirmation; GET requests return `422` when no data is pending.
 - On-demand global sync for WAHA and Uazapi: Sidekiq jobs with Redis progress, 24h/7d windows, provider-id deduplication, open-conversation reuse, asynchronous historical media downloads, account-level concurrency locks, and an optional dedicated `whatsapp_history_sync` worker for high-volume installations.
 - Per-conversation sync for WAHA and Uazapi: manual action from the conversation menu, with 24h/7d windows and provider-id deduplication.
+- WAHA group lazy media download: an inbox can enable `lazy_media_download` to persist only incoming group media as a pending attachment (only provider identifiers in `meta`); an agent downloads it on demand through the conversation `download_attachment` endpoint, which reuses the proven two-step metadata-then-binary flow and attaches the file idempotently. Direct conversations retain immediate downloads.
 - WhatsApp reactions: dashboard and API-token actors can add, replace, and remove one reaction per message while preserving WhatsApp Device echoes.
 - Notificame: official-oriented variant for LATAM operations.
 - Instagram, Facebook, TikTok, Telegram, X, SMS, and Email exposed as inbox channels.
+- TikTok authorization is enforced by the `channel_tiktok` account feature; unavailable hosted accounts see the support-request entry point and onboarding keeps TikTok out of detected suggestions.
 - IMAP email processing with a dedicated timeout to avoid stuck mailbox jobs.
 - Gmail inbox connection diagnostics with live IMAP/SMTP XOAUTH2 authentication, safe error categories, recent incoming/outgoing activity timestamps, and administrator-only OAuth reconnection.
 - When messages or conversations are deleted from Gmail inboxes, an asynchronous job searches the stored RFC `Message-ID`, resolves Gmail's opaque identifiers, and permanently deletes the message or thread without blocking the local deletion.
@@ -54,16 +66,19 @@ It complements [features.en.md](features.en.md), which is focused on commercial 
 - Widget email-transcript requests disable their button while in flight and for 15 seconds after a successful send, preventing repeated delivery requests while retaining immediate retry after a failed request.
 - CSAT feedback visibility is stored per inbox in `csat_config.hide_feedback_from_agents`. Dashboard message serializers and Action Cable redact only `feedback_message` for non-administrator account users, while ratings, persisted data, administrator payloads, and public customer payloads remain unchanged.
 - Deleted messages may retain their original text and attachments for agents through `inboxes.show_deleted_message_placeholder`; the public API, widget payloads, and contact-facing Action Cable broadcasts replace `content` and `processed_message_content` with the deletion notice, omit `content_attributes.original_content` and `translations`, and expose an empty attachment list without changing the persisted record.
+- The widget message endpoint returns `403 Forbidden` for text and attachment submissions to a resolved conversation when `inboxes.allow_messages_after_resolved` is false. This server-side guard also covers retried failed messages and leaves the resolved conversation unchanged.
 - Status model: open, pending, resolved, snoozed.
+- Relative dashboard timestamps use `exactTimestamp` for a delayed hover tooltip with the full date and time; `TimeAgo` renders creation and last-activity values on separate lines.
 - Priority model: urgency handling per conversation.
 - Participants: multi-agent collaboration in the same thread.
 - Custom attributes API: `POST .../custom_attributes` keeps replacement as the default and accepts `merge=true` to update only supplied keys; `POST .../destroy_custom_attributes` removes specific keys and returns the remaining attributes.
-- Enterprise required attributes in macros: the dashboard detects `resolve_conversation` and resolved `change_status` actions, prompts for and persists missing values before execution, and can continue without resolving when the dialog is dismissed. The `Macros::ExecutionService` overlay also blocks direct resolution while values for current required definitions are missing; checkbox `false` counts as filled and nullish values as missing.
+- Macro execution and required attributes: the reply editor provides a `#` picker, while the command bar exposes **Execute a macro** only on active conversation routes with the macro flag enabled; both use the same persisted sidebar order. All three surfaces share execution, detect `resolve_conversation` and resolved `change_status` actions, prompt for and persist missing values before execution, and can continue without resolving when the dialog is dismissed. The `Macros::ExecutionService` overlay also blocks direct resolution while values for current required definitions are missing; checkbox `false` counts as filled and nullish values as missing.
 - Drafts and pinned: per-agent workflow continuity.
 - Advanced filters and custom views: high-volume operational segmentation.
 - Dedicated unread sort mode in the conversation list.
 - Dedicated sidebar filters: unread, mentions, participating, groups, and unattended conversation views.
 - Reactive sidebar counters: unread per conversation type and mentions via notification_type=conversation_mention.
+- The legacy notification-history UI and `/notifications` route are removed while `inbox_view` remains disabled. Persisted notifications still feed realtime popups, sidebar counters, and reconnect reconciliation. Calendar uses its specialized Push payload; `kanban_note_agent_assigned`, `kanban_stage_automation`, `kanban_checklist_due_date`, and `account_task_due` use a separate operational payload with direct module URLs and no email delivery.
 - Assignment V2: smart distribution with capacity and policy rules.
 - Inboxes expose `auto_assign_on_agent_reply` to keep unassigned conversations unassigned when an agent sends an outgoing message.
 - Multi-account users keep one avatar selector, but its upload and delete operations target the active `AccountUser` membership. Account-scoped agent and message payloads prefer that membership avatar and fall back to the global `User` avatar; single-account behavior remains global and no permission or account policy toggle is introduced.
@@ -71,6 +86,7 @@ It complements [features.en.md](features.en.md), which is focused on commercial 
 - Enterprise SLA: `AppliedSla` exposes backend-computed FRT/NRT/RT deadlines; when the policy uses business hours, `Sla::BusinessHoursService` consumes the inbox working-hours configuration and the JSON response returns `sla_*_due_at` values to the dashboard. Resolving a conversation records `sla_completed_at`, freezing the displayed duration of FRT/NRT/RT misses; historical SLAs without that timestamp remain visible as static misses. Conversations with blocked contacts reject new SLA assignment, are excluded from processing/reports, and clear `sla_policy_id`, `applied_sla`, and `sla_events` from payloads while blocked.
 - V2 report drilldown: `/api/v2/accounts/:account_id/reports/drilldown` returns the conversations, messages, or reporting events behind a chart bar; `V2::Reports::DrilldownBuilder` validates the metric, bucket, administrator permission, pagination, account/inbox/agent/team/label filters, business hours, and last-message serialization, with a dedicated Rack::Attack rate limit.
 - Canned responses with reusable attachments also available in new conversation flows.
+- The canned response picker is teleported and caret-anchored, loads the account list through the hardened IndexedDB cache, filters shortcuts/content locally, reconciles realtime invalidations, previews channel-compatible rendered content, and preserves unresolved Liquid placeholders for backend evaluation.
 - Reply editor inline image upload for Email and Web Widget, ProseMirror resizing, and safe `cw_image_width`/`cw_image_height` rendering.
 - WhatsApp `reply_to` resolution honors `conversation_history` by matching quoted message identifiers in previous conversations for the same contact inbox, without expanding to account-wide message search. In coexistence, it also links phone-scoped and BSUID-scoped WAMIDs sharing one decoded token; malformed or ambiguous identifiers remain unlinked.
 - Agent offboarding flow with assigned-conversation review and bulk unassign/reassign options constrained by inbox/team access.
@@ -103,7 +119,7 @@ Supported events:
 - Conversation created and updated.
 - Message received and created.
 
-- Delayed rules persist one claimed pending execution per rule, conversation, and state episode. A scheduled worker revalidates the feature flag, rule, and conditions before firing; status changes and replies invalidate the matching episode.
+- Delayed rules persist one claimed pending execution per rule, conversation, and state episode. The editor keeps the wait's structural conditions and supports additional conditions joined with `AND`; a scheduled worker revalidates the feature flag, rule, and every condition before firing. Status changes and replies invalidate the matching episode.
 
 Conditions:
 
@@ -116,21 +132,6 @@ Actions:
 - Assign last responding agent.
 - Remove agent or team assignment.
 - Labeling, status/priority update, webhook send, mute.
-
-Flow Builder MVP:
-
-- Persistence: `flow_builder_flows` for editable drafts, `flow_builder_flow_versions` for published snapshots, and `flow_builder_flow_inboxes` to bind a published flow to an inbox as a native bot.
-- Account-scoped API: `/api/v1/accounts/:account_id/flow_builder/flows` with CRUD, `validate`, `publish`, and `pause`.
-- Account-scoped executions: `flow_builder_executions` stores status, duration, context, definition snapshot, partial/final steps, and per-node input/output, including conversation, message, and contact snapshots; nested `/flows/:flow_id/executions` API lists and shows details.
-- Permissions: admin-only Pundit policy and `flow_builder` feature flag.
-- Frontend: `flow_builder_index` route, Vuex `flowBuilder` module, `@vue-flow/core` canvas, Action node reusing `AutomationActionInput`/`useAutomationValues` for dynamic inputs, and executions tab with readonly visual replay, green checks on executed nodes, green/red traversed paths, per-node payload inspector, and live ActionCable updates.
-- Operational state: switch in the list and editor that publishes to activate or calls `pause` to deactivate, reusing the backend `published`/`paused` state.
-- Initial catalog: trigger, message, question, condition, switch, set, loop, code, action, handoff, wait, webhook, and end.
-- Wait configuration: the inspector normalizes legacy `duration/unit` into `mode/amount/unit/run_at` and supports interval or fixed date/time settings; actual runtime resumption remains outside the initial runtime.
-- Validation: single trigger, existing edge endpoints, no cycles, no self-edge, and minimum configuration per node type.
-- Initial runtime: published flows can trigger from Automation-compatible internal events (`message_created`, `conversation_created`, `conversation_updated`, `conversation_opened`, `conversation_resolved`) or from an AgentBot-style inbox start for `message_created`; they execute basic message, question, condition, switch, reused `ActionService` actions, handoff, and end nodes; conditions and switch cases support message, conversation, and contact data.
-- AgentBot binding: on publish, the AgentBot-style start validates the required inbox and prevents conflicts with AgentBot, Dialogflow, or another active Flow Builder bot on the same inbox; pausing or changing the start mode removes the binding.
-- Current boundary: multi-turn conversation state, external webhook triggers, wait/code/set/loop runtime, and actions with rule attachments, SLA/Kanban, or duplicated message sending remain next-phase work.
 
 Bots:
 
@@ -146,16 +147,20 @@ Bots:
 ### 3.5 Captain AI
 
 - Supported providers: OpenAI, Anthropic, Google, Azure OpenAI, Bedrock, DeepSeek.
-- Assistants: inbox-level configuration with custom instructions and context.
+- Assistants: inbox-level configuration with custom instructions and context. `config.auto_resolve_mode` is persisted per assistant as `evaluated`, `legacy`, or `disabled`; existing assistants without it fall back to the account mode. With Captain V2, `config.auto_resolve_after` accepts 5 to 1,440 minutes and is normalized in five-minute increments, while `send_inactivity_resolution_message` controls the public message. An optional validated audience condition tree and `response_window` (`always`, `business_hours`, or `outside_business_hours`) decide eligibility when conversations are created or reopened; conversations already pending continue uninterrupted. The API safely merges config updates and serializes effective values.
+- Cloud billing reconciliation enables `captain_integration_v2` for every non-default plan and disables it for the configured default plan. It does not rely on an account-level rollout attribute; Captain V1 runtime and the feature flag remain available.
 - Bot exclusivity: `InboxBotStatus` identifies active Agent Bots and Dialogflow as external bots; Captain does not schedule replies or automatic resolution for those inboxes.
-- Assistant overview: Enterprise stats, drilldown, and cached summary endpoints backed by `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder`, and `Captain::OverviewSummaryService`; the client reuses loaded stats for the summary, cancels superseded stats requests, retries a transient failure once, and renders metric skeletons while loading. Summaries use the account language; estimated time saved is derived from public assistant replies using a fixed 2-minute agent effort assumption per reply.
-- Captain model routing by feature (`assistant`, `copilot`, `document_faq_generation`, `conversation_faq_matching`, `pdf_faq_generation`, `audio_transcription`, etc.) with account overrides and global configuration fallback.
+- Assistant overview: legacy Enterprise stats, drilldown, and cached summary endpoints remain backed by `Captain::AssistantStatsBuilder`, `Captain::AssistantStatsWindow`, `Captain::AssistantDrilldownBuilder`, and `Captain::OverviewSummaryService`. The local `captain_overview_v2` flag selects a redesigned, opt-in UI that consumes the dedicated outcome overview, resolution-flow, and resolution-trend builders; trend responses include aligned current and previous resolution rates, while unavailable human-only CSAT remains nil rather than a false score. A server-generated `overview_summary` derives up to three rounded localized insights, skips inactive reports, and shares a successful one-hour Redis cache by account, assistant version, range, timezone, and locale. Estimated time saved is derived from public assistant replies using a fixed 2-minute agent effort assumption per reply.
+- Captain model routing separates customer and internal features in Super Admin. The internal `conversation_completion` evaluator accepts supported OpenAI models; its route resolves account override, then the self-hosted installation model, then the YAML default. Customer Captain preferences continue to expose only customer features.
+- Copilot reply editor: measures rendered suggestions after the DOM update and temporarily grows to fit them, capped at 350px. Manual resizing remains authoritative and is restored when the suggestion closes; loading and suggestion states cross-fade in place.
+- Copilot reply suggestions: an explicit request validates agent access to the conversation and an incoming latest public message. A dedicated job uses the Assistant's prompt, FAQs, citations, and GET custom tools only, without scenarios or handoff; it rechecks access and freshness before persistence, discards stale drafts, and consumes a credit only for a valid saved reply.
 - Conversation FAQ suggestions: a low-priority mutex job extracts only public customer and human-agent messages plus business context, rejects unsuitable conversations, and groups semantically matching observations by assistant and language; the Enterprise review API lists and previews only sources available to the current agent, supports edit/approve/dismiss while open, and locks reviews against concurrent approval. Approval creates an approved FAQ and retains its source observations; approved FAQs and dismissed suggestions suppress new duplicates.
 - Generation details: Enterprise `GET /api/v1/accounts/:account_id/captain/agent_sessions/:message_id` authorizes the message conversation, hydrates citations and scenario titles, and supplies the Captain message popover. Sessions are cached per message; a handoff session is attached to its non-empty private reason note. Model and credit data render only for super administrators or development.
 - Trusted Captain V2 citations: `faq_lookup` returns typed run-local indexes without URLs; the main agent remains free of `response_schema` and emits `[[citation:N]]` markers that the server converts to persisted parts, filters against the run mapping, and renders only public HTTP(S) documents owned by the assistant. Credentials, private destinations, PDFs, and signed parameters are rejected; `faq_ids` retains retrieved results while `used_faq_ids` and `cited_document_ids` contain only valid selections. History restores clean text, and legacy sessions with null new columns still hydrate from `faq_ids`.
-- Captain Documents: upload, indexing, plan-based auto-sync with jitter, a purgable queue, configurable per-account and global limits, and a details view for crawled content, source metadata, and generated FAQ counts.
-- Captain Scenarios: activation rules and priority ordering; the API preserves explicitly submitted `tools`, normalizes scalar IDs or `{ id }` metadata, validates against `assistant.available_tool_ids`, and keeps `tool://` references when the field is omitted. Account MCP publishes dedicated create and update schemas.
-- Captain Custom Tools: HTTP integrations with GET, POST, PUT, PATCH, and DELETE; they accept JSON Schema fragments for complex parameters, and Account MCP publishes direct contracts to list, create, inspect, update, delete, and test custom tools.
+- Captain Documents: upload, indexing, plan-based auto-sync with jitter, a purgable queue, configurable per-account and global limits, and a details view for crawled content, source metadata, generated FAQ counts, and administrator-only conversation usage.
+- Knowledge usage analytics: `Captain::ConversationUsageBuilder` calculates distinct live conversations from delivered assistant sessions (`credits_consumed > 0`) using GIN indexes on `document_ids` and `used_faq_ids`; it paginates drilldowns at 25 records, excludes handoffs and deleted conversations, supports document sorting by usage, and exposes user-created FAQ usage only to administrators.
+- Captain Scenarios: activation rules and priority ordering; management APIs return enabled and disabled records, while only enabled scenarios execute. The API preserves explicitly submitted `tools`, normalizes scalar IDs or `{ id }` metadata, accepts saved references to disabled custom tools, and keeps `tool://` references when the field is omitted. Account MCP publishes dedicated create and update schemas.
+- Captain Custom Tools: HTTP integrations with GET, POST, PUT, PATCH, and DELETE; they accept JSON Schema fragments for complex parameters, and Account MCP publishes direct contracts to list, create, inspect, update, delete, and test custom tools. The detail response reports the number of enabled scenarios using a tool, so the dashboard can warn before deactivation; disabled tools are excluded from execution.
 - Captain tool runtime: preserves each MCP server's complete `inputSchema`, forwards objects and arrays without converting them to text, excludes disabled or disconnected servers, refreshes stale connected catalogs every 10 minutes, and caps every provider request at 128 tools including handoffs. A transient connection failure retains the last usable catalog and remains eligible for retry; permanent errors do not advertise a stale catalog as connected. Neither V1 nor V2 Playground supports direct selection through `@` or `tool://`. V1 tests the base legacy assistant without direct MCP tools; V2 keeps the main assistant's normal tools, performs handoffs, and loads only each scenario agent's assigned tools, matching live conversations. Scenario configuration continues to support `tool://` references. The proxy accepts JSON objects and strings containing JSON objects, but rejects invalid JSON or non-object values instead of silently emptying them.
 - Native account MCP servers: dedicated endpoints per slug at /mcp/:account_id/:slug. Captain executions to a native MCP carry a signed one-time proof bound to the account, assistant, server, endpoint, tool, and arguments; the handshake remains neutral and external MCP calls retain their normal identity.
 - MCP client diagnostics run at INFO level so authorization headers and execution proofs are never emitted by the dependency's DEBUG transport logger.
@@ -172,7 +177,7 @@ Bots:
 - Dual authentication: Bearer OAuth or static Api-Access-Token.
 - Curated MCP catalog for daily use: stable domain tool names (conversations, contacts, inboxes, help center, reports, kanban, and more).
 - Published MCP tools: base tools (account_context, account_actions_list, account_action_call) + curated catalog; includes message scheduling, tasks, templates, campaigns, SLA, policies, calendar, reports, Captain, notifications, internal chat, and the complete Help Center lifecycle; it does not publish data import or export tools; explicit dynamic tools via allowed_tools.
-- Auto-resolve mode: evaluated, legacy, or disabled per account. Evaluated mode sends conversation status and labeled non-private message content to the evaluator; pending handoffs and follow-ups are kept open.
+- Auto-resolve mode: evaluated, legacy, or disabled per assistant. Evaluated mode sends conversation status and labeled non-private message content to the evaluator; both resolving and handoff paths lock and reload the conversation before transitioning, create messages in that transaction, and emit events only after success. Pending handoffs and follow-ups are kept open.
 
 ### 3.6 CRM and contact management
 
@@ -181,8 +186,10 @@ Bots:
 - Labels on contacts and conversations.
 - The conversation context menu's label submenu uses fuzzy search with `picoSearch`, shows assigned labels first without changing each group's source order, and supports repeated selection without moving focus away from search. Blank queries show every label, and the context menu closes only when focus leaves it.
 - Companies grouped by domain with unified timeline.
+- The Companies sidebar entry and its CRUD authorization are available to administrators, standard agents, and custom roles with the `companies_manage` permission.
 - Contact payloads expose `company_id` when Companies is enabled; contact updates can set or clear the company and keep `additional_attributes.company_name` synchronized.
 - Contact import and export available to administrators and Enterprise roles with the `contact_manage` permission.
+- Contact CSV export uses `CSVSafe` to prefix values beginning with formula characters and prevent their execution in spreadsheets.
 - Intercom import is administrator-only and feature-gated by `data_import`; source credentials and durable mappings are stored per account.
 - Contacts and conversation pages are processed through Sidekiq jobs, with idempotent item/mapping records, skip/error logs, resumable runs, and source-bucket API inboxes.
 - Imports inactive for 15 minutes can be retried through an authorized account endpoint; retry acquires account/import locks, rotates the run identifier, and preserves cursor, statistics, and recorded errors.
@@ -203,7 +210,7 @@ Bots:
 - Selectable portal layouts: classic landing page or documentation sidebar mode.
 - Portal analytics are stored in `portal.config.analytics`; only administrators can update the whitelisted provider identifiers, which the model validates before the public layout renders their tracking snippets.
 - Recommended content per locale is stored in `portal.config.popular_content`, with ordered lists capped at 3 categories and 6 articles; deleted records and unpublished articles are omitted while popularity-based fallback remains available.
-- Editor with slash menu, native tables, and supported-video URL insertion through a validated field; the URL is converted into the existing embed for preview in the editor and public portal.
+- Editor with slash menu, native tables, background image uploads (progress, cancellation and retry), and MP4 uploads or supported video URLs; media keeps its position while uploading and video dimensions persist in the editor and public portal.
 - The article-editor slash menu exposes `horizontalRule`, which inserts the existing ProseMirror horizontal-rule node and moves the caret to the paragraph below it.
 - When the ProseMirror selection is inside a table, the slash menu filters out block commands that Markdown cells cannot persist and retains only inline marks; Arrow Up/Down and Ctrl+N/P are handled by the menu while it has items.
 - Article creation directly from category views.
@@ -216,6 +223,8 @@ Bots:
 
 - Funnels with configurable stages and default stage support.
 - Board and list views for distinct team workflows.
+- `ListTab` consumes `GET /kanban_items` in 30-card pages, replaces state on page one, and appends unique items on later pages; switching funnels resets cards and pagination metadata before requesting the new first page.
+- `GET /kanban_items/report_export` uses the Kanban policy scope and report filters without pagination. It emits a UTF-8 BOM CSV with CRLF rows through Ruby CSV, localized headers/priorities, configured stage names, and explicit item currency before the account default.
 - Filters by inbox, channel, stage, and activity.
 - Conversation label filters in board/list views and stage statistics.
 - The shared item-creation form loads account labels and sends selected titles through `kanban_item.labels`; the create endpoint assigns them to the new item before its single persistence operation, without changing linked-conversation labels. Item cards retain the item-level label management endpoint.
@@ -260,11 +269,13 @@ Bots:
 
 - Universal outbound API: `POST /api/v1/accounts/:account_id/outbound_messages` requires an `api_access_token` and inbox authorization; it accepts exactly one of `phone_number`, `email`, `contact_id`, or `source_id`, resolves or creates the contact/contact-inbox/conversation, and hands text, one attachment, or a WhatsApp template to `Messages::MessageBuilder` and `SendReplyJob`. For templates, it renders the synced approved BODY with its variables before persisting the message, so the dashboard and webhooks expose the sent content. Native WhatsApp channel templates (excluding Twilio) with media headers accept `header.media_file` as multipart data or a signed blob ID; the service stores it and generates `header.media_url` for the provider. `Idempotency-Key` is optional: when omitted, every request is a new send; when provided, an identical retry returns the original response and a different payload returns `409`. HTTP `202` confirms local queueing, not provider delivery.
 - Webhooks with enriched payload and global HMAC-SHA256 secret.
+- On hosted installations, API-token access and outbound webhook delivery require the `api_and_webhooks` account feature; self-hosted installations remain enabled by default.
 - `inbox_updated` webhook event for inbox state changes and disconnects.
 - Dashboard Apps for embedded iFrame extensions by context; authenticated account users can read them, while only administrators can create, update, or delete them.
 - Dashboard Scripts (Super Admin) for global customization without core edits.
 - Platform Apps for high-level external integrations via API.
 - Business integrations: Slack, Linear, Shopify, WooCommerce, Notion, CRM, Google Calendar, Tasks.
+- Slack supports `two_way` (default) and `alert`; the latter preserves sync to Slack but discards incoming thread replies so they never reach the customer.
 - Tasks is guarded by the `activities` account feature and an enabled account-scoped `Integrations::Hook`; the same pair controls integration visibility, API access, route access, and the sidebar entry.
 - `/activities` persists its calendar/list choice and operational criteria in the route query. Without `status` —or with an invalid value—it starts at `all` and sends no filter; valid explicit values are preserved. Calendar requests remain unpaginated; list requests use server-side title search, ordering, grouping order, and opt-in `page`/`per_page` metadata.
 - Calendar requests use explicit `overlaps_from`/`overlaps_to` interval intersection. The client projects a multi-day task onto every visible intersected date rather than only its start date.
@@ -302,7 +313,8 @@ Bots:
 - `GoogleCalendar::EventMapperService` maps event metadata into Google fields for location, attendees, reminders, simple recurrence, availability, visibility, guest permissions, and Google Meet.
 - The responsive event editor uses icon-led rows, an IANA time-zone selector, and removable guest chips; the sidebar places installation-branded context below guest permissions with floating searches and the inbox channel icon on every conversation result; it persists the writable destination and returned Meet URL.
 - Google Calendar supports manual inbound import through `google_calendar_integration/import_events` and legacy Kanban backfill through `google_calendar_integration/backfill_kanban`; Flow Builder triggers remain deferred.
-- Notification and PWA assets generated dynamically from `NOTIFICATION_ICON` (default `/favicon-badge-16x16.png`), falling back to `LOGO_THUMBNAIL`, with configurable background and cache invalidation by asset, color, and blob timestamp; the favicon keeps `LOGO_THUMBNAIL`, switches to `NOTIFICATION_ICON` for messages received while hidden or unfocused, and restores on return.
+- Application PWA assets and splash screens are generated dynamically from `LOGO_THUMBNAIL`, rasterizing SVG through librsvg/libvips and falling back to `NOTIFICATION_ICON`; system Push artwork and badges use `NOTIFICATION_ICON` (default `/favicon-badge-16x16.png`) with the reciprocal fallback, but the monochrome badge is not advertised as an installable app icon. The HTML splash clears two frames after Vue's first render, with a 180 ms transition and a 4 s safety timeout. Backgrounds are configurable and caches are invalidated by asset, color, and blob timestamp; the favicon keeps the application artwork, switches to notification artwork while hidden or unfocused, and restores on return.
+- PWA reliability keeps authenticated navigation out of Cache Storage, bounds fingerprinted Vite assets, makes Rails serve `/sw.js` with mandatory revalidation headers, reconciles realtime state only after `RoomChannel` confirmation, and maintains browser Push opt-out/logout/VAPID-key lifecycle per user and device; activation accepts both Base64 and binary bootstrapped VAPID keys and reports unsupported, blocked, unconfigured, expired-session, and registration failures separately. Reverse proxies and CDNs must preserve the worker headers.
 
 ### 3.11 Signup and onboarding
 
@@ -319,10 +331,12 @@ Bots:
 
 ### 3.13 Security and compliance
 
-- 2FA/MFA, SAML/SSO, custom roles, and audit logs. Super Admin's deletion-evidence report queries retained `audits` rows only: Inbox destruction uses its Account association, while Conversation and Contact destruction use the `account_id` snapshot in `audited_changes`; it never joins deleted live records or infers Message deletions.
+- 2FA/MFA, SAML/SSO, custom roles, and audit logs. SAML rejects invitations and authentication for users associated with more than one account, and bulk provider changes only affect users exclusive to the account. Super Admin's deletion-evidence report queries retained `audits` rows only: Inbox destruction uses its Account association, while Conversation and Contact destruction use the `account_id` snapshot in `audited_changes`; it never joins deleted live records or infers Message deletions.
+- The Enterprise audit-log endpoint accepts optional `q`, `types[]`, `since`, `until`, and `sort` filters; timestamps are constrained to database-safe Unix epochs, and the account association plus creation timestamp index supports filtered ordering. Dashboard filters are URL-backed and stale fetches are discarded.
 - User session records support an agent-editable `custom_name` label; IP metadata remains internal and is not exposed in dashboard session payloads.
 - Web authentication sends a validated, persistent 128-bit browser-profile ID as the token client ID. Tabs reuse one logical `UserSession`, reauthentication rotates the same slot, and successful sign-out removes both token and row. New profiles receive the blocking picker only at `MAX_USER_SESSIONS`; mobile clients retain generated IDs and silent eviction.
 - Suspended-account dashboard state keeps the support widget visible and exposes an explicit support action. On Cloud, the route guard and suspended screen allow only administrators to access billing so they can restore the account; agents remain on the suspended screen. Super Admin validates a category and a 256-character reason, appends events under `accounts.internal_attributes.suspensions`, retains unrelated internal metadata, and permits corrections to the latest event without changing its timestamp.
+- `POST /super_admin/users/:id/resend_confirmation` is restricted to Super Admin; it resends Devise's standard instructions only for unconfirmed users and does not enqueue email for confirmed users. The detail page hides the action once the user is confirmed.
 - Mega license protection in deployment flows.
 - Release observability for version-level traceability.
 

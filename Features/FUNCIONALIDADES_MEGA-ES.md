@@ -2,11 +2,17 @@
 
 ## Tu Centro de Comando para la Atención al Cliente del Futuro
 
+Las grabaciones de llamadas Twilio Voice se pueden transcribir opcionalmente, mostrar junto a la grabación y encontrar en la búsqueda de conversaciones.
+
 **Versión:** Enterprise
-**Basado en:** Funcionalidades Exclusivas Mega
-**Última Actualización:** 31 de julio de 2026
+**Basado en:** Plataforma MEGA y funcionalidades exclusivas de MEGA
+**Última Actualización:** 1 de septiembre de 2026
 
 ---
+
+### APIs verificadas e listas para Postman
+
+Swagger/OpenAPI 3.1 mantiene paridad automática con las rutas soportadas y genera una colección Postman separada por token de cuenta, token de aplicación de plataforma y rutas públicas.
 
 ## 📋 Índice
 
@@ -27,20 +33,29 @@
 
 ## 📱 Canales de Comunicación
 
+- **Identificación clara de bandejas** *(Mega)* - Las listas y la barra lateral muestran el nombre de cada bandeja junto a su identificador público (teléfono, email o URL). Los IDs de página de Facebook y de perfil de X siguen disponibles para operaciones del proveedor, pero no se muestran. La búsqueda también admite los identificadores visibles.
+
 ### WhatsApp Business
 
 Conecta con tus clientes a través del canal de mensajería más popular del mundo.
 
 - **WhatsApp Cloud API** - Integración oficial de Meta con todas las funcionalidades empresariales
-- **Mega Hub para WhatsApp** *(Mega)* - Conexión opcional con apps compartidas desde Super Admin, usando credenciales dedicadas del Hub y webhooks reenviados
+- **Configuración manual guiada de WhatsApp** *(Mega)* - Los administradores pueden preparar su propia aplicación de Meta, validar un número de producción, el ID de WABA y un token permanente antes de crear una bandeja Cloud; el flujo muestra el estado del webhook/suscripción y permite reintentar el webhook sin salir de la configuración
+- **Registro integrado para coexistencia con WhatsApp Business App** *(Mega)* - El registro integrado permite dar de alta un número de WhatsApp Business App, incluidas finalizaciones de coexistencia sin ID de número de teléfono, mientras MEGA configura la conexión y los webhooks requeridos
+- **Mega Hub para WhatsApp** *(Mega)* - Conexión opcional con apps compartidas desde Super Admin, usando credenciales dedicadas del Hub, webhooks reenviados, salud basada en el forward y sin configuración manual de callback/token
 - **WhatsApp Evolution** *(Mega)* - Conexión directa sin API oficial, ideal para cuentas personales
 - **WhatsApp WAHA** *(Mega)* - Proveedor alternativo con soporte completo de mensajes multimedia
 - **WhatsApp Uazapi** *(Mega)* - Solución de bajo costo para múltiples líneas
+- **Alertas de salud de conexión** *(Mega)* - Los problemas de token y sesión aparecen en listas de bandejas, barra lateral principal y configuración de la bandeja con acceso directo a configuración de sesión
+- **Resiliencia de salud del número** *(Mega)* - La salud del número de Cloud API sigue disponible cuando no se pueden actualizar los datos de la cuenta empresarial vinculada
+- **Perfil comercial de WhatsApp en Salud de la cuenta** *(Mega)* - Salud de la cuenta muestra el perfil comercial de solo lectura que ven los clientes, orientación clara sobre la revisión del nombre y el límite de mensajería compartido por el portafolio
+- **Reconexión manual de WhatsApp** *(Mega)* - Las bandejas elegibles del registro integrado se pueden reconectar a tu propia aplicación de Meta mediante un flujo guiado que conserva la bandeja y su historial de atención
+- **Reconfiguración del registro integrado** *(Mega)* - Los administradores pueden actualizar las credenciales y la configuración de WhatsApp Business de una bandeja Cloud conectada por registro integrado cuando el flujo unificado de registro integrado está habilitado para la cuenta
 - **Arquitectura multi-servidor** *(Mega)* - Configura varios servidores por proveedor con resolución automática de credenciales
 - **Capacidad por servidor** *(Mega)* - Define límites por servidor para distribuir carga operativa
 - **Soporte BSUID** *(Mega)* - Identificación robusta del contacto y envío confiable incluso sin `wa_id` tradicional
 - **Mensajes no soportados por proveedor** *(Mega)* - Distingue contenido no compatible de mensajes no disponibles por coexistencia; solo estos últimos indican revisar WhatsApp Business
-- **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas
+- **Mensajes de plantilla** - Envía mensajes fuera de la ventana de 24 horas con plantillas aprobadas; las automatizaciones bloquean localmente el texto libre en ese estado y muestran una indicación para usar una plantilla
 - **Sincronización de contactos** - Mantén tu base de datos actualizada automáticamente
 - **Soporte de grupos** - Gestiona conversaciones de grupos de WhatsApp directamente
 
@@ -73,8 +88,6 @@ Control completo de los grupos de WhatsApp directamente desde MEGA:
 
 Conecta con tu audiencia de Instagram y convierte seguidores en clientes desde el lugar donde ya interactúan con tu marca.
 
-- **Mega Hub para Instagram** *(Mega)* - Conecta Instagram mediante apps compartidas del Hub, usando credenciales dedicadas configuradas en Mega Hub
-
 **¿Por qué Instagram?**
 
 Con más de 2 mil millones de usuarios activos, Instagram es esencial para marcas visuales. El 90% de los usuarios siguen al menos una empresa, y los DMs son el canal preferido para consultas.
@@ -82,6 +95,7 @@ Con más de 2 mil millones de usuarios activos, Instagram es esencial para marca
 **Tipos de interacciones soportadas:**
 
 - **Mensajes directos (DMs)** - Responde a consultas privadas de tus seguidores
+- **Mega Hub para Instagram** *(Mega)* - Conecta Instagram mediante apps compartidas del Hub, usando credenciales dedicadas configuradas en Mega Hub
 - **Respuestas a Stories** - Atiende a quienes reaccionan a tus historias
 - **Respuestas a Stories con contenido** - Ve imágenes y videos adjuntos cuando responden a tus stories
 - **Menciones en Stories** - Recibe alertas cuando te mencionan
@@ -164,6 +178,7 @@ Con más de mil millones de usuarios activos, TikTok se ha convertido en una pla
 - Llega a la audiencia más joven donde pasan su tiempo
 - Convierte interacciones sociales en oportunidades de venta
 - Conexión segura y oficial mediante la API de TikTok Business
+- El acceso para conectar TikTok se controla por cuenta; las cuentas alojadas sin acceso pueden solicitarlo al soporte desde la configuración del inbox.
 - Sincronización completa de mensajes en tiempo real
 
 ### Email
@@ -178,9 +193,12 @@ Muchos clientes prefieren el email para consultas formales, documentación o seg
 
 - **Bandeja unificada** - Todos los correos aparecen como conversaciones junto a WhatsApp, redes sociales y más
 - **Respuestas enriquecidas** - Envía emails con formato, imágenes y adjuntos
+- **Imágenes inline redimensionables** - Inserta imágenes en el cuerpo del email y ajusta su tamaño visualmente
 - **Firmas personalizadas** - Configura firmas profesionales por agente o por bandeja
 - **Cualquier proveedor** - Conecta Gmail, Outlook, tu servidor propio o cualquier email
+- **Configuración guiada** - Detecta Gmail u Outlook desde tu dominio para sugerir la integración correcta
 - **Verificación de conexión Gmail** - Comprueba IMAP y SMTP en vivo, consulta la actividad reciente y reconecta la cuenta desde la configuración de la bandeja
+- **Eliminación permanente sincronizada con Gmail** - Al eliminar un correo o conversación de una bandeja Gmail, también se elimina permanentemente en Gmail
 - **Historial completo** - Todo el hilo de correos visible en una sola conversación
 - **Respuestas citadas** - Incluye el email original en tus respuestas para contexto
 
@@ -216,12 +234,15 @@ Los visitantes de tu web quieren respuestas inmediatas. Un chat en vivo aumenta 
 **Funcionalidades avanzadas:**
 
 - **Identificación de usuarios** - Reconoce usuarios logueados en tu sitio
-- **Transcripción por email** - El cliente puede solicitar el historial de la conversación
+- **Transcripción por email** - El cliente puede solicitar el historial de la conversación; los reenvíos se deshabilitan temporalmente después de un envío exitoso
 - **Modo oscuro** - Se adapta a las preferencias del visitante
 - **Help Center integrado** - Muestra artículos de ayuda directamente en el widget
 - **Mensajes predefinidos** - Inicia conversaciones con contexto
+- **Imágenes inline en respuestas** - Envía capturas o recursos visuales dentro del cuerpo del mensaje y ajusta su tamaño
 - **Dominios permitidos** - Restringe el widget a dominios autorizados para mayor seguridad
 - **Mostrar nombre del agente** - Configura por inbox si el nombre del agente se muestra al visitante
+- **Control de autoasignacion por respuesta** - Desactiva por inbox si las conversaciones sin responsable se asignan al agente cuando envia un mensaje
+- **Protección de conversaciones resueltas** - Cuando un inbox no permite mensajes después de resolver, el widget rechaza reintentos y nuevos envíos de texto o adjuntos para esa conversación; el visitante puede iniciar una conversación nueva
 - **Capas y fondos corregidos** - Mejor renderizado visual entre launcher y portal, incluyendo modo oscuro
 
 **Beneficios para tu negocio:**
@@ -277,6 +298,8 @@ Telegram es especialmente popular entre usuarios tech-savvy y en regiones como E
 ### API Channel
 
 Para empresas con necesidades únicas: integra cualquier sistema de mensajería propio o de terceros.
+
+> **Disponibilidad:** El acceso mediante tokens de API y la entrega saliente de Webhooks requieren acceso a API y Webhooks para la cuenta en planes alojados. Siguen disponibles en instalaciones autogestionadas.
 
 **¿Cuándo usar API Channel?**
 
@@ -376,7 +399,8 @@ Algunos clientes prefieren hablar por teléfono, especialmente para asuntos urge
 - Duración y timestamps de cada llamada
 - Identificación de llamadas entrantes vs salientes
 - Todo el historial visible en la conversación del cliente
-- Almacenamiento de grabaciones
+- Grabación nativa opcional de Twilio con aceptación explícita del costo de storage
+- Grabaciones descargables en la conversación y en reportes de llamadas
 
 **Funciones del Agente:**
 
@@ -407,7 +431,7 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 
 - **Notificaciones en tiempo real** - Los agentes reciben alertas de llamada instantáneas
 - **Aceptar/Rechazar desde el navegador** - Maneja llamadas sin ninguna app externa
-- **Asignación inteligente de agentes** - Llamadas enrutadas a agentes disponibles
+- **Asignación inteligente de agentes** - Llamadas enrutadas a miembros disponibles del inbox; los administradores que activaron las notificaciones de llamadas se usan solo como respaldo
 - **Auto-rechazo cuando no hay disponibles** - Comportamiento configurable
 - **Identificación del llamante** - Ve información del contacto antes de contestar
 
@@ -415,13 +439,15 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 
 - **Click-to-call** - Inicia llamadas desde la conversación o el perfil de un contacto, incluso si aún no tiene una conversación
 - **Sistema de permisos** - Solicita y rastrea permisos de llamada dentro de la ventana de atención de 24 horas
+- **Una llamada por agente** - Evita iniciar una segunda llamada mientras el agente ya tiene una activa, incluso desde otra pestaña
+- **Plantillas de permiso de llamada** - Usa templates aprobados con solicitud de permiso desde el ReplyBox, permite definir uno predeterminado por inbox y muestra el envío en el historial de la conversación
 - **Estado de permisos** - Distingue visualmente entre sin permiso, permiso temporal de 7 días y permiso permanente; confirma el estado y la disponibilidad de inicio de llamada con WhatsApp y registra cada cambio, incluida la fecha de vencimiento temporal, en la actividad de la conversación
 - **Tono de ringback** - Audio de feedback mientras se conecta
-- **Una llamada por agente** - Evita iniciar una segunda llamada mientras el agente ya tiene una activa, incluso desde otra pestaña
 
 **Funciones durante la llamada:**
 
 - **WebRTC nativo** - Audio de alta calidad sin SDKs externos
+- **Asignación protegida** - Desde que se acepta la llamada hasta que termina, no se puede cambiar el agente ni el equipo de la conversación; mientras solo timbra, la reasignación sigue disponible
 - **Mute/Unmute** - Alterna el micrófono durante llamadas
 - **Duración de llamada** - Temporizador en tiempo real visible
 - **Optimización VoIP** - Audio optimizado para llamadas de voz
@@ -454,6 +480,7 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 - **Búsqueda potente** - Encuentra conversaciones por contenido, contacto o metadatos
 - **Filtros rápidos en sidebar** - Navega directo a No Leídas, Menciones, Participando, Grupos y No atendidas desde la barra lateral
 - **Contadores reactivos de no leídos** - Menciones, Participando, Grupos y No Leídas muestran badges actualizados en tiempo real sin recargar
+- **Fecha y hora exactas al pasar el cursor** - Las fechas relativas muestran la fecha y hora completas en la lista de conversaciones, mensajes, contactos, búsqueda, reportes y tarjetas relacionadas del dashboard
 
 ### Integraciones con atributos personalizados
 
@@ -464,6 +491,7 @@ Las integraciones pueden actualizar solo las claves enviadas de los atributos pe
 Encuentra mensajes específicos dentro de una conversación:
 
 - **Búsqueda de texto** - Busca palabras o frases dentro de todos los mensajes
+- **Búsqueda en transcripciones de audio** - Encuentra notas de voz por palabras o frases contenidas en su transcripción
 - **Filtro por fechas** - Acota la búsqueda a un rango de fechas específico
 - **Resaltado de resultados** - Los mensajes encontrados se destacan visualmente
 - **Scroll automático** - Navega instantáneamente al mensaje encontrado
@@ -514,6 +542,8 @@ Plantillas rápidas con atajos para respuestas más ágiles:
 - **Soporte de adjuntos** - Incluye imágenes, documentos y archivos con respuestas
 - **Múltiples adjuntos** - Adjunta múltiples archivos a una sola respuesta predefinida
 - **Adjuntos también en nueva conversación** - Reutiliza archivos de respuestas predefinidas incluso al iniciar conversaciones nuevas
+- **Buscador con vista previa** - Busca por atajo y contenido, previsualiza la respuesta renderizada y conserva variables sin resolver para el backend
+- **Búsqueda instantánea en caché** - Carga las respuestas una vez por cuenta y filtra localmente mientras la invalidación en tiempo real mantiene los datos actualizados
 - **Contenido enriquecido** - Formatea texto con soporte markdown
 
 ### Grabador de Voz
@@ -588,6 +618,7 @@ Acceso rápido a cualquier acción mediante teclado:
 - **Asignación rápida** - Asigna agentes o equipos
 - **Cambio de estado** - Resuelve, reabre, pospone
 - **Acciones AI** - Accede a funciones de Captain
+- **Ejecución de macros** - En una conversación abierta, elige **Ejecutar una macro** para usar las mismas macros ordenadas de la barra lateral
 
 ### Modo Oscuro (Dark Mode)
 
@@ -612,13 +643,15 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 **Gestión de Salas (Settings):**
 
-- **Crear salas** - Los administradores pueden crear salas con nombre y descripción
+- **Crear salas** - Los administradores pueden crear salas con nombre y descripción; el nombre conserva las mayúsculas ingresadas y sigue siendo único en la cuenta sin distinguir mayúsculas de minúsculas
+- **Canales públicos y privados** - Define visibilidad y audiencia según el flujo del equipo
+- **Categorías** - Agrupa canales por tema, equipo o departamento
 - **Agregar usuarios** - Selección múltiple de miembros del equipo de tu cuenta
 - **Editar salas** - Actualizar nombre, descripción y miembros desde el menú de tres puntos del encabezado
 - **Eliminar salas** - Borrar salas con confirmación de seguridad
 - **Avatares de sala** - Imágenes personalizadas opcionales para cada sala
 - **Llamadas de audio y video** - Comunicación WebRTC entre miembros en DMs, grupos y canales, con tonos e historial de llamadas en curso, perdidas y completadas
-- **Disponibilidad selectiva de llamadas** - Las llamadas requieren la feature de cuenta independiente `chat_room_calls`, deshabilitada por defecto y habilitable solo para cuentas seleccionadas; la mensajería de salas continúa disponible sin ella
+- **Disponibilidad selectiva de llamadas** - Las llamadas requieren la feature de cuenta independiente `chat_room_calls`, deshabilitada por defecto y habilitable solo para cuentas seleccionadas; la mensajería de Chat Rooms continúa disponible sin ella
 - **Conectividad ICE administrable** - Super Admin > Call ICE permite configurar STUN/TURN y sus credenciales sin reiniciar; las variables de entorno `MEGA_CALL_*` siguen siendo compatibles cuando no hay valores guardados
 - **Conectividad premium por cuenta** - `chat_room_calls` usa Google STUN para llamadas P2P normales; la feature premium `premium_call_connectivity` cambia esa cuenta a Call ICE y habilita TURN como respaldo cuando la configuración global está completa
 - **Experiencia nativa de llamadas** - El audio conserva el widget compacto de WhatsApp/Twilio; el video usa un espacio amplio acotado o una ventana flotante dentro de Mega, con cámara y pantalla simultáneas, escenario de presentación, rail de participantes, avatares y mute autorizado por el iniciador para grupos pequeños controlados
@@ -634,6 +667,10 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 **Interfaz de Chat:**
 
 - **Ubicación en el sidebar** - Conversations > Rooms
+- **Búsqueda integrada** - Encuentra canales, mensajes directos y mensajes dentro de salas
+- **Filtros rápidos** - Todo, canales, mensajes directos, borradores y archivadas
+- **Secciones visuales** - Borradores, favoritos, mensajes directos, canales y archivadas
+- **Creación rápida** - Crear canales, categorías y mensajes directos desde la lista
 - **Vista de sala** - Header con nombre de sala + lista de mensajes + input de envío
 - **Diseño limpio** - 100% Tailwind CSS, moderno y responsivo
 
@@ -642,7 +679,12 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 - **Mensajes de texto** - Comunicación de texto simple
 - **Multimedia** - Imágenes, videos, archivos de audio, documentos
 - **Reply** - Responder a mensajes específicos (cita el original)
-- **Notas privadas** - Mensajes visibles solo para agentes
+- **Hilos de respuesta** - Abrir un panel lateral por mensaje, responder dentro del hilo y opcionalmente publicar también en el canal
+- **Reacciones** - Responder rápidamente a mensajes con emoji
+- **Mensajes fijados** - Mantener información importante visible en la sala
+- **Encuestas** - Crear votaciones con múltiples opciones desde el composer
+- **Borradores** - Recuperar texto no enviado por usuario y sala
+- **Estados de escritura** - Ver cuando otros miembros están escribiendo
 - **Grabación de audio** - Grabador de audio integrado para notas de voz
 
 **Diseño Inteligente de Mensajes:**
@@ -658,6 +700,7 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 - **Integración WebSocket** - Usando Action Cable para entrega instantánea
 - **Actualizaciones en vivo** - Los mensajes aparecen inmediatamente sin refrescar
+- **Eventos de sala** - Actualización, eliminación, lectura, unread, reacciones, encuestas y escritura
 - **Broadcast inteligente** - Los administradores reciben eventos de todas las salas, los usuarios regulares solo de sus salas
 - **Seguimiento de eventos** - Eventos de mensaje creado y actualizado
 
@@ -684,7 +727,7 @@ Mantén a tu equipo conectado y productivo. En lugar de usar herramientas extern
 
 Configura flujos automáticos basados en eventos y condiciones:
 
-- **Reglas con espera** - Ejecuta acciones entre 10 minutos y 30 días después, mientras la conversación siga en un estado seleccionado, el cliente no responda o no responda un miembro del equipo. Una respuesta, cambio de estado o condición incumplida cancela la ejecución pendiente.
+- **Reglas con espera** - Ejecuta acciones entre 10 minutos y 30 días después, mientras la conversación siga en un estado seleccionado, el cliente no responda o no responda un miembro del equipo. Pueden combinar condiciones adicionales con `AND`; una respuesta, cambio de estado o condición incumplida cancela la ejecución pendiente.
 
 **Eventos disponibles:**
 
@@ -721,6 +764,8 @@ Ejecuta múltiples acciones con un solo clic:
 - **Macros personales** - Visibles solo para ti
 - **Macros globales** - Disponibles para todo el equipo
 - **Acciones en cadena** - Combina múltiples operaciones
+- **Acceso desde el editor** - Escribe `#` para buscar, previsualizar y ejecutar macros sin salir de la conversación
+- **Atajo en la barra de comandos** - Abre `Cmd/Ctrl + K` en una conversación para seleccionar la misma macro ordenada; los atributos requeridos usan el diálogo compartido de resolución
 
 ### Agent Bots
 
@@ -728,7 +773,11 @@ Ejecuta múltiples acciones con un solo clic:
 - **Integración Typebot** - Conecta con flujos conversacionales de Typebot
 - **Handover a humanos** - Transferencia fluida a agentes reales
 - **Handover inteligente** - Si un humano responde en conversación pendiente del bot, se transfiere automáticamente
+- **Vencimiento con handover** - Al vencer una sesión de Webhook, la conversación se abre, libera al bot e intenta la asignación automática a un agente elegible; si no hay nadie disponible queda abierta y sin asignar
 - **Bots por inbox** - Configura bots específicos por canal
+- **Propiedad explícita del bot** - Las conversaciones gestionadas por un Agent Bot conectado quedan pendientes y asignadas al bot; una apertura, handover humano o desconexión del bot libera esa propiedad sin reemplazar asignaciones humanas explícitas
+- **Cola sin asignar humana** - Las conversaciones asignadas a un Agent Bot no aparecen en la cola Sin asignar; solo incluye conversaciones sin agente humano ni bot
+- **Toma de control desde el panel** - Mientras un Agent Bot gestiona una conversación pendiente, el compositor queda en nota privada y muestra una acción para tomar el control, reabrir la conversación y asignarla al agente actual
 - **Asignación manual restringida por inbox** - El selector de agente solo ofrece Agent Bots activos configurados en el inbox de la conversación
 - **Indicador de escritura** - Los bots pueden activar y desactivar el indicador "escribiendo..." para una experiencia más natural
 - **Opciones avanzadas de webhook** *(Enterprise)* - Configura timeout personalizado para peticiones del bot, reintentos automáticos ante fallos, y manejo de errores granular; mejora la fiabilidad de integraciones con sistemas externos lentos o inestables
@@ -742,6 +791,7 @@ Además de la integración estándar de Typebot, MEGA extiende sus capacidades c
 - **Asignación de equipo vía MEGA_CMD** - Usa `MEGA_CMD:assign_team:nombre_equipo` para derivar la conversación al equipo correspondiente desde el flujo del bot
 - **Placeholders de lista** - Inyecta listas dinámicas de agentes o equipos como variables Typebot para crear menús de selección personalizados
 - **Primer mensaje multimedia** - Si la primera interacción llega solo con media, la conversación se abre correctamente
+- **Reacciones de WhatsApp ignoradas** - Las reacciones no inician el flujo ni se envían como mensajes al Typebot
 - **Ubicación compatible** - Reenvío de coordenadas en formato de enlace de mapas para continuidad del flujo
 - **Delay por defecto estable** - Mejor consistencia en tiempos de espera cuando el bot no define delay explícito
 - **Sin código adicional** - Todo se configura directamente en el flujo de Typebot, sin modificar el bot de MEGA
@@ -756,15 +806,22 @@ Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
 
 - **Múltiples asistentes** - Crea diferentes asistentes para diferentes propósitos
 - **Configuración personalizada** - Ajusta temperatura, modelo y parámetros de comportamiento
-- **Revisión de FAQ desde conversaciones** - Revisa sugerencias y sus conversaciones fuente permitidas; las sugerencias abiertas se pueden editar, aprobar como FAQ confiables o descartar
 - **Modelos por función** - Configura modelos separados para Assistant, Copilot, sugerencias, generación de FAQs desde documentos y PDFs
+- **Enrutamiento de modelos internos** - Los superadministradores pueden configurar por separado el evaluador de conversaciones inactivas; la sobrescritura de cuenta tiene prioridad sobre el modelo de instalación en entornos autohospedados, mientras las preferencias de Captain para clientes mantienen ocultas las funciones internas
+- **Sugerencias de FAQ desde conversaciones** - Las conversaciones resueltas con respuestas reutilizables de agentes humanos se agrupan en sugerencias de FAQ revisables; los agentes solo revisan sugerencias y conversaciones fuente a las que tienen acceso, y pueden editar, aprobar o descartar sugerencias abiertas para publicar FAQ confiables
 - **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
 - **Asignación a inbox** - Vincula asistentes a canales específicos
-- **Resumen del asistente** - Monitorea conversaciones atendidas, resolución automática, transferencias, horas ahorradas, reaperturas, profundidad de conversación, cobertura de conocimiento y resúmenes de periodo generados con IA
+- **Exclusividad con bots externos** - Captain no responde ni programa resoluciones automáticas en inboxes con un Agent Bot activo o Dialogflow
+- **Resumen del asistente** - Un rediseño opcional combina insights rotatorios del periodo con métricas de resultados, flujo y comparación de tendencias de resolución, CSAT de Captain, uso y cobertura de conocimiento; conserva el resumen heredado de forma predeterminada y usa conjuntos de datos dedicados de resultados, flujo y tendencia de resolución
+- **Detalles de generación** - Abre el indicador “Generado por Captain” en una respuesta del asistente o nota privada de transferencia para ver sus pasos de herramientas y escenarios, fuentes de la base de conocimientos y razonamiento; el modelo y los créditos solo están disponibles para superadministradores
+- **Citas confiables** - Captain V2 muestra únicamente enlaces web públicos validados por el servidor, registra las fuentes realmente seleccionadas y mantiene las URLs renderizadas fuera del historial enviado al modelo; las sesiones anteriores conservan sus fuentes existentes
+- **Disponibilidad en planes pagos** - Captain V2 se habilita automáticamente cuando una cuenta cloud se reconcilia con cualquier plan pago; el plan predeterminado permanece sin Captain V2
 - **Comprensión de imágenes** - El asistente puede analizar imágenes enviadas en las conversaciones
 - **Soporte multimodal** - Procesa texto e imágenes simultáneamente para respuestas contextuales
 - **Ignorar grupos** - Configura el asistente para no responder en conversaciones grupales
 - **Objetivos ignorados** - Define conversaciones o contactos específicos que el asistente debe omitir
+- **Audiencia y horario** - Limita las respuestas a contactos que cumplan condiciones configurables y elige si el asistente responde siempre, durante el horario laboral o fuera de él; las conversaciones fuera de esas reglas pasan a la cola humana
+- **Resolución por inactividad** - Con Captain V2, cada asistente elige si Captain revisa la conversación, siempre la resuelve o espera al cliente; los modos que resuelven usan un temporizador de 5 minutos a 24 horas y pueden enviar un mensaje de cierre opcional
 
 **Captain Documents:**
 
@@ -775,6 +832,9 @@ Sube documentos para entrenar tu asistente de IA:
 - **Campos de auto-sincronización** - Guarda estado y fecha de sincronización para mantener fuentes documentales alineadas
 - **Auto-sincronización escalonada** - Actualiza fuentes web según el plan con ejecución distribuida para evitar picos de carga
 - **Respuestas relacionadas** - Ve qué respuestas usan cada documento
+- **Detalles del documento** - Revisa el contenido rastreado, los metadatos de origen y el
+  recuento de preguntas frecuentes generadas
+- **Uso en conversaciones** - Los administradores pueden ver las conversaciones distintas que usaron un documento o una FAQ creada por un usuario, ordenar documentos por uso y abrir la lista de conversaciones; se excluyen transferencias y conversaciones eliminadas
 - **Gestión masiva** - Añade y elimina documentos fácilmente
 
 **Captain Scenarios:**
@@ -783,6 +843,8 @@ Configura escenarios y flujos de trabajo específicos:
 
 - **Instrucciones personalizadas** - Define comportamiento para situaciones específicas
 - **Asignación de herramientas** - Asigna herramientas específicas por escenario
+- **Gestión de estado** - Los administradores pueden habilitar o deshabilitar escenarios; los deshabilitados siguen disponibles para administrarlos, pero Captain no los ejecuta
+- **Creación completa por MCP** - Las IA conectadas al MCP de la cuenta pueden guardar y actualizar IDs de herramientas integradas, personalizadas y MCP; los IDs no disponibles se rechazan explícitamente
 - **Reglas de activación** - Define cuándo aplica cada escenario
 - **Ordenamiento por prioridad** - Controla la precedencia de escenarios
 
@@ -790,10 +852,13 @@ Configura escenarios y flujos de trabajo específicos:
 
 Crea herramientas personalizadas para tu asistente de IA:
 
+- **Contratos tipados completos** - Las tools personalizadas y MCP conservan objetos, arrays, enums y campos anidados; solo se ofrecen al escenario cuando están habilitadas y conectadas
+
 - **Integraciones HTTP** - Conecta con APIs externas (GET/POST/PUT/PATCH/DELETE)
 - **Autenticación** - Soporte para Basic, Bearer y API Key
 - **Mapeo de parámetros** - Define parámetros de entrada/salida
 - **Activar/desactivar** - Alterna herramientas según necesites
+- **Desactivación segura** - Los administradores reciben una advertencia antes de desactivar una herramienta usada por escenarios habilitados; las herramientas deshabilitadas siguen visibles y conservan las referencias guardadas sin ejecutarse
 
 **Captain MCP Servers:**
 
@@ -808,16 +873,18 @@ Conecta servidores MCP (Model Context Protocol) para ampliar las capacidades de 
 - **Cobertura operativa ampliada** - Incluye programación, tareas, campañas, SLA, calendario, reportes, notificaciones y chat interno; no expone importación ni exportación de datos
 - **Help Center por MCP** - Consulta, busca y obtiene artículos y categorías desde agentes conectados
 - **Asignación a asistentes** - Vincula servidores MCP a asistentes específicos
+- **Acciones nativas atribuidas a Captain** - Las ejecuciones MCP nativas firmadas conservan al asistente como remitente y confirman mensajes entregados sin duplicados ni handoff accidental
+- **Playground fiel a producción** - El catálogo permanece disponible para configurar escenarios. Con Captain V2, el playground prueba handoffs reales y carga solo las tools asignadas al escenario; el flujo legacy prueba el asistente base sin selección directa
 - **Gestión centralizada** - Administra todos tus servidores MCP desde la configuración
 
 **Captain Auto-Resolve Mode:**
 
 Configura cómo Captain maneja la resolución automática de conversaciones:
 
-- **Modo evaluado** - Captain analiza el contexto y decide autónomamente si resolver o mantener abierta la conversación
+- **Modo evaluado** - Captain analiza el contexto, incluido el estado de la conversación y los roles de los participantes, y decide autónomamente si resolver o mantener abierta la conversación; las transferencias y seguimientos pendientes se mantienen sin resolver
 - **Modo legado** - Comportamiento anterior: resuelve automáticamente conversaciones pendientes según el temporizador
 - **Modo deshabilitado** - Captain no resuelve conversaciones automáticamente
-- **Por cuenta** - Configurable a nivel de cuenta en la sección Captain
+- **Por asistente** - Cada asistente guarda su propia política; los asistentes sin política guardada conservan la configuración de cuenta como compatibilidad
 
 **Captain Copilot:**
 
@@ -827,6 +894,8 @@ Asistencia de IA en tiempo real para tus agentes:
 - **Contexto inteligente** - La IA entiende el contexto de la conversación
 - **Herramientas de agente** - Busca conversaciones, contactos, artículos
 - **Sugerencias** - Sugerencias de respuesta impulsadas por IA
+- **Borradores guiados por asistente** - Al sugerir una respuesta, Copilot usa las instrucciones, FAQs, citas y herramientas GET del asistente seleccionado; el agente revisa y edita el borrador antes de enviarlo
+- **Sugerencias legibles** - Las sugerencias largas expanden el editor de respuesta hasta 350 px sin reemplazar el tamaño elegido manualmente
 - **Acceso a atributos de contacto** - Captain puede leer y usar los atributos personalizados del contacto para respuestas más precisas
 
 **Acciones de IA:**
@@ -889,6 +958,8 @@ Transcribe automáticamente mensajes de audio a texto:
 ### Empresas/Companies *(Enterprise)*
 
 - **Agrupa contactos** - Organiza contactos por empresa
+- **Selector de empresa en contactos** - Asigna, limpia o crea una empresa directamente desde el formulario del contacto
+- **Acceso por rol personalizado** - Los administradores pueden otorgar el permiso "Administrar empresas" a los roles personalizados para que vean y gestionen el menú Empresas
 - **Dominio automático** - Asociación por dominio de email
 - **Vista unificada** - Historial de todas las conversaciones de la empresa
 - **Favicon automático** - El sistema descarga automáticamente el favicon del dominio de la empresa para mostrar como avatar; funciona con cualquier sitio web que tenga favicon configurado
@@ -902,8 +973,12 @@ Transcribe automáticamente mensajes de audio a texto:
 
 - **CSV Upload** - Importa contactos masivamente
 - **Mapeo de campos** - Asocia columnas con atributos
+- **Importación histórica de Intercom** - Los administradores pueden importar contactos, conversaciones y mensajes históricos de Intercom en segundo plano
+- **Monitoreo de importación** - Revisa el progreso, registros omitidos, errores y descarga los registros de omisiones
+- **Reintento de importación detenida** - Reintenta una importación de Intercom detenida tras 15 minutos sin perder su progreso
 - **Validación automática** - Detecta errores antes de importar
 - **Acceso controlado** - Importación y exportación disponibles para administradores y responsables de contactos
+- **Exportación segura** - Los valores que comienzan con caracteres de fórmula se exportan como texto para impedir su ejecución en hojas de cálculo
 
 ### Bloqueo de Contactos
 
@@ -1001,6 +1076,7 @@ Crea y gestiona tus plantillas de WhatsApp directamente desde MEGA, sin necesida
 **Gestión de plantillas:**
 
 - **Lista centralizada** - Ve todas las plantillas de todos tus inboxes de WhatsApp en un solo lugar
+- **API unificada de plantillas cacheadas** - Las integraciones pueden listar plantillas cacheadas de inboxes WhatsApp nativos y Twilio, filtrarlas por el nombre exacto del proveedor y consultar el último intento de sincronización sin contactar al proveedor
 - **Estado de aprobación** - Monitorea si cada plantilla está aprobada, pendiente o rechazada por Meta
 - **Métricas de uso** - Ve cuántas veces fue entregada cada plantilla y su tasa de lectura
 - **Filtros avanzados** - Filtra por estado, categoría, idioma, canal y rango de fechas
@@ -1053,7 +1129,7 @@ Envío inteligente que protege tus líneas de WhatsApp:
 ### Estados de Campaña
 
 | Estado | Descripción |
-|--------|-------------|
+| -------- | ------------- |
 | **Active** | Campaña lista para ejecutarse |
 | **Running** | Campaña en ejecución |
 | **Completed** | Campaña finalizada exitosamente |
@@ -1087,7 +1163,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 ### Canales Soportados
 
 | Canal | Tipo | Templates | Adjuntos | Multi-inbox |
-|-------|------|-----------|----------|-------------|
+| ------- | ------ | ----------- | ---------- | ------------- |
 | Website (Live Chat) | Ongoing | ❌ | ❌ | ❌ |
 | WhatsApp Cloud | One-off | ✅ | ✅ (en template) | ✅ |
 | WhatsApp Notificame | One-off | ✅ | ✅ (en template) | ✅ |
@@ -1115,8 +1191,10 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Múltiples portales** - Crea bases de conocimiento por producto/marca
 - **Dominio personalizado** - Aloja en tu propio dominio
 - **Diseño configurable** - Colores, logo, texto de cabecera
+- **Integraciones analíticas** - Los administradores pueden conectar Google Analytics 4, Google Tag Manager, Microsoft Clarity, Hotjar, Plausible, Amplitude y Meta Pixel; los scripts se publican solo con un identificador válido
 - **Layouts seleccionables** - Elige entre una portada clásica o una navegación tipo documentación con barra lateral
 - **Multi-idioma** - Artículos en múltiples idiomas
+- **Contenido recomendado por idioma** - Selecciona y ordena hasta 3 categorías y 6 artículos destacados para cada idioma; si no se configura, se muestran los contenidos populares predeterminados
 - **Embeds GuideJar** - Inserta guías interactivas de GuideJar dentro del contenido del Help Center
 
 ### Organización de Contenido
@@ -1127,7 +1205,10 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Crear desde categoría** - Inicia artículos nuevos directamente desde la vista de cada categoría
 - **Redimensionado de imágenes** - Ajusta imágenes dentro del editor para mejorar la maquetación de artículos
 - **Menú slash en editor** - Inserta bloques y comandos rápidamente escribiendo /
-- **Videos desde el menú slash** - Inserta enlaces de video compatibles (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar y MP4) con vista previa dentro del editor y del artículo publicado
+- **Menú slash seguro en tablas** - Dentro de las celdas, usa solo formatos inline que Markdown conserva, con navegación por flechas y Ctrl+N/P contenida en el menú
+- **Videos desde el menú slash** - Inserta enlaces de video compatibles (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar y MP4) o sube un MP4 con progreso, cancelación, reintento y vista previa redimensionable en el editor y el artículo publicado
+- **Cargas de medios confiables** - Las imágenes aparecen en el cursor mientras se cargan en segundo plano; las cargas fallidas se pueden reintentar o eliminar sin perder el borrador
+- **Separadores desde el menú slash** - Inserta un separador horizontal desde el menú del editor para dividir secciones del artículo
 - **Tablas nativas en editor** - Crea y edita tablas directamente en el editor de artículos
 - **Tablas Markdown** - Renderizado correcto de tablas en artículos del portal
 - **Posicionamiento** - Ordena artículos manualmente
@@ -1139,6 +1220,7 @@ El sistema incluye múltiples protecciones para mantener la calidad de tus enví
 - **Publicado** - Visible para usuarios
 - **Archivado** - Oculto pero conservado
 - **Borrador por idioma** - Cada traducción de un artículo puede estar en estado borrador independientemente; publica solo los idiomas listos sin afectar los demás
+- **Ediciones sin publicar** - Los cambios de un artículo publicado quedan en borrador hasta revisarlos y publicarlos explícitamente; se pueden comparar con la versión visible o descartar
 
 ### SEO y Acceso
 
@@ -1257,9 +1339,11 @@ Analíticas completas del canal de voz:
 - **Permisos granulares** - Control de acceso por funcionalidad
 - **Perfil personalizado** - Avatar, nombre, firma
 - **Avatar específico por cuenta** - Un usuario compartido mantiene un solo selector mientras cada cuenta guarda y muestra su propia foto de perfil
-- **Control de sesiones del navegador** - Las pestañas del mismo perfil comparten una sesión del servidor; el logout la elimina y el límite configurado solo bloquea perfiles de navegador realmente nuevos
+- **Sesiones de navegador nombradas** - Los agentes pueden etiquetar sesiones activas para reconocer equipos, perfiles de navegador o contextos de prueba
+- **Control fiable de sesiones del navegador** - Las pestañas de un perfil comparten una sesión lógica; cerrar sesión la elimina, mientras otro navegador, perfil o ventana privada usa un espacio diferente. El login solo se interrumpe cuando un navegador nuevo alcanza el límite configurado
 - **Estado de disponibilidad** - Online, Busy, Offline
 - **Salida guiada de agentes** - Antes de eliminar un agente puedes dejar sus conversaciones sin asignar o reasignarlas en lote
+- **Invitaciones protegidas** - Las invitaciones de nuevos agentes respetan el límite diario de correos de la cuenta, sin bloquear la incorporación de usuarios existentes
 
 ### Equipos
 
@@ -1299,7 +1383,7 @@ Define límites de conversaciones por agente:
 
 - **Permisos a medida** - Crea roles con permisos específicos
 - **Gestión de conversaciones** - Todas, no asignadas, o solo participando
-- **Acceso a funcionalidades** - Contactos, reportes, campañas, etc.
+- **Acceso a funcionalidades** - Contactos, empresas, reportes, campañas, etc.
 - **Permisos de CSAT** - Controla qué roles pueden ver y gestionar encuestas de satisfacción
 
 ### Horarios de Trabajo
@@ -1309,6 +1393,12 @@ Define límites de conversaciones por agente:
 - **Mensajes fuera de horario** - Respuestas automáticas
 - **Pausa de almuerzo** - Configura intervalos de descanso dentro del horario laboral
 - **Horarios por día** - Define horarios diferentes para cada día de la semana
+
+### Web Push operativo
+
+- **Entrega con la página cerrada** - Los recordatorios de Calendario, asignaciones en notas de Kanban, automatizaciones de etapa, vencimientos de checklist y Tareas pueden llegar a navegadores suscritos aunque el dashboard esté cerrado
+- **Acceso directo** - Las acciones de la notificación abren el evento, elemento Kanban o Tarea exacta que originó el aviso
+- **Control del canal** - Los agentes configuran estas categorías operativas solo para Push; los popups en primer plano siguen disponibles cuando MEGA está abierto
 
 ### Configuración de Notificaciones
 
@@ -1345,6 +1435,8 @@ Pausa temporalmente las notificaciones de conversaciones específicas:
 ### Webhooks
 
 Conecta MEGA con cualquier sistema externo mediante notificaciones automáticas:
+
+> **Disponibilidad:** La entrega saliente de Webhooks requiere acceso a API y Webhooks para la cuenta en planes alojados. Sigue disponible en instalaciones autogestionadas.
 
 - **Eventos en tiempo real** - Recibe alertas instantáneas cuando algo sucede
 - **Integración con tu CRM** - Sincroniza datos automáticamente
@@ -1389,23 +1481,24 @@ Planifica y controla el trabajo interno desde vistas compartidas de calendario y
 
 ### Google Calendar *(Mega)*
 
-- **Recordatorios personales** - El creador recibe un aviso dentro de MEGA y por push del navegador, puede posponerlo y volver a abrir el evento; creador y contacto de la conversación se precargan como invitados sin duplicados.
+- **Recordatorios personales** - El creador recibe un aviso dentro de MEGA y por push del navegador, puede posponerlo con intervalos predefinidos y volver a abrir el diálogo compartido. Los eventos nuevos agregan como invitados, sin duplicados, al creador y al contacto cuando nacen desde una conversación.
 
 Conecta Google Calendar como integración de productividad a nivel de cuenta, no como inbox/canal:
 
 - **OAuth por cuenta** - Los administradores conectan el calendario desde Configuración -> Integraciones -> Google Calendar
-- **Disponibilidad condicionada** - El espacio `/calendar`, el icono del compositor y los eventos del panel de conversación solo aparecen cuando Google está configurado globalmente, la cuenta está conectada y tiene un calendario seleccionado; activar el feature de cuenta por sí solo no los muestra
-- **Creación minimalista** - Usa un editor de dos columnas inspirado en Google Calendar con zonas seleccionables, invitados removibles, Google Meet y contexto MEGA vertical con canales visibles al buscar conversaciones
+- **Acceso por rol personalizado** - Los administradores pueden otorgar a un agente asignado el permiso “Acceder al Calendario” para Calendario, ReplyBox y ContactPanel
+- **Disponibilidad condicionada** - El espacio `/calendar`, el icono del compositor y los eventos del panel de conversación solo aparecen cuando la cuenta está conectada y tiene un calendario seleccionado; los controles de sincronización Kanban requieren la misma configuración de cuenta
+- **Creación minimalista** - Usa un editor de dos columnas inspirado en Google Calendar con zonas seleccionables, invitados removibles, Google Meet y contexto con la marca de instalación visible al buscar conversaciones
 - **Selección de calendario** - Importa por defecto todos los calendarios accesibles o limita la entrada a uno; MEGA conserva un destino saliente concreto y la configuración nueva inicia en sync bidireccional
 - **Capa interna de eventos** - MEGA guarda eventos internos y rastrea IDs externos de Google por separado
-- **Calendario operativo de MEGA** - Los agentes gestionan vistas de dia, semana, mes y lista desde `/calendar`
-- **Borrado permanente sincronizado** - Los administradores eliminan primero el evento vinculado de Google y solo después su registro local; si Google falla, MEGA conserva el evento
+- **Calendario operativo de MEGA** - Los agentes gestionan vistas de dia, semana, mes y lista desde `/calendar`; la vista mensual limita los eventos visibles por dia y ofrece `+N más` o menú contextual para abrir acciones sin ocultar eventos. Los eventos admiten color y el borrado permanente, restringido a administradores, también elimina el evento vinculado de Google
 - **Formulario completo de evento** - Los eventos manuales soportan zona horaria, ubicacion, invitados, recordatorios, recurrencia simple, disponibilidad, visibilidad y Google Meet
 - **Vinculos MEGA buscables** - Al crear o editar eventos, los agentes buscan y seleccionan contacto, conversacion e item Kanban sin escribir IDs internos
 - **Controles por módulo** - Habilita sincronización para calendario interno, Kanban, conversaciones y recordatorios desde un solo lugar
 - **Sync al guardar** - Cuando la sincronizacion saliente esta habilitada, MEGA crea o actualiza el evento en el calendario Google seleccionado conservando el estado interno
-- **Polling automatico de Google** - Cada cinco minutos MEGA importa solo eventos modificados desde el ultimo poll exitoso de cada calendario; los eventos eliminados en Google borran su entrada local vinculada y `/calendar` conserva sync manual como respaldo
+- **Polling automatico de Google** - Cada cinco minutos MEGA importa solo eventos modificados desde el ultimo poll exitoso de cada calendario; `/calendar` lee datos locales y conserva sync manual como respaldo
 - **Estado de conexión** - Ve la identidad conectada, reconecta cuando haga falta y desconecta sin borrar eventos internos
+- **Sincronización de eliminaciones** - Cuando Google informa que un evento sincronizado fue eliminado, MEGA borra automáticamente su entrada local vinculada; las tareas y los ítems Kanban relacionados se conservan
 - **Puente con Kanban** - Ítems con fecha programada o deadline pueden crear eventos internos y sincronizarlos al calendario seleccionado
 - **Agenda y envío desde conversaciones** - Los agentes usan desde el compositor el mismo formulario con capacidades Google, contacto y conversación precargados, y el botón “Crear y enviar” comparte el horario, ubicación, detalles y enlace Google Meet generado
 - **Seguimiento en conversaciones** - El panel lista eventos vinculados con un punto pulsante verde (<50%), amarillo (50–90%) o rojo (≥90%) según el avance de Inicio a Fin, opaca los vencidos y reabre el editor compartido
@@ -1421,6 +1514,7 @@ Embebe aplicaciones personalizadas en la vista de conversación:
 - **Múltiples apps** - Añade varias apps al mismo inbox
 - **Seguro** - Las apps corren en iframes aislados
 - **Datos en tiempo real** - Las apps reciben actualizaciones de conversación en vivo
+- **Gestión administrativa** - Las apps de toda la cuenta solo pueden crearse, editarse y eliminarse por administradores; los agentes autenticados conservan el acceso de lectura
 - **Scripts de dashboard (Super Admin)** *(Mega)* - Publica personalizaciones globales en paneles sin tocar el código base
 - **Vista previa y activación por script** *(Mega)* - Prueba cambios de forma segura y activa/desactiva scripts de manera independiente
 
@@ -1442,6 +1536,7 @@ Gestiona conversaciones de clientes directamente desde Slack, sin cambiar de her
 
 - **Sincronización automática** - Las conversaciones aparecen en canales de Slack
 - **Responde desde Slack** - Contesta a clientes sin abrir MEGA
+- **Solo alertas** - Mantén los hilos de Slack para discusión interna sin enviar respuestas al cliente
 - **Notas privadas** - Comunícate con tu equipo sin que el cliente vea
 - **Vinculación de perfiles** - Conecta usuarios de Slack con agentes de MEGA
 - **Canales privados** - Organiza por equipo o tipo de conversación
@@ -1532,7 +1627,9 @@ Personaliza las comunicaciones por email con tu marca:
 - **Primera respuesta** - Tiempo máximo para responder; su reloj activo termina después de la primera respuesta del agente y los incumplimientos permanecen en los reportes SLA
 - **Siguiente respuesta** - Tiempo entre respuestas
 - **Resolución** - Tiempo total de atención
-- **Horarios de negocio** - Cálculo en horas hábiles
+- **Incumplimientos congelados** - Al resolver una conversación, la duración del incumplimiento queda registrada y deja de aumentar
+- **Horarios de negocio** - Deadlines calculados en backend respetando horas hábiles del inbox
+- **Contactos bloqueados** - Conversaciones con contactos bloqueados quedan fuera de asignación, procesamiento, reportes e indicadores de SLA hasta desbloquearse
 - **Alertas y notificaciones** - Aviso antes de incumplir
 - **Reportes de SLA** - Cumplimiento y tendencias
 
@@ -1541,6 +1638,8 @@ Personaliza las comunicaciones por email con tu marca:
 - **Registro completo** - Toda acción queda registrada
 - **Quién, qué, cuándo** - Trazabilidad total
 - **Cumplimiento** - Para requisitos regulatorios
+- **Búsqueda rápida de eventos** - Filtra por tipo de evento y rango de días completos, busca por nombre o correo del usuario que realizó la acción y ordena por fecha; los filtros se pueden compartir mediante la URL
+- **Evidencia de eliminaciones (Super Admin)** *(Mega)* - Un informe de solo lectura filtra por cuenta las auditorías retenidas de destrucción de bandejas, conversaciones y contactos, mostrando fecha, captura del objeto, autor/IP cuando existen y la limitación explícita de que la falta de auditorías de Message no prueba una cantidad de mensajes eliminados
 
 ### SAML/SSO
 
@@ -1558,6 +1657,7 @@ Single Sign-On empresarial para autenticación centralizada:
 **Funcionalidades:**
 
 - **Provisionamiento automático** - Crea usuarios automáticamente en el primer login
+- **Aislamiento por cuenta** - No permite invitar ni autenticar por SAML a usuarios asociados a otra cuenta
 - **Mapeo de grupos** - Sincroniza grupos/equipos del IdP
 - **Forzar SSO** - Exige SSO para todos los usuarios de la cuenta
 - **Múltiples dominios** - Configura SSO para diferentes dominios de email
@@ -1579,6 +1679,7 @@ Single Sign-On empresarial para autenticación centralizada:
 ### Búsqueda Avanzada
 
 - **Indexación completa** - Búsqueda en todos los mensajes
+- **Resultados con transcripciones** - Encuentra audios transcritos en los resultados de mensajes y su conversación asociada
 - **Filtros combinados** - Múltiples criterios simultáneos
 - **Resultados instantáneos** - Performance optimizada
 
@@ -1588,6 +1689,7 @@ Obliga a los agentes a completar atributos específicos antes de resolver conver
 
 - **Campos obligatorios** - Define qué atributos personalizados deben llenarse
 - **Validación al resolver** - Bloquea la resolución hasta completar los campos requeridos
+- **Macros seguras** - Las macros que resuelven solicitan los atributos requeridos; si se omiten, ejecutan las demás acciones pero mantienen la conversación abierta
 - **Mejora la calidad de datos** - Asegura que toda conversación tenga la información necesaria
 
 ### Conferencias de Voz
@@ -1602,13 +1704,14 @@ Conferencias de llamadas de voz entre agentes y clientes:
 
 Personaliza completamente la apariencia de tu plataforma:
 
-- **Logo personalizado** - Tu logo en lugar del de Chatwoot
+- **Logo personalizado** - Tu logo en lugar del logotipo predeterminado de la plataforma
 - **Logo modo oscuro** - Logo específico para dark mode
-- **Logo thumbnail** - Versión reducida para el favicon
-- **Ícono de notificaciones y PWA** - Imagen cuadrada independiente para las alertas del sistema y el ícono instalable; usa `/favicon-badge-16x16.png` por defecto y el logo thumbnail como respaldo
+- **Logo thumbnail** - Imagen cuadrada de la aplicación para favicon, ícono PWA instalable y splash, con respaldo en el ícono de notificaciones
+- **Ícono de notificaciones** - Imagen cuadrada independiente para alertas Push del sistema, badges y el indicador temporal de pestaña oculta; usa `/favicon-badge-16x16.png` por defecto y el logo thumbnail como respaldo
 - **Nombre de marca** - Cambia el nombre mostrado en toda la plataforma
 - **Nombre de instalación** - Nombre para la instancia específica
 - **Color primario** - Define tu color corporativo principal
+- **Fondo de ícono PWA** - Configura el color de fondo del ícono instalable sin recompilar la imagen
 - **URL de marca** - Enlace de tu empresa
 - **URL del widget** - Enlace en el widget de chat
 - **Términos y privacidad** - URLs personalizadas para páginas legales
@@ -1616,9 +1719,9 @@ Personaliza completamente la apariencia de tu plataforma:
 
 ### Deshabilitar Branding
 
-- **Widget sin marca** - Oculta "Powered by Chatwoot" del live chat
-- **Emails sin marca** - Correos salientes sin branding de Chatwoot
-- **Portales limpios** - Help Center sin referencias a Chatwoot
+- **Widget sin marca** - Elimina la atribución de la plataforma del chat en vivo
+- **Emails sin marca** - Correos salientes sin branding de la plataforma
+- **Portales limpios** - Help Center sin referencias a la plataforma
 
 ### Roles Personalizados
 
@@ -1628,6 +1731,7 @@ Crea roles a la medida de tu organización con control granular de permisos:
 
 - **Conversaciones** - Quién puede ver y gestionar qué conversaciones
 - **Contactos** - Acceso a datos de clientes
+- **Empresas** - Acceso al menú Empresas y a los registros de empresa
 - **Reportes** - Quién ve las estadísticas
 - **Campañas** - Permisos para crear y enviar campañas
 - **Centro de Ayuda** - Gestión de artículos y portales
@@ -1661,16 +1765,18 @@ Programa el envío automático de mensajes en tus conversaciones:
 - **Adjuntos** - Incluye imágenes, documentos y archivos en mensajes programados
 - **Estados de seguimiento** - Monitorea el estado: pendiente, enviado, fallido, cancelado
 - **Cancelación** - Cancela mensajes programados antes de que se envíen
+- **Recuperación y reenvío** - Reintenta o reprograma un mensaje fallido, y vuelve a programar una copia editable de uno ya enviado, conservando destinatario y adjuntos
+- **Programación universal por API** - Programa un mensaje para un teléfono, email o identificador de proveedor y crea o reutiliza el contacto automáticamente
 - **Múltiples por conversación** - Programa varios mensajes en la misma conversación
 - **Historial** - Consulta el historial de mensajes programados y su estado
 
 ### 🔒 Placeholder de Mensaje Eliminado
 
-Configura por inbox si los agentes ven el texto original junto al aviso de eliminación:
+Configura por inbox si los agentes ven el texto original y los adjuntos junto al aviso de eliminación:
 
-- **Retención para agentes** - Puede mostrar el texto original debajo de "Este mensaje fue eliminado" dentro del dashboard
+- **Retención para agentes** - Puede mostrar el texto original y los adjuntos debajo de "Este mensaje fue eliminado" dentro del dashboard
 - **Configurable por inbox** - Cada canal puede tener su propia configuración
-- **Protección del contacto** - La API pública y los eventos en tiempo real dirigidos al contacto entregan solo el aviso de eliminación
+- **Protección del contacto** - La API pública y los eventos en tiempo real dirigidos al contacto entregan solo el aviso de eliminación, sin metadatos ni URLs de adjuntos
 
 ### Proveedores WhatsApp Alternativos
 
@@ -1736,8 +1842,10 @@ Solución robusta y de alta disponibilidad para operaciones exigentes que requie
 - Estado de presencia (escribiendo, en línea)
 - Confirmaciones de lectura
 - Mensajes editados y eliminados
-- Autorización con passkey mediante estados de sesión dedicados de WAHA y extensión de navegador
+- Autorización con passkey durante la vinculación de WhatsApp mediante el flujo de extensión de navegador de WAHA, con estados de sesión dedicados, aviso preventivo si la extensión no está instalada y confirmación manual por código cuando WhatsApp lo solicita
 - Sincronización global y por conversación bajo demanda de mensajes recientes, con protección de concurrencia por cuenta y procesamiento dedicado opcional para instalaciones de alto volumen
+- Descarga diferida de multimedia de grupos WAHA (lazy media) opcional por bandeja: la multimedia entrante de grupos se guarda como adjunto pendiente con un placeholder genérico y solo se descarga cuando un agente la solicita desde la conversación; las conversaciones individuales conservan la descarga inmediata
+- Proxy por sesión con servidor `host:puerto` y credenciales opcionales, que puede eliminarse para volver a conexión directa
 
 **Ideal para:**
 
@@ -1773,6 +1881,12 @@ Define qué conversaciones deseas recibir en la plataforma:
 - **Lista de exclusión** - Ignora números específicos
 - **Lista de inclusión** - Recibe solo de números específicos
 - **Configuración desde UI** - Gestiona filtros directamente desde la configuración del canal
+
+**Proxy regional:**
+
+- **Selección de ciudad brasileña** - Guarda una ciudad opcional de proxy administrado en la configuración del canal
+- **Aplicación en conexiones nuevas** - La ubicación guardada se usa al generar QR, vincular con código y recrear sesiones
+- **Proxy personalizado o sin proxy** - Alterna a una URL de proxy propia o quita por completo el proxy activo
 
 **Ideal para:**
 
@@ -1858,6 +1972,7 @@ Contexto completo de cada cliente sin importar por dónde te contactó:
 - **Vista 360°** - Todo el historial del contacto en un lugar
 - **Todos los canales** - WhatsApp, email, redes sociales, todo junto
 - **Contexto inmediato** - Entiende al cliente antes de responder
+- **Respuestas de WhatsApp** - Las respuestas citadas pueden referenciar mensajes de conversaciones anteriores cuando el historial está activo y conservan el contexto en coexistencia entre identificadores WAMID de teléfono y BSUID
 
 ### Controles de Privacidad
 
@@ -1878,6 +1993,7 @@ Edita y elimina mensajes de WhatsApp después de enviarlos:
 
 - **Ventana de 15 minutos** - Edita mensajes enviados dentro de 15 minutos
 - **Sincronización de actualizaciones** - Los mensajes editados se sincronizan automáticamente desde WhatsApp
+- **Contexto del remitente grupal** - Las ediciones entrantes de grupos conservan visibles el número y nombre del participante bajo el indicador de edición
 - **Indicador de edición** - Los mensajes editados muestran la etiqueta "editado"
 - **Todos los proveedores** - Funciona con Evolution, WAHA y Uazapi
 
@@ -1894,8 +2010,8 @@ Edita y elimina mensajes de WhatsApp después de enviarlos:
 Gestiona oportunidades comerciales en un pipeline visual conectado al historial omnicanal:
 
 - **Embudos con etapas personalizables** - Crea múltiples embudos y define una etapa predeterminada por embudo
-- **Alertas Kanban** - Notifica a miembros de equipos seleccionados y agentes asignados desde automatizaciones de etapa, y al agente responsable cuando una tarea de checklist llega a su fecha límite; las alertas descartadas reaparecen después del intervalo configurado en el funnel solo mientras esa tarea siga pendiente. Agrupa alertas en un banner no bloqueante y no envía email
 - **Vista tablero y vista lista** - Alterna entre pipeline visual y listado operativo según el flujo del equipo
+- **Lista completa por carga progresiva** - La vista lista carga 30 oportunidades por página y permite traer las siguientes sin perder las ya mostradas
 - **Filtros avanzados por inbox/canal/actividad** - Segmenta oportunidades por origen y movimiento reciente
 - **Filtros por etiquetas** - Filtra por etiquetas de conversación en tablero y lista, con impacto en métricas por etapa
 - **Columnas configurables por usuario** - Muestra u oculta columnas y conserva preferencias localmente
@@ -1907,22 +2023,27 @@ Gestiona oportunidades comerciales en un pipeline visual conectado al historial 
 - **Totales por moneda en cada etapa** - El encabezado separa PYG, USD, EUR y cualquier otra moneda sin convertirlas ni sumarlas entre sí; el tooltip incluye todas las ofertas filtradas, aunque todavía no estén cargadas por paginación
 - **Moneda por oferta custom (override)** - En ofertas manuales de tipo producto/servicio el usuario puede elegir moneda por oferta
 - **Sin moneda en ítems sin ofertas** - Si un ítem no tiene ofertas, el valor se muestra como placeholder y no contamina totales monetarios
-- **Gestión de etiquetas desde el ítem** - Añade o quita etiquetas directamente desde la tarjeta del item
+- **Descargas fieles de reportes Kanban** - Los CSV incluyen todas las tarjetas autorizadas que coinciden con los filtros activos de embudo, fecha, agente e inbox; preservan el texto libre de forma segura para hojas de cálculo y usan el idioma seleccionado, las etapas configuradas y la moneda de la tarjeta o cuenta
+- **Etiquetas al crear y desde el ítem** - Selecciona etiquetas existentes al crear un ítem, o añádelas y quítalas directamente desde su tarjeta
 - **Relaciones nativas con contacto y conversación** - Mantén el contexto comercial conectado con el chat real del cliente
 - **Puente con Google Calendar** - Ítems con fecha programada o deadline pueden crear eventos de calendario de MEGA cuando la sincronización Kanban está habilitada a nivel de cuenta
 - **Automatizaciones por etapa** - Dispara acciones al entrar o mover etapas, incluyendo mensajes rápidos y reglas operativas
-- **Seguimientos por falta de respuesta** - Envía texto o multimedia subida después de la espera configurada solo si el contacto no respondió, con autocompletado de variables del ReplyBox para datos del contacto y la conversación; para inboxes configurados de WhatsApp Cloud también permite templates aprobados y conserva la restricción de 24 horas para mensajes libres
+- **Seguimientos por falta de respuesta** - Después de la espera configurada, envía texto o multimedia subida a la conversación principal del ítem solamente si el contacto no respondió. El editor autocompleta variables del ReplyBox para datos del contacto, conversación, inbox, agente y atributos personalizados. En inboxes configurados de WhatsApp Cloud también permite templates aprobados y mantiene bloqueados los mensajes libres fuera de la ventana de 24 horas
+- **Entrada sin grupos** - Cada etapa de entrada puede excluir conversaciones de grupos de WhatsApp para que no se creen ítems ni se inicien sus flujos automáticos
+- **Entrega automática de plantillas** - Las plantillas automáticas de una etapa se envían una sola vez por ítem de forma predeterminada, evitando mensajes duplicados al volver a entrar en una etapa. El editor sugiere variables como `{{contact.name}}` al escribir `{{` y las completa al enviar; cada plantilla puede habilitar explícitamente el reenvío en cada reingreso; los mensajes rápidos manuales no tienen esta restricción
+- **Alertas Kanban** - Notifica a miembros de equipos seleccionados y agentes asignados desde automatizaciones de etapa, y al agente responsable cuando una tarea de checklist llega a su fecha límite; las alertas descartadas reaparecen después del intervalo configurado en el funnel solo mientras esa tarea siga pendiente. Agrupa alertas en un banner no bloqueante y no envía email
 - **Sincronización en tiempo real** - Cambios de etapa y datos del ítem se reflejan al instante en lista de chats y panel del contacto
 - **Negocios abiertos del contacto** - Cada embudo puede habilitar desde Configuración Avanzada la visualización de sus ítems Kanban abiertos en todas las conversaciones del contacto actual; la opción está desactivada por defecto, conserva las reglas de visibilidad e identifica las conversaciones relacionadas
 - **Paneles autorizados** - El bloque Kanban del panel de conversación y la entrada del sidebar se ocultan cuando el usuario no tiene ítems visibles ni funnels disponibles para agregar negocios
+- **Detalle Kanban desde conversación** - Los iconos de canal de una tarjeta muestran cada tipo de inbox vinculado: abren directamente su única conversación o un selector limitado a ese canal si tiene varias, sin recargar el tablero; en móvil, el detalle muestra primero la información comercial y abre el perfil del ítem desde un panel lateral. El panel de contacto del drawer oculta las conversaciones anteriores para mantener el contexto del ítem
 - **Acceso Kanban en tiempo real** - Al agregar o remover agentes del funnel, el sidebar, la lista de funnels y los ítems visibles se actualizan sin recargar
 - **Múltiples conversaciones vinculadas** - Un mismo ítem Kanban puede relacionarse con varias conversaciones; la primera queda como vínculo principal y las adicionales se muestran en la pestaña de relaciones, con selector limitado a los inboxes del funnel e íconos de canal
 - **Una oportunidad abierta por contacto y funnel** - La creación automática reutiliza el ítem abierto del contacto y vincula allí sus nuevas conversaciones de Instagram, WhatsApp u otros inboxes habilitados; cada funnel se evalúa por separado y una oportunidad ganada o perdida permite iniciar otra
 - **Histórico sin relación rota** - Si se elimina una conversación vinculada, el ítem Kanban se conserva como histórico y se limpia el vínculo
-- **Acceso por rol y permiso Kanban** - Los administradores administran todos los embudos e ítems; agentes y roles con `kanban_view` trabajan solo en el tablero y los ítems autorizados; los embudos que contienen ítems autorizados se pueden abrir en modo lectura y `kanban_manage` permite gestionar y editar únicamente los embudos asignados, sin crear, duplicar, eliminar, definir el predeterminado ni cambiar la visibilidad
+- **Acceso por rol y permiso Kanban** - Los administradores administran todos los embudos e ítems; agentes y roles con `kanban_view` trabajan los ítems autorizados; `kanban_manage` además crea y edita los embudos asignados, sin eliminar, definir el predeterminado ni cambiar la visibilidad
 - **Autoasignación administrativa** - El administrador puede asignarse y removerse de cualquier ítem aunque no figure entre los agentes o inboxes del embudo; los demás usuarios conservan las reglas normales de elegibilidad
-- **Visibilidad controlada de ítems** - El creador siempre puede ver su ítem; con una conversación vinculada válida el responsable solo lo ve si también está seleccionado en el funnel, y los agentes asignados manualmente al ítem lo ven; un vínculo stale queda solo para administrador y creador, y los ítems sin atribución respetan el modo del embudo `everyone` o `assigned_only`
-- **Agentes flexibles por embudo** - Sin inboxes seleccionados, cualquier agente de la cuenta puede agregarse y asignarse desde el embudo; con inboxes configurados, los agentes deben tener acceso a por lo menos uno y se bloquean nuevas atribuciones si pierden ese acceso
+- **Visibilidad controlada de ítems** - El creador siempre puede ver su ítem; con una conversación vinculada válida el responsable solo lo ve si también está seleccionado en el funnel, y los agentes asignados manualmente al ítem lo ven; un vínculo stale queda solo para administrador y creador. El modo del embudo `everyone` permite a todos sus agentes ver todos los ítems, mientras `assigned_only` restringe la vista a los agentes autorizados.
+- **Agentes flexibles por embudo** - Cualquier miembro de la cuenta con acceso Kanban puede agregarse al embudo, con o sin inboxes seleccionados; un rol personalizado requiere `kanban_view` o `kanban_manage`. Con inboxes configurados, las asignaciones manuales de ítems requieren acceso a por lo menos uno. Al mover un ítem, sus responsables se agregan automáticamente al embudo destino sin cambiar sus permisos de inbox
 - **Configuración y automatizaciones protegidas** - La configuración global es de solo lectura para los actores Kanban; sus cambios y las automatizaciones globales son exclusivos de administradores. `kanban_manage` administra únicamente los funnels que tiene asignados
 
 ---
@@ -1948,7 +2069,8 @@ Estadísticas e insights anuales para tu cuenta:
 - **2FA/MFA** - Autenticación de dos factores
 - **SAML/SSO** - Single Sign-On empresarial
 - **Tokens de API** - Acceso programático seguro
-- **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política y la acción para contactar soporte; los administradores en Cloud pueden abrir facturación para regularizar el pago y restaurar el acceso
+- **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política con una acción directa para contactar soporte; los administradores en Cloud también pueden abrir facturación para regularizar el pago y restaurar el acceso. Los superadministradores registran una categoría y un motivo por cada suspensión, y pueden consultar o corregir la última entrada desde los detalles de la cuenta.
+- **Reenvío de confirmación** - Los superadministradores pueden reenviar el correo de confirmación a un usuario pendiente desde sus detalles, sin exponer enlaces ni tokens.
 
 ### Privacidad
 
@@ -1961,6 +2083,7 @@ Estadísticas e insights anuales para tu cuenta:
 - **Encriptación en tránsito** - HTTPS obligatorio
 - **Encriptación en reposo** - Datos protegidos
 - **Backups automáticos** - Recuperación ante desastres
+- **Autoescalado de workers por cola** - Publicación opcional en CloudWatch de latencia, profundidad, trabajos encolados y utilización de Sidekiq para ajustar la capacidad según el backlog
 - **Protección de licencia** *(Mega)* - Verificación de integridad para reforzar control de despliegues
 - **Observabilidad de release** - Mejor trazabilidad de errores por versión en monitoreo
 
@@ -1977,9 +2100,10 @@ MEGA funciona como una **Progressive Web App** completa: instálala en cualquier
 - **Instalable en un toque** - Banner inteligente que aparece automáticamente en dispositivos móviles invitando a instalar la app
 - **Escritorio y móvil** - Funciona en Chrome, Edge, Safari (iOS/macOS) y cualquier navegador compatible con PWA
 - **Pantalla completa** - Se ejecuta en modo standalone, sin barra de direcciones del navegador
-- **Splash screen personalizado** - Pantalla de carga animada con el logo y colores de tu marca al iniciar la app
+- **Splash screen personalizado y ágil** - Pantalla de carga con tu marca que se retira apenas Vue pinta la interfaz, con un límite de seguridad si el arranque falla
 - **Atajos rápidos** - Accede directamente a Conversaciones o Notificaciones desde el menú contextual del ícono de la app
-- **Ícono dinámico** - El ícono de la app se genera desde el ícono de notificaciones configurado, con respaldo en el logo thumbnail, en todos los tamaños necesarios (48px a 512px)
+- **Ícono dinámico** - El ícono de la app se genera desde el logo thumbnail configurado, con respaldo en el ícono de notificaciones, en todos los tamaños necesarios (48px a 512px)
+- **Fondo de ícono configurable** - Usa un color propio para el ícono instalable manteniendo blanco como valor por defecto
 - **Badge monocromático** - Ícono badge optimizado con silueta monocromática para notificaciones del sistema
 
 **Notificaciones Push Avanzadas:**
@@ -1992,6 +2116,7 @@ MEGA funciona como una **Progressive Web App** completa: instálala en cualquier
 - **Contador de no leídos** - El badge del ícono de la app muestra el número exacto de notificaciones sin leer
 - **Timestamp de caché preciso** - Invalidación consistente de assets del Service Worker para evitar contenido desactualizado
 - **Activación inteligente** - Prompt automático al abrir la PWA por primera vez para activar notificaciones con flags preconfigurados (asignación, mención, mensaje nuevo)
+- **Ciclo de suscripción confiable** - La desactivación por usuario y dispositivo persiste al recargar, el logout revoca el vínculo del navegador y los cambios de clave VAPID se renuevan automáticamente
 - **Sonido configurable** - Alertas de audio que funcionan incluso en iOS, con desbloqueo automático de AudioContext al primer toque
 - **Sonido diferido** - Si la app está en segundo plano y no puede reproducir audio, lo reproduce automáticamente cuando vuelves a la app
 - **Vibración** - Patrón de vibración personalizado en dispositivos móviles al recibir notificaciones
@@ -1999,14 +2124,14 @@ MEGA funciona como una **Progressive Web App** completa: instálala en cualquier
 **Funcionamiento Offline:**
 
 - **Página offline personalizada** - Cuando no hay conexión, muestra una página elegante con el logo de tu marca y botón de reintento
-- **Cache inteligente** - Los assets estáticos (JS, CSS, fuentes, imágenes) se cachean automáticamente para carga instantánea
-- **Navegación resiliente** - Las páginas visitadas se cachean con estrategia network-first, permitiendo acceso incluso sin conexión
-- **Limpieza automática** - El Service Worker elimina caches obsoletas de versiones anteriores al actualizarse
+- **Caché inteligente** - Solo se guardan assets Vite con fingerprint, dentro de un caché de ejecución acotado para acelerar cargas repetidas
+- **Navegación offline segura** - Las páginas autenticadas y APIs nunca se persisten; cuando no hay red se usa la página offline pública
+- **Limpieza automática** - El Service Worker elimina versiones obsoletas y limita los assets fingerprinted retenidos
 
 **Personalización de Marca (White-label):**
 
 - **Manifiesto dinámico** - El manifiesto PWA se genera dinámicamente con el nombre, descripción, colores y logo de tu instalación
-- **Soporte SVG** - Los logos SVG se convierten automáticamente a PNG de alta resolución usando rsvg-convert para máxima compatibilidad
+- **Soporte SVG** - Los logos SVG se convierten a PNG de alta resolución mediante librsvg o libvips antes de componer los assets finales
 - **Íconos para Apple** - Generación automática de apple-touch-icons en todos los tamaños requeridos por iOS
 - **Splash screens iOS** - 14 resoluciones de splash screen pre-generadas para todos los modelos de iPhone y iPad
 - **Colores de marca** - El theme-color y background-color del manifiesto usan tu color primario configurado
@@ -2020,11 +2145,6 @@ MEGA funciona como una **Progressive Web App** completa: instálala en cualquier
 ---
 
 ## 📞 Soporte y Recursos
-
-### Contratos API
-
-- Swagger/OpenAPI 3.1 detecta rutas sin documentar y operaciones obsoletas o duplicadas.
-- El build genera una colección Postman v2.1 importable, separada por token de cuenta, token de aplicación de plataforma y rutas públicas.
 
 - **Centro de Ayuda** - Documentación completa y guías paso a paso
 - **Comunidad activa** - Conecta con otros usuarios

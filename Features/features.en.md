@@ -2,9 +2,11 @@
 
 ## Your Command Center for the Future of Customer Service
 
+Twilio Voice call recordings can optionally be transcribed, displayed with the recording, and found in conversation search.
+
 **Version:** Enterprise
-**Based on:** Mega Exclusive Features
-**Last Updated:** August 10, 2026
+**Based on:** MEGA Platform and Exclusive MEGA Features
+**Last Updated:** September 1, 2026
 
 ---
 
@@ -31,17 +33,22 @@ Swagger/OpenAPI 3.1 maintains automated parity with supported routes and generat
 
 ## 📱 Communication Channels
 
+- **Clear inbox identification** *(Mega)* - Lists and the sidebar show each inbox name alongside its public identifier (phone number, email, or URL). Facebook page IDs and X profile IDs remain available for provider operations but are not shown. Inbox search also accepts displayed identifiers.
+
 ### WhatsApp Business
 
 Connect with your customers through the world's most popular messaging channel.
 
 - **WhatsApp Cloud API** - Official Meta integration with all enterprise features
-- **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, using dedicated Hub credentials and relayed webhooks
+- **Guided manual WhatsApp setup** *(Mega)* - Administrators can prepare their own Meta app, validate a production number, WABA ID, and permanent token before creating a Cloud inbox; the flow displays webhook/subscription status and permits a webhook retry without leaving setup
+- **WhatsApp Business App coexistence signup** *(Mega)* - Embedded signup supports onboarding a WhatsApp Business App number, including coexistence completions that do not provide a phone-number ID, while MEGA configures the required connection and webhooks
+- **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, using dedicated Hub credentials, relayed webhooks, forward-aware webhook health, and no manual callback/token setup
 - **WhatsApp Evolution** *(Mega)* - Direct connection without official API, ideal for personal accounts
 - **WhatsApp WAHA** *(Mega)* - Alternative provider with full multimedia message support
 - **WhatsApp Uazapi** *(Mega)* - Low-cost solution for multiple lines
 - **Connection health alerts** *(Mega)* - Token and session issues appear in inbox lists, the primary sidebar, and inbox settings with a shortcut to session configuration
 - **Phone health resilience** *(Mega)* - Cloud API phone health remains available when linked business-account details cannot be refreshed
+- **WhatsApp business profile in Account Health** *(Mega)* - Account Health shows the read-only customer-facing business profile, clearer display-name review guidance, and the portfolio-wide messaging limit
 - **Manual WhatsApp reconnection** *(Mega)* - Eligible embedded-signup inboxes can be reconnected to your own Meta app through a guided flow that preserves the inbox and its customer-service history
 - **Embedded-signup reconfiguration** *(Mega)* - Administrators can refresh the credentials and WhatsApp Business configuration of a Cloud inbox connected through embedded signup when the unified embedded-signup flow is enabled for the account
 - **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
@@ -171,6 +178,7 @@ With over one billion active users, TikTok has become an essential platform for 
 - Reach the youngest audience where they spend their time
 - Convert social interactions into sales opportunities
 - Secure, official connection via TikTok Business API
+- TikTok connection access is controlled per account; hosted accounts without access can request it from support in the inbox setup.
 - Complete real-time message sync
 
 ### Email
@@ -234,6 +242,7 @@ Your website visitors want immediate answers. Live chat increases conversions by
 - **Allowed domains** - Restrict widget to authorized domains for added security
 - **Show agent name** - Configure per inbox whether the agent's name is shown to visitors
 - **Reply auto-assignment control** - Disable per inbox whether unassigned conversations are assigned to the agent when they send a message
+- **Resolved-conversation protection** - When an inbox disallows messages after resolution, the widget rejects retries and new text or attachment submissions for that conversation; visitors can start a new conversation instead
 - **Layering/background fixes** - Better visual rendering between launcher and portal, including dark mode scenarios
 
 **Benefits for your business:**
@@ -289,6 +298,8 @@ Telegram is especially popular among tech-savvy users and in regions like Easter
 ### API Channel
 
 For businesses with unique needs: integrate any proprietary or third-party messaging system.
+
+> **Availability:** API-token access and outbound Webhook delivery require API and Webhooks access for the account on hosted plans. They remain available on self-hosted installations.
 
 **When to use API Channel?**
 
@@ -469,6 +480,7 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 - **Powerful search** - Find conversations by content, contact, or metadata
 - **Sidebar quick filters** - Navigate directly to Unread, Mentions, Participating, Groups, and Unattended from the sidebar
 - **Reactive unread badges** - Mentions, Participating, Groups, and Unread show live counters without page reloads
+- **Exact timestamp on hover** - Relative dates reveal the full date and time in the conversation list, messages, contacts, search, reports, and related dashboard cards
 
 ### Custom attribute integrations
 
@@ -530,6 +542,8 @@ Quick templates with shortcuts for faster responses:
 - **Attachments support** - Include images, documents, and files with responses
 - **Multi-file attachments** - Attach multiple files to a single canned response
 - **Canned attachments in new conversations** - Reuse canned response files even when starting a brand new conversation
+- **Search and preview picker** - Search shortcuts and message content, preview the rendered response, and retain unresolved variables for backend processing
+- **Instant cached search** - Load responses once per account and filter locally while realtime invalidation keeps browser data current
 - **Rich content** - Format text with markdown support
 
 ### Voice Recorder
@@ -604,6 +618,7 @@ Quick access to any action via keyboard:
 - **Quick assignment** - Assign agents or teams
 - **Status change** - Resolve, reopen, snooze
 - **AI actions** - Access Captain features
+- **Macro execution** - In an open conversation, choose **Execute a macro** to run the same ordered macros available in the sidebar
 
 ### Dark Mode
 
@@ -712,7 +727,7 @@ Keep your team connected and productive. Instead of using external tools like Sl
 
 Configure automatic flows based on events and conditions:
 
-- **Wait-based rules** - Run actions after 10 minutes to 30 days while a conversation remains in a selected status, a customer has not replied, or a teammate has not replied. A reply, status change, or condition mismatch cancels the pending run.
+- **Wait-based rules** - Run actions after 10 minutes to 30 days while a conversation remains in a selected status, a customer has not replied, or a teammate has not replied. They can combine additional conditions with `AND`; a reply, status change, or condition mismatch cancels the pending run.
 
 **Available events:**
 
@@ -742,24 +757,6 @@ Configure automatic flows based on events and conditions:
 - Mute conversation
 - Redistribute to online agents
 
-### Flow Builder *(Mega - MVP)*
-
-Design conversational automations from a visual canvas with connectable blocks.
-
-- **n8n-style visual canvas** - Build flows by dragging blocks, connecting paths, and editing each step from a side inspector
-- **Initial blocks** - Trigger, message, question, condition, switch, set, loop, code, action, handoff, wait, webhook, and end
-- **Configurable wait** - The wait node supports interval and fixed date/time settings in the inspector
-- **Reused Automation actions** - The Action node uses the same selectors for labels, teams, agents, priority, email, webhook, private notes, and compatible conversation statuses
-- **Drafts and versioned publishing** - Edit without changing the published version and publish stable snapshots
-- **Switch-based activation and pause** - Activate or pause published flows from the list or editor without using secondary actions
-- **Validation before publishing** - Detects cycles, multiple triggers, broken connections, and incomplete blocks
-- **Initial event runtime** - Published flows can start from Automation-compatible internal events and execute messages, questions, conditions, switch routing, basic actions, and handoff
-- **Multi-route Switch decisions** - Route a flow by field value into multiple named case outputs with a fallback output when nothing matches
-- **AgentBot-style start** - The trigger can bind to an inbox to start the flow as a native bot when messages arrive, with exclusivity against AgentBot, Dialogflow, or other active flows
-- **Contact-aware conditions** - Evaluate contact name, email, phone number, identifier, and custom attributes
-- **Live visual execution history** - Replay the executed flow on the canvas, mark nodes with success/error icons, color the traversed path, and open each node to review input, output, and errors
-- **Ready for IVR and voice** - The same canvas can add calling and IVR nodes in a later phase
-
 ### Macros
 
 Execute multiple actions with a single click:
@@ -767,6 +764,8 @@ Execute multiple actions with a single click:
 - **Personal macros** - Visible only to you
 - **Global macros** - Available to entire team
 - **Chained actions** - Combine multiple operations
+- **Reply editor shortcut** - Type `#` to search, preview, and run macros without leaving the conversation
+- **Command bar shortcut** - Open `Cmd/Ctrl + K` in a conversation to select the same ordered macro; required attributes use the shared resolution dialog
 
 ### Agent Bots
 
@@ -808,17 +807,21 @@ Create and configure AI assistants tailored to your business needs:
 - **Multiple assistants** - Create different assistants for different purposes
 - **Custom configuration** - Set temperature, model, and behavior parameters
 - **Per-feature models** - Configure separate models for Assistant, Copilot, suggestions, and FAQ generation from documents and PDFs
+- **Internal model routing** - Super administrators can separately configure the inactive-conversation evaluator; account overrides take precedence over the self-hosted installation model, while customer Captain preferences keep internal features hidden
 - **Conversation FAQ suggestions** - Resolved conversations with reusable human-agent answers are grouped into reviewable FAQ suggestions; agents can review only suggestions and source conversations they can access, while they can edit, approve, or dismiss open suggestions to publish trusted FAQs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
 - **External bot exclusivity** - Captain does not respond or schedule automatic resolution for inboxes with an active Agent Bot or Dialogflow
-- **Assistant overview** - Monitor handled conversations, auto-resolution, handoff, estimated time saved, reopen rate, conversation depth, knowledge coverage, and AI-generated period summaries in the account language; metrics load with a visual loading state and stay consistent when switching periods
+- **Assistant overview** - An opt-in redesigned overview combines rotating period insights with outcome metrics, resolution flow and trend comparisons, Captain CSAT, usage, and knowledge coverage; it retains the legacy overview by default while dedicated outcome, resolution-flow, and resolution-trend datasets provide the data
 - **Generation details** - Open the “Generated by Captain” indicator on an assistant reply or handoff reason note to inspect its tool and scenario steps, knowledge-base sources, and reasoning; model and credit usage are limited to super administrators
 - **Trusted citations** - Captain V2 renders only server-validated public web links, records the sources actually selected, and keeps rendered URLs out of model history; earlier sessions retain their existing source details
+- **Paid-plan availability** - Captain V2 is enabled automatically when a cloud account reconciles to any paid plan; the default plan remains without Captain V2
 - **Image comprehension** - Assistant can analyze images sent in conversations
 - **Multimodal support** - Process text and images simultaneously for contextual responses
 - **Ignore groups** - Configure assistant to not respond in group conversations
 - **Ignored targets** - Define specific conversations or contacts the assistant should skip
+- **Audience and schedule** - Limit replies to contacts matching configurable conditions and choose whether the assistant responds anytime, during business hours, or outside them; conversations outside those rules go to the human queue
+- **Inactivity resolution** - With Captain V2, each assistant chooses whether Captain reviews the conversation, always resolves it, or waits for the customer; resolving modes use a 5-minute to 24-hour timer and can send an optional closing message
 
 **Captain Documents:**
 
@@ -831,6 +834,7 @@ Upload documents to train your AI assistant:
 - **Related responses** - See which responses use each document
 - **Document details** - Review crawled content, source metadata, and generated FAQ
   counts
+- **Conversation usage** - Administrators can see the distinct conversations that used a document or a user-created FAQ, sort documents by usage, and open the matching conversation list; handoffs and deleted conversations are excluded
 - **Bulk management** - Add and remove documents easily
 
 **Captain Scenarios:**
@@ -839,6 +843,7 @@ Configure specific scenarios and workflows:
 
 - **Custom instructions** - Define behavior for specific situations
 - **Tool assignment** - Assign specific tools per scenario
+- **Status management** - Administrators can enable or disable scenarios; disabled scenarios remain available for management but are excluded from Captain execution
 - **Complete MCP creation** - AI clients connected to the account MCP can save and update built-in, custom, and MCP tool IDs; unavailable IDs are explicitly rejected
 - **Activation rules** - Define when each scenario applies
 - **Priority ordering** - Control scenario precedence
@@ -853,6 +858,7 @@ Create custom tools for your AI assistant:
 - **Authentication** - Support for Basic, Bearer, and API Key auth
 - **Parameter mapping** - Define input/output parameters
 - **Enable/disable** - Toggle tools on or off as needed
+- **Safe disabling** - Administrators are warned before disabling a tool used by enabled scenarios; disabled tools remain visible and preserve saved scenario references without running
 
 **Captain MCP Servers:**
 
@@ -878,7 +884,7 @@ Configure how Captain handles automatic conversation resolution:
 - **Evaluated mode** - Captain analyzes context, including conversation status and speaker roles, and autonomously decides whether to resolve or keep the conversation open; pending handoffs and promised follow-ups remain open
 - **Legacy mode** - Original behavior: automatically resolves pending conversations based on the timer
 - **Disabled mode** - Captain does not automatically resolve conversations
-- **Per account** - Configurable at account level in the Captain settings
+- **Per assistant** - Each assistant saves its own policy; assistants without a saved policy retain the account setting as a compatibility fallback
 
 **Captain Copilot:**
 
@@ -888,6 +894,8 @@ Real-time AI assistance for your agents:
 - **Context-aware** - AI understands conversation context
 - **Agent tools** - Search conversations, contacts, articles
 - **Suggestions** - AI-powered response suggestions
+- **Assistant-guided drafts** - When suggesting a reply, Copilot uses the selected Assistant's instructions, FAQs, citations, and GET tools; agents review and edit the draft before sending
+- **Readable suggestions** - Long suggestions expand the reply editor up to 350px without overriding the size chosen manually
 
 **AI Actions:**
 
@@ -950,6 +958,7 @@ Automatically transcribe audio messages to text:
 
 - **Group contacts** - Organize contacts by company
 - **Contact company selector** - Assign, clear, or create a company directly from the contact form
+- **Custom-role access** - Administrators can grant the "Manage companies" permission to custom roles so they can see and manage the Companies menu
 - **Auto domain** - Association by email domain
 - **Unified view** - History of all company conversations
 - **Automatic favicon** - The system automatically downloads the company's domain favicon to display as its avatar; works with any website that has a configured favicon
@@ -968,6 +977,7 @@ Automatically transcribe audio messages to text:
 - **Stalled import retry** - Retry a stalled Intercom import after 15 minutes without losing its progress
 - **Auto validation** - Detect errors before importing
 - **Controlled access** - Import and export available to administrators and contact managers
+- **Safe export** - Values beginning with formula characters are exported as text to prevent their execution in spreadsheets
 
 ### Contact Blocking
 
@@ -1079,7 +1089,7 @@ Smart sending that protects your WhatsApp lines:
 ### Campaign Status
 
 | Status | Description |
-|--------|-------------|
+| -------- | ------------- |
 | **Active** | Campaign ready to run |
 | **Running** | Campaign in progress |
 | **Completed** | Campaign finished successfully |
@@ -1111,7 +1121,7 @@ The system includes multiple protections to maintain send quality:
 ### Supported Channels
 
 | Channel | Type | Templates | Attachments | Multi-inbox |
-|---------|------|-----------|-------------|-------------|
+| --------- | ------ | ----------- | ------------- | ------------- |
 | Website (Live Chat) | Ongoing | ❌ | ❌ | ❌ |
 | WhatsApp Cloud | One-off | ✅ | ✅ (in template) | ✅ |
 | WhatsApp Notificame | One-off | ✅ | ✅ (in template) | ✅ |
@@ -1163,7 +1173,8 @@ The system includes multiple protections to maintain send quality:
 - **Image resizing** - Resize images inside the editor for cleaner article layouts
 - **Slash menu in editor** - Insert blocks and commands quickly by typing /
 - **Table-safe slash menu** - Inside table cells, use only inline formatting commands that Markdown preserves, with arrow-key and Ctrl+N/P navigation contained in the menu
-- **Videos from the slash menu** - Embed supported video links (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar, and MP4) with a preview in both the editor and published article
+- **Videos from the slash menu** - Embed supported video links (YouTube, Vimeo, Loom, Wistia, Arcade, Bunny, CodePen, GuideJar, and MP4), or upload an MP4 with progress, cancellation, retry, and a resizable preview in both the editor and published article
+- **Reliable media uploads** - Images appear at the caret while uploading in the background; failed uploads can be retried or removed without losing the draft
 - **Dividers from the slash menu** - Insert a horizontal divider from the editor menu to separate article sections
 - **Native tables in editor** - Create and edit tables directly in the article editor
 - **Markdown tables** - Correct rendering for table blocks inside help articles
@@ -1339,7 +1350,7 @@ Define conversation limits per agent:
 
 - **Custom permissions** - Create roles with specific permissions
 - **Conversation management** - All, unassigned, or only participating
-- **Feature access** - Contacts, reports, campaigns, etc.
+- **Feature access** - Contacts, companies, reports, campaigns, etc.
 - **CSAT permissions** - Control which roles can view and manage customer satisfaction surveys
 
 ### Work Hours
@@ -1349,6 +1360,12 @@ Define conversation limits per agent:
 - **After-hours messages** - Automatic responses
 - **Lunch break** - Configure break intervals within business hours
 - **Per-day schedules** - Define different hours for each day of the week
+
+### Operational Web Push
+
+- **Closed-page delivery** - Calendar reminders, Kanban note assignments, stage automations, checklist deadlines, and Task deadlines can reach subscribed browsers while the dashboard is closed
+- **Direct navigation** - Notification actions open the exact calendar event, Kanban item, or Task that generated the alert
+- **Channel control** - Agents configure these operational categories as Push-only preferences; foreground popups remain available when MEGA is open
 
 ### Notification Settings
 
@@ -1385,6 +1402,8 @@ Temporarily pause notifications for specific conversations:
 ### Webhooks
 
 Connect MEGA with any external system through automatic notifications:
+
+> **Availability:** Outbound Webhook delivery requires API and Webhooks access for the account on hosted plans. It remains available on self-hosted installations.
 
 - **Real-time events** - Receive instant alerts when something happens
 - **CRM integration** - Sync data automatically
@@ -1519,6 +1538,7 @@ Manage customer conversations directly from Slack, without switching tools:
 
 - **Auto sync** - Conversations appear in Slack channels
 - **Respond from Slack** - Reply to customers without opening MEGA
+- **Alerts only** - Keep Slack threads for internal discussion without sending replies to the customer
 - **Private notes** - Communicate with your team without customer seeing
 - **Profile linking** - Connect Slack users with MEGA agents
 - **Private channels** - Organize by team or conversation type
@@ -1620,6 +1640,7 @@ Customize email communications with your branding:
 - **Complete record** - Every action is logged
 - **Who, what, when** - Full traceability
 - **Compliance** - For regulatory requirements
+- **Find events quickly** - Filter by event type and whole-day date range, search the acting user's name or email, and sort newest or oldest; filters are shareable through the page URL
 - **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, and Contact destruction audits by account, showing timestamps, object snapshots, actor/IP when recorded, and the explicit limitation that missing Message audits cannot prove a message-deletion count
 
 ### SAML/SSO
@@ -1638,6 +1659,7 @@ Enterprise Single Sign-On for centralized authentication:
 **Features:**
 
 - **Auto-provisioning** - Automatically create users on first login
+- **Account isolation** - Does not allow SAML invitations or authentication for users associated with another account
 - **Group mapping** - Sync groups/teams from IdP
 - **Force SSO** - Require SSO for all account users
 - **Multiple domains** - Configure SSO for different email domains
@@ -1684,10 +1706,10 @@ Voice conference calls between agents and customers:
 
 Fully customize your platform's appearance:
 
-- **Custom logo** - Your logo instead of Chatwoot's
+- **Custom logo** - Your logo instead of the default platform logo
 - **Dark mode logo** - Specific logo for dark mode
-- **Thumbnail logo** - Reduced version for the favicon
-- **Notification and PWA icon** - Independent square image for system alerts and the installable app icon; defaults to `/favicon-badge-16x16.png` with the thumbnail logo as fallback
+- **Thumbnail logo** - Square application artwork for the favicon, installable PWA icon, and splash screen, with the notification icon as fallback
+- **Notification icon** - Independent square image for system Push alerts, badges, and the temporary hidden-tab indicator; defaults to `/favicon-badge-16x16.png` with the thumbnail logo as fallback
 - **Brand name** - Change name shown throughout platform
 - **Installation name** - Name for specific instance
 - **Primary color** - Define your corporate main color
@@ -1699,9 +1721,9 @@ Fully customize your platform's appearance:
 
 ### Disable Branding
 
-- **Unbranded widget** - Hide "Powered by Chatwoot" from live chat
-- **Unbranded emails** - Outgoing emails without Chatwoot branding
-- **Clean portals** - Help Center without Chatwoot references
+- **Unbranded widget** - Remove platform attribution from live chat
+- **Unbranded emails** - Outgoing emails without platform branding
+- **Clean portals** - Help Center without platform references
 
 ### Custom Roles
 
@@ -1711,6 +1733,7 @@ Create roles tailored to your organization with granular permission control:
 
 - **Conversations** - Who can view and manage which conversations
 - **Contacts** - Access to customer data
+- **Companies** - Access to the Companies menu and company records
 - **Reports** - Who sees statistics
 - **Campaigns** - Permissions to create and send campaigns
 - **Help Center** - Article and portal management
@@ -1820,6 +1843,8 @@ Robust, high-availability solution for demanding operations requiring maximum st
 - Edited and deleted messages
 - Passkey authorization during WhatsApp linking through the WAHA browser extension flow, with dedicated session states, a proactive notice when the extension is not installed, and manual code confirmation when WhatsApp requests it
 - On-demand global and per-conversation sync for recent messages, with account-level concurrency protection and optional dedicated processing for high-volume installations
+- Optional per-inbox WAHA group lazy media download: incoming group media is stored as a pending attachment with a generic placeholder and is only downloaded when an agent requests it from the conversation; direct conversations retain immediate downloads
+- Per-session proxy with a `host:port` server and optional credentials, which can be removed to return to a direct connection
 
 **Ideal for:**
 
@@ -1855,6 +1880,12 @@ Define which conversations you want to receive in the platform:
 - **Exclusion list** - Ignore specific numbers
 - **Inclusion list** - Receive only from specific numbers
 - **UI configuration** - Manage filters directly from channel settings
+
+**Regional proxy:**
+
+- **Brazilian city selection** - Save an optional managed-proxy city in channel settings
+- **Applied on new connections** - The saved location is used for QR, pairing-code, and recreated sessions
+- **Custom proxy or no proxy** - Switch to your own proxy URL or completely remove the active proxy
 
 **Ideal for:**
 
@@ -1961,6 +1992,7 @@ Edit and delete WhatsApp messages after sending:
 
 - **15-minute window** - Edit sent messages within 15 minutes
 - **Sync updates** - Edited messages sync from WhatsApp automatically
+- **Group sender context** - Incoming group edits keep the participant number and name visible below the edit indicator
 - **Edit indicator** - Edited messages show "edited" label
 - **All providers** - Works with Evolution, WAHA, and Uazapi
 
@@ -1978,6 +2010,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 
 - **Funnels with customizable stages** - Create multiple funnels and set a default stage per funnel
 - **Board and list views** - Switch between visual pipeline and operational list depending on team workflow
+- **Complete list through progressive loading** - List view loads 30 opportunities per page and can fetch later pages without losing cards already shown
 - **Advanced inbox/channel/activity filters** - Segment opportunities by origin and recent movement
 - **Label-based filtering** - Filter by conversation labels in board and list views, including stage metrics
 - **Per-user column visibility** - Show or hide columns and persist preferences locally
@@ -1989,6 +2022,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Per-currency stage totals** - Stage headers keep PYG, USD, EUR, and every other currency separate without conversion or cross-currency addition; the tooltip covers all filtered offers even when pagination has not loaded every card
 - **Custom offer currency override** - In manual product/service offers, users can choose currency per offer
 - **No currency on items without offers** - If an item has no offers, value is shown as a placeholder and is excluded from monetary totals
+- **Faithful Kanban report downloads** - CSV reports include every authorized card matching the active funnel, date, agent, and inbox filters, preserve free text safely for spreadsheets, and use the selected language, configured stage names, and card/account currency
 - **Labels at creation and from the item card** - Select existing labels while creating an item, or add and remove them directly from its card
 - **Native contact and conversation relationships** - Keep sales context linked to the real customer chat thread
 - **Google Calendar event bridge** - Scheduled or deadline-based items can create MEGA calendar events when account-level Kanban sync is enabled
@@ -2035,6 +2069,7 @@ Annual statistics and insights for your account:
 - **SAML/SSO** - Enterprise Single Sign-On
 - **API Tokens** - Secure programmatic access
 - **Suspended account support** - Suspended users see the policy notice with a direct contact support action; Cloud administrators can also open billing to settle payment and restore access. Super administrators record a category and reason for each suspension and can review or correct the latest entry from the account details.
+- **Confirmation resend** - Super administrators can resend a pending user's confirmation email from their details without exposing links or tokens.
 
 ### Privacy
 
@@ -2047,6 +2082,7 @@ Annual statistics and insights for your account:
 - **Encryption in transit** - Mandatory HTTPS
 - **Encryption at rest** - Protected data
 - **Auto backups** - Disaster recovery
+- **Queue-based worker autoscaling** - Optional CloudWatch publishing of Sidekiq queue latency, depth, enqueued jobs, and worker utilization for backlog-driven worker capacity
 - **License protection** *(Mega)* - Integrity verification to strengthen deployment control
 - **Release observability** - Better release-level error traceability in monitoring
 
@@ -2063,9 +2099,9 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 - **One-tap install** - Smart banner automatically appears on mobile devices inviting users to install the app
 - **Desktop and mobile** - Works on Chrome, Edge, Safari (iOS/macOS) and any PWA-compatible browser
 - **Full screen** - Runs in standalone mode, without the browser address bar
-- **Custom splash screen** - Animated loading screen with your brand logo and colors when launching the app
+- **Fast custom splash screen** - Branded loading screen that clears as soon as Vue paints the interface, with a safety timeout if startup fails
 - **Quick shortcuts** - Access Conversations or Notifications directly from the app icon's context menu
-- **Dynamic icon** - The app icon is generated from the configured notification icon, falling back to the thumbnail logo, in all required sizes (48px to 512px)
+- **Dynamic icon** - The app icon is generated from the configured thumbnail logo, falling back to the notification icon, in all required sizes (48px to 512px)
 - **Configurable icon background** - Use a custom color for the installable icon while keeping white as the default
 - **Monochrome badge** - Optimized badge icon with monochrome silhouette for system notifications
 
@@ -2079,6 +2115,7 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 - **Unread counter** - The app icon badge shows the exact number of unread notifications
 - **Accurate cache timestamps** - Consistent Service Worker asset invalidation to avoid stale resources
 - **Smart activation** - Automatic prompt when opening the PWA for the first time to enable notifications with pre-configured flags (assignment, mention, new message)
+- **Reliable subscription lifecycle** - Per-user device opt-out survives reloads, logout revokes the browser binding, and changed VAPID keys are renewed automatically
 - **Configurable sound** - Audio alerts that work even on iOS, with automatic AudioContext unlock on first touch
 - **Deferred sound** - If the app is in the background and can't play audio, it automatically plays when you return to the app
 - **Vibration** - Custom vibration pattern on mobile devices when receiving notifications
@@ -2086,14 +2123,14 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 **Offline Support:**
 
 - **Custom offline page** - When there's no connection, displays an elegant page with your brand logo and retry button
-- **Smart caching** - Static assets (JS, CSS, fonts, images) are automatically cached for instant loading
-- **Resilient navigation** - Visited pages are cached with a network-first strategy, allowing access even without connection
-- **Automatic cleanup** - The Service Worker removes outdated caches from previous versions when updating
+- **Smart caching** - Only fingerprinted Vite assets are cached, with a bounded runtime cache for fast repeat loading
+- **Safe offline navigation** - Authenticated pages and APIs are never persisted; unavailable navigation uses the public offline page
+- **Automatic cleanup** - The Service Worker removes outdated versions and limits retained fingerprinted assets
 
 **Brand Customization (White-label):**
 
 - **Dynamic manifest** - The PWA manifest is dynamically generated with your installation's name, description, colors and logo
-- **SVG support** - SVG logos are automatically converted to high-resolution PNG using rsvg-convert for maximum compatibility
+- **SVG support** - SVG logos are converted to high-resolution PNG through librsvg or libvips before final asset composition
 - **Apple icons** - Automatic generation of apple-touch-icons in all sizes required by iOS
 - **iOS splash screens** - 14 pre-generated splash screen resolutions for all iPhone and iPad models
 - **Brand colors** - The manifest's theme-color and background-color use your configured primary color
