@@ -3,7 +3,7 @@ version: "3.7"
 services:
   waha:
     restart: always
-    image: devlikeapro/waha:gows-2026.8.1
+    image: devlikeapro/waha:gows-2026.8.2
     command: node ./dist/main.js
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:3000/ping"]
@@ -20,8 +20,9 @@ services:
       - WHATSAPP_API_SCHEMA=https
       - WAHA_BASE_URL=https://waha.example.com
       - TZ=America/Sao_Paulo
-      #Normalização de números do Brasil
-      -  WAHA_BR_PHONE_NORMALIZE=true
+      
+      #Normalização de números do Brasil( Descontinuado na versao 2026.8.2)
+      #-  WAHA_BR_PHONE_NORMALIZE=true
 
       ## Nome customizado do DEVICE.
       - WAHA_CLIENT_DEVICE_NAME=Waha API #Nome do Dispositivo exibido na lista de Dispositivos Vinculados.
@@ -67,7 +68,7 @@ services:
       
       ## Apps "chatwoot, calls e mcp"(Opcional no uso com o Mega).
       - WAHA_APPS_ENABLED=true
-      - WAHA_APPS_ON=calls,mcp #App rejeitar ligaçoes automatico e enviar msg
+      - WAHA_APPS_ON=calls,mcp,brazilian-phone-numbers #App rejeitar ligaçoes automatico e enviar msg
       # - WAHA_APPS_OFF=chatwoot #- Desativa aplicativos específicos (separados por vírgula).
 
       ## Redis (Opcional no uso com o Mega). 
