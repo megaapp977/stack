@@ -242,7 +242,7 @@ services:
 
   chatwoot_app:
     image: sendingtk/chatwoot:v4.9.0
-    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    command: sh -c "bundle exec rails db:mega_prepare && bundle exec rails s -p 3000 -b 0.0.0.0"
 
     volumes:
       - chatwoot_storage:/app/storage
@@ -537,7 +537,7 @@ services:
 
   chatwoot_app:
     image: sendingtk/chatwoot:v4.9.0
-    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    command: sh -c "bundle exec rails db:mega_prepare && bundle exec rails s -p 3000 -b 0.0.0.0"
 
     volumes:
       - chatwoot_storage:/app/storage

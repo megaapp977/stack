@@ -73,7 +73,7 @@ x-variables: &default_env
 services:
   mega_app:
     image: sendingtk/chatwoot:v4.24.0
-    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    command: sh -c "bundle exec rails db:mega_prepare && bundle exec rails s -p 3000 -b 0.0.0.0"
     entrypoint: docker/entrypoints/rails.sh
     restart: always
     volumes:
