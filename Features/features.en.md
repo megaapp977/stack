@@ -34,12 +34,17 @@ Swagger/OpenAPI 3.1 maintains automated parity with supported routes and generat
 ## 📱 Communication Channels
 
 - **Clear inbox identification** *(Mega)* - Lists and the sidebar show each inbox name alongside its public identifier (phone number, email, or URL). Facebook page IDs and X profile IDs remain available for provider operations but are not shown. Inbox search also accepts displayed identifiers.
+- **Preserved social identity** *(Mega)* - Facebook, Instagram, and TikTok inboxes retain their provider page or username without overwriting a custom inbox name when the channel reconnects.
 
 ### WhatsApp Business
+
+- **Brazilian contact deduplication** *(Mega)* - Cloud, coexistence, Twilio WhatsApp and Cloud calls reuse existing mobile contacts when the provider omits the ninth digit; exact matches take priority and landlines do not generate mobile alternatives.
 
 Connect with your customers through the world's most popular messaging channel.
 
 - **WhatsApp Cloud API** - Official Meta integration with all enterprise features
+- **WhatsApp Cloud registration recovery** *(Mega)* - Complete the connection from the same inbox with separate steps for SMS or voice ownership verification and two-step PIN registration. If no PIN is stored, one is requested; a forgotten PIN is recovered in Meta. Connection status reflects the phone status reported by Meta.
+- **Premium Cloud calling connectivity** *(Mega)* - Companies with restrictive networks can use managed STUN/TURN relay connectivity for WhatsApp Cloud WebRTC calls
 - **Guided manual WhatsApp setup** *(Mega)* - Administrators can prepare their own Meta app, validate a production number, WABA ID, and permanent token before creating a Cloud inbox; the flow displays webhook/subscription status and permits a webhook retry without leaving setup
 - **WhatsApp Business App coexistence signup** *(Mega)* - Embedded signup supports onboarding a WhatsApp Business App number, including coexistence completions that do not provide a phone-number ID, while MEGA configures the required connection and webhooks
 - **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, using dedicated Hub credentials, relayed webhooks, forward-aware webhook health, and no manual callback/token setup
@@ -50,7 +55,7 @@ Connect with your customers through the world's most popular messaging channel.
 - **Phone health resilience** *(Mega)* - Cloud API phone health remains available when linked business-account details cannot be refreshed
 - **WhatsApp business profile in Account Health** *(Mega)* - Account Health shows the read-only customer-facing business profile, clearer display-name review guidance, and the portfolio-wide messaging limit
 - **Manual WhatsApp reconnection** *(Mega)* - Eligible embedded-signup inboxes can be reconnected to your own Meta app through a guided flow that preserves the inbox and its customer-service history
-- **Embedded-signup reconfiguration** *(Mega)* - Administrators can refresh the credentials and WhatsApp Business configuration of a Cloud inbox connected through embedded signup when the unified embedded-signup flow is enabled for the account
+- **Embedded-signup reconfiguration** *(Mega)* - Administrators can refresh the credentials and WhatsApp Business configuration of an existing Cloud inbox connected through embedded signup without enabling an account feature; the creation feature remains required only for new inboxes
 - **Multi-server architecture** *(Mega)* - Configure multiple servers per provider with automatic credential resolution
 - **Per-server capacity** *(Mega)* - Define limits by server to distribute operational load
 - **BSUID support** *(Mega)* - Reliable contact identification and delivery even when traditional `wa_id` is missing
@@ -77,7 +82,7 @@ Complete control of WhatsApp groups directly from MEGA:
 - **Add Participants** - Add new members to the group from the platform
 - **Remove Participants** - Remove members from the group without leaving MEGA
 - **Change Roles** - Promote or demote members to admin
-- **Group Mentions** - Use @ to mention specific members in messages
+- **Group Mentions** - Use @ to mention specific members in messages, including when editing WAHA group messages
 - **Member Search** - Quickly find participants in large groups
 - **Smart Pagination** - Efficient loading for groups with many members
 - **Member Avatars** - View each participant's profile picture
@@ -447,6 +452,7 @@ Many customers prefer voice communication for complex issues. WhatsApp Calls let
 **Call Features:**
 
 - **WebRTC native** - High-quality audio without external SDKs
+- **Adaptive connectivity** - Uses configured STUN/TURN servers for premium calls when a restricted network prevents a direct connection
 - **Protected assignment** - From call acceptance until it ends, the conversation's assignee and team cannot change; reassignment remains available while it is only ringing
 - **Mute/Unmute** - Toggle microphone during calls
 - **Call duration** - Real-time timer visible during call
@@ -531,6 +537,10 @@ Multiple agents can collaborate on a single conversation:
 - **Remove participants** - Remove agents when no longer needed
 - **Auto-participants** - Agents who interact are automatically added
 
+### Reply editor shortcuts
+
+- Send shortcuts do not accumulate duplicate actions when switching conversations. Enter/Ctrl/Cmd+Enter preferences and closing mentions with Escape are preserved.
+
 ### Canned Responses
 
 Quick templates with shortcuts for faster responses:
@@ -597,6 +607,7 @@ Perform mass operations on multiple conversations simultaneously:
 - **Bulk resolve** - Close multiple conversations at once
 - **Bulk reopen** - Reopen resolved conversations
 - **Bulk snooze** - Apply snooze to multiple conversations
+- **Bulk read state** - Mark selected conversations as read or unread
 - **Bulk assign** - Assign agent or team to multiple chats
 - **Bulk label** - Apply labels massively
 - **Keyboard shortcuts** - Execute bulk actions with hotkeys
@@ -811,6 +822,7 @@ Create and configure AI assistants tailored to your business needs:
 - **Conversation FAQ suggestions** - Resolved conversations with reusable human-agent answers are grouped into reviewable FAQ suggestions; agents can review only suggestions and source conversations they can access, while they can edit, approve, or dismiss open suggestions to publish trusted FAQs
 - **Knowledge training** - Train assistants with your business documents
 - **Inbox assignment** - Link assistants to specific channels
+- **Manual conversation assignment** - Accounts with Captain enabled can select the assistant configured for the conversation inbox; assigning it leaves the conversation pending, while removing it or assigning a human reopens the conversation
 - **External bot exclusivity** - Captain does not respond or schedule automatic resolution for inboxes with an active Agent Bot or Dialogflow
 - **Assistant overview** - An opt-in redesigned overview combines rotating period insights with outcome metrics, resolution flow and trend comparisons, Captain CSAT, usage, and knowledge coverage; it retains the legacy overview by default while dedicated outcome, resolution-flow, and resolution-trend datasets provide the data
 - **Generation details** - Open the “Generated by Captain” indicator on an assistant reply or handoff reason note to inspect its tool and scenario steps, knowledge-base sources, and reasoning; model and credit usage are limited to super administrators
@@ -972,9 +984,9 @@ Automatically transcribe audio messages to text:
 
 - **CSV Upload** - Import contacts massively
 - **Field mapping** - Associate columns with attributes
-- **Intercom history import** - Administrators can import contacts, conversations, and historical messages from Intercom in the background
+- **Intercom and Freshdesk history import** - Administrators can import contacts, conversations, and historical messages from Intercom or Freshdesk in the background
 - **Import monitoring** - Review progress, skipped records, errors, and downloadable skip logs
-- **Stalled import retry** - Retry a stalled Intercom import after 15 minutes without losing its progress
+- **Stalled import retry** - Retry a stalled Intercom or Freshdesk import after 15 minutes without losing its progress
 - **Auto validation** - Detect errors before importing
 - **Controlled access** - Import and export available to administrators and contact managers
 - **Safe export** - Values beginning with formula characters are exported as text to prevent their execution in spreadsheets
@@ -1511,6 +1523,7 @@ Create and manage your WhatsApp templates directly from MEGA, without needing to
 Embed custom applications within the conversation view:
 
 - **Custom iFrames** - Embed external apps in conversations
+- **Synchronized app context** - Embedded apps receive custom attribute definitions and the resolved light/dark theme; context refreshes when these change or the tab reopens, and refresh requests receive a response only in the requesting iframe.
 - **Dynamic context** - Pass conversation and contact information to the app
 - **Per-user apps** - Apps can be configured per agent
 - **Multiple apps** - Add several apps to the same inbox
@@ -1641,7 +1654,7 @@ Customize email communications with your branding:
 - **Who, what, when** - Full traceability
 - **Compliance** - For regulatory requirements
 - **Find events quickly** - Filter by event type and whole-day date range, search the acting user's name or email, and sort newest or oldest; filters are shareable through the page URL
-- **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, and Contact destruction audits by account, showing timestamps, object snapshots, actor/IP when recorded, and the explicit limitation that missing Message audits cannot prove a message-deletion count
+- **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, Contact, and Message destruction audits by account; Message entries retain the original content for evidence while the audit-log API omits it and the message payload from list responses
 
 ### SAML/SSO
 
@@ -1991,7 +2004,7 @@ Edit and delete WhatsApp messages after sending:
 **Edit Messages:**
 
 - **15-minute window** - Edit sent messages within 15 minutes
-- **Sync updates** - Edited messages sync from WhatsApp automatically
+- **Sync updates** - Incoming edits sync automatically from WhatsApp Cloud and Notificame without duplicating the original message
 - **Group sender context** - Incoming group edits keep the participant number and name visible below the edit indicator
 - **Edit indicator** - Edited messages show "edited" label
 - **All providers** - Works with Evolution, WAHA, and Uazapi
@@ -2031,6 +2044,8 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Group-free entry** - Each entry stage can exclude WhatsApp group conversations so no item is created and its automatic flows do not start
 - **Automatic template delivery** - Automatic stage templates are sent once per item by default, preventing duplicate customer messages when an item re-enters a stage. The editor suggests variables such as `{{contact.name}}` when typing `{{` and resolves them when sent; a template can explicitly opt in to resend on every re-entry; manual quick messages remain unrestricted
 - **Kanban alerts** - Notify selected team members and assigned agents from stage automation, and the assigned agent when a checklist task reaches its due date; dismissed alerts reappear after the funnel-configured interval only while that task remains pending. Alerts are grouped in a non-blocking banner and do not send email
+- **Optimized queries** - Funnel selector counts use lightweight queries; statistics preserve totals by currency and offer, while searches and reports reuse related data to reduce repeated queries.
+- **Deadlines on creation or duplication** - Checklist tasks with a due date and assignee schedule their alert when saved, including when copied to another card; copied tasks notify from the destination card.
 - **Real-time synchronization** - Stage and item updates propagate instantly to chat list and contact panel
 - **Contact-wide open deals** - Each funnel can opt in from Advanced Configuration to show its open Kanban items across every conversation of the current contact; the option is disabled by default, keeps existing visibility rules, and identifies related conversations
 - **Authorized panels** - The conversation panel Kanban block and sidebar entry are hidden when the user has no visible items and no accessible funnels to add deals
@@ -2069,6 +2084,7 @@ Annual statistics and insights for your account:
 - **SAML/SSO** - Enterprise Single Sign-On
 - **API Tokens** - Secure programmatic access
 - **Suspended account support** - Suspended users see the policy notice with a direct contact support action; Cloud administrators can also open billing to settle payment and restore access. Super administrators record a category and reason for each suspension and can review or correct the latest entry from the account details.
+- **Scheduled subscription cancellation** - Cloud Billing shows the date a Stripe subscription will end and keeps the plan active until that billing-period boundary.
 - **Confirmation resend** - Super administrators can resend a pending user's confirmation email from their details without exposing links or tokens.
 
 ### Privacy

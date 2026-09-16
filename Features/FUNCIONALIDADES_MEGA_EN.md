@@ -40,6 +40,7 @@ Swagger/OpenAPI 3.1 maintains automated parity with supported routes and generat
 Connect with your customers through the world's most popular messaging channel.
 
 - **WhatsApp Cloud API** - Official Meta integration with all enterprise features
+- **WhatsApp Cloud registration recovery** *(Mega)* - Complete the connection from the same inbox with separate steps for SMS or voice ownership verification and two-step PIN registration. If no PIN is stored, one is requested; a forgotten PIN is recovered in Meta. Connection status reflects the phone status reported by Meta.
 - **Guided manual WhatsApp setup** *(Mega)* - Administrators can prepare their own Meta app, validate a production number, WABA ID, and permanent token before creating a Cloud inbox; the flow displays webhook/subscription status and permits a webhook retry without leaving setup
 - **WhatsApp Business App coexistence signup** *(Mega)* - Embedded signup supports onboarding a WhatsApp Business App number, including coexistence completions that do not provide a phone-number ID, while MEGA configures the required connection and webhooks
 - **Mega Hub for WhatsApp** *(Mega)* - Optional connection with shared apps from Super Admin, using dedicated Hub credentials, relayed webhooks, forward-aware webhook health, and no manual callback/token setup
@@ -421,6 +422,8 @@ Some customers prefer talking on the phone, especially for urgent or complex mat
 
 Make and receive voice calls through WhatsApp using Meta's Cloud API with WebRTC technology.
 
+Accounts with `premium_call_connectivity` can use managed STUN/TURN servers as a relay on restrictive corporate networks; other accounts retain default STUN connectivity.
+
 > **Availability:** Calls are not available for WhatsApp Cloud numbers connected through WhatsApp Business App coexistence. They continue in the WhatsApp Business app and are not shown in MEGA.
 
 **Why WhatsApp Calls?**
@@ -597,6 +600,7 @@ Perform mass operations on multiple conversations simultaneously:
 - **Bulk resolve** - Close multiple conversations at once
 - **Bulk reopen** - Reopen resolved conversations
 - **Bulk snooze** - Apply snooze to multiple conversations
+- **Bulk read state** - Mark selected conversations as read or unread
 - **Bulk assign** - Assign agent or team to multiple chats
 - **Bulk label** - Apply labels massively
 - **Keyboard shortcuts** - Execute bulk actions with hotkeys
@@ -972,9 +976,9 @@ Automatically transcribe audio messages to text:
 
 - **CSV Upload** - Import contacts massively
 - **Field mapping** - Associate columns with attributes
-- **Intercom history import** - Administrators can import contacts, conversations, and historical messages from Intercom in the background
+- **Intercom and Freshdesk history import** - Administrators can import contacts, conversations, and historical messages from Intercom or Freshdesk in the background
 - **Import monitoring** - Review progress, skipped records, errors, and downloadable skip logs
-- **Stalled import retry** - Retry a stalled Intercom import after 15 minutes without losing its progress
+- **Stalled import retry** - Retry a stalled Intercom or Freshdesk import after 15 minutes without losing its progress
 - **Auto validation** - Detect errors before importing
 - **Controlled access** - Import and export available to administrators and contact managers
 - **Safe export** - Values beginning with formula characters are exported as text to prevent their execution in spreadsheets
@@ -1641,7 +1645,7 @@ Customize email communications with your branding:
 - **Who, what, when** - Full traceability
 - **Compliance** - For regulatory requirements
 - **Find events quickly** - Filter by event type and whole-day date range, search the acting user's name or email, and sort newest or oldest; filters are shareable through the page URL
-- **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, and Contact destruction audits by account, showing timestamps, object snapshots, actor/IP when recorded, and the explicit limitation that missing Message audits cannot prove a message-deletion count
+- **Deletion evidence (Super Admin)** *(Mega)* - A read-only report filters retained Inbox, Conversation, Contact, and Message destruction audits by account; Message entries retain the original content for evidence while the audit-log API omits it and the message payload from list responses
 
 ### SAML/SSO
 
@@ -1991,7 +1995,7 @@ Edit and delete WhatsApp messages after sending:
 **Edit Messages:**
 
 - **15-minute window** - Edit sent messages within 15 minutes
-- **Sync updates** - Edited messages sync from WhatsApp automatically
+- **Sync updates** - Incoming edits sync automatically from WhatsApp Cloud and Notificame without duplicating the original message
 - **Group sender context** - Incoming group edits keep the participant number and name visible below the edit indicator
 - **Edit indicator** - Edited messages show "edited" label
 - **All providers** - Works with Evolution, WAHA, and Uazapi

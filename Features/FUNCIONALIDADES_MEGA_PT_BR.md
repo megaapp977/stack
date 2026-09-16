@@ -40,6 +40,7 @@ Swagger/OpenAPI 3.1 mantém paridade automática com as rotas suportadas e gera 
 Conecte-se com seus clientes através do canal de mensagens mais popular do mundo.
 
 - **WhatsApp Cloud API** - Integração oficial do Meta com todas as funcionalidades empresariais
+- **Recuperação do cadastro do WhatsApp Cloud** *(Mega)* - Conclua a conexão na mesma caixa com etapas separadas para verificar o número por SMS ou ligação e registrar seu PIN de duas etapas. Se não houver PIN salvo, ele será solicitado; um PIN esquecido deve ser recuperado na Meta. O status da conexão reflete o estado do número informado pela Meta.
 - **Configuração manual guiada do WhatsApp** *(Mega)* - Administradores podem preparar seu próprio aplicativo Meta, validar um número de produção, o ID da WABA e um token permanente antes de criar uma caixa Cloud; o fluxo mostra o status do webhook/assinatura e permite tentar novamente o webhook sem sair da configuração
 - **Cadastro integrado para coexistência com WhatsApp Business App** *(Mega)* - O cadastro integrado permite ativar um número do WhatsApp Business App, incluindo conclusões de coexistência sem ID de número de telefone, enquanto a MEGA configura a conexão e os webhooks necessários
 - **Mega Hub para WhatsApp** *(Mega)* - Conexão opcional com apps compartilhados pelo Super Admin, usando credenciais dedicadas do Hub, webhooks reenviados, saúde baseada no forward e sem configuração manual de callback/token
@@ -424,6 +425,8 @@ Alguns clientes preferem falar por telefone, especialmente para assuntos urgente
 
 Faça e receba chamadas de voz pelo WhatsApp usando a Cloud API do Meta com tecnologia WebRTC.
 
+Contas com `premium_call_connectivity` podem usar servidores STUN/TURN administrados como relay em redes corporativas restritivas; as demais mantêm a conectividade STUN padrão.
+
 > **Disponibilidade:** As chamadas não estão disponíveis para números do WhatsApp Cloud conectados por coexistência com o WhatsApp Business App. Elas continuam no aplicativo WhatsApp Business e não são exibidas na MEGA.
 
 **Por que Chamadas WhatsApp?**
@@ -632,6 +635,7 @@ Realize operações em massa em múltiplas conversas simultaneamente:
 - **Resolver em lote** - Feche múltiplas conversas de uma vez
 - **Reabrir em lote** - Reabra conversas resolvidas
 - **Adiar em lote** - Aplique snooze em várias conversas
+- **Estado de leitura em lote** - Marque as conversas selecionadas como lidas ou não lidas
 - **Atribuir em lote** - Atribua agente ou equipe a múltiplos chats
 - **Etiquetar em lote** - Aplique etiquetas em massa
 - **Atalhos de teclado** - Execute ações bulk com hotkeys
@@ -1007,9 +1011,9 @@ Transcreva automaticamente mensagens de áudio para texto:
 
 - **Upload de CSV** - Importe contatos em massa
 - **Mapeamento de campos** - Associe colunas com atributos
-- **Importação histórica do Intercom** - Administradores podem importar contatos, conversas e mensagens históricas do Intercom em segundo plano
+- **Importação histórica do Intercom e Freshdesk** - Administradores podem importar contatos, conversas e mensagens históricas do Intercom ou Freshdesk em segundo plano
 - **Monitoramento da importação** - Consulte o progresso, registros ignorados, erros e baixe os registros de ignorados
-- **Nova tentativa de importação interrompida** - Tente novamente uma importação do Intercom interrompida após 15 minutos sem perder o progresso
+- **Nova tentativa de importação interrompida** - Tente novamente uma importação do Intercom ou Freshdesk interrompida após 15 minutos sem perder o progresso
 - **Validação automática** - Detecte erros antes de importar
 - **Acesso controlado** - Importação e exportação disponíveis para administradores e gestores de contatos
 - **Exportação segura** - Valores iniciados por caracteres de fórmula são exportados como texto para impedir sua execução em planilhas
@@ -1767,7 +1771,7 @@ Integração completa com WooCommerce:
 - **Quem, o quê, quando** - Rastreabilidade total
 - **Conformidade** - Para requisitos regulatórios
 - **Localização rápida de eventos** - Filtre por tipo de evento e intervalo de dias completos, busque pelo nome ou e-mail do usuário que realizou a ação e ordene por data; os filtros podem ser compartilhados pela URL
-- **Evidências de exclusão (Super Admin)** *(Mega)* - Um relatório somente leitura filtra por conta as auditorias retidas de destruição de caixas de entrada, conversas e contatos, exibindo data, captura do objeto, responsável/IP quando registrados e a limitação explícita de que a ausência de auditorias de Message não comprova uma contagem de mensagens excluídas
+- **Evidências de exclusão (Super Admin)** *(Mega)* - Um relatório somente leitura filtra por conta as auditorias retidas de destruição de caixas de entrada, conversas, contatos e mensagens; as entradas de Message mantêm o conteúdo original como evidência, mas a API de logs omite esse conteúdo e o payload da mensagem nas listagens
 
 ### SAML/SSO
 
@@ -2135,7 +2139,7 @@ Edite e exclua mensagens do WhatsApp após o envio:
 **Editar Mensagens:**
 
 - **Janela de 15 minutos** - Edite mensagens enviadas dentro de 15 minutos
-- **Sincronização** - Mensagens editadas sincronizam do WhatsApp automaticamente
+- **Sincronização** - Edições recebidas sincronizam automaticamente do WhatsApp Cloud e Notificame sem duplicar a mensagem original
 - **Contexto do remetente do grupo** - Edições recebidas em grupos mantêm o número e o nome do participante visíveis abaixo do indicador de edição
 - **Indicador de edição** - Mensagens editadas mostram label "editada"
 - **Todos os provedores** - Funciona com Evolution, WAHA e Uazapi

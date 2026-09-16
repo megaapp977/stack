@@ -34,12 +34,17 @@ Swagger/OpenAPI 3.1 mantiene paridad automática con las rutas soportadas y gene
 ## 📱 Canales de Comunicación
 
 - **Identificación clara de bandejas** *(Mega)* - Las listas y la barra lateral muestran el nombre de cada bandeja junto a su identificador público (teléfono, email o URL). Los IDs de página de Facebook y de perfil de X siguen disponibles para operaciones del proveedor, pero no se muestran. La búsqueda también admite los identificadores visibles.
+- **Identidad social conservada** *(Mega)* - Las bandejas de Facebook, Instagram y TikTok guardan el nombre de su página o usuario de proveedor sin sobrescribir el nombre personalizado de la bandeja al reconectar el canal.
 
 ### WhatsApp Business
+
+- **Contactos brasileños sin duplicados** *(Mega)* - Cloud, coexistencia, Twilio WhatsApp y llamadas Cloud reutilizan contactos móviles existentes cuando el proveedor omite el noveno dígito; las coincidencias exactas tienen prioridad y los teléfonos fijos no generan alternativas móviles.
 
 Conecta con tus clientes a través del canal de mensajería más popular del mundo.
 
 - **WhatsApp Cloud API** - Integración oficial de Meta con todas las funcionalidades empresariales
+- **Recuperación del registro de WhatsApp Cloud** *(Mega)* - Completa la conexión desde la misma bandeja con pasos separados para verificar el número por SMS o llamada y registrar su PIN de dos pasos. Si no hay PIN guardado, se solicita uno; un PIN olvidado se recupera en Meta. El estado de conexión refleja el estado del número informado por Meta.
+- **Conectividad premium para llamadas Cloud** *(Mega)* - Las empresas con redes restrictivas pueden usar STUN/TURN administrado como relay para las llamadas WebRTC de WhatsApp Cloud
 - **Configuración manual guiada de WhatsApp** *(Mega)* - Los administradores pueden preparar su propia aplicación de Meta, validar un número de producción, el ID de WABA y un token permanente antes de crear una bandeja Cloud; el flujo muestra el estado del webhook/suscripción y permite reintentar el webhook sin salir de la configuración
 - **Registro integrado para coexistencia con WhatsApp Business App** *(Mega)* - El registro integrado permite dar de alta un número de WhatsApp Business App, incluidas finalizaciones de coexistencia sin ID de número de teléfono, mientras MEGA configura la conexión y los webhooks requeridos
 - **Mega Hub para WhatsApp** *(Mega)* - Conexión opcional con apps compartidas desde Super Admin, usando credenciales dedicadas del Hub, webhooks reenviados, salud basada en el forward y sin configuración manual de callback/token
@@ -50,7 +55,7 @@ Conecta con tus clientes a través del canal de mensajería más popular del mun
 - **Resiliencia de salud del número** *(Mega)* - La salud del número de Cloud API sigue disponible cuando no se pueden actualizar los datos de la cuenta empresarial vinculada
 - **Perfil comercial de WhatsApp en Salud de la cuenta** *(Mega)* - Salud de la cuenta muestra el perfil comercial de solo lectura que ven los clientes, orientación clara sobre la revisión del nombre y el límite de mensajería compartido por el portafolio
 - **Reconexión manual de WhatsApp** *(Mega)* - Las bandejas elegibles del registro integrado se pueden reconectar a tu propia aplicación de Meta mediante un flujo guiado que conserva la bandeja y su historial de atención
-- **Reconfiguración del registro integrado** *(Mega)* - Los administradores pueden actualizar las credenciales y la configuración de WhatsApp Business de una bandeja Cloud conectada por registro integrado cuando el flujo unificado de registro integrado está habilitado para la cuenta
+- **Reconfiguración del registro integrado** *(Mega)* - Los administradores pueden actualizar las credenciales y la configuración de WhatsApp Business de una bandeja Cloud existente conectada por registro integrado sin habilitar una función de cuenta; la función de creación se mantiene solo para bandejas nuevas
 - **Arquitectura multi-servidor** *(Mega)* - Configura varios servidores por proveedor con resolución automática de credenciales
 - **Capacidad por servidor** *(Mega)* - Define límites por servidor para distribuir carga operativa
 - **Soporte BSUID** *(Mega)* - Identificación robusta del contacto y envío confiable incluso sin `wa_id` tradicional
@@ -77,7 +82,7 @@ Control completo de los grupos de WhatsApp directamente desde MEGA:
 - **Añadir participantes** - Agrega nuevos miembros al grupo desde la plataforma
 - **Eliminar participantes** - Remueve miembros del grupo sin salir de MEGA
 - **Cambiar roles** - Asciende o degrada miembros a administrador
-- **Menciones en grupo** - Usa @ para mencionar miembros específicos en mensajes
+- **Menciones en grupo** - Usa @ para mencionar miembros específicos en mensajes, incluso al editar mensajes de grupos WAHA
 - **Búsqueda de miembros** - Encuentra rápidamente participantes en grupos grandes
 - **Paginación inteligente** - Carga eficiente para grupos con muchos miembros
 - **Avatares de miembros** - Visualiza la foto de perfil de cada participante
@@ -447,6 +452,7 @@ Muchos clientes prefieren la comunicación por voz para temas complejos. Las Lla
 **Funciones durante la llamada:**
 
 - **WebRTC nativo** - Audio de alta calidad sin SDKs externos
+- **Conectividad adaptativa** - Usa servidores STUN/TURN configurados para llamadas premium cuando una red restringida impide la conexión directa
 - **Asignación protegida** - Desde que se acepta la llamada hasta que termina, no se puede cambiar el agente ni el equipo de la conversación; mientras solo timbra, la reasignación sigue disponible
 - **Mute/Unmute** - Alterna el micrófono durante llamadas
 - **Duración de llamada** - Temporizador en tiempo real visible
@@ -531,6 +537,10 @@ Múltiples agentes pueden colaborar en una sola conversación:
 - **Remover participantes** - Quita agentes cuando ya no sean necesarios
 - **Auto-participantes** - Los agentes que interactúan se añaden automáticamente
 
+### Atajos del editor de respuesta
+
+- Los atajos de envío no acumulan acciones duplicadas al cambiar de conversación. Se mantienen las preferencias de Enter/Ctrl/Cmd+Enter y el cierre de menciones con Escape.
+
 ### Respuestas Predefinidas (Canned Responses)
 
 Plantillas rápidas con atajos para respuestas más ágiles:
@@ -597,6 +607,7 @@ Realiza operaciones masivas sobre múltiples conversaciones simultáneamente:
 - **Resolver en lote** - Cierra múltiples conversaciones de una vez
 - **Reabrir en lote** - Reabre conversaciones resueltas
 - **Posponer en lote** - Aplica snooze a varias conversaciones
+- **Estado de lectura en lote** - Marca las conversaciones seleccionadas como leídas o no leídas
 - **Asignar en lote** - Asigna agente o equipo a múltiples chats
 - **Etiquetar en lote** - Aplica etiquetas masivamente
 - **Atajos de teclado** - Ejecuta acciones bulk con hotkeys
@@ -811,6 +822,7 @@ Crea y configura asistentes de IA adaptados a las necesidades de tu negocio:
 - **Sugerencias de FAQ desde conversaciones** - Las conversaciones resueltas con respuestas reutilizables de agentes humanos se agrupan en sugerencias de FAQ revisables; los agentes solo revisan sugerencias y conversaciones fuente a las que tienen acceso, y pueden editar, aprobar o descartar sugerencias abiertas para publicar FAQ confiables
 - **Entrenamiento con conocimiento** - Entrena asistentes con los documentos de tu negocio
 - **Asignación a inbox** - Vincula asistentes a canales específicos
+- **Asignación manual de conversaciones** - Las cuentas con Captain habilitado pueden seleccionar el asistente configurado para el inbox de la conversación; al asignarlo queda pendiente y, al quitarlo o asignar una persona, la conversación se abre
 - **Exclusividad con bots externos** - Captain no responde ni programa resoluciones automáticas en inboxes con un Agent Bot activo o Dialogflow
 - **Resumen del asistente** - Un rediseño opcional combina insights rotatorios del periodo con métricas de resultados, flujo y comparación de tendencias de resolución, CSAT de Captain, uso y cobertura de conocimiento; conserva el resumen heredado de forma predeterminada y usa conjuntos de datos dedicados de resultados, flujo y tendencia de resolución
 - **Detalles de generación** - Abre el indicador “Generado por Captain” en una respuesta del asistente o nota privada de transferencia para ver sus pasos de herramientas y escenarios, fuentes de la base de conocimientos y razonamiento; el modelo y los créditos solo están disponibles para superadministradores
@@ -973,9 +985,9 @@ Transcribe automáticamente mensajes de audio a texto:
 
 - **CSV Upload** - Importa contactos masivamente
 - **Mapeo de campos** - Asocia columnas con atributos
-- **Importación histórica de Intercom** - Los administradores pueden importar contactos, conversaciones y mensajes históricos de Intercom en segundo plano
+- **Importación histórica de Intercom y Freshdesk** - Los administradores pueden importar contactos, conversaciones y mensajes históricos de Intercom o Freshdesk en segundo plano
 - **Monitoreo de importación** - Revisa el progreso, registros omitidos, errores y descarga los registros de omisiones
-- **Reintento de importación detenida** - Reintenta una importación de Intercom detenida tras 15 minutos sin perder su progreso
+- **Reintento de importación detenida** - Reintenta una importación detenida de Intercom o Freshdesk tras 15 minutos sin perder su progreso
 - **Validación automática** - Detecta errores antes de importar
 - **Acceso controlado** - Importación y exportación disponibles para administradores y responsables de contactos
 - **Exportación segura** - Los valores que comienzan con caracteres de fórmula se exportan como texto para impedir su ejecución en hojas de cálculo
@@ -1509,6 +1521,7 @@ Conecta Google Calendar como integración de productividad a nivel de cuenta, no
 Embebe aplicaciones personalizadas en la vista de conversación:
 
 - **iFrames personalizados** - Embebe apps externas en conversaciones
+- **Contexto de apps sincronizado** - Las apps embebidas reciben las definiciones de atributos personalizados y el tema claro/oscuro efectivo; el contexto se actualiza al cambiar estos datos o reabrir la pestaña, y las solicitudes de actualización se responden solo al iframe solicitante.
 - **Contexto dinámico** - Pasa información de conversación y contacto a la app
 - **Apps por usuario** - Las apps pueden configurarse por agente
 - **Múltiples apps** - Añade varias apps al mismo inbox
@@ -1639,7 +1652,7 @@ Personaliza las comunicaciones por email con tu marca:
 - **Quién, qué, cuándo** - Trazabilidad total
 - **Cumplimiento** - Para requisitos regulatorios
 - **Búsqueda rápida de eventos** - Filtra por tipo de evento y rango de días completos, busca por nombre o correo del usuario que realizó la acción y ordena por fecha; los filtros se pueden compartir mediante la URL
-- **Evidencia de eliminaciones (Super Admin)** *(Mega)* - Un informe de solo lectura filtra por cuenta las auditorías retenidas de destrucción de bandejas, conversaciones y contactos, mostrando fecha, captura del objeto, autor/IP cuando existen y la limitación explícita de que la falta de auditorías de Message no prueba una cantidad de mensajes eliminados
+- **Evidencia de eliminaciones (Super Admin)** *(Mega)* - Un informe de solo lectura filtra por cuenta las auditorías retenidas de destrucción de bandejas, conversaciones, contactos y mensajes; las entradas de Message conservan el contenido original como evidencia, pero la API de logs omite ese contenido y el payload del mensaje en los listados
 
 ### SAML/SSO
 
@@ -1992,7 +2005,7 @@ Edita y elimina mensajes de WhatsApp después de enviarlos:
 **Editar Mensajes:**
 
 - **Ventana de 15 minutos** - Edita mensajes enviados dentro de 15 minutos
-- **Sincronización de actualizaciones** - Los mensajes editados se sincronizan automáticamente desde WhatsApp
+- **Sincronización de actualizaciones** - Las ediciones entrantes se sincronizan automáticamente desde WhatsApp Cloud y Notificame sin duplicar el mensaje original
 - **Contexto del remitente grupal** - Las ediciones entrantes de grupos conservan visibles el número y nombre del participante bajo el indicador de edición
 - **Indicador de edición** - Los mensajes editados muestran la etiqueta "editado"
 - **Todos los proveedores** - Funciona con Evolution, WAHA y Uazapi
@@ -2032,6 +2045,8 @@ Gestiona oportunidades comerciales en un pipeline visual conectado al historial 
 - **Entrada sin grupos** - Cada etapa de entrada puede excluir conversaciones de grupos de WhatsApp para que no se creen ítems ni se inicien sus flujos automáticos
 - **Entrega automática de plantillas** - Las plantillas automáticas de una etapa se envían una sola vez por ítem de forma predeterminada, evitando mensajes duplicados al volver a entrar en una etapa. El editor sugiere variables como `{{contact.name}}` al escribir `{{` y las completa al enviar; cada plantilla puede habilitar explícitamente el reenvío en cada reingreso; los mensajes rápidos manuales no tienen esta restricción
 - **Alertas Kanban** - Notifica a miembros de equipos seleccionados y agentes asignados desde automatizaciones de etapa, y al agente responsable cuando una tarea de checklist llega a su fecha límite; las alertas descartadas reaparecen después del intervalo configurado en el funnel solo mientras esa tarea siga pendiente. Agrupa alertas en un banner no bloqueante y no envía email
+- **Consultas optimizadas** - Los contadores del selector de funnels usan consultas ligeras; las estadísticas conservan los totales por moneda y oferta, y búsquedas e informes reutilizan datos relacionados para reducir consultas repetidas.
+- **Vencimientos al crear o duplicar** - Las tareas de checklist con fecha límite y responsable programan su aviso al guardarse, también al copiarse a otro card; las copias notifican desde el card de destino.
 - **Sincronización en tiempo real** - Cambios de etapa y datos del ítem se reflejan al instante en lista de chats y panel del contacto
 - **Negocios abiertos del contacto** - Cada embudo puede habilitar desde Configuración Avanzada la visualización de sus ítems Kanban abiertos en todas las conversaciones del contacto actual; la opción está desactivada por defecto, conserva las reglas de visibilidad e identifica las conversaciones relacionadas
 - **Paneles autorizados** - El bloque Kanban del panel de conversación y la entrada del sidebar se ocultan cuando el usuario no tiene ítems visibles ni funnels disponibles para agregar negocios
@@ -2070,6 +2085,7 @@ Estadísticas e insights anuales para tu cuenta:
 - **SAML/SSO** - Single Sign-On empresarial
 - **Tokens de API** - Acceso programático seguro
 - **Soporte en cuenta suspendida** - Los usuarios suspendidos ven el aviso de política con una acción directa para contactar soporte; los administradores en Cloud también pueden abrir facturación para regularizar el pago y restaurar el acceso. Los superadministradores registran una categoría y un motivo por cada suspensión, y pueden consultar o corregir la última entrada desde los detalles de la cuenta.
+- **Cancelación programada de suscripción** - Facturación Cloud muestra la fecha en que terminará una suscripción de Stripe y mantiene el plan activo hasta el cierre de ese período.
 - **Reenvío de confirmación** - Los superadministradores pueden reenviar el correo de confirmación a un usuario pendiente desde sus detalles, sin exponer enlaces ni tokens.
 
 ### Privacidad
