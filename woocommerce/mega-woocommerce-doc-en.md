@@ -66,9 +66,9 @@ Before you start, make sure you have:
 
 ### How MEGA finds a contact's orders
 
-- MEGA searches orders by the contact's **email**. If the contact has no email, it searches by **phone**
-- The contact's email must match the order's billing email. If the customer bought with a different email, their orders won't show up
-- Phone search is less reliable: WooCommerce stores the phone exactly as the customer typed it, which may not match the international format MEGA uses (e.g. `+5491112345678`). Whenever possible, fill in the contact's email
+- MEGA searches orders by the contact's **email** and **phone**, and shows the results together without repeating orders
+- **By email**: the contact's email must match the order's billing email
+- **By phone**: MEGA recognizes the billing phone even when the customer typed it with spaces, dashes, or no country code (e.g. `011 1234-5678`), using the order's billing country. That way it matches the contact's international format (e.g. `+5491112345678`)
 - The **10 most recent orders** are shown
 - If the contact has neither email nor phone, the section shows **No orders found**
 
@@ -100,7 +100,7 @@ The status appears exactly as WooCommerce sends it (`pending`, `processing`, `on
 ### How the notes work
 
 - MEGA identifies the store by its address, which is why the **Store URL** from Step 2 must match the site address in WordPress
-- The customer is matched by the order's **billing email** and, if there's no match, by the **billing phone**
+- The customer is matched by the order's **billing email** and, if there's no match, by the **billing phone**, in any format (read with the billing country)
 - The note is added to the customer's **most recent conversation**. If the customer has no conversation in MEGA, nothing is added
 - The **WooCommerce Orders** section loads when you open the conversation. If it's already open when the note arrives, reopen it to see the new status
 
@@ -111,7 +111,7 @@ The status appears exactly as WooCommerce sends it (`pending`, `processing`, `on
 | **WooCommerce** doesn't appear under **Settings → Integrations** | Your plan doesn't include the integration | Ask your MEGA provider to enable it |
 | The **WooCommerce Orders** section doesn't appear in the conversation | The integration isn't connected, or the section is hidden | Check Step 2 and the sidebar sections |
 | The section shows an error loading orders | Wrong or revoked keys, mistyped Store URL, permalinks set to **Plain**, or a firewall / security plugin blocking `/wp-json/` | Check the keys and Store URL; enable permalinks; allow access to `/wp-json/wc/v3/` in your firewall, Cloudflare, or security plugin |
-| **No orders found** for a customer who did buy | The contact's email doesn't match the billing email, or the contact has no email | Fix or add the contact's email |
+| **No orders found** for a customer who did buy | Neither the contact's email nor phone matches the order's billing details | Fix or add the contact's email or phone |
 | Status change notes don't arrive | Webhook inactive, wrong delivery URL, Store URL different from the site address, or the customer has no conversation in MEGA | Check Step 3. Under **WooCommerce → Status → Logs**, look for the `webhooks-delivery` logs to see the responses |
 | The webhook shows as **Disabled** | WooCommerce disables it on its own after several failed deliveries | Fix the delivery URL and set it back to **Active** |
 

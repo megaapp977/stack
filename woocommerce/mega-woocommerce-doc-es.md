@@ -66,9 +66,9 @@ Antes de comenzar, asegúrese de tener:
 
 ### Cómo encuentra MEGA los pedidos de un contacto
 
-- MEGA busca los pedidos por el **correo electrónico** del contacto. Si el contacto no tiene correo, busca por su **teléfono**
-- El correo del contacto debe coincidir con el de facturación del pedido. Si el cliente compró con otro correo, sus pedidos no aparecerán
-- La búsqueda por teléfono es menos fiable: WooCommerce guarda el teléfono tal como lo escribió el cliente, y puede no coincidir con el formato internacional que usa MEGA (ej. `+5491112345678`). Siempre que pueda, cargue el correo del contacto
+- MEGA busca los pedidos por el **correo electrónico** y por el **teléfono** del contacto, y muestra los resultados juntos, sin repetir pedidos
+- **Por correo**: el correo del contacto debe coincidir con el de facturación del pedido
+- **Por teléfono**: MEGA reconoce el teléfono de facturación aunque el cliente lo haya escrito con espacios, guiones o sin código de país (ej. `011 1234-5678`), usando el país de facturación del pedido. Así coincide con el formato internacional del contacto (ej. `+5491112345678`)
 - Se muestran los **10 pedidos más recientes**
 - Si el contacto no tiene correo ni teléfono, la sección indica **No se encontraron pedidos**
 
@@ -100,7 +100,7 @@ El estado aparece tal como lo envía WooCommerce (`pending`, `processing`, `on-h
 ### Cómo funcionan los avisos
 
 - MEGA identifica la tienda por su dirección, por eso la **Store URL** del Paso 2 debe coincidir con la dirección del sitio en WordPress
-- El cliente se busca por el **correo de facturación** del pedido y, si no hay coincidencia, por el **teléfono de facturación**
+- El cliente se busca por el **correo de facturación** del pedido y, si no hay coincidencia, por el **teléfono de facturación**, en cualquier formato (se interpreta con el país de facturación)
 - La nota se agrega en la **conversación más reciente** del cliente. Si el cliente no tiene ninguna conversación en MEGA, no se agrega nada
 - La sección **Pedidos de WooCommerce** se actualiza al abrir la conversación. Si la tiene abierta cuando llega el aviso, vuelva a abrirla para ver el estado nuevo
 
@@ -111,7 +111,7 @@ El estado aparece tal como lo envía WooCommerce (`pending`, `processing`, `on-h
 | No aparece **WooCommerce** en **Ajustes → Integraciones** | Su plan no incluye la integración | Pida a su proveedor de MEGA que la habilite |
 | La sección **Pedidos de WooCommerce** no aparece en la conversación | La integración no está conectada, o la sección está oculta | Revise el Paso 2 y las secciones de la barra lateral |
 | La sección muestra un error al cargar los pedidos | Claves incorrectas o revocadas, Store URL mal escrita, enlaces permanentes en **Simple**, o un firewall / plugin de seguridad bloquea `/wp-json/` | Revise las claves y la Store URL; active los enlaces permanentes; permita el acceso a `/wp-json/wc/v3/` en su firewall, Cloudflare o plugin de seguridad |
-| **No se encontraron pedidos** para un cliente que sí compró | El correo del contacto no coincide con el de facturación, o el contacto no tiene correo | Corrija o agregue el correo en el contacto |
+| **No se encontraron pedidos** para un cliente que sí compró | Ni el correo ni el teléfono del contacto coinciden con los de facturación del pedido | Corrija o agregue el correo o el teléfono en el contacto |
 | No llegan los avisos de cambio de estado | Webhook inactivo, URL de entrega incorrecta, Store URL distinta de la dirección del sitio, o el cliente no tiene conversación en MEGA | Revise el Paso 3. En **WooCommerce → Estado → Registros** busque los registros `webhooks-delivery` para ver las respuestas |
 | El webhook aparece como **Desactivado** | WooCommerce lo desactiva solo tras varios envíos fallidos | Corrija la URL de entrega y vuelva a ponerlo en **Activo** |
 
