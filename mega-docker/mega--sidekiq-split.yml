@@ -4,7 +4,7 @@
 #
 # bundle exec rails db:chatwoot_prepare
 #
-# Sidekiq dividido en 6 workers:
+# Sidekiq dividido en 7 workers:
 #   Worker 1 (critical): critical, high, default
 #   Worker 2 (events):   events
 #   Worker 3 (whatsapp history): whatsapp_history_sync
@@ -14,6 +14,12 @@
 #                         async_database_migration, bulk_reindex_low,
 #                         active_storage_analysis, active_storage_purge,
 #                         action_mailbox_incineration
+#   Worker 7 (flow builder): flow_builder
+#
+# Cada worker escucha solo las colas de su comando (-q), no config/sidekiq.yml:
+# una cola nueva de la app necesita un worker que la liste. Desde la versión con
+# la cola flow_builder, los flujos de Flow Builder (inicios y reanudaciones) corren
+# en el Worker 7, y el tick de flujos programados va en medium (Worker 5).
 #
 #############
 
@@ -261,6 +267,38 @@ services:
         limits:
           cpus: "1"
           memory: 1024M
+
+  ##############################################################
+  # SIDEKIQ WORKER 7 – FLOW BUILDER
+  # Colas: flow_builder
+  # Procesa: los flujos de Flow Builder (inicios y reanudaciones). Un bloque
+  # lento (una petición HTTP, una llamada a IA) ocupa un hilo de este worker
+  # y no uno de los que envían respuestas y webhooks.
+  ##############################################################
+  mega_sidekiq_flow_builder:
+    image: sendingtk/chatwoot:v4.24.0
+    command: bundle exec sidekiq -q flow_builder -c 5
+    restart: always
+    networks:
+      - examplenet
+    volumes:
+      - examplechat_dat:/app/storage
+    environment:
+      <<: *default_env
+      SIDEKIQ_CONCURRENCY: 5
+      SIDEKIQ_FLOW_BUILDER_CONCURRENCY: 5
+      FLOW_BUILDER_CODE_CONCURRENCY: 2
+      RAILS_MAX_THREADS: 5
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2048M
 
   ##############################################################
   # SIDEKIQ WORKER 5 – MEDIUM

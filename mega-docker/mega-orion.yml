@@ -123,6 +123,10 @@ services:
   chatwoot_sidekiq:
     image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
     command: bundle exec sidekiq -C config/sidekiq.yml
+    ## Este worker también procesa los flujos de Flow Builder (cola flow_builder).
+    ## Para darles un worker propio: FLOW_BUILDER_IN_MAIN_SIDEKIQ=false aquí y un
+    ## servicio más con: bundle exec sidekiq -C config/sidekiq_flow_builder.yml
+    ## (SIDEKIQ_FLOW_BUILDER_CONCURRENCY, por defecto 5).
 
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
