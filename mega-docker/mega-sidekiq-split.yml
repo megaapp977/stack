@@ -32,6 +32,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -44,6 +46,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -135,6 +139,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -147,6 +153,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -228,6 +236,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -240,6 +250,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -321,6 +333,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -333,6 +347,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -414,6 +430,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -421,6 +439,8 @@ services:
       - INSTALLATION_NAME=mega
       - SECRET_KEY_BASE=ca68dcd674b1e9e460671be221c30f30
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
       - DEFAULT_LOCALE=pt_BR
       - TZ=America/Sao_Paulo
@@ -489,6 +509,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -496,6 +518,8 @@ services:
       - INSTALLATION_NAME=mega
       - SECRET_KEY_BASE=ca68dcd674b1e9e460671be221c30f30
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
       - DEFAULT_LOCALE=pt_BR
       - TZ=America/Sao_Paulo
@@ -564,6 +588,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -576,6 +602,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -657,6 +685,8 @@ services:
     volumes:
       - chatwoot_storage:/app/storage ## Arquivos de conversa
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - mired ## Nome da rede interna
 
@@ -669,6 +699,8 @@ services:
 
     ## 💬 Url Chatwoot
       - FRONTEND_URL=https://mega.dominio.com
+      - VOICE_ENGINE_URL=http://host.docker.internal:8790 ## Motor de voz (opcional)
+      - VOICE_ENGINE_SECRET=changeme_voice_engine_secret_32_chars_min
       - FORCE_SSL=true
 
     ## 🌍 Idioma/Localização padrão
@@ -732,6 +764,37 @@ services:
       resources:
         limits:
           cpus: "0.5"
+          memory: 512M
+
+  ## Motor de voz (opcional): lleva el audio de las llamadas de WhatsApp en el servidor
+  ## (espera, transferencias, grabación, menús e IA). Sin este servicio las llamadas siguen en el navegador.
+  ## - Usa la misma imagen y versión que la app (una versión de Mega que incluya mega-voice).
+  ## - Corre en la red del host: abre en el firewall UDP 10000 hasta 10000 + MEGA_VOICE_UDP_PORTS - 1
+  ##   y cierra el 8790 (API de control, solo para Rails).
+  ## - En el servidor, una vez: sudo sysctl -w net.core.rmem_max=26214400 net.core.wmem_max=26214400
+  ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
+  ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
+  chatwoot_voice:
+    image: sendingtk/chatwoot:v4.24.0
+    entrypoint: ["/usr/local/bin/mega-voice"]
+    command: []
+    networks:
+      - hostnet
+    environment:
+      - MEGA_VOICE_SECRET=changeme_voice_engine_secret_32_chars_min ## El mismo valor que VOICE_ENGINE_SECRET
+      - MEGA_VOICE_EVENTS_URL=https://mega.dominio.com/webhooks/voice_engine
+      - MEGA_VOICE_UDP_PORTS=50 ## Llamadas simultáneas: abre UDP 10000-10049
+      - MEGA_VOICE_MAX_CALLS=50 ## Las llamadas de más siguen en el navegador
+    stop_grace_period: 1h ## Deja terminar las llamadas en curso al actualizar
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
           memory: 512M
 
 ## --------------------------- REDIS --------------------------- ##
@@ -815,3 +878,6 @@ networks:
   mired: ## Nome da rede interna
     external: true
     name: mired ## Nome da rede interna
+  hostnet: ## Red del host, para el motor de voz
+    external: true
+    name: host

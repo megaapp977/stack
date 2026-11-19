@@ -13,6 +13,9 @@ x-variables: &default_env
   INSTALLATION_ENV: docker
   SECRET_KEY_BASE: changemeexamplekey
   FRONTEND_URL: https://app.example.com
+  # Motor de voz (opcional, servicio mega_voice): mismo secreto en los dos lados, 32+ caracteres
+  VOICE_ENGINE_URL: http://host.docker.internal:8790
+  VOICE_ENGINE_SECRET: changeme_voice_engine_secret_32_chars_min
   DEFAULT_LOCALE: en
   FORCE_SSL: "true"
   ENABLE_ACCOUNT_SIGNUP: "false"
@@ -102,6 +105,8 @@ services:
       # - /opt/branding/mega/brand-assets/logo_thumbnail.svg:/app/public/brand-assets/logo_thumbnail.svg
       # - /opt/branding/mega/brand-assets/logo_thumbnail_dark.svg:/app/public/brand-assets/logo_thumbnail_dark.svg
 
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - examplenet
     environment:
@@ -136,6 +141,8 @@ services:
     ## servicio más con: bundle exec sidekiq -C config/sidekiq_flow_builder.yml
     ## (SIDEKIQ_FLOW_BUILDER_CONCURRENCY, por defecto 5).
     restart: always
+    extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
+      - "host.docker.internal:host-gateway"
     networks:
       - examplenet
     volumes:
@@ -152,6 +159,37 @@ services:
         limits:
           cpus: "3"
           memory: 2048M
+
+  ## Motor de voz (opcional): lleva el audio de las llamadas de WhatsApp en el servidor
+  ## (espera, transferencias, grabación, menús e IA). Sin este servicio las llamadas siguen en el navegador.
+  ## - Usa la misma imagen y versión que la app (una versión de Mega que incluya mega-voice).
+  ## - Corre en la red del host: abre en el firewall UDP 10000 hasta 10000 + MEGA_VOICE_UDP_PORTS - 1
+  ##   y cierra el 8790 (API de control, solo para Rails).
+  ## - En el servidor, una vez: sudo sysctl -w net.core.rmem_max=26214400 net.core.wmem_max=26214400
+  ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
+  ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
+  mega_voice:
+    image: sendingtk/chatwoot:v4.24.0
+    entrypoint: ["/usr/local/bin/mega-voice"]
+    command: []
+    networks:
+      - hostnet
+    environment:
+      MEGA_VOICE_SECRET: changeme_voice_engine_secret_32_chars_min # El mismo valor que VOICE_ENGINE_SECRET
+      MEGA_VOICE_EVENTS_URL: https://app.example.com/webhooks/voice_engine
+      MEGA_VOICE_UDP_PORTS: 50 # Llamadas simultáneas: abre UDP 10000-10049
+      MEGA_VOICE_MAX_CALLS: 50 # Las llamadas de más siguen en el navegador
+    stop_grace_period: 1h ## Deja terminar las llamadas en curso al actualizar
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
 
   redis:
     image: redis:7.4.2
@@ -227,3 +265,6 @@ networks:
   examplenet:
     external: true
     name: examplenet
+  hostnet: ## Red del host, para el motor de voz
+    external: true
+    name: host
