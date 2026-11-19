@@ -26,7 +26,7 @@ services:
 ## --------------------------- CHATWOOT APP --------------------------- ##
 
   chatwoot_app:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: sh -c "bundle exec rails db:mega_prepare && bundle exec rails s -p 3000 -b 0.0.0.0"
 
     volumes:
@@ -133,7 +133,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_critical:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q critical -q high -q default -c 15
 
     volumes:
@@ -230,7 +230,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_events:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q events -c 10
 
     volumes:
@@ -327,7 +327,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_whatsapp_history:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q whatsapp_history_sync -c 2
 
     volumes:
@@ -424,7 +424,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_whatsapp:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q whatsapp -c 10
 
     volumes:
@@ -503,7 +503,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_flow_builder:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q flow_builder -c 5
 
     volumes:
@@ -582,7 +582,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_medium:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q medium -q mailers -q action_mailbox_routing -q scheduled_messages -c 10
 
     volumes:
@@ -679,7 +679,7 @@ services:
 ## ------------------------------------------------------------------------------- ##
 
   chatwoot_sidekiq_low:
-    image: sendingtk/chatwoot:v4.24.0 ## Versão do Chatwoot
+    image: sendingtk/mega:v5.5.0 ## Versão do Mega
     command: bundle exec sidekiq -q low -q scheduled_jobs -q deferred -q purgable -q housekeeping -q async_database_migration -q bulk_reindex_low -q active_storage_analysis -q active_storage_purge -q action_mailbox_incineration -c 10
 
     volumes:
@@ -775,7 +775,7 @@ services:
   ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
   ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
   chatwoot_voice:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     entrypoint: ["/usr/local/bin/mega-voice"]
     command: []
     networks:

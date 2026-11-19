@@ -94,7 +94,7 @@ x-variables:
 
 services:
   mega_app:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: sh -c "bundle exec rails db:mega_prepare && bundle exec rails s -p 3000 -b 0.0.0.0"
     entrypoint: docker/entrypoints/rails.sh
     restart: always
@@ -159,7 +159,7 @@ services:
   # EventDispatcherJob queda aislado en el worker events.
   ##############################################################
   mega_sidekiq_critical:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q critical -q high -q default -c 15
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -191,7 +191,7 @@ services:
   # critical para no bloquear el realtime del UI.
   ##############################################################
   mega_sidekiq_events:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q events -c 10
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -224,7 +224,7 @@ services:
   # saturar DB/Redis durante sincronizaciones grandes.
   ##############################################################
   mega_sidekiq_whatsapp_history:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q whatsapp_history_sync -c 2
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -256,7 +256,7 @@ services:
   # para que campañas y tareas de baja prioridad no retrasen mensajes.
   ##############################################################
   mega_sidekiq_whatsapp:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q whatsapp -c 10
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -289,7 +289,7 @@ services:
   # y no uno de los que envían respuestas y webhooks.
   ##############################################################
   mega_sidekiq_flow_builder:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q flow_builder -c 5
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -322,7 +322,7 @@ services:
   # mensajes programados y tareas de prioridad media.
   ##############################################################
   mega_sidekiq_medium:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q medium -q mailers -q action_mailbox_routing -q scheduled_messages -c 10
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -357,7 +357,7 @@ services:
   # de mailbox. Toleran mayor latencia.
   ##############################################################
   mega_sidekiq_low:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     command: bundle exec sidekiq -q low -q scheduled_jobs -q deferred -q purgable -q housekeeping -q async_database_migration -q bulk_reindex_low -q active_storage_analysis -q active_storage_purge -q action_mailbox_incineration -c 10
     restart: always
     extra_hosts: ## El motor de voz se alcanza en el nodo donde corre la app
@@ -390,7 +390,7 @@ services:
   ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
   ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
   mega_voice:
-    image: sendingtk/chatwoot:v4.24.0
+    image: sendingtk/mega:v5.5.0
     entrypoint: ["/usr/local/bin/mega-voice"]
     command: []
     networks:
