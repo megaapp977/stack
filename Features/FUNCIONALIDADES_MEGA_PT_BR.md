@@ -2,11 +2,28 @@
 
 ## Seu Centro de Comando para o Atendimento ao Cliente do Futuro
 
+Mega Assistant reutiliza as ferramentas elegíveis e o contexto estável em cada chat privado para que provedores compatíveis possam usar cache e reduzir o custo das respostas.
+As ações propostas aparecem abaixo da mensagem do assistente depois que ela termina de ser exibida.
+
+Os cards de provedores IA resumem quantidade de modelos, capacidades verificadas e avisos de saldo. Modelos e testes abre um modal com usos atribuídos, status e erros salvos de cada modelo, sem expandir a grade. As ações de testar, editar e excluir com suas proteções são mantidas.
+
+O formulário de provedores fica centralizado. Um botão visível de entrada em lote abre um modal para colar modelos e selecionar capacidades; Cancelar ou Escape fecha sem adicionar linhas.
+
+Adicionar/editar provedor usa conexão em duas colunas e uma tabela compacta de modelos. A entrada em lote aceita nomes separados por linhas ou vírgulas e capacidades compartilhadas; nomes existentes são combinados sem duplicar linhas.
+
+O formulário mostra uma linha por modelo com caixas de Chat, PDF, Áudio e Embeddings. Somente capacidades marcadas são testadas; modelos e resultados verificados existentes são preservados.
+
+As seleções do catálogo antigo continuam disponíveis para suas funções originais ao editar um provedor importado. Novas seleções qualificadas por provedor exigem capacidades atribuídas e verificadas. PDF/áudio legado resolve as credenciais atuais da OpenAI nativa, recorrendo às configurações da instalação quando não existe provedor nativo ativo. Áudio prioriza a integração OpenAI da conta; o fallback do Captain exige a função habilitada e cota disponível. Gravações mantêm seu fluxo especializado.
+
+Uma correção de atualização restaura uma única vez as entradas ausentes `whisper-1`, `gpt-4o-mini-transcribe` e `text-embedding-3-small` no provedor nativo com identificador `openai`. Preserva credenciais, modelos personalizados, atribuições existentes, resultados de testes e seleções das contas. As entradas restauradas ficam configuradas, não verificadas automaticamente; selecioná-las com identificador de provedor continua exigindo testes. A correção pode restaurar uma entrada base removida anteriormente, mas não a adiciona novamente ao salvar normalmente. Modelos marcados como futuros não são adicionados.
+
+A regeneração de FAQ preserva as respostas existentes em caso de erros ou resultados vazios. Substitui apenas respostas não editadas quando há resultados válidos, em uma transação que reverte a substituição se alguma inserção falhar. Para PDF legado, verifica o arquivo remoto e, somente diante de um 404, envia novamente o original mantido usando as mesmas credenciais da geração. Erros de permissão, saldo ou conexão não provocam outro envio; se o original não estiver disponível, o conhecimento anterior é preservado.
+
 As gravações de chamadas do Twilio Voice podem ser transcritas opcionalmente, exibidas com a gravação e encontradas na busca de conversas.
 
 **Versão:** Enterprise
 **Baseado em:** Plataforma MEGA e Funcionalidades Exclusivas da MEGA
-**Última Atualização:** 1 de setembro de 2026
+**Última Atualização:** 23 de setembro de 2026
 
 ---
 
@@ -196,7 +213,9 @@ Muitos clientes preferem email para consultas formais, documentação ou acompan
 
 - **Caixa unificada** - Todos os emails aparecem como conversas junto com WhatsApp, redes sociais e mais
 - **Respostas ricas** - Envie emails com formatação, imagens e anexos
+- **Arquivos grandes ao iniciar uma conversa por email** *(Mega)* - A janela de nova conversa usa o mesmo tamanho máximo de anexo das respostas de email, envia os arquivos direto para o armazenamento quando o upload direto está ativo e avisa quando os anexos passam de 20 MB e chegarão como links de download
 - **Imagens inline redimensionáveis** - Insira imagens no corpo do email e ajuste o tamanho visualmente
+- **Imagens dentro do email** *(Mega)* - As imagens do corpo e da assinatura do agente viajam dentro do email de resposta, então o Outlook e outros clientes que bloqueiam imagens remotas as mostram sem pedir permissão; as que passam do limite continuam como link
 - **Assinaturas personalizadas** - Configure assinaturas profissionais por agente ou caixa de entrada
 - **Qualquer provedor** - Conecte Gmail, Outlook, seu servidor próprio ou qualquer email
 - **Configuração guiada** - Detecta Gmail ou Outlook pelo seu domínio para sugerir a integração correta
@@ -635,7 +654,7 @@ Realize operações em massa em múltiplas conversas simultaneamente:
 - **Resolver em lote** - Feche múltiplas conversas de uma vez
 - **Reabrir em lote** - Reabra conversas resolvidas
 - **Adiar em lote** - Aplique snooze em várias conversas
-- **Estado de leitura em lote** - Marque as conversas selecionadas como lidas ou não lidas
+- **Estado de leitura em lote** - Marque as conversas selecionadas como lidas ou não lidas, inclusive em seleções grandes
 - **Atribuir em lote** - Atribua agente ou equipe a múltiplos chats
 - **Etiquetar em lote** - Aplique etiquetas em massa
 - **Atalhos de teclado** - Execute ações bulk com hotkeys
@@ -796,6 +815,18 @@ Configure fluxos automáticos baseados em eventos e condições:
 - Silenciar conversa
 - Redistribuir para agentes online
 
+### Flow Builder *(Mega - MVP)*
+
+Desenhe automações conversacionais em um canvas visual com blocos conectáveis.
+
+- **Canvas visual estilo n8n** - Monte fluxos arrastando blocos, conectando caminhos e editando cada etapa em um inspetor lateral
+- **Blocos iniciais** - Disparador, mensagem, pergunta, condição, ação, transferência, espera, webhook e fim
+- **Ações reutilizadas de Automation** - O nó Ação usa os mesmos seletores para etiquetas, equipes, agentes, prioridade, email, webhook, notas privadas e status de conversa compatíveis
+- **Rascunhos e publicação versionada** - Edite sem alterar a versão publicada e publique snapshots estáveis
+- **Validação antes de publicar** - Detecta ciclos, múltiplos disparadores, conexões quebradas, saídas conectadas a dois blocos, blocos que o Início não alcança e blocos incompletos
+- **Runtime inicial de eventos** - Flows publicados podem iniciar a partir de eventos internos compatíveis com Automation e executar mensagens, perguntas, condições, ações básicas e handoff
+- **Base para IVR e voz** - O mesmo canvas fica preparado para adicionar nós de chamadas e IVR em uma fase posterior
+
 ### Macros
 
 Execute múltiplas ações com um só clique:
@@ -837,6 +868,8 @@ Além da integração padrão, a MEGA estende as capacidades do Typebot com coma
 
 ### Captain *(Enterprise)*
 
+- **Sugestões de etiquetas e prioridade** - O Captain sugere até três etiquetas existentes para a conversa ou o contato, e uma prioridade com base nas mensagens públicas recentes. Agentes podem aceitar ou descartar as sugestões; solicitá-las novamente gera uma nova resposta do modelo. A barra lateral indica quando a prioridade recomendada já está aplicada; aceitar etiquetas descarta a sugestão anterior. Ative `captain_classifier` para a conta e selecione o modelo de classificação de conversas nas configurações do Captain da conta ou do plano; a solicitação não consome créditos de respostas do Captain.
+
 Assistente de IA avançado que transforma como sua equipe trabalha.
 
 **Assistentes de IA:**
@@ -854,6 +887,7 @@ Crie assistentes especializados para diferentes necessidades:
 - **Visão geral do assistente** - Um redesenho opcional combina insights rotativos do período com métricas de resultados, fluxo e comparação de tendências de resolução, CSAT do Captain, uso e cobertura de conhecimento; preserva a visão legada por padrão e usa conjuntos de dados dedicados de resultados, fluxo e tendência de resolução
 - **Detalhes da geração** - Abra o indicador “Gerado pelo Captain” em uma resposta do assistente ou nota privada de transferência para ver as etapas de ferramentas e cenários, fontes da base de conhecimento e raciocínio; o modelo e os créditos ficam disponíveis apenas para superadministradores
 - **Citações confiáveis** - O Captain V2 exibe somente links web públicos validados pelo servidor, registra as fontes realmente selecionadas e mantém as URLs renderizadas fora do histórico enviado ao modelo; sessões anteriores preservam suas fontes existentes
+- **Runtime seguro e limitado** - O Captain V2 limita o contexto e os atributos visíveis, seleciona ferramentas ativas por conta, preserva memória e estados de tarefas relevantes e registra decisões, saúde e idempotência das execuções sem tratar conteúdo externo como instruções. O diagnóstico por execução inclui latência e fallback do resumo semântico; as verificações golden configuradas são executadas diariamente sem efeitos de ferramentas.
 - **Disponibilidade em planos pagos** - O Captain V2 é ativado automaticamente quando uma conta cloud é reconciliada com qualquer plano pago; o plano padrão permanece sem Captain V2
 - **Compreensão de imagens** - O assistente pode analisar imagens enviadas nas conversas
 - **Suporte multimodal** - Processa texto e imagens simultaneamente para respostas contextuais
@@ -1122,6 +1156,7 @@ Envie campanhas de múltiplas linhas de WhatsApp para maximizar o alcance e evit
 
 - **Distribuição automática** - As mensagens são distribuídas entre suas linhas
 - **Rotação configurável** - Defina quantas mensagens enviar por cada linha antes de trocar
+- **Edição do rodízio** - Em campanhas de WhatsApp com Evolution, WAHA ou Uazapi e do canal API, mantenha as caixas selecionadas, adicione ou remova caixas e desative o rodízio ao salvar uma campanha editável
 - **Evite bloqueios** - Ao distribuir a carga, você reduz o risco de limites por linha
 - **Maior velocidade** - Envie mais mensagens em menos tempo usando várias linhas
 
@@ -1151,6 +1186,7 @@ Monitore o desempenho das suas campanhas em tempo real:
 - **Mensagens enviadas** - Acompanhamento em tempo real do progresso
 - **Mensagens com falha** - Identifique problemas de entrega
 - **Relatório de erros** - Baixe detalhes de envios com falha para correção
+- **Diagnóstico de entrega** *(Mega)* - Relatórios e CSV incluem códigos e motivos do provedor; uma intervenção na caixa de entrada ou no modelo pausa os envios restantes com segurança
 
 ### Proteção Anti-Spam
 
@@ -1273,7 +1309,7 @@ O sistema inclui múltiplas proteções para manter a qualidade dos seus envios:
 - **Tempo de resolução** - Média e distribuição
 - **Primeira resposta** - Tempo de resposta inicial
 - **Tendências** - Evolução temporal
-- **Drilldown de barras** - Abra cada barra do gráfico para revisar as conversas ou mensagens que compõem a métrica, com navegação entre buckets e contagem de resultados
+- **Drilldown de barras** - Abra cada barra do gráfico para revisar as conversas ou mensagens que compõem a métrica, com navegação entre buckets e contagem de resultados; para a contagem de conversas, Ver todas abre uma lista filtrada em uma nova aba
 
 ### Relatórios de Agentes
 
@@ -1461,6 +1497,7 @@ Controle avançado da carga de trabalho:
 - **Disponibilidade por inbox** - Defina horários de atendimento
 - **Fusos horários** - Suporte multi-região
 - **Mensagens fora do horário** - Respostas automáticas
+- **Exceções da mensagem fora do horário** *(Mega)* - Em Horário de atendimento, cada caixa pode deixar sem a mensagem de indisponibilidade os grupos do WhatsApp, números ou identificadores específicos e os contatos com certas etiquetas, com as mesmas regras dos robôs
 - **Pausa para almoço** - Configure intervalos de descanso dentro do horário comercial
 - **Horários por dia** - Defina horários diferentes para cada dia da semana
 
@@ -1477,7 +1514,7 @@ Cada agente pode personalizar exatamente quando e como receber alertas:
 **Tipos de notificação:**
 
 - Nova conversa criada
-- Conversa atribuída a você
+- Conversa atribuída a você, inclusive quando está pendente
 - Nova mensagem nas suas conversas
 - Quando te mencionam numa conversa
 - Mensagens em conversas onde participa
@@ -1626,7 +1663,17 @@ Estenda a plataforma com apps personalizados exibidos na interface de conversa:
 - **Contexto dinâmico** - Passe informações da conversa para o app
 - **SDK JavaScript** - Interaja com dados da MEGA
 - **Eventos em tempo real** - Reaja a mudanças na conversa
-- **Scripts de dashboard (Super Admin)** *(Mega)* - Publique personalizações globais sem alterar o código base
+- **Scripts de dashboard (Super Admin)** *(Mega)* - Publique personalizações globais sem alterar o código base, com pré-visualização do painel real que injeta o código não salvo; no celular usa navegação compacta, filtros em pílulas e cartões
+- **Agent Bots (Super Admin)** *(Mega)* - Gerencia os bots de agente de toda a instalação. A lista mostra quem pode conectar cada bot (global ou de uma conta), seu tipo, o domínio para onde envia eventos e quantas caixas de entrada o usam, com busca ao vivo por nome, URL ou conta e filtro por alcance; a página do bot reúne seus detalhes, as caixas de entrada conectadas com a conta e o status, a URL do webhook, o segredo de assinatura e o token de API ocultos com cópia, e a exclusão; o formulário escolhe a conta com uma busca (vazio = bot global). No celular cada bot é um cartão
+- **Apps da plataforma (Super Admin)** *(Mega)* - Gerencia os apps que usam a API da plataforma. A lista mostra quantas contas cada app alcança e os usuários e bots que ele criou, com busca ao vivo; a página do app lista as contas com busca, filtro com/sem acesso e paginação para dar ou revogar acesso uma a uma ou dar acesso a todas, e reúne o token de API oculto com cópia, os registros que gerencia e a exclusão; o formulário tem um interruptor de acesso a todas as contas que nunca revoga acessos. Avisa que as contas criadas depois não são adicionadas sozinhas. No celular cada app é um cartão
+- **Banners da plataforma (Super Admin)** *(Mega)* - A lista mostra cada banner na cor do seu tipo, quem o vê, quando e se está visível agora, agendado, encerrado ou desativado, com um interruptor por linha, busca ao vivo e filtro por status; a página do banner reúne a mensagem, o público e as datas, as contas escolhidas, a atividade (incluindo quantos agentes o fecharam) e a mesma pré-visualização do formulário, com aviso quando está agendado ou encerrado. No formulário o tipo é escolhido pela cor e a pré-visualização acompanha o tipo, o título, a mensagem e o status durante a edição, nas cores reais do painel. No celular cada banner é um cartão
+- **Provedores de WhatsApp (Super Admin)** *(Mega)* - Os servidores de Evolution API, WAHA e Uazapi aparecem em uma grade de cartões com o provedor e o slot, o uso de caixas de entrada frente à capacidade, o host da API, a origem das credenciais (salvas, do ambiente ou ausentes), chamadas de voz e status, com busca ao vivo e filtro por provedor; a página do servidor mostra o uso, as caixas de entrada que hospeda com a conta, a conexão com as variáveis de ambiente que o slot lê e se estão definidas, as configurações e a exclusão (bloqueada para o slot legado ou enquanto hospeda caixas de entrada). O formulário por seções escolhe o provedor como opção e mostra ao vivo quais variáveis de ambiente o slot escolhido lê. No celular cada servidor é um cartão em largura total
+- **Diagnóstico de push (Super Admin)** *(Mega)* - Ferramenta em três passos para verificar por que um usuário não recebe notificações: busca-se o usuário por nome, e-mail ou #id (cada resultado indica quantos dispositivos ele tem), escolhem-se as assinaturas, que mostram o navegador (Chrome, Firefox, Safari, Edge) ou o app móvel, o final do endpoint ou token e a última atualização, ou excluem-se as assinaturas quebradas. Ao lado, a mensagem de teste mostra uma prévia ao vivo da notificação com o ícone e o nome da instalação, contadores de tamanho para título e corpo, um texto padrão no idioma do Super Admin que pode ser restaurado e um botão que indica para quantos dispositivos será enviado. O push de teste pelo navegador agora inclui o corpo, não só o título. Os resultados mostram por dispositivo se o serviço de push aceitou, falhou ou ignorou, com a resposta bruta; as falhas abrem sozinhas. No celular cada dispositivo é um cartão
+- **Páginas de configuração (Super Admin)** *(Mega)* - Cada página de Configurações (Geral, SAML SSO, Marca própria, Faturamento, Captain, E-mail, Messenger, Instagram, TikTok, Google, Microsoft, Linear, Notion, Slack, WhatsApp incorporado, Shopify, EvolutionAPI, QuepasaAPI, Mega Hub e Call ICE) mostra o ícone, o nome e a descrição da função, e agrupa seus valores em seções com título e explicação (por exemplo App, Webhooks e Opções nos canais, ou Imagens, Identidade, Cores, Legal e Web na marca). Cada valor mostra o nome da sua variável; os segredos ficam ocultos com opção de ver, as imagens mostram a prévia e podem ser enviadas, e as cores têm seletor. Salva-se pela barra fixa com um aviso traduzido. No celular as seções ficam em uma coluna com a barra de salvar embaixo
+- **Provedores de IA (Super Admin)** *(Mega)* - A lista mostra cada provedor em um cartão com o tipo de conexão e o host, se está ativo, se é o padrão do Captain ou do Mega Assistant, quantos modelos tem e o estado de cada capacidade (verificada, com falhas ou não testada), além dos avisos de saldo ou cota do provedor. A página do provedor reúne a tabela de modelos com o resultado de cada capacidade, AI Actions, raciocínio e preços, os testes com falha e sua mensagem, a conexão, onde é usado (incluindo as contas que o escolheram) e a exclusão; os modelos são testados dali. O formulário é dividido em Conexão, Disponibilidade e Modelos: cada modelo é uma linha com seus usos como opções e o preço e o raciocínio recolhidos embaixo. No celular os cartões e as tabelas ficam em uma coluna
+- **Funcionalidades dos planos (Super Admin)** *(Mega)* - Ao criar ou editar um plano, as funcionalidades aparecem como na aba de funcionalidades da conta: um cartão por categoria com quantas o plano inclui, cada funcionalidade com o nome, o interruptor e a etiqueta Premium, filtros Todas / Incluídas / Não incluídas com os totais e busca. As ações Usar padrão, Selecionar tudo e Limpar seleção continuam disponíveis e no celular ocupam a largura da tela.
+- **Login do Super Admin** *(Mega)* - Um painel de marca na cor primária da instalação acompanha o formulário: o logo, o que o console cobre (contas e usuários, planos e cobrança, saúde da instância) e, no rodapé e em tom discreto, uma mensagem do Mega escolhida ao acaso, com o domínio e a versão. No celular fica só o formulário, com a mensagem acima dos seletores de idioma e tema. O login permite escolher idioma e tema antes de entrar, e o idioma escolhido é mantido ao entrar. Mostra o logo da instalação (`LOGO`, ou `LOGO_DARK` no painel e no tema escuro). E-mail ou senha incorretos são avisados no idioma do usuário, mantendo o e-mail e com o cursor na senha. O botão de mostrar senha troca de ícone, o de entrar indica que está entrando e não envia duas vezes, e ao entrar volta à página que foi pedida ou ao Dashboard.
+- **Modo claro e escuro no Super Admin** *(Mega)* - O menu da conta, na barra lateral, tem um seletor de tema: Claro, Escuro ou Sistema (segue o sistema operacional). A escolha é a mesma do painel de agentes, então os dois mudam juntos, e vale para todas as páginas, o login (com o logo escuro quando configurado), os diálogos, os gráficos e a pré-visualização de scripts, sem piscar ao carregar.
 - **Preview seguro e ativação por script** *(Mega)* - Teste alterações com segurança e ative/desative scripts de forma independente
 
 **Casos de uso:**
@@ -1753,6 +1800,14 @@ Integração completa com WooCommerce:
 
 ## 💎 Funcionalidades Enterprise
 
+### Faturamento no Super Admin
+
+- **Plano e pagamento no cadastro** - Tela de ativação com progresso de 3 passos, seletor mensal/anual, cartões de planos e tabela comparativa por grupos. O plano padrão vem primeiro com suas formas de pagamento e 4 benefícios resumidos. Cada plano público com dias de teste oferece o seu: o cartão mostra a data de fim, o botão de teste antes de "Pagar agora" e as condições abaixo; a conta é suspensa se o teste terminar sem pagamento. Se nenhum plano tiver teste, o pagamento é exigido antes do acesso. A Cobrança usa o idioma escolhido no cadastro.
+- **Números com escopo claro** - O resumo distingue assinaturas pagas e faturas pendentes atuais dos recebimentos do mês; os estados das assinaturas abrangem toda a instalação.
+- **Resultado de IA** - Mostra primeiro receita, custo e resultado em USD. Exibe ações junto aos créditos usados, que podem ser mais de um por ação. A aba IA oferece só o filtro de mês porque abrange toda a instalação. O painel de consumo de IA também prioriza o resultado e esclarece quais valores usam o período selecionado, os preços atuais ou os últimos 30 dias.
+- **Método de pagamento personalizado** - Qualquer provedor com API HTTP é conectado pelo Super Admin sem esperar uma integração nativa: preencha como autenticar (chave de API ou OAuth com botão Conectar), a requisição que cria a cobrança com variáveis como `{{amount}}` ou `{{customer.tax_id}}`, onde vêm o id e o link de pagamento, e a URL de webhook que o Mega fornece para colar no provedor. Para provedores sem webhook, o Mega consulta o status a cada 10 minutos. Toda cobrança (assinatura, renovação, prorrateio, adicionais, AI Actions, cobranças de serviços) é um link de pagamento; o botão Testar envia uma cobrança real e mostra a resposta para configurar os campos.
+- **Planos exclusivos por conta** - O Super Admin reserva um plano para uma ou mais contas, por exemplo com um preço negociado: só essas contas o veem em Cobrança e assinam pelo gateway, com adicionais e trocas de plano. As outras contas não o veem nem conseguem assiná-lo chamando a API.
+
 ### SLA (Acordos de Nível de Serviço)
 
 - **Políticas configuráveis** - Defina tempos alvo
@@ -1789,7 +1844,7 @@ Single Sign-On empresarial para autenticação centralizada:
 **Funcionalidades:**
 
 - **Provisionamento automático** - Crie usuários automaticamente no primeiro login
-- **Isolamento por conta** - Não permite convites nem autenticação SAML para usuários associados a outra conta
+- **Isolamento por conta** - Um usuário que pertence a várias contas pode usar SAML somente se todas confiarem no mesmo provedor de identidade; caso contrário, o convite e o login por SAML são recusados
 - **Mapeamento de grupos** - Sincronize grupos/equipes do IdP
 - **Força SSO** - Exija SSO para todos os usuários da conta
 - **Múltiplos domínios** - Configure SSO para diferentes domínios de email
@@ -1902,6 +1957,7 @@ Crie funções sob medida para sua organização com controle granular de permis
 ### 🧭 Onboarding Guiado
 
 - **Configuração inicial dedicada** - Complete os dados da conta por um fluxo administrativo específico
+- **Telefone no cadastro** *(Mega)* - O formulário de criação de conta pede um telefone opcional (WhatsApp) para a equipe contatar o cliente durante a ativação; o Super Admin mostra o número no cabeçalho da conta com um link direto para o WhatsApp
 - **URL do site normalizada** - Salve o endereço com protocolo para integrações e automações posteriores
 - **Conexão guiada do Instagram** - Retome a configuração da caixa de entrada após autorizar o Instagram pelo onboarding
 
@@ -1999,6 +2055,8 @@ Solução robusta e de alta disponibilidade para operações exigentes que reque
 - Operações de alto volume
 - Empresas que precisam de máxima estabilidade
 - Equipes com múltiplas linhas de WhatsApp
+- **Mensagens interativas do WAHA** *(Mega)* - As caixas WAHA enviam mensagens interativas a qualquer momento, sem janela de 24 horas: botões de resposta (até 3), botões de ação (abrir link, ligar ou copiar código, até 5), lista, carrossel com imagem por cartão, cobrança Pix (o cliente digita o valor), pedido com "Revisar e pagar" (itens, desconto, total e chave Pix), enquete (uma ou várias respostas), localização, evento com data e local, e resposta a uma mensagem de botões (só por API). O ícone do WhatsApp da caixa de resposta e da nova conversa abre o mesmo formulário com prévia do WhatsApp Cloud, no desktop e no celular, com cabeçalho de texto, imagem, vídeo ou documento. Carrossel, Pix, pedido e evento precisam do motor GOWS. Só em conversas diretas: em grupos a opção não aparece. Na conversa aparecem como os templates, e as respostas do cliente (botão tocado, opção da lista, voto da enquete ou resposta ao evento) chegam como mensagens. Habilitado por servidor WAHA no Super Admin → Provedores WA (interruptor *Mensagens interativas*) ou para toda a instalação com `WAHA_INTERACTIVE_MESSAGES=true`, e por conta com a feature *WAHA Interactive Messages*. Também pela API de mensagens, Outbound Messages e MCP, com os 10 exemplos no Swagger/OpenAPI, no Postman e na documentação da API do Super Admin.
+- **Mensagens interativas da UazAPI** *(Mega)* - As caixas UazAPI enviam mensagens interativas a qualquer momento, sem janela de 24 horas, em conversas diretas e grupos: botões de resposta, botões de ação (abrir link, ligar ou copiar código), lista com seções, enquete, carrossel com imagem, vídeo ou documento por cartão, botão Pix, solicitação de pagamento com "Revisar e pagar" (valor, item, fatura, chave Pix, boleto, link de pagamento e PDF anexo), evento com data, local, link e lembrete, e pedido de localização. O ícone do WhatsApp da caixa de resposta e da nova conversa abre o mesmo formulário com prévia, no computador e no celular; os botões aceitam cabeçalho de imagem, vídeo ou documento. Na conversa aparecem como os templates; as respostas do cliente (botão tocado, opção da lista, voto da enquete, resposta ao evento) entram como mensagens que citam a original, e o agente pode enviar ao cliente o status do pedido (pagamento solicitado, em preparação, enviado, entregue, concluído ou cancelado, pago ou pendente) pelo balão da solicitação de pagamento. O adicional pode ser vendido para a conta inteira ou por caixa de entrada: nesse caso cada unidade ativa as mensagens interativas em uma caixa (chave *Mensagens interativas* nas configurações da caixa) e as demais aparecem bloqueadas até comprar outra unidade; o mesmo vale para as interativas do WAHA. Ativa-se por servidor UazAPI em Super Admin → Provedores WA (chave *Mensagens interativas*) ou para toda a instalação com `UAZAPI_INTERACTIVE_MESSAGES=true`, e por conta com a feature *UazAPI Interactive Messages*. Também pela API de mensagens, Outbound Messages, MCP da conta e Mega Assistant, com 11 exemplos no Swagger/OpenAPI, Postman e na documentação da API do Super Admin.
 
 ---
 
@@ -2163,6 +2221,7 @@ Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto om
 - **Filtros por etiquetas** - Filtre por etiquetas de conversa em quadro/lista e reflita nas métricas por etapa
 - **Colunas configuráveis por usuário** - Mostre ou oculte colunas e mantenha preferências salvas localmente
 - **Ficha 360 do item** - Inclui checklist, notas, anexos, agentes atribuídos, ofertas e atributos personalizados
+- **Campos globais pela API** - Integrações podem criar ou atualizar atributos do funil com um array estruturado ou um objeto indexado por nome; o objeto usa somente campos configurados no funil
 - **Notas longas legíveis** - Abra o texto formatado completo e os anexos em uma visualização com rolagem, com edição direta quando tiver permissão
 - **Busca nas relações do item** - Encontre conversas vinculadas com busca remota ao gerenciar relações do item
 - **Moeda padrão por conta** - A moeda base do quadro é definida nas configurações da conta (`default_currency`)
@@ -2185,6 +2244,7 @@ Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto om
 - **Detalhe Kanban pela conversa** - Os ícones de canal do cartão mostram cada tipo de inbox vinculado: abrem diretamente sua única conversa ou um seletor limitado a esse canal quando há várias, sem recarregar o quadro; no mobile, o detalhe mostra primeiro as informações comerciais e abre o perfil do item em um painel lateral. O painel de contato do drawer oculta conversas anteriores para manter o contexto do item
 - **Acesso Kanban em tempo real** - Ao adicionar ou remover agentes do funil, o sidebar, a lista de funis e os itens visíveis atualizam sem recarregar
 - **Múltiplas conversas vinculadas** - Um mesmo item Kanban pode se relacionar com várias conversas; a primeira permanece como vínculo principal e as adicionais aparecem na aba de relacionamentos, com seletor limitado aos inboxes do funil e ícones de canal
+- **Histórico de vínculos por conversa** - Cada conversa vinculada ou desvinculada gera seu próprio evento; o vínculo mostra a caixa da mesma conta e o texto da ação respeita o idioma da interface
 - **Uma oportunidade aberta por contato e funil** - A criação automática reutiliza o item aberto do contato e vincula nele novas conversas do Instagram, WhatsApp ou outros inboxes habilitados; cada funil é avaliado separadamente e uma oportunidade ganha ou perdida permite iniciar outra
 - **Histórico sem vínculo quebrado** - Se uma conversa vinculada for excluída, o item Kanban permanece como histórico e o vínculo é limpo
 - **Acesso Kanban por função e permissão** - Administradores gerenciam todos os funis e itens; agentes e funções com `kanban_view` trabalham os itens autorizados; `kanban_manage` também cria e edita os funis atribuídos, sem excluir, definir o padrão ou alterar a visibilidade
@@ -2197,9 +2257,12 @@ Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto om
 
 ## 🔐 Segurança e Conformidade
 
+- **Conteúdo HTML seguro** - Mensagens Markdown, instruções do Captain e links dos termos de cadastro filtram conteúdo perigoso, preservando links internos de ferramentas e incorporações confiáveis de artigos.
+
 ### Autenticação
 
 - **2FA/MFA** - Autenticação de dois fatores
+- **Verificação de novos dispositivos (Cloud)** - Quando ativada, a entrada com senha em um dispositivo desconhecido exige um código de seis dígitos por e-mail. Dispositivos verificados podem ser lembrados por 30 dias; alterar a senha ou o e-mail revoga essa confiança. SSO e 2FA mantêm seus próprios fluxos.
 - **SAML/SSO** - Single Sign-On empresarial
 - **Tokens de API** - Acesso programático seguro
 - **Suporte para conta suspensa** - Usuários suspensos veem o aviso de política com uma ação direta para contatar o suporte; administradores no Cloud também podem abrir o faturamento para regularizar o pagamento e restaurar o acesso. Superadministradores registram uma categoria e um motivo para cada suspensão e podem consultar ou corrigir a entrada mais recente nos detalhes da conta.
@@ -2209,6 +2272,7 @@ Gerencie oportunidades comerciais em um pipeline visual conectado ao contexto om
 
 - **GDPR Ready** - Conformidade com regulamentações
 - **Exclusão de dados** - Direito ao esquecimento
+- **Exclusão de conta pelo Super Admin** - Remove usuários vinculados apenas àquela conta; preserva usuários compartilhados e Super Admins
 - **Exportação** - Portabilidade de dados
 
 ### Infraestrutura
@@ -2288,3 +2352,5 @@ MEGA funciona como um **Progressive Web App** completo: instale em qualquer disp
 *MEGA - Transformando a forma como as empresas se comunicam com seus clientes.*
 
 **© 2026 MEGA - Todos os direitos reservados**
+
+- Alertas de transferência do bot: o som e o indicador da aba são ativados para conversas pendentes transferidas a um agente, conforme as preferências de áudio e atribuição.
