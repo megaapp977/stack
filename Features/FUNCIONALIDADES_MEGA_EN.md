@@ -2,11 +2,28 @@
 
 ## Your Command Center for the Future of Customer Service
 
+Mega Assistant reuses eligible tools and stable context within each private chat so supported providers can cache repeated input and reduce response cost.
+Proposed actions appear beneath the assistant's message after it finishes displaying.
+
+AI provider cards summarize model count, verified capabilities and credit warnings. Models and tests opens a dialog with each model's assigned uses, check status and saved errors, without expanding the grid. Test, edit and protected deletion actions remain available.
+
+Provider forms are centered. A visible bulk-add button opens a modal to paste model names and select capabilities; Cancel or Escape closes it without adding rows.
+
+Add/edit provider pages use a two-column connection section and a compact model table. Bulk entry accepts newline- or comma-separated names and shared capabilities; existing names are merged without duplicating rows.
+
+Provider forms show one row per model with Chat, PDF, Audio and Embeddings checkboxes. Tests run only for selected capabilities; existing models and verified results are preserved.
+
+Legacy catalog selections remain available for their original features after editing an imported provider. New provider-qualified selections still require assigned, verified capabilities. Legacy PDF/audio clients resolve current native OpenAI credentials, falling back to installation settings when no active native provider exists. Audio prefers the account OpenAI integration; Captain fallback requires its feature and available quota. Call recordings retain their specialized path.
+
+A one-time upgrade repair restores missing `whisper-1`, `gpt-4o-mini-transcribe` and `text-embedding-3-small` entries on the native provider with slug `openai`. It preserves credentials, custom models, existing assignments, test results and account selections. Restored entries are configured, not automatically verified; provider-qualified selection still requires testing. The repair can restore a previously removed base entry, but does not re-add it on ordinary saves. Models marked coming soon are not added.
+
+FAQ regeneration preserves existing responses on errors or empty results. It replaces only unedited responses when valid results are available, in a transaction that rolls back replacement if any insertion fails. Legacy PDF generation checks the remote file and, only on a 404, uploads the retained original again using the same credentials as generation. Permission, credit, or connection errors do not trigger another upload; if the original is missing, previous knowledge is retained.
+
 Twilio Voice call recordings can optionally be transcribed, displayed with the recording, and found in conversation search.
 
 **Version:** Enterprise
 **Based on:** MEGA Platform and Exclusive MEGA Features
-**Last Updated:** September 1, 2026
+**Last Updated:** September 23, 2026
 
 ---
 
@@ -194,7 +211,9 @@ Many customers prefer email for formal inquiries, documentation, or follow-ups. 
 
 - **Unified inbox** - All emails appear as conversations alongside WhatsApp, social media, and more
 - **Rich replies** - Send emails with formatting, images, and attachments
+- **Large files when starting an email conversation** *(Mega)* - The new conversation window uses the same maximum attachment size as email replies, uploads files straight to storage when direct uploads are on, and warns when attachments go over 20 MB and will arrive as download links
 - **Resizable inline images** - Insert images in the email body and adjust their displayed size visually
+- **Images inside the email** *(Mega)* - Body and agent signature images travel inside the email reply, so Outlook and other clients that block remote images show them without asking; images over the limit stay as links
 - **Custom signatures** - Configure professional signatures per agent or inbox
 - **Any provider** - Connect Gmail, Outlook, your own server, or any email
 - **Guided setup** - Detect Gmail or Outlook hosting from your domain to suggest the right integration
@@ -600,7 +619,7 @@ Perform mass operations on multiple conversations simultaneously:
 - **Bulk resolve** - Close multiple conversations at once
 - **Bulk reopen** - Reopen resolved conversations
 - **Bulk snooze** - Apply snooze to multiple conversations
-- **Bulk read state** - Mark selected conversations as read or unread
+- **Bulk read state** - Mark selected conversations as read or unread, including large selections
 - **Bulk assign** - Assign agent or team to multiple chats
 - **Bulk label** - Apply labels massively
 - **Keyboard shortcuts** - Execute bulk actions with hotkeys
@@ -761,6 +780,18 @@ Configure automatic flows based on events and conditions:
 - Mute conversation
 - Redistribute to online agents
 
+### Flow Builder *(Mega - MVP)*
+
+Design conversational automations from a visual canvas with connectable blocks.
+
+- **n8n-style visual canvas** - Build flows by dragging blocks, connecting paths, and editing each step from a side inspector
+- **Initial blocks** - Trigger, message, question, condition, action, handoff, wait, webhook, and end
+- **Reused Automation actions** - The Action node uses the same selectors for labels, teams, agents, priority, email, webhook, private notes, and compatible conversation statuses
+- **Drafts and versioned publishing** - Edit without changing the published version and publish stable snapshots
+- **Validation before publishing** - Detects cycles, multiple triggers, broken connections, outputs connected to two blocks, blocks the start does not reach, and incomplete blocks
+- **Initial event runtime** - Published flows can start from Automation-compatible internal events and execute messages, questions, conditions, basic actions, and handoff
+- **Ready for IVR and voice** - The same canvas can add calling and IVR nodes in a later phase
+
 ### Macros
 
 Execute multiple actions with a single click:
@@ -802,6 +833,8 @@ Beyond the standard Typebot integration, MEGA extends its capabilities with spec
 
 ### Captain *(Enterprise)*
 
+- **Conversation and contact label and priority suggestions** - Captain suggests up to three existing labels for the conversation or contact, and a priority from recent public messages. Agents can accept or dismiss suggestions; requesting them again generates a new model response. The sidebar identifies a recommended priority that is already applied; accepting labels clears the previous suggestion. Enable `captain_classifier` for the account and select the conversation classification model in the Captain account or plan settings; the call does not consume Captain response credits.
+
 Advanced AI assistant powered by large language models for intelligent customer service automation.
 
 **Captain Assistants:**
@@ -819,6 +852,7 @@ Create and configure AI assistants tailored to your business needs:
 - **Assistant overview** - An opt-in redesigned overview combines rotating period insights with outcome metrics, resolution flow and trend comparisons, Captain CSAT, usage, and knowledge coverage; it retains the legacy overview by default while dedicated outcome, resolution-flow, and resolution-trend datasets provide the data
 - **Generation details** - Open the “Generated by Captain” indicator on an assistant reply or handoff reason note to inspect its tool and scenario steps, knowledge-base sources, and reasoning; model and credit usage are limited to super administrators
 - **Trusted citations** - Captain V2 renders only server-validated public web links, records the sources actually selected, and keeps rendered URLs out of model history; earlier sessions retain their existing source details
+- **Bounded, safe runtime** - Captain V2 limits context and visible attributes, selects account-scoped active tools, retains relevant memory and task state, and records execution decisions, health, and idempotency without treating external content as instructions. Per-run diagnostics include semantic-summary latency and fallback state; configured golden checks run daily without tool side effects.
 - **Paid-plan availability** - Captain V2 is enabled automatically when a cloud account reconciles to any paid plan; the default plan remains without Captain V2
 - **Image comprehension** - Assistant can analyze images sent in conversations
 - **Multimodal support** - Process text and images simultaneously for contextual responses
@@ -1078,6 +1112,7 @@ Send campaigns from multiple WhatsApp lines to maximize reach and avoid limits:
 
 - **Auto distribution** - Messages are distributed among your lines
 - **Configurable rotation** - Define how many messages to send per line before switching
+- **Edit rotation** - In WhatsApp campaigns using Evolution, WAHA, or Uazapi and API channel campaigns, keep selected inboxes, add or remove inboxes, and disable rotation when saving an editable campaign
 - **Avoid blocks** - By distributing load, you reduce the risk of per-line limits
 - **Higher speed** - Send more messages in less time using multiple lines
 
@@ -1107,6 +1142,7 @@ Monitor your campaign performance in real time:
 - **Messages sent** - Real-time progress tracking
 - **Failed messages** - Identify delivery issues
 - **Error report** - Download failed send details for correction
+- **Delivery diagnosis** *(Mega)* - Reports and CSV exports include provider failure codes and reasons; inbox or template intervention pauses remaining sends safely
 
 ### Anti-Spam Protection
 
@@ -1229,7 +1265,7 @@ The system includes multiple protections to maintain send quality:
 - **Resolution time** - Average and distribution
 - **First response** - Initial response time
 - **Trends** - Temporal evolution
-- **Bar drilldown** - Open each chart bar to review the conversations or messages behind the metric, with bucket navigation and result counts
+- **Bar drilldown** - Open each chart bar to review the conversations or messages behind the metric, with bucket navigation and result counts; for conversation counts, View all opens a filtered conversation list in a new tab
 
 ### Agent Reports
 
@@ -1363,6 +1399,7 @@ Define conversation limits per agent:
 - **Timezones** - Multi-region support
 - **After-hours messages** - Automatic responses
 - **Lunch break** - Configure break intervals within business hours
+- **Out-of-office exceptions** *(Mega)* - In Business Hours, each inbox can leave WhatsApp groups, specific numbers or identifiers and contacts with certain labels out of the unavailable message, with the same rules as bots
 - **Per-day schedules** - Define different hours for each day of the week
 
 ### Operational Web Push
@@ -1378,7 +1415,7 @@ Each agent can customize exactly when and how to receive alerts:
 **Notification types:**
 
 - New conversation created
-- Conversation assigned to you
+- Conversation assigned to you, including pending conversations
 - New message in your conversations
 - When you're mentioned in a conversation
 - Messages in conversations where you participate
@@ -1521,7 +1558,17 @@ Embed custom applications within the conversation view:
 - **Secure** - Apps run in sandboxed iframes
 - **Real-time data** - Apps receive live conversation updates
 - **Administrator management** - Account-wide apps can be created, updated, and deleted only by administrators; authenticated agents retain read access
-- **Dashboard scripts (Super Admin)** *(Mega)* - Publish global dashboard customizations without modifying core code
+- **Dashboard scripts (Super Admin)** *(Mega)* - Publish global dashboard customizations without modifying core code, with a real dashboard preview that injects unsaved code; on phones it uses compact navigation, pill filters and cards
+- **Agent Bots (Super Admin)** *(Mega)* - Manage the agent bots of the whole installation. The list shows who can connect each bot (global or one account), its type, the host it sends events to and how many inboxes use it, with live search by name, URL or account and a scope filter; the bot page gathers its details, the connected inboxes with their account and status, the webhook URL, the signing secret and API token masked with copy, and deletion; the form picks the account with a search (empty = global bot). On phones each bot is a card
+- **Platform apps (Super Admin)** *(Mega)* - Manage the apps that use the Platform API. The list shows how many accounts each app reaches and the users and bots it created, with live search; the app page lists accounts with search, a with/without access filter and pagination to grant or revoke access one by one or grant all, and gathers the masked API token with copy, the records it manages and deletion; the form has an all-accounts switch that never revokes access. It warns that accounts created later are not added on their own. On phones each app is a card
+- **Platform banners (Super Admin)** *(Mega)* - The list shows each banner in its type's color, who sees it, when and whether it is showing now, scheduled, ended or turned off, with an on/off switch per row, live search and a status filter; the banner page gathers the message, audience and dates, the chosen accounts, activity (including how many agents closed it) and the same preview as the form, with a note when it is scheduled or ended. In the form the type is picked by color and the preview follows the type, title, message and status while editing, in the real dashboard colors. On phones each banner is a card
+- **WhatsApp providers (Super Admin)** *(Mega)* - Evolution API, WAHA and Uazapi servers show as a grid of cards with their provider and slot, inbox usage against capacity, the API host, where the credentials come from (saved, environment or missing), voice calls and status, with live search and a provider filter; the server page shows usage, the inboxes it hosts with their account, the connection with the environment variables the slot reads and whether they are set, settings and deletion (blocked for the legacy slot or while it hosts inboxes). The sectioned form picks the provider as a choice and shows live which environment variables the chosen slot reads. On phones each server is a full-width card
+- **Push diagnostics (Super Admin)** *(Mega)* - A three step tool to check why a user gets no notifications: find the user by name, email or #id (each result says how many devices they have), pick their subscriptions, which show the browser (Chrome, Firefox, Safari, Edge) or the mobile app, the end of the endpoint or token and the last update, or delete broken subscriptions. Next to them, the test message shows a live preview of the notification with the installation's icon and name, length counters for title and body, default text in the Super Admin language that can be restored, and a button that says how many devices it goes to. The browser test push now carries the body, not just the title. Results show per device whether the push service accepted it, failed or skipped it, with the raw response; failures open on their own. On phones each device is a card
+- **Settings pages (Super Admin)** *(Mega)* - Each Settings page (General, SAML SSO, Custom branding, Billing, Captain, Email, Messenger, Instagram, TikTok, Google, Microsoft, Linear, Notion, Slack, WhatsApp embedded, Shopify, EvolutionAPI, QuepasaAPI, Mega Hub and Call ICE) shows the feature's icon, name and description, and groups its values in sections with a title and an explanation (for example App, Webhooks and Options on channels, or Images, Identity, Colors, Legal and Web on branding). Every value shows its variable name; secrets stay hidden with a reveal button, images show their preview and can be uploaded, and colors get a picker. Saving happens from the sticky bar with a translated notice. On phones the sections stack in one column with the save bar at the bottom
+- **AI providers (Super Admin)** *(Mega)* - The list shows each provider as a card with its connection type and host, whether it is on, whether it is the Captain or Mega Assistant default, how many models it has and the state of each capability (verified, failing or untested), plus the provider's credit or quota warnings. The provider page gathers the models table with each capability's result, AI Actions, reasoning and prices, the failed tests with their message, the connection, where it is used (including the accounts that picked it) and deletion; models are tested from there. The form is split into Connection, Availability and Models: each model is a row with its uses as toggles and its price and reasoning folded under it. On phones cards and tables become one column
+- **Plan features (Super Admin)** *(Mega)* - When creating or editing a plan, features look the same as in the account features tab: one card per category with how many the plan includes, each feature with its name, its switch and the Premium tag, All / Included / Not included filters with their totals, and search. The Use defaults, Select all and Clear selection actions are still there and take the screen width on phones.
+- **Super Admin sign in** *(Mega)* - A brand panel in the installation's primary color sits beside the form: the logo, what the console covers (accounts and users, plans and billing, instance health) and, quietly at its foot, a Mega message picked at random, with the domain and version. Phones keep only the form, with the message above the language and theme pickers. The sign in page lets you pick the language and theme before signing in, and the picked language stays after signing in. It shows the installation logo (`LOGO`, or `LOGO_DARK` on the panel and in the dark theme). A wrong email or password is reported in the user's language, keeping the email and putting the cursor in the password. The show password button changes its icon, the sign in button shows it is signing in and does not submit twice, and signing in goes back to the page that was asked for or to the Dashboard.
+- **Light and dark mode in Super Admin** *(Mega)* - The account menu in the sidebar has a theme picker: Light, Dark or System (follows the operating system). The choice is the same one the agent dashboard uses, so both switch together, and it applies to every page, the sign in page (with the dark logo when one is set), dialogs, charts and the script preview, without a flash on load.
 - **Safe preview and per-script toggle** *(Mega)* - Validate changes safely and enable/disable scripts independently
 
 ### Platform Apps
@@ -1627,6 +1674,15 @@ Customize email communications with your branding:
 
 ## 💎 Enterprise Features
 
+- **Plan and payment at signup** - Activation screen with 3-step progress, a monthly/yearly toggle, plan cards and a comparison table grouped by feature. The default plan comes first with its payment methods and 4 summarized benefits. Every public plan with trial days offers its own trial: the card shows the end date, the trial button before "Pay now" and the terms below; the account is suspended if the trial ends unpaid. When no plan has a trial, payment is required before access. Billing uses the language chosen at signup.
+
+### Super Admin billing
+
+- **Clearly scoped figures** - The summary distinguishes current paying subscriptions and pending invoices from selected-month collections; subscription status covers the whole installation.
+- **AI result** - Shows income, cost and result in USD first. It places actions beside credits used, which may exceed one per action. The AI tab offers only the month filter because it covers the whole installation. The AI usage dashboard shows the same result first and explains which figures use the selected period, current prices, or the last 30 days.
+- **Custom payment method** - Any provider with an HTTP API is connected from Super Admin without waiting for a native integration: fill in how to authenticate (API key or OAuth with a Connect button), the request that creates the charge with variables such as `{{amount}}` or `{{customer.tax_id}}`, where the id and payment link come back, and the webhook URL Mega gives you to paste in the provider. For providers without webhooks, Mega checks the status every 10 minutes. Every charge (subscription, renewal, proration, add-ons, AI Actions, service charges) is a payment link; the Test button sends a real charge and shows the answer to set up the fields.
+- **Account-exclusive plans** - Super Admin reserves a plan for one or more accounts, for example with a negotiated price: only those accounts see it in Billing and subscribe through the gateway, with add-ons and plan changes. Other accounts neither see it nor can subscribe by calling the API.
+
 ### SLA (Service Level Agreements)
 
 - **Configurable policies** - Define target times
@@ -1663,7 +1719,7 @@ Enterprise Single Sign-On for centralized authentication:
 **Features:**
 
 - **Auto-provisioning** - Automatically create users on first login
-- **Account isolation** - Does not allow SAML invitations or authentication for users associated with another account
+- **Account isolation** - A user who belongs to several accounts can use SAML only when all of them trust the same identity provider; otherwise invitations and SAML sign-in are refused
 - **Group mapping** - Sync groups/teams from IdP
 - **Force SSO** - Require SSO for all account users
 - **Multiple domains** - Configure SSO for different email domains
@@ -1758,6 +1814,7 @@ Create roles tailored to your organization with granular permission control:
 ### 🧭 Guided Onboarding
 
 - **Dedicated initial setup** - Complete account details through a purpose-built administrative flow
+- **Phone at signup** *(Mega)* - The account creation form asks for an optional phone number (WhatsApp) so the team can reach the customer during activation; Super Admin shows it in the account header with a direct WhatsApp link
 - **Normalized website URL** - Store the address with its protocol for downstream integrations and automation
 - **Guided Instagram connection** - Resume inbox setup after authorizing Instagram from onboarding
 
@@ -1855,6 +1912,8 @@ Robust, high-availability solution for demanding operations requiring maximum st
 - High-volume operations
 - Companies needing maximum stability
 - Teams with multiple WhatsApp lines
+- **WAHA interactive messages** *(Mega)* - WAHA inboxes send interactive messages at any time, with no 24-hour window: reply buttons (up to 3), action buttons (open link, call or copy a code, up to 5), list, carousel with an image per card, Pix payment (the customer types the amount), order with "Review and pay" (items, discount, total and Pix key), poll (one or several answers), location, event with date and place, and a reply to a buttons message (API only). The WhatsApp icon in the reply box and in new conversations opens the same form with live preview as WhatsApp Cloud, on desktop and phone, with a text, image, video or document header. Carousel, Pix, order and event need the GOWS engine. Direct chats only: the option does not show in groups. Sent messages show in the conversation like templates, and the customer's answers (tapped button, list option, poll vote or event response) come in as messages. Enabled per WAHA server in Super Admin → WhatsApp Providers (*Interactive messages* switch) or for the whole installation with `WAHA_INTERACTIVE_MESSAGES=true`, and per account with the *WAHA Interactive Messages* feature. Also available through the messages API, Outbound Messages and MCP, with the 10 examples in Swagger/OpenAPI, Postman and the Super Admin API docs.
+- **UazAPI interactive messages** *(Mega)* - UazAPI inboxes send interactive messages at any time, with no 24-hour window, in direct chats and groups: reply buttons, action buttons (open link, call or copy a code), list with sections, poll, carousel with an image, video or document per card, Pix button, payment request with "Review and pay" (amount, item, invoice, Pix key, boleto, payment link and attached PDF), event with date, place, link and reminder, and location request. The WhatsApp icon in the reply box and in new conversations opens the same form with a preview, on desktop and phone; buttons take an image, video or document header. In the conversation they show like templates; customer answers (tapped button, list option, poll vote, event answer) come in as messages that quote the original, and the agent can send the customer the order status (payment requested, preparing, shipped, delivered, completed or canceled, paid or pending) from the payment request bubble. The add-on can be sold for the whole account or per inbox: then each unit turns interactive messages on in one inbox (*Interactive messages* switch in the inbox settings) and the others show it locked until another unit is bought; the same goes for WAHA interactive messages. Turned on per UazAPI server in Super Admin → WA Providers (*Interactive messages* switch) or for the whole installation with `UAZAPI_INTERACTIVE_MESSAGES=true`, and per account with the *UazAPI Interactive Messages* feature. Also available through the messages API, Outbound Messages, the account MCP and Mega Assistant, with 11 examples in Swagger/OpenAPI, Postman and the Super Admin API docs.
 
 ---
 
@@ -2019,6 +2078,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Label-based filtering** - Filter by conversation labels in board and list views, including stage metrics
 - **Per-user column visibility** - Show or hide columns and persist preferences locally
 - **360 item workspace** - Includes checklist, notes, attachments, assigned agents, offers, and custom attributes
+- **Global fields through the API** - Integrations can create or update funnel attributes with a structured array or a name-keyed object; the object uses only fields configured on the funnel
 - **Readable long notes** - Open full formatted text and attachments in a scrollable detail view, with direct editing when permitted
 - **Relationship search** - Find linked conversations with remote search while managing item relationships
 - **Account default currency** - The board baseline currency is defined at account settings level (`default_currency`)
@@ -2041,6 +2101,7 @@ Manage commercial opportunities in a visual pipeline connected to omnichannel co
 - **Kanban details from conversations** - A card displays one channel icon for each linked inbox type: it opens that channel's only conversation directly or a selector limited to that channel when several exist, without reloading the board; on mobile, item details show business information first and open the item profile in a side panel. The drawer contact panel hides previous conversations to preserve the item context
 - **Realtime Kanban access** - Adding or removing funnel agents refreshes the sidebar, funnel list and visible items without a reload
 - **Multiple linked conversations** - A single Kanban item can relate to several conversations; the first remains the primary link and additional conversations appear in the relationships tab, with the picker limited to the funnel inboxes and channel icons shown
+- **Conversation link history** - Each linked or unlinked conversation gets its own event; links show the inbox from the same account and action text follows the interface language
 - **One open opportunity per contact and funnel** - Automatic creation reuses the contact's open item and links new Instagram, WhatsApp, or other enabled-inbox conversations to it; each funnel is evaluated separately, and a won or lost opportunity allows a new one
 - **History without broken links** - If a linked conversation is deleted, the Kanban item is kept as history and the link is cleared
 - **Role- and permission-based Kanban access** - Administrators manage every funnel and item; agents and roles with `kanban_view` work with authorized items; `kanban_manage` also creates and edits assigned funnels, without deleting, setting the default, or changing visibility
@@ -2067,9 +2128,12 @@ Annual statistics and insights for your account:
 
 ## 🔐 Security & Compliance
 
+- **Safe HTML content** - Markdown messages, Captain instructions, and signup terms links filter dangerous content while retaining internal tool links and trusted article embeds.
+
 ### Authentication
 
 - **2FA/MFA** - Two-factor authentication
+- **New-device verification (Cloud)** - When enabled, password sign-ins from an unrecognized device require a six-digit email code. Verified devices can be trusted for 30 days; changing the password or email revokes that trust. SSO and existing 2FA sign-ins keep their own flows.
 - **SAML/SSO** - Enterprise Single Sign-On
 - **API Tokens** - Secure programmatic access
 - **Suspended account support** - Suspended users see the policy notice with a direct contact support action; Cloud administrators can also open billing to settle payment and restore access. Super administrators record a category and reason for each suspension and can review or correct the latest entry from the account details.
@@ -2079,6 +2143,7 @@ Annual statistics and insights for your account:
 
 - **GDPR Ready** - Regulatory compliance
 - **Data deletion** - Right to be forgotten
+- **Account deletion from Super Admin** - Removes users who belonged only to that account; keeps shared users and Super Admins
 - **Export** - Data portability
 
 ### Infrastructure
@@ -2158,3 +2223,5 @@ MEGA works as a full **Progressive Web App**: install it on any device and get a
 *MEGA - Transforming how businesses communicate with their customers.*
 
 **© 2026 MEGA - All rights reserved**
+
+- Bot handoff alerts: sound and tab badge activate for pending conversations handed to a human agent, according to audio and assignment preferences.
