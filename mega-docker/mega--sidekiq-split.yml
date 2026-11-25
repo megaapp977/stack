@@ -381,11 +381,13 @@ services:
           cpus: "1"
           memory: 1024M
 
-  ## Motor de voz (opcional): lleva el audio de las llamadas de WhatsApp en el servidor
+  ## Motor de voz (opcional): lleva el audio de las llamadas de WhatsApp y de las bandejas SIP en el servidor
   ## (espera, transferencias, grabación, menús e IA). Sin este servicio las llamadas siguen en el navegador.
   ## - Usa la misma imagen y versión que la app (una versión de Mega que incluya mega-voice).
   ## - Corre en la red del host: abre en el firewall UDP 10000 hasta 10000 + MEGA_VOICE_UDP_PORTS - 1
   ##   y cierra el 8790 (API de control, solo para Rails).
+  ## - Bandejas SIP (FreePBX, 3CX, Asterisk, proveedores SIP): completa MEGA_VOICE_SIP_HOST y abre
+  ##   en el firewall 5060 UDP y TCP y el rango UDP de MEGA_VOICE_SIP_RTP_PORTS. Necesita una versión de Mega con SIP.
   ## - En el servidor, una vez: sudo sysctl -w net.core.rmem_max=26214400 net.core.wmem_max=26214400
   ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
   ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
@@ -400,6 +402,10 @@ services:
       MEGA_VOICE_EVENTS_URL: https://app.example.com/webhooks/voice_engine
       MEGA_VOICE_UDP_PORTS: 50 # Llamadas simultáneas: abre UDP 10000-10049
       MEGA_VOICE_MAX_CALLS: 50 # Las llamadas de más siguen en el navegador
+      ## Bandejas SIP: activan SIP en la instalación (quita estas tres líneas si no lo usás); cada cuenta configura su central en su bandeja
+      MEGA_VOICE_SIP_ADDR: ":5060" # Escucha SIP en UDP y TCP
+      MEGA_VOICE_SIP_RTP_PORTS: 20000-20099 # Audio SIP, un puerto par por llamada: 50 llamadas
+      MEGA_VOICE_SIP_HOST: sip.example.com # IP pública del servidor o un dominio que apunte directo a ella (sin proxy); las centrales y los teléfonos de los agentes lo usan
     stop_grace_period: 1h ## Deja terminar las llamadas en curso al actualizar
     deploy:
       mode: replicated
