@@ -249,6 +249,8 @@ services:
   ##   y cierra el 8790 (API de control, solo para Rails).
   ## - Bandejas SIP (FreePBX, 3CX, Asterisk, proveedores SIP): completa MEGA_VOICE_SIP_HOST y abre
   ##   en el firewall 5060 UDP y TCP y el rango UDP de MEGA_VOICE_SIP_RTP_PORTS. Necesita una versión de Mega con SIP.
+  ## - SIP sobre TLS y audio cifrado (SRTP) (opcional): descomenta las líneas MEGA_VOICE_SIP_TLS_* y el volumen de los
+  ##   certificados, y abre 5061 TCP. Sin certificado el motor no arranca, por eso van comentadas.
   ## - En el servidor, una vez: sudo sysctl -w net.core.rmem_max=26214400 net.core.wmem_max=26214400
   ## - Corre en el mismo nodo que la app y Sidekiq (host.docker.internal).
   ## - Después se activa por bandeja: "Audio de llamadas en el servidor".
@@ -267,6 +269,13 @@ services:
       - MEGA_VOICE_SIP_ADDR=:5060 ## Escucha SIP en UDP y TCP
       - MEGA_VOICE_SIP_RTP_PORTS=20000-20099 ## Audio SIP, un puerto par por llamada: 50 llamadas
       - MEGA_VOICE_SIP_HOST=sip.dominio.com ## IP pública del servidor o un dominio que apunte directo a ella (sin proxy); las centrales y los teléfonos de los agentes lo usan
+      ## SIP sobre TLS (opcional): certificado del dominio de MEGA_VOICE_SIP_HOST en formato PEM; se recarga solo al renovarse
+      # - MEGA_VOICE_SIP_TLS_ADDR=:5061 ## Escucha SIP sobre TLS
+      # - MEGA_VOICE_SIP_TLS_CERT=/etc/letsencrypt/live/sip.dominio.com/fullchain.pem
+      # - MEGA_VOICE_SIP_TLS_KEY=/etc/letsencrypt/live/sip.dominio.com/privkey.pem
+      # - MEGA_VOICE_SIP_TLS_INSECURE=true ## Solo si las centrales usan certificados autofirmados (vale para todas las bandejas)
+    # volumes: ## Certificados para SIP sobre TLS, solo lectura (Let's Encrypt del dominio de MEGA_VOICE_SIP_HOST)
+    #   - /etc/letsencrypt:/etc/letsencrypt:ro ## Toda la carpeta: live/ son enlaces a archive/
     stop_grace_period: 1h ## Deja terminar las llamadas en curso al actualizar
     deploy:
       mode: replicated
